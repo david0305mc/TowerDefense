@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class UIIntro : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+   [SerializeField] private Button startBtn;
+
+    private void Awake()
     {
-        
+        startBtn.onClick.AddListener(() =>
+        {
+            startBtn.enabled = false;
+            StartGame().Forget();
+        });
+    }
+    private void OnEnable()
+    {
+        startBtn.enabled = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private async UniTaskVoid StartGame()
     {
-        
+        var mainSceneAsync = SceneManager.LoadSceneAsync("Main");
+        await mainSceneAsync;
+        //SceneManager.LoadScene("Main");
     }
 }
