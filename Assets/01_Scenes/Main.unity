@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 1015347517}
   - component: {fileID: 1015347516}
   - component: {fileID: 1015347515}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,6 +427,7 @@ GameObject:
   - component: {fileID: 1172917658}
   - component: {fileID: 1172917657}
   - component: {fileID: 1172917656}
+  - component: {fileID: 1172917659}
   m_Layer: 0
   m_Name: WorldCamera
   m_TagString: MainCamera
@@ -500,6 +501,21 @@ Transform:
   m_Father: {fileID: 1783574235}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
+--- !u!114 &1172917659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172917655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e23550b37b7eece4b9a8d679e8fa8f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1172917657}
+  panFactor: 0.05
+  panReduceFactor: 3
 --- !u!1 &1327270780
 GameObject:
   m_ObjectHideFlags: 0
