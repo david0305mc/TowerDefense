@@ -19,6 +19,12 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private int mapSizeMaxX = 20;
     [SerializeField] private int mapSizeMaxZ = 20;
 
+    private readonly float maxZoomFactor = 50;
+    private readonly float minZoomFactor = 3;
+    private readonly float clampZoomOffset = 2.0f;
+    private float oldZoom;
+    private bool pinchStarted;
+    private float oldPinchDist;
 
     private static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private CancellationTokenSource cts = new CancellationTokenSource();
@@ -35,10 +41,12 @@ public class CameraManager : MonoBehaviour
         {
 #if UNITY_EDITOR
             PanCamera();
+            UpdateZoom();
 #else
             if (Input.touchCount == 1)
             {
-            PanCamera();
+                PanCamera();
+                UpdateZoom();
             }
             else if (Input.touchCount == 2)
             {
@@ -69,6 +77,58 @@ public class CameraManager : MonoBehaviour
                 if (Input.GetMouseButtonUp(0))
                 {
                     dragStarted = false;
+                }
+            }
+
+            void UpdateZoom()
+            {
+                float newZoom = mainCamera.orthographicSize;
+                //Editor
+                float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+                if (scrollAmount != 0)
+                {
+                    newZoom = newZoom - scrollAmount;
+                }
+
+                if (Input.touchCount == 0 || Input.touchCount == 1)
+                {
+                    pinchStarted = false;
+                }
+
+                if (Input.touchCount == 2)
+                {
+                    var touchPoint0 = TryGetRayCastHit(Input.GetTouch(0).position, GameConfig.GroundLayerMask);
+                    var touchPoint1 = TryGetRayCastHit(Input.GetTouch(1).position, GameConfig.GroundLayerMask);
+                    float pinchDist = Vector3.Distance(touchPoint0, touchPoint1);
+
+                    if (!pinchStarted)
+                    {
+                        oldPinchDist = pinchDist;
+                        pinchStarted = true;
+                    }
+                    else
+                    {
+                        float delta = oldPinchDist - pinchDist;
+                        newZoom = mainCamera.orthographicSize + delta / 2;
+                    }
+                }
+
+                newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+
+                if (newZoom < minZoomFactor + clampZoomOffset)
+                {
+                    newZoom = Mathf.Lerp(newZoom, this.minZoomFactor + clampZoomOffset, Time.deltaTime * 2);
+
+                }
+                else if (newZoom > maxZoomFactor - clampZoomOffset)
+                {
+                    newZoom = Mathf.Lerp(newZoom, this.maxZoomFactor - clampZoomOffset, Time.deltaTime * 2);
+                }
+
+                if (oldZoom != newZoom)
+                {
+                    mainCamera.orthographicSize = newZoom;
+                    oldZoom = newZoom;
                 }
             }
 
