@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : SingletonMono<GameManager>
 {
+    public Material RenderQuadMaterial = default;
+    public Texture GridTexture = default;
+
     public const int nodeWidth = 44;
     public const int nodeHeight = 44;
 
@@ -22,6 +25,7 @@ public class GameManager : SingletonMono<GameManager>
     {
         BaseObj baseObj = Utill.InstantiateGameObject<BaseObj>(BaseItem, ItemsContainer.transform);
         baseObj.SetPosition(GetRandomNode());
+        baseObj.UpdateQuad();
     }
 
 }

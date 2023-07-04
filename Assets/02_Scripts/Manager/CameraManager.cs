@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Threading;
+using UnityEngine.EventSystems;
 
 public class CameraManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class CameraManager : MonoBehaviour
     private readonly float maxZoomFactor = 50;
     private readonly float minZoomFactor = 3;
     private readonly float clampZoomOffset = 2.0f;
+
+    private float minimumMoveDistanceForItemMove = 0.2f;
     private float oldZoom;
     private bool pinchStarted;
     private float oldPinchDist;
@@ -31,15 +34,22 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        bool dragStarted = false;
+        bool groundDragStarted = false;
+        bool itemDragStarted = false;
         Vector3 dragStartPos = Vector3.zero;
         Vector3 newPos = Vector3.zero;
         Vector3 newZoom = Vector3.one;
 
-        int cnt = 0;
+        BaseObj selectedObj = default;
+        Vector3 tapItemStartPos = default;
+        bool isDragStarted = false;
+
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
 #if UNITY_EDITOR
+            //UpdateBaseItemTap();
+            UpdateBaseItemMove();
+            UpdateGroundTap();
             PanCamera();
             UpdateZoom();
 #else
@@ -53,21 +63,90 @@ public class CameraManager : MonoBehaviour
             }
 #endif
 
+            void UpdateBaseItemTap()
+            {
+                if (!Input.GetMouseButtonUp(0))
+                    return;
+
+                if (groundDragStarted)
+                    return;
+
+                if (itemDragStarted)
+                    return;
+
+                if (this.IsUsingUI())
+                {
+                    return;
+                }
+
+                 var baseObj = TryGetRayCastHitObj<BaseObj>(Input.mousePosition, GameConfig.ItemLayerMask);
+                if (baseObj != default)
+                {
+                    selectedObj = baseObj;
+
+                    // objEvent
+                }
+                else
+                {
+                    selectedObj = null;
+                }
+            }
+
+            void UpdateBaseItemMove()
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    tapItemStartPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                    isDragStarted = false;
+                }
+
+                if (Input.GetMouseButton(0) && !tapItemStartPos.Equals(PositiveInfinityVector))
+                {
+                    var tapItemCurrPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+
+                    if (!isDragStarted)
+                    {
+                        if (Vector3.Distance(tapItemStartPos, tapItemCurrPos) >= minimumMoveDistanceForItemMove)
+                        {
+                            isDragStarted = true;
+                            Debug.Log("DragStarted");
+                        }
+                    }
+
+                    if (isDragStarted)
+                    {
+                        // Dragging
+                        Debug.Log("Dragging");
+                    }
+                }
+
+                if (Input.GetMouseButtonUp(0))
+                {
+                    tapItemStartPos = PositiveInfinityVector;
+                    isDragStarted = false;
+                }
+
+            }
+            void UpdateGroundTap()
+            { 
+            
+            }
+
             void PanCamera()
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Vector3 hitPoint = TryGetRayCastHit(Input.mousePosition, GameConfig.GroundLayerMask);
+                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
                     if (!hitPoint.Equals(PositiveInfinityVector))
                     {
                         dragStartPos = hitPoint;
-                        dragStarted = true;
+                        groundDragStarted = true;
                     }
                 }
 
-                if (dragStarted && Input.GetMouseButton(0))
+                if (groundDragStarted && Input.GetMouseButton(0))
                 {
-                    Vector3 hitPoint = TryGetRayCastHit(Input.mousePosition, GameConfig.GroundLayerMask);
+                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
                     if (!hitPoint.Equals(PositiveInfinityVector))
                     {
                         newPos = transform.position + dragStartPos - hitPoint;
@@ -76,7 +155,7 @@ public class CameraManager : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    dragStarted = false;
+                    groundDragStarted = false;
                 }
             }
 
@@ -84,7 +163,7 @@ public class CameraManager : MonoBehaviour
             {
                 float newZoom = mainCamera.orthographicSize;
                 //Editor
-                float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+                float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 5f;
                 if (scrollAmount != 0)
                 {
                     newZoom = newZoom - scrollAmount;
@@ -97,8 +176,8 @@ public class CameraManager : MonoBehaviour
 
                 if (Input.touchCount == 2)
                 {
-                    var touchPoint0 = TryGetRayCastHit(Input.GetTouch(0).position, GameConfig.GroundLayerMask);
-                    var touchPoint1 = TryGetRayCastHit(Input.GetTouch(1).position, GameConfig.GroundLayerMask);
+                    var touchPoint0 = TryGetRayCastHitPoint(Input.GetTouch(0).position, GameConfig.GroundLayerMask);
+                    var touchPoint1 = TryGetRayCastHitPoint(Input.GetTouch(1).position, GameConfig.GroundLayerMask);
                     float pinchDist = Vector3.Distance(touchPoint0, touchPoint1);
 
                     if (!pinchStarted)
@@ -145,7 +224,7 @@ public class CameraManager : MonoBehaviour
         cts.Clear();
     }
 
-    private Vector3 TryGetRayCastHit(Vector2 touchPoint, int layerMask)
+    private Vector3 TryGetRayCastHitPoint(Vector2 touchPoint, int layerMask)
     {
         RaycastHit hit;
         var ray = mainCamera.ScreenPointToRay(touchPoint);
@@ -158,6 +237,26 @@ public class CameraManager : MonoBehaviour
             return PositiveInfinityVector;
         }            
     }
+    private T TryGetRayCastHitObj<T>(Vector2 touchPoint, int layerMask)
+    {
+        RaycastHit hit;
+        var ray = mainCamera.ScreenPointToRay(touchPoint);
+        if (Physics.Raycast(ray, out hit, 1000, layerMask))
+        {
+            return hit.collider.gameObject.GetComponent<T>();
+        }
+        else
+        {
+            return default;
+        }
+    }
+
+    public bool IsUsingUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
+
 
     //void ClampCamera()
     //{
