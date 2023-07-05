@@ -42,7 +42,7 @@ public class CameraManager : MonoBehaviour
 
         BaseObj selectedObj = default;
         Vector3 tapItemStartPos = default;
-        bool isDragStarted = false;
+        bool isObjDragStarted = false;
 
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
@@ -50,8 +50,8 @@ public class CameraManager : MonoBehaviour
             UpdateGroundTap();
             PanCamera();
             UpdateZoom();
-            UpdateBaseItemTap();
             UpdateBaseItemMove();
+            UpdateBaseItemTap();
 #else
             if (Input.touchCount == 1)
             {
@@ -100,7 +100,7 @@ public class CameraManager : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     tapItemStartPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-                    isDragStarted = false;
+                    isObjDragStarted = false;
                 }
 
                 if (selectedObj == null)
@@ -110,16 +110,16 @@ public class CameraManager : MonoBehaviour
                 {
                     var tapItemCurrPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
 
-                    if (!isDragStarted)
+                    if (!isObjDragStarted)
                     {
                         if (Vector3.Distance(tapItemStartPos, tapItemCurrPos) >= minimumMoveDistanceForItemMove)
                         {
-                            isDragStarted = true;
+                            isObjDragStarted = true;
                             Debug.Log("DragStarted");
                         }
                     }
 
-                    if (isDragStarted)
+                    if (isObjDragStarted)
                     {
                         selectedObj.transform.position = tapItemCurrPos;
                         // Dragging
@@ -130,7 +130,7 @@ public class CameraManager : MonoBehaviour
                 if (Input.GetMouseButtonUp(0))
                 {
                     tapItemStartPos = PositiveInfinityVector;
-                    isDragStarted = false;
+                    isObjDragStarted = false;
                 }
 
             }
@@ -141,6 +141,9 @@ public class CameraManager : MonoBehaviour
 
             void PanCamera()
             {
+                if (selectedObj != null)
+                    return;
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
