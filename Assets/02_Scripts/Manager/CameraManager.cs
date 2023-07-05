@@ -47,11 +47,11 @@ public class CameraManager : MonoBehaviour
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
 #if UNITY_EDITOR
-            //UpdateBaseItemTap();
-            UpdateBaseItemMove();
             UpdateGroundTap();
             PanCamera();
             UpdateZoom();
+            UpdateBaseItemTap();
+            UpdateBaseItemMove();
 #else
             if (Input.touchCount == 1)
             {
@@ -79,10 +79,12 @@ public class CameraManager : MonoBehaviour
                     return;
                 }
 
-                 var baseObj = TryGetRayCastHitObj<BaseObj>(Input.mousePosition, GameConfig.ItemLayerMask);
-                if (baseObj != default)
+                GameObject obj = TryGetRayCastHitObj(Input.mousePosition, GameConfig.ItemLayerMask);
+
+                if (obj != default)
                 {
-                    selectedObj = baseObj;
+                    BaseObj[] baseObj = obj.GetComponentsInParent<BaseObj>();
+                    selectedObj = baseObj[0];
 
                     // objEvent
                 }
@@ -94,11 +96,15 @@ public class CameraManager : MonoBehaviour
 
             void UpdateBaseItemMove()
             {
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     tapItemStartPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
                     isDragStarted = false;
                 }
+
+                if (selectedObj == null)
+                    return;
 
                 if (Input.GetMouseButton(0) && !tapItemStartPos.Equals(PositiveInfinityVector))
                 {
@@ -115,6 +121,7 @@ public class CameraManager : MonoBehaviour
 
                     if (isDragStarted)
                     {
+                        selectedObj.transform.position = tapItemCurrPos;
                         // Dragging
                         Debug.Log("Dragging");
                     }
@@ -237,13 +244,13 @@ public class CameraManager : MonoBehaviour
             return PositiveInfinityVector;
         }            
     }
-    private T TryGetRayCastHitObj<T>(Vector2 touchPoint, int layerMask)
+    private GameObject TryGetRayCastHitObj(Vector2 touchPoint, int layerMask)
     {
         RaycastHit hit;
         var ray = mainCamera.ScreenPointToRay(touchPoint);
         if (Physics.Raycast(ray, out hit, 1000, layerMask))
         {
-            return hit.collider.gameObject.GetComponent<T>();
+            return hit.collider.gameObject;
         }
         else
         {
