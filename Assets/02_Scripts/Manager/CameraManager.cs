@@ -63,6 +63,43 @@ public class CameraManager : MonoBehaviour
             }
 #endif
 
+            void UpdateDrag()
+            { 
+
+                
+            }
+
+            void TouchLogic()
+            { 
+
+                // UI인경우 리턴
+
+                // 원 터치
+                  
+                    // 터치다운
+                        // 아이템 선택
+                        // 그라운드 선택
+
+                    // 터치중
+                        // 최초 선택이 아이템
+                            // 최소 이동 거리를 넘었을 경우 
+                                // 아이템 드래그 시작
+
+                        // 최초 선택이 그라운드
+                            // Pan Camera
+
+                    // 터치 업
+                        // 아이템 드래그일경우
+                            // 타겟이 아이템인경우 롤백
+
+                        // 드래그 플래그 초기화
+
+                // 투터치
+                    // 터치중
+                        // 카메라 줌
+
+            }
+
             void UpdateBaseItemTap()
             {
                 if (!Input.GetMouseButtonUp(0))
