@@ -38,7 +38,8 @@ public class CameraManager : MonoBehaviour
         bool itemDragStarted = false;
         Vector3 dragStartPos = Vector3.zero;
         Vector3 newPos = Vector3.zero;
-        Vector3 newZoom = Vector3.one;
+        //Vector3 newZoom = Vector3.one;
+        float newZoomf = 10f;
 
         BaseObj selectedObj = default;
         Vector3 tapItemStartPos = default;
@@ -46,27 +47,106 @@ public class CameraManager : MonoBehaviour
 
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
-#if UNITY_EDITOR
-            UpdateGroundTap();
-            PanCamera();
-            UpdateZoom();
-            UpdateBaseItemMove();
-            UpdateBaseItemTap();
-#else
-            if (Input.touchCount == 1)
-            {
-                PanCamera();
-                UpdateZoom();
-            }
-            else if (Input.touchCount == 2)
-            {
-            }
-#endif
+            UpdateOneTouch();
+            InputKeyboard();
+//#if UNITY_EDITOR
+//            PanCamera();
+//            UpdateZoom();
+//            UpdateBaseItemMove();
+//            UpdateBaseItemTap();
+//#else
+//            if (Input.touchCount == 1)
+//            {
+//                PanCamera();
+//                UpdateZoom();
+//            }
+//            else if (Input.touchCount == 2)
+//            {
+//            }
+//#endif
 
-            void UpdateDrag()
-            { 
+            void UpdateOneTouch()
+            {
+                if (selectedObj != null)
+                    return;
 
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                    if (!hitPoint.Equals(PositiveInfinityVector))
+                    {
+                        dragStartPos = hitPoint;
+                        groundDragStarted = true;
+                    }
+                }
+
+                if (groundDragStarted && Input.GetMouseButton(0))
+                {
+                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                    if (!hitPoint.Equals(PositiveInfinityVector))
+                    {
+                        newPos = transform.position + dragStartPos - hitPoint;
+                    }
+                }
+
+                if (Input.GetMouseButtonUp(0))
+                {
+                    groundDragStarted = false;
+                }
+            }
+            void UpdateTwoTouch()
+            {
+
+            }
+
+            void InputKeyboard()
+            {
+                //newZoomf = mainCamera.orthographicSize;
+                //Editor
+                float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
+                if (scrollAmount != 0)
+                {
+                    newZoomf = newZoomf - scrollAmount;
+                }
+            }
+            void UpdateTouch()
+            {
+
+                if (!Input.GetMouseButtonUp(0))
+                    return;
+
+                if (Input.touchCount == 1)
+                {
+                    UpdateOneTouch();
+                }
+                else if (Input.touchCount == 2)
+                {
+
+                }
                 
+                // 원 터치
+
+                // 터치다운
+                // 아이템 선택
+                // 그라운드 선택
+
+                // 터치중
+                // 최초 선택이 아이템
+                // 최소 이동 거리를 넘었을 경우 
+                // 아이템 드래그 시작
+
+                // 최초 선택이 그라운드
+                // Pan Camera
+
+                // 터치 업
+                // 아이템 드래그일경우
+                // 타겟이 아이템인경우 롤백
+
+                // 드래그 플래그 초기화
+
+                // 투터치
+                // 터치중
+                // 카메라 줌
             }
 
             void TouchLogic()
@@ -171,10 +251,6 @@ public class CameraManager : MonoBehaviour
                 }
 
             }
-            void UpdateGroundTap()
-            { 
-            
-            }
 
             void PanCamera()
             {
@@ -208,12 +284,12 @@ public class CameraManager : MonoBehaviour
 
             void UpdateZoom()
             {
-                float newZoom = mainCamera.orthographicSize;
+                newZoomf = mainCamera.orthographicSize;
                 //Editor
                 float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 5f;
                 if (scrollAmount != 0)
                 {
-                    newZoom = newZoom - scrollAmount;
+                    newZoomf = newZoomf - scrollAmount;
                 }
 
                 if (Input.touchCount == 0 || Input.touchCount == 1)
@@ -235,26 +311,26 @@ public class CameraManager : MonoBehaviour
                     else
                     {
                         float delta = oldPinchDist - pinchDist;
-                        newZoom = mainCamera.orthographicSize + delta / 2;
+                        newZoomf = mainCamera.orthographicSize + delta / 2;
                     }
                 }
 
-                newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+                newZoomf = Mathf.Clamp(newZoomf, minZoomFactor, maxZoomFactor);
 
-                if (newZoom < minZoomFactor + clampZoomOffset)
+                if (newZoomf < minZoomFactor + clampZoomOffset)
                 {
-                    newZoom = Mathf.Lerp(newZoom, this.minZoomFactor + clampZoomOffset, Time.deltaTime * 2);
+                    newZoomf = Mathf.Lerp(newZoomf, this.minZoomFactor + clampZoomOffset, Time.deltaTime * 2);
 
                 }
-                else if (newZoom > maxZoomFactor - clampZoomOffset)
+                else if (newZoomf > maxZoomFactor - clampZoomOffset)
                 {
-                    newZoom = Mathf.Lerp(newZoom, this.maxZoomFactor - clampZoomOffset, Time.deltaTime * 2);
+                    newZoomf = Mathf.Lerp(newZoomf, this.maxZoomFactor - clampZoomOffset, Time.deltaTime * 2);
                 }
 
-                if (oldZoom != newZoom)
+                if (oldZoom != newZoomf)
                 {
-                    mainCamera.orthographicSize = newZoom;
-                    oldZoom = newZoom;
+                    mainCamera.orthographicSize = newZoomf;
+                    oldZoom = newZoomf;
                 }
             }
 
@@ -262,7 +338,9 @@ public class CameraManager : MonoBehaviour
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.FixedUpdate).ForEachAwaitAsync(async _ =>
         {
             newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, 0, 0), Mathf.Clamp(newPos.z, mapSizeMinZ, mapSizeMaxZ));
+            newZoomf = Mathf.Lerp(mainCamera.orthographicSize, newZoomf, Time.deltaTime * 10);
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed);
+            mainCamera.orthographicSize = newZoomf;
         }, cts.Token).Forget();
     }
 
