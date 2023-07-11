@@ -11,6 +11,8 @@ public class UIIntro : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 120;
+        
         startBtn.onClick.AddListener(() =>
         {
             startBtn.enabled = false;

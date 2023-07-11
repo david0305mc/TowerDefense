@@ -12,8 +12,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float panFactor = 0.05f;
     [SerializeField] private float panReduceFactor = 10f;
 
-    [SerializeField] private int zoomSpeed = 1;
-    [SerializeField] private int dragSpeed = 5;
+    [SerializeField] private float zoomSpeed = 0.02f;
+    [SerializeField] private int dragSpeed = 20;
 
     [SerializeField] private int mapSizeMinX = -20;
     [SerializeField] private int mapSizeMinZ = -20;
@@ -48,7 +48,15 @@ public class CameraManager : MonoBehaviour
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
             UpdateOneTouch();
+
+#if UNITY_EDITOR
             InputKeyboard();
+#else
+            UpdateTwoTouch();
+#endif
+
+            
+
 //#if UNITY_EDITOR
 //            PanCamera();
 //            UpdateZoom();
@@ -67,47 +75,86 @@ public class CameraManager : MonoBehaviour
 
             void UpdateOneTouch()
             {
-                if (selectedObj != null)
-                    return;
-
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-                    if (!hitPoint.Equals(PositiveInfinityVector))
+                    var hitObj = TryGetRayCastHitObj(Input.mousePosition, GameConfig.ItemLayerMask);
+                    if (hitObj != default)
                     {
-                        dragStartPos = hitPoint;
-                        groundDragStarted = true;
+                        BaseObj[] baseObj = hitObj.GetComponentsInParent<BaseObj>();
+                        selectedObj = baseObj[0];
+                    }
+                    else
+                    {
+                        Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                        if (!groudHitPoint.Equals(PositiveInfinityVector))
+                        {
+                            dragStartPos = groudHitPoint;
+                            groundDragStarted = true;
+                        }
                     }
                 }
 
-                if (groundDragStarted && Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0))
                 {
-                    Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-                    if (!hitPoint.Equals(PositiveInfinityVector))
+                    if (selectedObj != default)
                     {
-                        newPos = transform.position + dragStartPos - hitPoint;
+                        var groundPos = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                        selectedObj.transform.SetPosition(groundPos);
+                    }
+                    else
+                    {
+                        if (groundDragStarted)
+                        {
+                            Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                            if (!hitPoint.Equals(PositiveInfinityVector))
+                            {
+                                newPos = transform.position + dragStartPos - hitPoint;
+                            }
+                        }
                     }
                 }
 
                 if (Input.GetMouseButtonUp(0))
                 {
                     groundDragStarted = false;
+                    selectedObj = default;
                 }
             }
+
             void UpdateTwoTouch()
             {
+                if (Input.touchCount == 0 || Input.touchCount == 1)
+                {
+                    pinchStarted = false;
+                }
 
+                if (Input.touchCount == 2)
+                {
+                    var touchPoint0 = TryGetRayCastHitPoint(Input.GetTouch(0).position, GameConfig.GroundLayerMask);
+                    var touchPoint1 = TryGetRayCastHitPoint(Input.GetTouch(1).position, GameConfig.GroundLayerMask);
+                    float pinchDist = Vector3.Distance(touchPoint0, touchPoint1);
+
+                    if (!pinchStarted)
+                    {
+                        oldPinchDist = pinchDist;
+                        pinchStarted = true;
+                    }
+                    else
+                    {
+                        float delta = oldPinchDist - pinchDist;
+                        newZoomf = mainCamera.orthographicSize + delta / 2;
+                    }
+                }
             }
 
             void InputKeyboard()
             {
-                //newZoomf = mainCamera.orthographicSize;
-                //Editor
-                float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10f;
+                float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
                 if (scrollAmount != 0)
                 {
                     newZoomf = newZoomf - scrollAmount;
                 }
+                newZoomf = Mathf.Clamp(newZoomf, minZoomFactor, maxZoomFactor);
             }
             void UpdateTouch()
             {
@@ -338,9 +385,9 @@ public class CameraManager : MonoBehaviour
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.FixedUpdate).ForEachAwaitAsync(async _ =>
         {
             newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, 0, 0), Mathf.Clamp(newPos.z, mapSizeMinZ, mapSizeMaxZ));
-            newZoomf = Mathf.Lerp(mainCamera.orthographicSize, newZoomf, Time.deltaTime * 10);
+            newZoomf = Mathf.Clamp(newZoomf, minZoomFactor, maxZoomFactor);
+            mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, newZoomf, Time.deltaTime * zoomSpeed);
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed);
-            mainCamera.orthographicSize = newZoomf;
         }, cts.Token).Forget();
     }
 
