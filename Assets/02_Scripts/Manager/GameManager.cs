@@ -18,6 +18,14 @@ public class GameManager : SingletonMono<GameManager>
     // object ref
     public GameObject ItemsContainer;
 
+    public Dictionary<int, BaseObj> baseObjDic;
+
+    private void Start()
+    {
+        baseObjDic = new Dictionary<int, BaseObj>();
+        GroundManager.Instance.UpdateAllNodes();
+    }
+
     public Vector3 GetRandomNode()
     { 
         return new Vector3(Random.Range(0, nodeWidth), 0, Random.Range(0, nodeHeight));
@@ -36,7 +44,7 @@ public class GameManager : SingletonMono<GameManager>
         baseObj.SetPosition(GetRandomNode());
         baseObj.CreateSwordMan();
 
-        baseObj.MoveToPostion(new Vector3(0, 0, 0));
+        baseObj.WalkToPosition(new Vector3(0, 0, 0));
     }
 
 }
