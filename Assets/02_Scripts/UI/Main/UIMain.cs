@@ -15,6 +15,6 @@ public class UIMain : MonoBehaviour
 
     private void AddBuildingObj()
     {
-        GameManager.Instance.SpawnItem();
+        GameManager.Instance.SpawnCharacter();
     }
 }
