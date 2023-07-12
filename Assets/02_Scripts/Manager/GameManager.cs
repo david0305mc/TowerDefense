@@ -25,7 +25,7 @@ public class GameManager : SingletonMono<GameManager>
     {
         BaseObj baseObj = Utill.InstantiateGameObject<BaseObj>(BaseItem, ItemsContainer.transform);
         baseObj.SetPosition(GetRandomNode());
-        baseObj.UpdateQuad();
+        baseObj.CreateQuad();
     }
 
 }
