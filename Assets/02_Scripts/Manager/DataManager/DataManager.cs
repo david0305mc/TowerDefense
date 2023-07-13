@@ -17,15 +17,8 @@ public partial class DataManager : Singleton<DataManager>
 {
 	public static string[] tableNames =
 		{
-			"ItemLevel",
-			"MergeBoard",
-			"BoxTable",
-			"BoxTimeTable",
-			"ItemGroup",
-			"ScenarioMissionTable",
-			"ScenarioSlotTable",
-			"ScenarioTable",
-			"ScenarioDialogTable"
+			"ObjTable",
+			"SpriteSheet",
 		};
 
 	public async UniTask LoadDataAsync()

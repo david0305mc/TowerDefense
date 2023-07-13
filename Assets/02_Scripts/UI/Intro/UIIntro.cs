@@ -26,6 +26,11 @@ public class UIIntro : MonoBehaviour
 
     private async UniTaskVoid StartGame()
     {
+        Debug.Log("StartGame");
+        await DataManager.Instance.LoadDataAsync();
+        await DataManager.Instance.LoadConfigTable();
+        DataManager.Instance.MakeClientDT();
+
         var mainSceneAsync = SceneManager.LoadSceneAsync("Main");
         await mainSceneAsync;
         //SceneManager.LoadScene("Main");
