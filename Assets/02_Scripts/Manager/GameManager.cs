@@ -13,38 +13,44 @@ public class GameManager : SingletonMono<GameManager>
 
     // prefab
     public GameObject BaseItem;
-    public GameObject CharacterItem;
+    public GameObject CharacterPrefab;
 
     // object ref
     public GameObject ItemsContainer;
 
     public Dictionary<int, BaseObj> baseObjDic;
+    private static int uidGenerator = 1000;
 
     private void Start()
+    {
+        InitGame();
+    }
+    public static int GenerateUID()
+    {
+        return uidGenerator++;
+    }
+
+    public void InitGame()
     {
         baseObjDic = new Dictionary<int, BaseObj>();
         GroundManager.Instance.UpdateAllNodes();
     }
 
-    public Vector3 GetRandomNode()
-    { 
-        return new Vector3(Random.Range(0, nodeWidth), 0, Random.Range(0, nodeHeight));
-    }
-
     public void SpawnItem()
     {
         BaseObj baseObj = Utill.InstantiateGameObject<BaseObj>(BaseItem, ItemsContainer.transform);
-        baseObj.SetPosition(GetRandomNode());
+        baseObj.SetPosition(GroundManager.Instance.GetRandomFreePosition());
         baseObj.CreateQuad();
     }
 
     public void SpawnCharacter()
     {
-        var baseObj = Utill.InstantiateGameObject<CharacterObj>(CharacterItem, ItemsContainer.transform);
-        baseObj.SetPosition(GetRandomNode());
-        baseObj.CreateSwordMan();
-
+        int tid = 3;
+        var randomePosition = GroundManager.Instance.GetRandomFreePosition();
+        var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
+        var baseObj = CharacterObj.Create(tid, CharacterPrefab, ItemsContainer.transform);
         baseObj.WalkToPosition(new Vector3(0, 0, 0));
+        baseObjDic.Add(objData.UID, baseObj);
     }
 
 }

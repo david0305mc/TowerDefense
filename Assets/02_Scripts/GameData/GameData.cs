@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData : MonoBehaviour
+public class BaseObjData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int UID { get; set; }
+    public int TID { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public ITEM_STATUS itemStatus { get; set; }
 
-    // Update is called once per frame
-    void Update()
+    public static BaseObjData Create(int uid, int tid, int x, int y)
     {
-        
+        BaseObjData data = new BaseObjData();
+        data.UID = uid;
+        data.TID = tid;
+        data.X = x;
+        data.Y = y;
+        return data;
     }
 }

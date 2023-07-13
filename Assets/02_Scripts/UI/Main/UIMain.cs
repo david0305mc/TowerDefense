@@ -15,12 +15,12 @@ public class UIMain : MonoBehaviour
 
     private void AddBuildingObj()
     {
-        foreach (var item in DataManager.Instance.ObjtableArray)
-        {
-            Debug.Log($"item {item.name}");
-        }
+        //foreach (var item in DataManager.Instance.ObjtableArray)
+        //{
+        //    Debug.Log($"item {item.name}");
+        //}
         
-        return;
+        //return;
         GameManager.Instance.SpawnCharacter();
     }
 }

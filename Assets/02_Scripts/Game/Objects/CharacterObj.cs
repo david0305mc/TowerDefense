@@ -13,6 +13,36 @@ public class CharacterObj : BaseObj
     private GroundManager.Path _path;
     private int _currentNodeIndex;
 
+    public static CharacterObj Create(int tid, GameObject prefab, Transform parent)
+    {
+        var baseObj = Utill.InstantiateGameObject<CharacterObj>(prefab, parent);
+        baseObj.SetPosition(GroundManager.Instance.GetRandomFreePosition());
+        baseObj.UpdateSprite(DataManager.Instance.GetSpriteSheetData(tid));
+
+        return baseObj;
+    }
+
+    public void UpdateSprite(DataManager.SpriteSheet _spriteSheet)
+    {
+        var material = Instantiate(GameManager.Instance.RenderQuadMaterial);
+        material.mainTexture = Utill.Load<Texture>(_spriteSheet.respath);
+        MeshRenderer.material = material;
+        int numOfCulumns = 4;
+        int numOfRows = 2;
+
+        Vector3 defaultImgSize = new Vector3(1.4142f, 1.4142f, 1.4142f) * 4 * defaultTextureScale / 100.0f / defaultGridSize;
+        float heightFactor = (material.mainTexture.height / (float)material.mainTexture.width) * ((float)numOfCulumns / numOfRows);
+
+        float offsetX = (1.414f / 256.0f) * defaultTextureOffsetX * 4 / defaultGridSize;
+        float offsetY = (1.414f / 256.0f) * defaultTextureOffsetY * 4 / defaultGridSize;
+
+        MeshRenderer.gameObject.transform.localPosition = new Vector3(offsetX, offsetY, 0);
+        MeshRenderer.gameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        MeshRenderer.gameObject.transform.localScale = new Vector3(defaultImgSize.x, defaultImgSize.x * heightFactor, 1);
+
+        textureSeetAnimation.SetTextureSheetData(_spriteSheet.culumns, _spriteSheet.rows, _spriteSheet.frame, 10);
+    }
+
     private void MoveToPosition(Vector3 targetPosition)
     {
         cts?.Clear();
@@ -87,6 +117,6 @@ public class CharacterObj : BaseObj
 
     private void OnDestroy()
     {
-        cts.Clear();
+        cts?.Clear();
     }
 }
