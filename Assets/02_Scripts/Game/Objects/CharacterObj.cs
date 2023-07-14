@@ -103,6 +103,7 @@ public class CharacterObj : BaseObj
     private void FinishWalk()
     {
         cts?.Clear();
+        cts = null;
 
         //_baseItem.SetState(GameData.State.IDLE);
         //_isWalking = false;
@@ -118,5 +119,6 @@ public class CharacterObj : BaseObj
     private void OnDestroy()
     {
         cts?.Clear();
+        cts = null;
     }
 }
