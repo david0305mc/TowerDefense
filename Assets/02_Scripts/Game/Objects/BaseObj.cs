@@ -43,7 +43,7 @@ public class BaseObj : MonoBehaviour
         MeshRenderer.gameObject.transform.localScale = new Vector3(defaultImgSize.x, defaultImgSize.x * heightFactor, 1);
 
         textureSeetAnimation.SetTextureSheetData(_spriteSheet.culumns, _spriteSheet.rows, _spriteSheet.frame, 10);
-        
+
         if (direction == GameType.Direction.BOTTOM_LEFT || direction == GameType.Direction.LEFT || direction == GameType.Direction.TOP_LEFT)
         {
             this.FlipRenderers(true);
@@ -67,11 +67,13 @@ public class BaseObj : MonoBehaviour
     }
     protected void LookAt(Vector3 point)
     {
+
         Vector2 a = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, transform.position - new Vector3(0, 0, 1));
         Vector2 b = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, transform.position);
         Vector2 c = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, point);
 
         float angle = GameUtil.ClockwiseAngleOf3Points(a, b, c);
+        Debug.Log($"point {point}  transform.position  {transform.position } angle {angle}");
         SetAngle(angle);
     }
 
@@ -79,6 +81,7 @@ public class BaseObj : MonoBehaviour
     {
         GameType.Direction direction = GameType.Direction.BOTTOM_RIGHT;
         float minAnge = 999;
+        //Debug.Log($"angle {angle}");
         foreach (KeyValuePair<float, GameType.Direction> entry in GameConfig.AngleToDirectionMap)
         {
             float a = Mathf.Abs(angle - entry.Key);
