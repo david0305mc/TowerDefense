@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameType : MonoBehaviour
+public class GameType
 {
-    // Start is called before the first frame update
-    void Start()
+
+
+    public enum Direction
     {
-        
+        BOTTOM,
+        BOTTOM_RIGHT,
+        RIGHT,
+        TOP_RIGHT,
+        TOP,
+        TOP_LEFT,
+        LEFT,
+        BOTTOM_LEFT
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum State
     {
-        
+        IDLE,
+        WALK,
+        ATTACK,
+        DESTROYED
     }
 }

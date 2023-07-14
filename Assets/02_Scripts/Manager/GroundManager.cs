@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -160,6 +161,39 @@ public class GroundManager : Singleton<GroundManager>
 
             }
         }
+    }
+    public Vector3 GetNearestOutCell(Vector3 targetPosition, int size)
+    {
+        var outCells = GetOutCells(targetPosition, size);
+        float nearestDist = 9999f;
+        Vector3 _currentTargetPoint = targetPosition;
+        foreach (var item in outCells)
+        {
+            var dist = Vector3.Distance(item, targetPosition);
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                _currentTargetPoint = item;
+            }
+        }
+        return _currentTargetPoint;
+    }
+    public Vector3[] GetOutCells(Vector3 targetPosition, int size)
+    {
+        List<Vector3> cells = new List<Vector3>();
+        Enumerable.Range(0, size).ToList().ForEach(i => {
+            Enumerable.Range(0, size).ToList().ForEach(j => {
+                if (i == 0 || j == 0 || i == size || j == size)
+                {
+                    Vector3 pos = targetPosition + new Vector3(i, 0, -j);
+                    if (cells.Contains(pos))
+                    {
+                        cells.Add(pos);
+                    }
+                }
+            });
+        });
+        return cells.ToArray();
     }
 
     public Vector3 GetRandomFreePosition()

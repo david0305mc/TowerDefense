@@ -6,9 +6,12 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Threading;
 using UnityEngine.EventSystems;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : SingletonMono<CameraManager>
 {
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private GameObject TEST_SRC_OBJ;
+    [SerializeField] private GameObject TEST_DST_OBJ;
+    public Camera MainCamera { get { return mainCamera; } }
 
     [SerializeField] private float zoomSpeed = 0.02f;
     [SerializeField] private int dragSpeed = 20;
@@ -26,6 +29,15 @@ public class CameraManager : MonoBehaviour
     private static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private CancellationTokenSource cts = new CancellationTokenSource();
 
+    private void Update()
+    {
+        Vector2 a = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, TEST_SRC_OBJ.transform.position - new Vector3(0, 0, 1));
+        Vector2 b = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, TEST_SRC_OBJ.transform.position);
+        Vector2 c = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, TEST_DST_OBJ.transform.position);
+
+        float angle = GameUtil.ClockwiseAngleOf3Points(a, b, c);
+        Debug.Log($"angle {angle}");
+    }
     private void Start()
     {
         bool groundDragStarted = false;

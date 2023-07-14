@@ -7,6 +7,7 @@ public class GameManager : SingletonMono<GameManager>
     public Material RenderQuadMaterial = default;
     public Texture GridTexture = default;
     public Texture CharacterTexture = default;
+    public Vector3 TestTarget = default;
 
     public const int nodeWidth = 44;
     public const int nodeHeight = 44;
@@ -38,9 +39,11 @@ public class GameManager : SingletonMono<GameManager>
 
     public void SpawnItem()
     {
-        BaseObj baseObj = Utill.InstantiateGameObject<BaseObj>(BaseItem, ItemsContainer.transform);
-        baseObj.SetPosition(GroundManager.Instance.GetRandomFreePosition());
-        baseObj.CreateQuad();
+        int tid = 1;
+        var randomePosition = GroundManager.Instance.GetRandomFreePosition();
+        var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
+        var baseObj = BaseObj.Create(objData, BaseItem, ItemsContainer.transform);
+        baseObjDic.Add(objData.UID, baseObj);
     }
 
     public void SpawnCharacter()
@@ -48,8 +51,8 @@ public class GameManager : SingletonMono<GameManager>
         int tid = 3;
         var randomePosition = GroundManager.Instance.GetRandomFreePosition();
         var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
-        var baseObj = CharacterObj.Create(tid, CharacterPrefab, ItemsContainer.transform);
-        baseObj.WalkToPosition(new Vector3(0, 0, 0));
+        CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
+        baseObj.WalkToPosition(TestTarget);
         baseObjDic.Add(objData.UID, baseObj);
     }
 

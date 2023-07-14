@@ -12,6 +12,16 @@ public static class GameConfig
 
     public static readonly string BoxIcon01 = "Images/Round/hide_box_img_1";
 
+    public static Dictionary<float, GameType.Direction> AngleToDirectionMap = new Dictionary<float, GameType.Direction>() { 
+        {1, GameType.Direction.BOTTOM_RIGHT },
+        {51, GameType.Direction.BOTTOM },
+        {110, GameType.Direction.BOTTOM_LEFT },
+        {153, GameType.Direction.LEFT },
+        {190, GameType.Direction.TOP_LEFT },
+        {220, GameType.Direction.TOP },
+        {290, GameType.Direction.TOP_RIGHT },
+        {357, GameType.Direction.RIGHT }
+    };
 }
 
 public class GamePath
