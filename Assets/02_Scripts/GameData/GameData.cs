@@ -8,7 +8,8 @@ public class BaseObjData
     public int TID { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
-    public ITEM_STATUS itemStatus { get; set; }
+    public ObjStatus ObjStatus { get; set; }
+    public GameType.Direction Direction { get; set; }
     public DataManager.ObjTable RefObjData { get; private set; }
 
     public static BaseObjData Create(int uid, int tid, int x, int y)
@@ -19,6 +20,8 @@ public class BaseObjData
         data.TID = tid;
         data.X = x;
         data.Y = y;
+        data.ObjStatus = ObjStatus.Idle;
+        data.Direction = GameType.Direction.BOTTOM_RIGHT;
         return data;
     }
 }

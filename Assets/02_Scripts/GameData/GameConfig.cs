@@ -36,9 +36,9 @@ public class GamePath
 }
 
 
-public enum SchoolZone
+public enum ObjStatus
 {
-    SchoolZone_A,
-    SchoolZone_B,
-    SchoolZone_C,
+    Idle,
+    Walk,
+    Attack,
 }

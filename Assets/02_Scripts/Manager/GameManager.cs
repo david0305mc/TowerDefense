@@ -51,6 +51,7 @@ public class GameManager : SingletonMono<GameManager>
         int tid = 3;
         var randomePosition = GroundManager.Instance.GetRandomFreePosition();
         var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
+        objData.ObjStatus = ObjStatus.Walk;
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObj.WalkToPosition(TestTarget);
         baseObjDic.Add(objData.UID, baseObj);

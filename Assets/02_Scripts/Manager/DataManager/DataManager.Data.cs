@@ -6,7 +6,10 @@ using System.Linq;
 public partial class DataManager {
 	public partial class ObjTable {
 		public int id;
-		public int resid;
+		public int idle_collectionid;
+		public int walk_collectionid;
+		public int attack_collectionid;
+		public int destroyed_collectionid;
 		public string name;
 	};
 	public ObjTable[] ObjtableArray { get; private set; }
@@ -41,6 +44,53 @@ public partial class DataManager {
 	}
 	public SpriteSheet GetSpriteSheetData(int _id){
 		if (SpritesheetDic.TryGetValue(_id, out SpriteSheet value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class SpriteCollection {
+		public int id;
+		public int b_resid;
+		public int br_resid;
+		public int r_resid;
+		public int tr_resid;
+		public int t_resid;
+		public string name;
+
+		public int GetSpriteCollection(GameType.Direction _direction)
+		{
+			switch (_direction)
+			{
+				case GameType.Direction.BOTTOM:
+					return b_resid;
+				case GameType.Direction.BOTTOM_LEFT:
+				case GameType.Direction.BOTTOM_RIGHT:
+					return br_resid;
+
+				case GameType.Direction.LEFT:
+				case GameType.Direction.RIGHT:
+					return r_resid;
+
+				case GameType.Direction.TOP_LEFT:
+				case GameType.Direction.TOP_RIGHT:
+					return tr_resid;
+
+				case GameType.Direction.TOP:
+					return t_resid;
+			}
+			return br_resid;
+		}
+	};
+	public SpriteCollection[] SpritecollectionArray { get; private set; }
+	public Dictionary<int, SpriteCollection> SpritecollectionDic { get; private set; }
+	public void BindSpriteCollectionData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(SpritecollectionArray)).SetValue(this, deserializaedData, null);
+		SpritecollectionDic = SpritecollectionArray.ToDictionary(i => i.id);
+	}
+	public SpriteCollection GetSpriteCollectionData(int _id){
+		if (SpritecollectionDic.TryGetValue(_id, out SpriteCollection value)){
 			return value;
 		}
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
