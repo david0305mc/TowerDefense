@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Game;
 public class PopupManager : SingletonMono<PopupManager>
 {
     private Dictionary<string, PopupBase> popupDic = new Dictionary<string, PopupBase>();

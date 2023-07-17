@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Threading;
 using UnityEngine.EventSystems;
 
+using Game;
 public class CameraManager : SingletonMono<CameraManager>
 {
     [SerializeField] private Camera mainCamera;

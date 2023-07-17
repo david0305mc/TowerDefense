@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Game;
 public class BaseObj : MonoBehaviour
 {
     [SerializeField] protected TextureSheetAnimationScript textureSeetAnimation = default;
@@ -29,13 +29,10 @@ public class BaseObj : MonoBehaviour
         var collectionData = DataManager.Instance.GetSpriteCollectionData(collectionID);
 
         DataManager.SpriteSheet _spriteSheet = DataManager.Instance.GetSpriteSheetData(collectionData.GetSpriteCollection(BaseObjData.Direction));
-        
-        var material = Instantiate(GameManager.Instance.RenderQuadMaterial);
-        material.mainTexture = Utill.Load<Texture>(_spriteSheet.respath);
-        MeshRenderer.material = material;
-        
+        MeshRenderer.material = ResourceManager.Instance.GetTextureMaterial(ResourceManager.Instance.GetTexture(_spriteSheet.respath), RenderingLayer.GROUND, 1);
+
         Vector3 defaultImgSize = new Vector3(1.4142f, 1.4142f, 1.4142f) * 4 * defaultTextureScale / 100.0f / defaultGridSize;
-        float heightFactor = (material.mainTexture.height / (float)material.mainTexture.width) * ((float)_spriteSheet.culumns / _spriteSheet.rows);
+        float heightFactor = (MeshRenderer.material.mainTexture.height / (float)MeshRenderer.material.mainTexture.width) * ((float)_spriteSheet.culumns / _spriteSheet.rows);
 
         float offsetX = (1.414f / 256.0f) * defaultTextureOffsetX * 4 / defaultGridSize;
         float offsetY = (1.414f / 256.0f) * defaultTextureOffsetY * 4 / defaultGridSize;
