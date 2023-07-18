@@ -22,30 +22,18 @@ public class ShopPopup : PopupBase
 
     private void Start()
     {
-        //var items = Enumerable.Range(0, 20).Select(i => new ItemData($"Cell {i}")).ToArray();
 
-        //gridView.UpdateSelection(1);
-        //gridView.ScrollTo(1, 0.4f, Ease.InOutQuint, FancyScrollView.Example08.Alignment.Middle);
-
-        //uiScrollView.UpdateData(items);
-        //uiScrollView.SelectCell(0);
-        GenerateCells(100);
+        var items = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
+        gridView.UpdateContents(items);
 
         gridView.OnCellClicked(index =>
         {
-            SelectCell(index);
+            GameManager.Instance.SpawnCharacter();
         });
     }
 
     void GenerateCells(int dataCount)
     {
-        var items = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
-        //var items = Enumerable.Range(0, dataCount)
-        //    .Select(i => new ShopItemData(i))
-        //    .ToArray();
-
-        gridView.UpdateContents(items);
-        //SelectCell();
     }
 
     void SelectCell(int index)
