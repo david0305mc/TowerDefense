@@ -39,9 +39,10 @@ public class ShopPopup : PopupBase
 
     void GenerateCells(int dataCount)
     {
-        var items = Enumerable.Range(0, dataCount)
-            .Select(i => new GridItemData(i))
-            .ToArray();
+        var items = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
+        //var items = Enumerable.Range(0, dataCount)
+        //    .Select(i => new ShopItemData(i))
+        //    .ToArray();
 
         gridView.UpdateContents(items);
         //SelectCell();

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class GridItemData
 {
     public int Index { get; }
+
     public GridItemData(int index) => Index = index;
 }
 

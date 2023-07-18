@@ -11,6 +11,7 @@ public partial class DataManager {
 		public int attack_collectionid;
 		public int destroyed_collectionid;
 		public string name;
+		public string thumbnailpath;
 	};
 	public ObjTable[] ObjtableArray { get; private set; }
 	public Dictionary<int, ObjTable> ObjtableDic { get; private set; }
@@ -57,30 +58,6 @@ public partial class DataManager {
 		public int tr_resid;
 		public int t_resid;
 		public string name;
-
-		public int GetSpriteCollection(GameType.Direction _direction)
-		{
-			switch (_direction)
-			{
-				case GameType.Direction.BOTTOM:
-					return b_resid;
-				case GameType.Direction.BOTTOM_LEFT:
-				case GameType.Direction.BOTTOM_RIGHT:
-					return br_resid;
-
-				case GameType.Direction.LEFT:
-				case GameType.Direction.RIGHT:
-					return r_resid;
-
-				case GameType.Direction.TOP_LEFT:
-				case GameType.Direction.TOP_RIGHT:
-					return tr_resid;
-
-				case GameType.Direction.TOP:
-					return t_resid;
-			}
-			return br_resid;
-		}
 	};
 	public SpriteCollection[] SpritecollectionArray { get; private set; }
 	public Dictionary<int, SpriteCollection> SpritecollectionDic { get; private set; }

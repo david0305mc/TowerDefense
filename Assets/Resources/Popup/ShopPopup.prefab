@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6202647756878717793}
   - component: {fileID: 260611741230873760}
   - component: {fileID: 331464292123970555}
+  - component: {fileID: 3982193881886049206}
+  - component: {fileID: 3931715211236687474}
   m_Layer: 0
   m_Name: ShopPopup
   m_TagString: Untagged
@@ -60,8 +62,82 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openAnim: {fileID: 0}
-  closeBtn: {fileID: 1410316743883888614}
+  closeBtn: {fileID: 3931715211236687474}
   gridView: {fileID: 896017663503077895}
+--- !u!114 &3982193881886049206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414377756617136838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3931715211236687474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414377756617136838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 3982193881886049206}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4573042381407740322
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,7 +156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6198231598527306404
 RectTransform:
   m_ObjectHideFlags: 0
@@ -220,8 +296,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -400}
+  m_SizeDelta: {x: 0, y: -800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &558008551535492769
 CanvasRenderer:
@@ -298,11 +374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 496032451470159596, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -400
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 496032451470159596, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -800
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 496032451470159596, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -338,7 +414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 496032451470159596, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -400
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 496032451470159596, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -365,16 +441,36 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6307397881196560304, guid: 2cbb88cc4fefad24ba035750805cce22, type: 3}
     - target: {fileID: 1038039298298620375, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
+      propertyPath: cellSize.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038039298298620375, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
+      propertyPath: cellSize.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038039298298620375, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: cellInterval
-      value: -0.2820513
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1038039298298620375, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: scrollOffset
-      value: -0.2820513
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1038039298298620375, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: startAxisCellCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430155136626263078, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430155136626263078, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430155136626263078, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7603442992696202391, guid: bca6da44363e9ad489e3685641c592b3, type: 3}
       propertyPath: m_Name
