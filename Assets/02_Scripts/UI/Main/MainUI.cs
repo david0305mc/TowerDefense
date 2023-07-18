@@ -7,12 +7,18 @@ public class MainUI : MonoBehaviour
 {
 
     [SerializeField] private Button testBtn;
+    [SerializeField] private Button shopBtn;
 
     private void Awake()
     {
         testBtn.onClick.AddListener(() =>
         {
             GameManager.Instance.SpawnCharacter();
+        });
+
+        shopBtn.onClick.AddListener(() =>
+        {
+            PopupManager.Instance.Show<ShopPopup>();
         });
     }
 

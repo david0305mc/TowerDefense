@@ -55,6 +55,9 @@ public class CameraManager : SingletonMono<CameraManager>
 
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
+            if (IsUsingUI())
+                return;
+
             UpdateOneTouch();
 
 #if UNITY_EDITOR
