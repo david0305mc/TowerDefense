@@ -26,7 +26,7 @@ public class UIGridCell: FancyGridViewCell<GridItemData, GridContext>
 
     public override void Initialize()
     {
-        button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
+        button?.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
     }
 
     public override void UpdateContent(GridItemData itemData)

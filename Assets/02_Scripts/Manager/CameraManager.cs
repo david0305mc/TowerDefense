@@ -56,8 +56,11 @@ public class CameraManager : SingletonMono<CameraManager>
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
             if (IsUsingUI())
+            {
+                UpdateUITouch();
                 return;
-
+            }
+            
             UpdateOneTouch();
 
 #if UNITY_EDITOR
@@ -65,6 +68,23 @@ public class CameraManager : SingletonMono<CameraManager>
 #else
             UpdateTwoTouch();
 #endif
+            void UpdateUITouch()
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    var mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                    var hit = Physics2D.Raycast(mousePos, Vector3.zero, 100, GameConfig.UILayerMask);
+                    if (hit.collider != null)
+                    {
+                        ShopItemCell itemCell = hit.collider.GetComponent<ShopItemCell>();
+                        if (itemCell != null)
+                        {
+                            GameManager.Instance.SpawnCharacter();
+                        }
+                    }
+                }
+
+            }
 
             void UpdateOneTouch()
             {
