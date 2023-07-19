@@ -125,14 +125,12 @@ public class CameraManager : SingletonMono<CameraManager>
                     if (UserData.Instance.ShopSelectedItem != -1)
                     {
                         Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-                        Debug.Log($"hitPoint {hitPoint}");
-                        GameManager.Instance.SpawnItem(UserData.Instance.ShopSelectedItem, hitPoint);
+                        if (Vector3.Distance(hitPoint, dragStartPos) <= minimumMoveDistanceForItemMove)
+                        {
+                            GameManager.Instance.SpawnItem(UserData.Instance.ShopSelectedItem, hitPoint);
+                        }
                     }
 
-                    if (!groundDragStarted)
-                    {
-                        
-                    }
                     groundDragStarted = false;
                     itemDragStarted = false;
                     selectedObj = default;

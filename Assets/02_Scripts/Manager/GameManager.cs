@@ -39,6 +39,8 @@ public class GameManager : SingletonMono<GameManager>
 
     public void SpawnItem(int tid, Vector3 pos)
     {
+        if (!GroundManager.Instance.IsInNodeRange(pos))
+            return;
         var objData = UserData.Instance.CreateBaseObj(tid, (int)pos.x, (int)pos.z);
         objData.ObjStatus = ObjStatus.Idle;
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);

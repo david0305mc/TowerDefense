@@ -196,6 +196,16 @@ public class GroundManager : Singleton<GroundManager>
         return cells.ToArray();
     }
 
+    public bool IsInNodeRange(Vector3 point)
+    {
+        if (point.x < 0 || point.z < 0)
+            return false;
+
+        if (point.x >= nodeWidth || point.z >= nodeHeight)
+            return false;
+        return true;
+
+    }
     public Vector3 GetRandomFreePosition()
     {
         int x = Random.Range(5, nodeWidth - 5);
