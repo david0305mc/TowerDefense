@@ -67,24 +67,6 @@ public class CameraManager : SingletonMono<CameraManager>
 #else
             UpdateTwoTouch();
 #endif
-            void UpdateUITouch()
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    var mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                    var hit = Physics2D.Raycast(mousePos, Vector3.zero, 100, GameConfig.UILayerMask);
-                    if (hit.collider != null)
-                    {
-                        ShopItemCell itemCell = hit.collider.GetComponent<ShopItemCell>();
-                        if (itemCell != null)
-                        {
-                            GameManager.Instance.SpawnCharacter();
-                        }
-                    }
-                }
-
-            }
-
             void UpdateOneTouch()
             {
                 if (Input.GetMouseButtonDown(0))
@@ -140,6 +122,17 @@ public class CameraManager : SingletonMono<CameraManager>
 
                 if (Input.GetMouseButtonUp(0))
                 {
+                    if (UserData.Instance.ShopSelectedItem != -1)
+                    {
+                        Vector3 hitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                        Debug.Log($"hitPoint {hitPoint}");
+                        GameManager.Instance.SpawnItem(UserData.Instance.ShopSelectedItem, hitPoint);
+                    }
+
+                    if (!groundDragStarted)
+                    {
+                        
+                    }
                     groundDragStarted = false;
                     itemDragStarted = false;
                     selectedObj = default;
@@ -297,3 +290,21 @@ public class CameraManager : SingletonMono<CameraManager>
     }
 
 }
+
+//void UpdateUITouch()
+//{
+//    if (Input.GetMouseButtonDown(0))
+//    {
+//        var mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+//        var hit = Physics2D.Raycast(mousePos, Vector3.zero, 100, GameConfig.UILayerMask);
+//        if (hit.collider != null)
+//        {
+//            ShopItemCell itemCell = hit.collider.GetComponent<ShopItemCell>();
+//            if (itemCell != null)
+//            {
+//                GameManager.Instance.SpawnCharacter();
+//            }
+//        }
+//    }
+
+//}

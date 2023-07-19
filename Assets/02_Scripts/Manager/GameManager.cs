@@ -37,20 +37,17 @@ public class GameManager : SingletonMono<GameManager>
         GroundManager.Instance.UpdateAllNodes();
     }
 
-    public void SpawnItem()
+    public void SpawnItem(int tid, Vector3 pos)
     {
-        int tid = 1;
-        var randomePosition = GroundManager.Instance.GetRandomFreePosition();
-        var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
-        var baseObj = BaseObj.Create(objData, BaseItem, ItemsContainer.transform);
+        var objData = UserData.Instance.CreateBaseObj(tid, (int)pos.x, (int)pos.z);
+        objData.ObjStatus = ObjStatus.Idle;
+        CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObjDic.Add(objData.UID, baseObj);
     }
 
-    public void SpawnCharacter()
+    public void SpawnCharacter(int tid, Vector3 pos)
     {
-        int tid = 3;
-        var randomePosition = GroundManager.Instance.GetRandomFreePosition();
-        var objData = UserData.Instance.CreateBaseObj(tid, (int)randomePosition.x, (int)randomePosition.z);
+        var objData = UserData.Instance.CreateBaseObj(tid, (int)pos.x, (int)pos.z);
         objData.ObjStatus = ObjStatus.Walk;
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObj.WalkToPosition(TestTarget);

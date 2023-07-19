@@ -12,6 +12,7 @@ public class ShopPopup : PopupBase
     [SerializeField] private Button closeBtn = default;
     [SerializeField] private UIGridView gridView = default;
 
+    private ShopItemData[] shopItemDatas;
     private void Awake()
     {
         closeBtn.onClick.AddListener(() =>
@@ -22,18 +23,17 @@ public class ShopPopup : PopupBase
 
     private void Start()
     {
-
-        var items = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
-        gridView.UpdateContents(items);
+        shopItemDatas = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
+        gridView.UpdateContents(shopItemDatas);
 
         gridView.OnCellClicked(index =>
         {
             SelectCell(index);
         });
     }
-
-    void GenerateCells(int dataCount)
+    private void OnDisable()
     {
+        UserData.Instance.ShopSelectedItem = -1;
     }
 
     void SelectCell(int index)
@@ -45,6 +45,8 @@ public class ShopPopup : PopupBase
 
         gridView.UpdateSelection(index);
         gridView.ScrollTo(index, 0.4f, Ease.InOutQuint, Alignment.Middle);
+
+        UserData.Instance.ShopSelectedItem = shopItemDatas[index].id;
     }
 
 }

@@ -17,8 +17,8 @@ public class BaseObj : MonoBehaviour
     public  static BaseObj Create(BaseObjData objData, GameObject prefab, Transform parent)
     {
         var baseObj = Utill.InstantiateGameObject<BaseObj>(prefab, parent);
-        baseObj.SetPosition(GroundManager.Instance.GetRandomFreePosition());
         baseObj.BaseObjData = objData;
+        baseObj.SetPosition(new Vector3(objData.X, 0, objData.Y));
         baseObj.UpdateRenderQuads();
         return baseObj;
     }
@@ -70,7 +70,6 @@ public class BaseObj : MonoBehaviour
         Vector2 c = GameUtil.GetScreenPosition(CameraManager.Instance.MainCamera, point);
 
         float angle = GameUtil.ClockwiseAngleOf3Points(a, b, c);
-        Debug.Log($"point {point}  transform.position  {transform.position } angle {angle}");
         SetAngle(angle);
     }
 

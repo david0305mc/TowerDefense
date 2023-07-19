@@ -13,7 +13,7 @@ public class MainUI : MonoBehaviour
     {
         testBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.SpawnCharacter();
+            GameManager.Instance.SpawnCharacter(3, GroundManager.Instance.GetRandomFreePosition());
         });
 
         shopBtn.onClick.AddListener(() =>
