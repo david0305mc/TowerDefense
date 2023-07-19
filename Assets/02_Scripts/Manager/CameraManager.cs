@@ -57,7 +57,6 @@ public class CameraManager : SingletonMono<CameraManager>
         {
             if (IsUsingUI())
             {
-                UpdateUITouch();
                 return;
             }
             

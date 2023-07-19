@@ -28,8 +28,7 @@ public class ShopPopup : PopupBase
 
         gridView.OnCellClicked(index =>
         {
-
-            //GameManager.Instance.SpawnCharacter();
+            SelectCell(index);
         });
     }
 

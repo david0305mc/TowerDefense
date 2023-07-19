@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class GridItemData
 {
-    public int Index { get; }
+    public int id { get; }
 
-    public GridItemData(int index) => Index = index;
+    public GridItemData(int index) => id = index;
 }
 
 public class GridContext : FancyGridViewContext
