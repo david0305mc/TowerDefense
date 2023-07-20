@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Game;
+
+[System.Serializable]
+public class LocalData
+{
+    public int Gold;
+    public SerializableDictionary<int, int> TestDic;
+    public LocalData()
+    {
+        TestDic = new SerializableDictionary<int, int>();
+        Gold = 0;
+    }
+}
+
 public class BaseObjData
 {
     public int UID { get; set; }

@@ -34,15 +34,29 @@ public partial class Utill
 
     public static string LoadFromFile(string filePath)
     {
-        string text;
-        using (FileStream fs = new FileStream(filePath, FileMode.Open))
+        string text = default;
+        if (File.Exists(filePath))
         {
-            using (StreamReader sr = new StreamReader(fs))
+            using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
-                text = sr.ReadToEnd();
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    text = sr.ReadToEnd();
+                }
             }
         }
         return text;
+    }
+
+    public static void SaveFile(string filePath, string data)
+    {
+        using (FileStream fs = new FileStream(filePath, FileMode.Create))
+        {
+            using (StreamWriter writer = new StreamWriter(fs))
+            {
+                writer.Write(data);
+            }
+        }
     }
 
     public static async UniTask<string> LoadFromFileAsync(string filePath)
@@ -56,6 +70,29 @@ public partial class Utill
             }
         }
         return text;
+    }
+
+    public static async void SaveFileAsync(string filePath, string data)
+    {
+        using (FileStream fs = new FileStream(filePath, FileMode.Create))
+        {
+            using (StreamWriter writer = new StreamWriter(fs))
+            {
+               await  writer.WriteAsync(data);
+            }
+        }
+    }
+
+    private static readonly string EncryptionCode = "David";
+    public static string EncryptXOR(string data)
+    {
+        string modifiedData= default;
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            modifiedData += (char)(data[i] ^ EncryptionCode[i % EncryptionCode.Length]);
+        }
+        return modifiedData;
     }
 
     public static T Load<T>(string path) where T : UnityEngine.Object
