@@ -35,13 +35,17 @@ public class GameManager : SingletonMono<GameManager>
     {
         baseObjDic = new Dictionary<int, BaseObj>();
         GroundManager.Instance.UpdateAllNodes();
+
+        foreach (var item in UserData.Instance.LocalData.baseObjDic)
+        {
+            SpawnItem(item.Key);
+        }
+        
     }
 
-    public void SpawnItem(int tid, Vector3 pos)
+    public void SpawnItem(int uid)
     {
-        if (!GroundManager.Instance.IsInNodeRange(pos))
-            return;
-        var objData = UserData.Instance.CreateBaseObj(tid, (int)pos.x, (int)pos.z);
+        var objData = UserData.Instance.LocalData.baseObjDic[uid];
         objData.ObjStatus = ObjStatus.Idle;
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObjDic.Add(objData.UID, baseObj);
