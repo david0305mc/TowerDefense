@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Game;
+using UniRx;
 
 [System.Serializable]
 public class LocalData
 {
-    public int Gold;
+    public ReactiveProperty<long> Gold;
     public SerializableDictionary<int, int> TestDic;
     public LocalData()
     {
         TestDic = new SerializableDictionary<int, int>();
-        Gold = 0;
+        Gold = new ReactiveProperty<long>(0);
     }
 }
 
