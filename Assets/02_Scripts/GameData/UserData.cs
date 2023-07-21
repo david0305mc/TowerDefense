@@ -23,10 +23,6 @@ public partial class UserData : Singleton<UserData>
             var localData = Utill.LoadFromFile(LocalFilePath);
             //localData = Utill.EncryptXOR(localData);
             LocalData = JsonUtility.FromJson<LocalData>(localData);
-            foreach (var item in LocalData.TestDic)
-            {
-                Debug.Log($"item key {item.Key},  value {item.Value}");
-            }
             LocalData.UpdateRefData();
         }
         else
@@ -44,10 +40,10 @@ public partial class UserData : Singleton<UserData>
         Utill.SaveFile(LocalFilePath, saveData);
     }
 
-    public BaseObjData CreateBaseObj(int tid, int x, int y)
+    public BaseObjData CreateBaseObjData(int tid, int x, int y)
     {
         var data = BaseObjData.Create(GameManager.GenerateUID(), tid, x, y);
-        LocalData.baseObjDic.Add(data.UID, data);
+        LocalData.BaseObjDic.Add(data.UID, data);
         return data;
     }
 }

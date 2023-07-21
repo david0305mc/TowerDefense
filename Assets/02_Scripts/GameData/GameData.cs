@@ -7,20 +7,20 @@ using UniRx;
 [System.Serializable]
 public class LocalData
 {
+    public int uidSeed;
     public ReactiveProperty<long> Gold;
-    public SerializableDictionary<int, int> TestDic;
-    public SerializableDictionary<int, BaseObjData> baseObjDic;
+    public SerializableDictionary<int, BaseObjData> BaseObjDic;
 
     public LocalData()
     {
-        TestDic = new SerializableDictionary<int, int>();
+        uidSeed = 0;
         Gold = new ReactiveProperty<long>(0);
-        baseObjDic = new SerializableDictionary<int, BaseObjData>();
+        BaseObjDic = new SerializableDictionary<int, BaseObjData>();
     }
 
     public void UpdateRefData()
     {
-        foreach (var item in baseObjDic)
+        foreach (var item in BaseObjDic)
             item.Value.UpdateRefData();
     }
 }

@@ -14,7 +14,8 @@ public class MainUI : MonoBehaviour
     {
         testBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.SpawnCharacter(3, GroundManager.Instance.GetRandomFreePosition());
+            GameManager.Instance.SpawnBaseObjEvent(3, (int)GroundManager.Instance.GetRandomFreePosition().x, (int)GroundManager.Instance.GetRandomFreePosition().y);
+            //GameManager.Instance.SpawnCharacter(3, GroundManager.Instance.GetRandomFreePosition());
         });
 
         UserData.Instance.LocalData.Gold.Subscribe(v =>
@@ -25,7 +26,6 @@ public class MainUI : MonoBehaviour
         shopBtn.onClick.AddListener(() =>
         {
             UserData.Instance.LocalData.Gold.Value++;
-            UserData.Instance.LocalData.TestDic.Add((int)UserData.Instance.LocalData.Gold.Value, UnityEngine.Random.Range(0, 10));
             UserData.Instance.SaveLocalData();
             PopupManager.Instance.Show<ShopPopup>();
         });

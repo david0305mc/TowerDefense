@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7901455871604035892}
   - component: {fileID: 7901455871604035893}
   - component: {fileID: 7901455871604035894}
-  - component: {fileID: 7901455871604035883}
   m_Layer: 0
   m_Name: Reporter
   m_TagString: Untagged
@@ -95,18 +94,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6767a180de870304caa2013b2772dd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7901455871604035883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7901455871604035895}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac68c003767bec459aa60dc282ff67d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logTestCount: 100
-  threadLogTestCount: 100
-  logEverySecond: 1

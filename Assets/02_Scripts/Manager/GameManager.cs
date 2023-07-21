@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Game;
-public class GameManager : SingletonMono<GameManager>
+public partial class GameManager : SingletonMono<GameManager>
 {
     public Material RenderQuadMaterial = default;
     public Texture GridTexture = default;
@@ -20,7 +20,6 @@ public class GameManager : SingletonMono<GameManager>
     public GameObject ItemsContainer;
 
     public Dictionary<int, BaseObj> baseObjDic;
-    private static int uidGenerator = 1000;
 
     private void Start()
     {
@@ -28,7 +27,7 @@ public class GameManager : SingletonMono<GameManager>
     }
     public static int GenerateUID()
     {
-        return uidGenerator++;
+        return UserData.Instance.LocalData.uidSeed++;
     }
 
     public void InitGame()
@@ -36,28 +35,16 @@ public class GameManager : SingletonMono<GameManager>
         baseObjDic = new Dictionary<int, BaseObj>();
         GroundManager.Instance.UpdateAllNodes();
 
-        foreach (var item in UserData.Instance.LocalData.baseObjDic)
+        foreach (var item in UserData.Instance.LocalData.BaseObjDic)
         {
-            SpawnItem(item.Key);
+            SpawnObject(item.Key);
         }
-        
     }
 
-    public void SpawnItem(int uid)
+    private void SpawnObject(int uid)
     {
-        var objData = UserData.Instance.LocalData.baseObjDic[uid];
-        objData.ObjStatus = ObjStatus.Idle;
+        var objData = UserData.Instance.LocalData.BaseObjDic[uid];
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObjDic.Add(objData.UID, baseObj);
     }
-
-    public void SpawnCharacter(int tid, Vector3 pos)
-    {
-        var objData = UserData.Instance.CreateBaseObj(tid, (int)pos.x, (int)pos.z);
-        objData.ObjStatus = ObjStatus.Walk;
-        CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
-        baseObj.WalkToPosition(TestTarget);
-        baseObjDic.Add(objData.UID, baseObj);
-    }
-
 }

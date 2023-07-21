@@ -129,9 +129,15 @@ public class CameraManager : SingletonMono<CameraManager>
                         {
                             if (!GroundManager.Instance.IsInNodeRange(hitPoint))
                                 return;
-                            var objData = UserData.Instance.CreateBaseObj(UserData.Instance.ShopSelectedItem, (int)hitPoint.x, (int)hitPoint.z);
-                            GameManager.Instance.SpawnItem(objData.UID);
+
+                            GameManager.Instance.SpawnBaseObjEvent(UserData.Instance.ShopSelectedItem, (int)hitPoint.x, (int)hitPoint.z);
                         }
+                    }
+
+
+                    if (itemDragStarted)
+                    {
+                        GameManager.Instance.MoveBaseObjEvent(selectedObj.BaseObjData.UID, selectedObj.transform.position);
                     }
 
                     groundDragStarted = false;
