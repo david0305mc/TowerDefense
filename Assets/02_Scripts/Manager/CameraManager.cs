@@ -130,7 +130,7 @@ public class CameraManager : SingletonMono<CameraManager>
                             if (!GroundManager.Instance.IsInNodeRange(hitPoint))
                                 return;
 
-                            GameManager.Instance.SpawnBaseObjEvent(UserData.Instance.ShopSelectedItem, (int)hitPoint.x, (int)hitPoint.z);
+                            GameManager.Instance.SpawnBaseObjEvent(UserData.Instance.ShopSelectedItem, (int)hitPoint.x, (int)hitPoint.z, true);
                         }
                     }
 

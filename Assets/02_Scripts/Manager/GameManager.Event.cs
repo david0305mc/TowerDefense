@@ -4,9 +4,9 @@ using UnityEngine;
 
 public partial class GameManager : SingletonMono<GameManager>
 {
-    public void SpawnBaseObjEvent(int tid, int x, int y, Game.ObjStatus status = Game.ObjStatus.Idle)
+    public void SpawnBaseObjEvent(int tid, int x, int y, bool isEnemy, Game.ObjStatus status = Game.ObjStatus.Idle)
     {
-        var objData = UserData.Instance.CreateBaseObjData(tid, x, y);
+        var objData = UserData.Instance.CreateBaseObjData(tid, x, y, isEnemy);
         objData.ObjStatus = status;
         SpawnObject(objData.UID);
         UserData.Instance.SaveLocalData();

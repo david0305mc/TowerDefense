@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
+using UniRx;
 
 public partial class UserData : Singleton<UserData>
 {
@@ -10,10 +11,13 @@ public partial class UserData : Singleton<UserData>
     private static readonly string LocalFilePath = Path.Combine(Application.persistentDataPath, "LocalData");
     public LocalData LocalData { get; set; }
 
+    public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
+
     public int ShopSelectedItem { get; set; } 
     public void InitData()
     {
         ShopSelectedItem = -1;
+        IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
     public void LoadLocalData()
@@ -40,9 +44,9 @@ public partial class UserData : Singleton<UserData>
         Utill.SaveFile(LocalFilePath, saveData);
     }
 
-    public BaseObjData CreateBaseObjData(int tid, int x, int y)
+    public BaseObjData CreateBaseObjData(int tid, int x, int y, bool isEnemy)
     {
-        var data = BaseObjData.Create(GameManager.GenerateUID(), tid, x, y);
+        BaseObjData data = BaseObjData.Create(GameManager.GenerateUID(), tid, x, y, isEnemy);
         LocalData.BaseObjDic.Add(data.UID, data);
         return data;
     }

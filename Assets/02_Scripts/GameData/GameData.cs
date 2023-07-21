@@ -28,6 +28,7 @@ public class LocalData
 [System.Serializable]
 public class BaseObjData
 {
+    public bool IsEnemy;
     public int UID;
     public int TID;
     public int X;
@@ -40,13 +41,14 @@ public class BaseObjData
         RefObjData = DataManager.Instance.GetObjTableData(TID);
     }
 
-    public static BaseObjData Create(int uid, int tid, int x, int y)
+    public static BaseObjData Create(int uid, int tid, int x, int y, bool isEnemy)
     {
         BaseObjData data = new BaseObjData();
         data.UID = uid;
         data.TID = tid;
         data.X = x;
         data.Y = y;
+        data.IsEnemy = isEnemy;
         data.ObjStatus = ObjStatus.Idle;
         data.Direction = GameType.Direction.BOTTOM_RIGHT;
         data.UpdateRefData();

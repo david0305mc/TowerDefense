@@ -14,7 +14,7 @@ public class MainUI : MonoBehaviour
     {
         testBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.SpawnBaseObjEvent(3, (int)GroundManager.Instance.GetRandomFreePosition().x, (int)GroundManager.Instance.GetRandomFreePosition().y);
+            GameManager.Instance.SpawnBaseObjEvent(3, (int)GroundManager.Instance.GetRandomFreePosition().x, (int)GroundManager.Instance.GetRandomFreePosition().y, false);
             //GameManager.Instance.SpawnCharacter(3, GroundManager.Instance.GetRandomFreePosition());
         });
 
