@@ -7,7 +7,6 @@ public partial class GameManager : SingletonMono<GameManager>
     public Material RenderQuadMaterial = default;
     public Texture GridTexture = default;
     public Texture CharacterTexture = default;
-    public Vector3 TestTarget = default;
 
     public const int nodeWidth = 44;
     public const int nodeHeight = 44;
@@ -39,12 +38,46 @@ public partial class GameManager : SingletonMono<GameManager>
         {
             SpawnObject(item.Key);
         }
+
+        foreach (var item in UserData.Instance.LocalData.BaseObjDic)
+        {
+            baseObjDic[item.Key].StartStateMachine();
+        }
     }
 
-    private void SpawnObject(int uid)
+    private BaseObj SpawnObject(int uid)
     {
         var objData = UserData.Instance.LocalData.BaseObjDic[uid];
         CharacterObj baseObj = (CharacterObj)BaseObj.Create(objData, CharacterPrefab, ItemsContainer.transform);
         baseObjDic.Add(objData.UID, baseObj);
+        return baseObj;
+    }
+
+    private void RemoveObject(int uid)
+    {
+        Destroy(baseObjDic[uid].gameObject);
+        baseObjDic.Remove(uid);
+        Debug.Log($"RemoveObject {uid}");
+    }
+
+    public BaseObj GetnearestTarget(int uid)
+    {
+        var orgObj = baseObjDic[uid];
+        BaseObj nearestObj = null;
+        float shortDist = float.MaxValue;
+        foreach (var item in baseObjDic)
+        {
+            float dist = Vector3.Distance(orgObj.transform.position, item.Value.transform.position);
+            if (uid == item.Key || !item.Value.BaseObjData.IsEnemy)
+                continue;
+
+            if (dist < shortDist)
+            {
+                shortDist = dist;
+                nearestObj = item.Value;
+            }
+        }
+
+        return nearestObj;
     }
 }

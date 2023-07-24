@@ -13,11 +13,34 @@ public class CharacterObj : BaseObj
     private GroundManager.Path _path;
     private int _currentNodeIndex;
 
+    private int targetUID = -1;
+
+    public override void StartStateMachine()
+    {
+
+        if (BaseObjData.IsEnemy)
+            return;
+
+        cts?.Clear();
+        cts = new CancellationTokenSource();
+
+        UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAsync(_ =>
+        {
+            var targetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
+            if (targetObj != null)
+            {
+                var targetPos = GroundManager.Instance.GetNearestOutCell(targetObj.transform.position, 1);
+                targetUID = targetObj.BaseObjData.UID;
+                WalkThePath(GroundManager.Instance.GetPath(transform.position, targetPos, false));
+            }
+        }, cts.Token);
+    }
 
     private void MoveToPosition(Vector3 targetPosition)
     {
         cts?.Clear();
         cts = new CancellationTokenSource();
+        BaseObjData.ObjStatus = Game.ObjStatus.Walk;
         LookAt(targetPosition);
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAsync(_ =>
         {
@@ -78,6 +101,20 @@ public class CharacterObj : BaseObj
         cts?.Clear();
         cts = null;
 
+        BaseObjData.ObjStatus = Game.ObjStatus.Attack;
+        UpdateRenderQuads();
+
+        UniTask.Create(async () => {
+            await UniTask.Delay(1000);
+
+            if (UserData.Instance.LocalData.HasObj(targetUID))
+            {
+                GameManager.Instance.DetroyEnemy(targetUID);
+            }
+            targetUID = -1;
+            StartStateMachine();
+        });
+
         //_baseItem.SetState(GameData.State.IDLE);
         //_isWalking = false;
         //_targetPosition = transform.position;
@@ -89,11 +126,11 @@ public class CharacterObj : BaseObj
         //OnBetweenWalk = null;
     }
 
-    public void Attack(BaseObj _target)
-    {
-        var targetCell = GroundManager.Instance.GetNearestOutCell(_target.transform.localPosition, 1);
-        WalkToPosition(targetCell);
-    }
+    //public void Attack(BaseObj _target)
+    //{
+    //    var targetCell = GroundManager.Instance.GetNearestOutCell(_target.transform.localPosition, 1);
+    //    WalkToPosition(targetCell);
+    //}
 
     private void OnDestroy()
     {

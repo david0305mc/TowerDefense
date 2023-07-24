@@ -20,6 +20,10 @@ public partial class UserData : Singleton<UserData>
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
+    public void RemoveObj(int uid)
+    {
+        LocalData.BaseObjDic.Remove(uid);
+    }
     public void LoadLocalData()
     {
         if (File.Exists(LocalFilePath))

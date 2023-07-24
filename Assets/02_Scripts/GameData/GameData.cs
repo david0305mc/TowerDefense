@@ -18,6 +18,10 @@ public class LocalData
         BaseObjDic = new SerializableDictionary<int, BaseObjData>();
     }
 
+    public bool HasObj(int uid)
+    {
+        return BaseObjDic.ContainsKey(uid);
+    }
     public void UpdateRefData()
     {
         foreach (var item in BaseObjDic)

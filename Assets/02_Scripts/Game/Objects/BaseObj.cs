@@ -22,6 +22,10 @@ public class BaseObj : MonoBehaviour
         baseObj.UpdateRenderQuads();
         return baseObj;
     }
+    public virtual void StartStateMachine()
+    { 
+    
+    }
 
     public void UpdateRenderQuads()
     {
