@@ -8,7 +8,6 @@ public class BaseObj : MonoBehaviour
     [SerializeField] protected MeshRenderer MeshRenderer = default;
     [SerializeField] private GameObject renderRoot = default;
 
-    protected readonly int defaultTextureScale = 20;
     protected readonly int defaultTextureOffsetX = 0;
     protected readonly int defaultTextureOffsetY = 0;
     protected readonly int defaultGridSize = 1;
@@ -34,8 +33,8 @@ public class BaseObj : MonoBehaviour
 
         DataManager.SpriteSheet _spriteSheet = DataManager.Instance.GetSpriteSheetData(collectionData.GetSpriteCollection(BaseObjData.Direction));
         MeshRenderer.material = ResourceManager.Instance.GetTextureMaterial(ResourceManager.Instance.GetTexture(_spriteSheet.respath), RenderingLayer.GROUND, 1);
-
-        Vector3 defaultImgSize = new Vector3(1.4142f, 1.4142f, 1.4142f) * 4 * defaultTextureScale / 100.0f / defaultGridSize;
+        
+        Vector3 defaultImgSize = new Vector3(1.4142f, 1.4142f, 1.4142f) * 4 * _spriteSheet.scale / 100.0f / defaultGridSize;
         float heightFactor = (MeshRenderer.material.mainTexture.height / (float)MeshRenderer.material.mainTexture.width) * ((float)_spriteSheet.culumns / _spriteSheet.rows);
 
         float offsetX = (1.414f / 256.0f) * defaultTextureOffsetX * 4 / defaultGridSize;
