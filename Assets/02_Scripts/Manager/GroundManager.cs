@@ -94,7 +94,7 @@ public class GroundManager : Singleton<GroundManager>
             }
         }
 
-        foreach (KeyValuePair<int, BaseObj> entry in GameManager.Instance.baseObjDic)
+        foreach (KeyValuePair<int, BaseObj> entry in GameManager.Instance.GetBaseObjDic)
         {
             BaseObj item = entry.Value;
             //if (!item.itemData.configuration.isCharacter)

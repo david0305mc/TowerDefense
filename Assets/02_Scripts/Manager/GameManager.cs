@@ -18,7 +18,17 @@ public partial class GameManager : SingletonMono<GameManager>
     // object ref
     public GameObject ItemsContainer;
 
-    public Dictionary<int, BaseObj> baseObjDic;
+    private Dictionary<int, BaseObj> baseObjDic;
+
+    public Dictionary<int, BaseObj> GetBaseObjDic => baseObjDic;
+    public BaseObj GetBaseObj(int _uid) 
+    {
+        if (baseObjDic.TryGetValue(_uid, out BaseObj baseObj))
+        {
+            return baseObj;
+        }
+        return default;
+    }
 
     private void Start()
     {
@@ -41,7 +51,7 @@ public partial class GameManager : SingletonMono<GameManager>
 
         foreach (var item in UserData.Instance.LocalData.BaseObjDic)
         {
-            baseObjDic[item.Key].StartStateMachine();
+            baseObjDic[item.Key].StartFSM();
         }
     }
 

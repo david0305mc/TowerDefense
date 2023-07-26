@@ -9,7 +9,7 @@ public partial class GameManager : SingletonMono<GameManager>
         var objData = UserData.Instance.CreateBaseObjData(tid, x, y, isEnemy);
         objData.ObjStatus = status;
         var obj = SpawnObject(objData.UID);
-        obj.StartStateMachine();
+        obj.StartFSM();
         UserData.Instance.SaveLocalData();
         
     }

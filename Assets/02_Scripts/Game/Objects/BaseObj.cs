@@ -4,6 +4,7 @@ using UnityEngine;
 using Game;
 public class BaseObj : MonoBehaviour
 {
+
     [SerializeField] protected TextureSheetAnimationScript textureSeetAnimation = default;
     [SerializeField] protected MeshRenderer MeshRenderer = default;
     [SerializeField] private GameObject renderRoot = default;
@@ -21,7 +22,7 @@ public class BaseObj : MonoBehaviour
         baseObj.UpdateRenderQuads();
         return baseObj;
     }
-    public virtual void StartStateMachine()
+    public virtual void StartFSM()
     { 
     
     }
