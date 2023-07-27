@@ -18,6 +18,7 @@ public class CharacterObj : BaseObj
     private CancellationTokenSource cts;
 
     private float speed = 5;
+    public int attackRange = 3;
     private GroundManager.Path _path;
     private int _currentNodeIndex;
 
@@ -60,8 +61,8 @@ public class CharacterObj : BaseObj
     void Walk_Enter()
     {
         BaseObjData.ObjStatus = Game.ObjStatus.Walk;
-        var baseObj = GameManager.Instance.GetBaseObj(targetUID);
-        var targetPos = GroundManager.Instance.GetNearestOutCell(baseObj.transform.position, 1);
+        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
+        var targetPos = GroundManager.Instance.GetNearestOutCell(transform.position, targetObj.transform.position, 1);
 
         var path = GroundManager.Instance.GetPath(transform.position, targetPos, false);
         if (path.nodes == null || path.nodes.Length == 0)
@@ -129,6 +130,11 @@ public class CharacterObj : BaseObj
 
     public void CheckTargetBeyondRange()
     {
+        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
+        if (Vector3.Distance(targetObj.transform.position, transform.position) <= attackRange)
+        {
+            StartAttack();
+        }
         //		Debug.Log ("CheckTargetBeyondRange");
         //if (Vector3.Distance(_currentTarget.GetCenterPosition(), this._baseItem.GetPosition()) <= this._baseItem.itemData.configuration.attackRange)
         //{
@@ -152,6 +158,11 @@ public class CharacterObj : BaseObj
         cts?.Clear();
         cts = null;
 
+        StartAttack();
+    }
+
+    private void StartAttack()
+    {
         BaseObjData.ObjStatus = Game.ObjStatus.Attack;
         UpdateRenderQuads();
         fsm.ChangeState(FSMStates.Attack);

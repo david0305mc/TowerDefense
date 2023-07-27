@@ -162,18 +162,18 @@ public class GroundManager : Singleton<GroundManager>
             }
         }
     }
-    public Vector3 GetNearestOutCell(Vector3 targetPosition, int size)
+    public Vector3 GetNearestOutCell(Vector3 srcPos, Vector3 dstPos, int size)
     {
-        var outCells = GetOutCells(targetPosition, size);
+        var outCells = GetOutCells(dstPos, size);
         float nearestDist = 9999f;
-        Vector3 _currentTargetPoint = targetPosition;
-        foreach (var item in outCells)
+        Vector3 _currentTargetPoint = dstPos;
+        foreach (var outCellPos in outCells)
         {
-            var dist = Vector3.Distance(item, targetPosition);
+            var dist = Vector3.Distance(outCellPos, srcPos);
             if (dist < nearestDist)
             {
                 nearestDist = dist;
-                _currentTargetPoint = item;
+                _currentTargetPoint = outCellPos;
             }
         }
         return _currentTargetPoint;
@@ -185,8 +185,8 @@ public class GroundManager : Singleton<GroundManager>
             Enumerable.Range(0, size).ToList().ForEach(j => {
                 if (i == 0 || j == 0 || i == size || j == size)
                 {
-                    Vector3 pos = targetPosition + new Vector3(i, 0, -j);
-                    if (cells.Contains(pos))
+                    Vector3 pos = targetPosition + new Vector3(i, 0, j);
+                    if (!cells.Contains(pos))
                     {
                         cells.Add(pos);
                     }
