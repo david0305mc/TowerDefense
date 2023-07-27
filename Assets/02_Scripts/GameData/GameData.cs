@@ -37,7 +37,6 @@ public class BaseObjData
     public int TID;
     public int X;
     public int Y;
-    public ObjStatus ObjStatus;
     public GameType.Direction Direction;
     public DataManager.ObjTable RefObjData;
     public void UpdateRefData()
@@ -53,7 +52,6 @@ public class BaseObjData
         data.X = x;
         data.Y = y;
         data.IsEnemy = isEnemy;
-        data.ObjStatus = ObjStatus.Idle;
         data.Direction = GameType.Direction.BOTTOM_RIGHT;
         data.UpdateRefData();
         return data;

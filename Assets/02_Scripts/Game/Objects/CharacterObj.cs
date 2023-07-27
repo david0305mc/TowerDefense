@@ -60,7 +60,6 @@ public class CharacterObj : BaseObj
 
     void Walk_Enter()
     {
-        BaseObjData.ObjStatus = Game.ObjStatus.Walk;
         var targetObj = GameManager.Instance.GetBaseObj(targetUID);
         var targetPos = GroundManager.Instance.GetNearestOutCell(transform.position, targetObj.transform.position, 1);
 
@@ -123,18 +122,20 @@ public class CharacterObj : BaseObj
 
     public override void StartFSM()
     {
-        if (BaseObjData.IsEnemy)
-            return;
         fsm.ChangeState(FSMStates.Idle);
     }
 
     public void CheckTargetBeyondRange()
     {
         var targetObj = GameManager.Instance.GetBaseObj(targetUID);
-        if (Vector3.Distance(targetObj.transform.position, transform.position) <= attackRange)
+        if (targetObj != null)
         {
-            StartAttack();
+            if (Vector3.Distance(targetObj.transform.position, transform.position) <= attackRange)
+            {
+                StartAttack();
+            }
         }
+        
         //		Debug.Log ("CheckTargetBeyondRange");
         //if (Vector3.Distance(_currentTarget.GetCenterPosition(), this._baseItem.GetPosition()) <= this._baseItem.itemData.configuration.attackRange)
         //{
@@ -161,9 +162,26 @@ public class CharacterObj : BaseObj
         StartAttack();
     }
 
+    protected override DataManager.SpriteCollection GetSpriteCollection()
+    {
+        int collectionID;
+        switch (fsm.State)
+        {
+            case FSMStates.Attack:
+                collectionID = BaseObjData.RefObjData.attack_collectionid;
+                break;
+            case FSMStates.Walk:
+                collectionID = BaseObjData.RefObjData.walk_collectionid;
+                break;
+            default:
+                collectionID = BaseObjData.RefObjData.idle_collectionid;
+                break;
+        }
+        return DataManager.Instance.GetSpriteCollectionData(collectionID);
+    }
+
     private void StartAttack()
     {
-        BaseObjData.ObjStatus = Game.ObjStatus.Attack;
         UpdateRenderQuads();
         fsm.ChangeState(FSMStates.Attack);
     }

@@ -19,19 +19,22 @@ public class BaseObj : MonoBehaviour
         var baseObj = Utill.InstantiateGameObject<BaseObj>(prefab, parent);
         baseObj.BaseObjData = objData;
         baseObj.SetPosition(new Vector3(objData.X, 0, objData.Y));
+        baseObj.StartFSM();
         baseObj.UpdateRenderQuads();
         return baseObj;
     }
     public virtual void StartFSM()
-    { 
-    
+    {
+    }
+
+    protected virtual DataManager.SpriteCollection GetSpriteCollection()
+    {
+        return DataManager.Instance.GetSpriteCollectionData(BaseObjData.RefObjData.idle_collectionid);
     }
 
     public void UpdateRenderQuads()
     {
-        int collectionID = BaseObjData.RefObjData.GetCollectionID(BaseObjData.ObjStatus);
-        var collectionData = DataManager.Instance.GetSpriteCollectionData(collectionID);
-
+        var collectionData = GetSpriteCollection();
         DataManager.SpriteSheet _spriteSheet = DataManager.Instance.GetSpriteSheetData(collectionData.GetSpriteCollection(BaseObjData.Direction));
         MeshRenderer.material = ResourceManager.Instance.GetTextureMaterial(ResourceManager.Instance.GetTexture(_spriteSheet.respath), RenderingLayer.GROUND, 1);
         

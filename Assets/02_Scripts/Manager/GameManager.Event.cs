@@ -4,12 +4,10 @@ using UnityEngine;
 
 public partial class GameManager : SingletonMono<GameManager>
 {
-    public void SpawnBaseObjEvent(int tid, int x, int y, bool isEnemy, Game.ObjStatus status = Game.ObjStatus.Idle)
+    public void SpawnBaseObjEvent(int tid, int x, int y, bool isEnemy)
     {
         var objData = UserData.Instance.CreateBaseObjData(tid, x, y, isEnemy);
-        objData.ObjStatus = status;
-        var obj = SpawnObject(objData.UID);
-        obj.StartFSM();
+        SpawnObject(objData.UID);
         UserData.Instance.SaveLocalData();
         
     }

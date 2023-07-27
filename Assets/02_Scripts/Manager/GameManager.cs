@@ -48,11 +48,6 @@ public partial class GameManager : SingletonMono<GameManager>
         {
             SpawnObject(item.Key);
         }
-
-        foreach (var item in UserData.Instance.LocalData.BaseObjDic)
-        {
-            baseObjDic[item.Key].StartFSM();
-        }
     }
 
     private BaseObj SpawnObject(int uid)
