@@ -39,6 +39,7 @@ public class CharacterObj : BaseObj
     void Idle_Enter()
     {
         commonDelay = 0f;
+        UpdateRenderQuads();
     }
     void Idle_Update()
     {
@@ -79,6 +80,7 @@ public class CharacterObj : BaseObj
             //MoveToPosition(_path.nodes[_currentNodeIndex]);
             LookAt(_path.nodes[_currentNodeIndex]);
         }
+        UpdateRenderQuads();
     }
 
     void Walk_Update()
@@ -107,6 +109,7 @@ public class CharacterObj : BaseObj
 
     void Attack_Enter()
     {
+        UpdateRenderQuads();
         UniTask.Create(async () =>
         {
             await UniTask.Delay(1000);
@@ -135,13 +138,6 @@ public class CharacterObj : BaseObj
                 StartAttack();
             }
         }
-        
-        //		Debug.Log ("CheckTargetBeyondRange");
-        //if (Vector3.Distance(_currentTarget.GetCenterPosition(), this._baseItem.GetPosition()) <= this._baseItem.itemData.configuration.attackRange)
-        //{
-        //    this._baseItem.Walker.CancelWalk();
-        //    this.AttackLoop();
-        //}
     }
 
     public void CheckWallsOnRoot()
@@ -182,7 +178,6 @@ public class CharacterObj : BaseObj
 
     private void StartAttack()
     {
-        UpdateRenderQuads();
         fsm.ChangeState(FSMStates.Attack);
     }
 
