@@ -57,6 +57,13 @@ public class BaseObj : MonoBehaviour
         {
             this.FlipRenderers(false);
         }
+        RandomizeRenderQuadsPosition();
+    }
+
+    private void RandomizeRenderQuadsPosition()
+    {
+        Vector3 randomDeltaPosition = new Vector3(Random.Range(-0.3f, 0.3f), 0, Random.Range(-0.3f, 0.3f));
+        MeshRenderer.gameObject.transform.localPosition += randomDeltaPosition;
     }
 
     private void FlipRenderers(bool value)
