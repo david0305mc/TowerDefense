@@ -45,6 +45,8 @@ public class CharacterObj : BaseObj
     {
         if (BaseObjData.IsEnemy)
             return;
+        if (BaseObjData.RefObjData.object_type == OBJ_TYPE.BUILDING)
+            return;
 
         commonDelay += Time.deltaTime;
         if (commonDelay >= 1f)

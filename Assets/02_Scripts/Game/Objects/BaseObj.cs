@@ -44,9 +44,9 @@ public class BaseObj : MonoBehaviour
         float offsetX = (1.414f / 256.0f) * defaultTextureOffsetX * 4 / defaultGridSize;
         float offsetY = (1.414f / 256.0f) * defaultTextureOffsetY * 4 / defaultGridSize;
 
-        MeshRenderer.gameObject.transform.localPosition = new Vector3(offsetX, offsetY, 0);
-        MeshRenderer.gameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        MeshRenderer.gameObject.transform.localScale = new Vector3(defaultImgSize.x, defaultImgSize.x * heightFactor, 1);
+        MeshRenderer.transform.localPosition = new Vector3(offsetX, offsetY, 0);
+        MeshRenderer.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        MeshRenderer.transform.localScale = new Vector3(defaultImgSize.x, defaultImgSize.x * heightFactor, 1);
 
         textureSeetAnimation.SetTextureSheetData(_spriteSheet.culumns, _spriteSheet.rows, _spriteSheet.frame, 10);
         if (BaseObjData.Direction == GameType.Direction.BOTTOM_LEFT || BaseObjData.Direction == GameType.Direction.LEFT || BaseObjData.Direction == GameType.Direction.TOP_LEFT)
@@ -62,8 +62,8 @@ public class BaseObj : MonoBehaviour
 
     private void RandomizeRenderQuadsPosition()
     {
-        Vector3 randomDeltaPosition = new Vector3(Random.Range(-0.3f, 0.3f), 0, Random.Range(-0.3f, 0.3f));
-        MeshRenderer.gameObject.transform.localPosition += randomDeltaPosition;
+        Vector3 randomDeltaPosition = new Vector3(Random.Range(-0.2f, 0.2f), 0, Random.Range(-0.2f, 0.2f));
+        renderRoot.transform.localPosition += randomDeltaPosition;
     }
 
     private void FlipRenderers(bool value)
