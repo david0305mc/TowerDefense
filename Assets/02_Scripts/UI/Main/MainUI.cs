@@ -8,16 +8,25 @@ public class MainUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private Button testBtn;
+    [SerializeField] private Button loadEnemyBtn;
     [SerializeField] private Button shopBtn;
 
     private void Awake()
     {
         testBtn.onClick.AddListener(() =>
         {
-            GameManager.Instance.SpawnBaseObjEvent(3, (int)GroundManager.Instance.GetRandomFreePosition().x, (int)GroundManager.Instance.GetRandomFreePosition().y, false);
-            //GameManager.Instance.SpawnCharacter(3, GroundManager.Instance.GetRandomFreePosition());
+            UserData.Instance.SaveEnemyData();
         });
 
+        loadEnemyBtn.onClick.AddListener(() =>
+        {
+            var enemyData = UserData.Instance.LoadInBuildData();
+
+            foreach (var item in enemyData.BaseObjDic)
+            {
+                GameManager.Instance.SpawnBaseObjEvent(item.Value.TID, item.Value.X, item.Value.Y, true);
+            }
+        });
         UserData.Instance.LocalData.Gold.Subscribe(v =>
         {
             goldText.SetText(v.ToString());

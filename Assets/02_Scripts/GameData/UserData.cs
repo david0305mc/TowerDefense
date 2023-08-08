@@ -9,6 +9,8 @@ public partial class UserData : Singleton<UserData>
 {
 
     private static readonly string LocalFilePath = Path.Combine(Application.persistentDataPath, "LocalData");
+    private static readonly string InBuildDataImportPath = "InBuildData";
+    private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
     public LocalData LocalData { get; set; }
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
@@ -24,6 +26,39 @@ public partial class UserData : Singleton<UserData>
     {
         LocalData.BaseObjDic.Remove(uid);
     }
+
+    public InBuildData LoadInBuildData()
+    {
+        var textAsset = Resources.Load("textData") as TextAsset;
+        
+        if (textAsset != null)
+        {
+            return JsonUtility.FromJson<InBuildData>(textAsset.ToString());
+        }
+        else
+        {
+            Debug.LogError("Load EnemyData Error");
+            return null;
+        }
+    }
+
+    public void SaveEnemyData()
+    {
+        InBuildData EnemyData = new InBuildData();
+        foreach (var item in LocalData.BaseObjDic)
+        {
+            if (item.Value.IsEnemy)
+            {
+                EnemyData.BaseObjDic.Add(item.Key, item.Value);
+                
+            }
+        }
+        
+        var saveData = JsonUtility.ToJson(EnemyData);
+        //saveData = Utill.EncryptXOR(saveData);
+        Utill.SaveFile(InBuildDataExportPath, saveData);
+    }
+
     public void LoadLocalData()
     {
         if (File.Exists(LocalFilePath))
@@ -38,7 +73,6 @@ public partial class UserData : Singleton<UserData>
             // NewGame
             LocalData = new LocalData();
         }
-        
     }
 
     public void SaveLocalData()
