@@ -6,9 +6,10 @@ using System.Linq;
 public partial class DataManager {
 	public partial class ObjTable {
 		public int id;
+		public OBJ_TYPE object_type;
 		public int idle_collectionid;
-		public int walk_collectionid;
 		public int attack_collectionid;
+		public int walk_collectionid;
 		public int destroyed_collectionid;
 		public string name;
 		public string thumbnailpath;

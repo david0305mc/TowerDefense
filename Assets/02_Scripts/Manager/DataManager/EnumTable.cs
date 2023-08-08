@@ -1,12 +1,7 @@
-public enum ITEM_TYPE 
+public enum OBJ_TYPE 
 { 
-	NONE                         = 0,        	// 없음
-	BOX                          = 1,        	// Box
-	FISH                         = 2,        	// Fish
-	EXPAND                       = 3,        	// Expand
-	CORAL                        = 4,        	// Coral
-	GOLD                         = 5,        	// Gold
-	ENERGY                       = 6,        	// Energy
+	BUILDING                     = 0,        	// 빌딩
+	CHARACTER                    = 1,        	// 캐릭터
 }
 public enum ITEM_STATUS 
 { 
