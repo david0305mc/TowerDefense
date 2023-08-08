@@ -19,7 +19,7 @@ public partial class GameManager : SingletonMono<GameManager>
     public GameObject ItemsContainer;
 
     private Dictionary<int, BaseObj> baseObjDic;
-
+    [SerializeField] public List<BaseObj> wayPoint;
     public Dictionary<int, BaseObj> GetBaseObjDic => baseObjDic;
     public BaseObj GetBaseObj(int _uid) 
     {
@@ -48,6 +48,29 @@ public partial class GameManager : SingletonMono<GameManager>
         {
             SpawnObject(item.Key);
         }
+        InitWayPoint();
+    }
+
+    private void InitWayPoint()
+    {
+        wayPoint = new List<BaseObj>();
+
+        foreach (KeyValuePair<int, BaseObj> entry in baseObjDic)
+        {
+            if (entry.Value.BaseObjData.TID == 1002)
+            {
+                wayPoint.Add(entry.Value);
+            }
+        }
+    }
+
+    public BaseObj GetNextWayPoint(int currWayPoint)
+    {
+        if (currWayPoint >= wayPoint.Count)
+        {
+            return null;
+        }
+        return wayPoint[currWayPoint];
     }
 
     private BaseObj SpawnObject(int uid)

@@ -21,6 +21,7 @@ public class CharacterObj : BaseObj
     public int attackRange = 3;
     private GroundManager.Path _path;
     private int _currentNodeIndex;
+    private int wayPointIndex = 0;
 
     private int targetUID = -1;
     StateMachine<FSMStates, StateDriverUnity> fsm;
@@ -49,15 +50,30 @@ public class CharacterObj : BaseObj
             return;
 
         commonDelay += Time.deltaTime;
-        if (commonDelay >= 1f)
+        if (commonDelay >= 0f)
         {
             commonDelay = 0f;
-            var targetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
-            if (targetObj != null)
-            {
-                targetUID = targetObj.BaseObjData.UID;
-                fsm.ChangeState(FSMStates.Walk);
-            }
+            //CheckTarget();
+            CheckWayPoint();
+        }
+    }
+    private void CheckWayPoint()
+    {
+        var targetObj =  GameManager.Instance.GetNextWayPoint(wayPointIndex++);
+        if (targetObj != null)
+        {
+            targetUID = targetObj.BaseObjData.UID;
+            fsm.ChangeState(FSMStates.Walk);
+        }
+    }
+
+    private void CheckTarget()
+    {
+        var targetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
+        if (targetObj != null)
+        {
+            targetUID = targetObj.BaseObjData.UID;
+            fsm.ChangeState(FSMStates.Walk);
         }
     }
 
@@ -96,7 +112,7 @@ public class CharacterObj : BaseObj
             if (_path != null && _path.nodes != null && _currentNodeIndex < _path.nodes.Length - 1)
             {
                 _currentNodeIndex++;
-                CheckTargetBeyondRange();
+                //CheckTargetBeyondRange();
                 //if (this.OnBetweenWalk != null)
                 //{
                 //    this.OnBetweenWalk.Invoke();
@@ -157,7 +173,10 @@ public class CharacterObj : BaseObj
         cts?.Clear();
         cts = null;
 
-        StartAttack();
+        targetUID = -1;
+        fsm.ChangeState(FSMStates.Idle);
+
+        //StartAttack();
     }
 
     protected override DataManager.SpriteCollection GetSpriteCollection()

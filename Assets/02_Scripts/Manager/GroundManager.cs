@@ -41,7 +41,6 @@ public class GroundManager : Singleton<GroundManager>
     private bool[,] pathNodesWithoutWall;
     private bool[,] pathNodesWithWall;
 
-
     public Path GetPath(Vector3 startPoint, Vector3 endPoint, bool considerWalls)
     {
         Path path = new Path();
