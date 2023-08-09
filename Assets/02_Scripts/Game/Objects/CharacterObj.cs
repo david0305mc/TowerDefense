@@ -12,6 +12,7 @@ public class CharacterObj : BaseObj
     {
         Idle,
         Walk,
+        AttackMove,
         Attack,
     }
 
@@ -23,7 +24,7 @@ public class CharacterObj : BaseObj
     private int _currentNodeIndex;
     private int wayPointIndex = 0;
 
-    private int moveTargetUID = -1;
+    private int targetUID = -1;
     private int attackTargetUID = -1;
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
@@ -60,10 +61,10 @@ public class CharacterObj : BaseObj
     }
     private void CheckWayPoint()
     {
-        var targetObj =  GameManager.Instance.GetNextWayPoint(wayPointIndex++);
+        var targetObj =  GameManager.Instance.GetNextWayPoint(wayPointIndex);
         if (targetObj != null)
         {
-            moveTargetUID = targetObj.BaseObjData.UID;
+            targetUID = targetObj.BaseObjData.UID;
             fsm.ChangeState(FSMStates.Walk);
         }
     }
@@ -73,14 +74,14 @@ public class CharacterObj : BaseObj
         var targetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
         if (targetObj != null)
         {
-            moveTargetUID = targetObj.BaseObjData.UID;
+            targetUID = targetObj.BaseObjData.UID;
             fsm.ChangeState(FSMStates.Walk);
         }
     }
 
     void Walk_Enter()
     {
-        var targetObj = GameManager.Instance.GetBaseObj(moveTargetUID);
+        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
         var targetPos = GroundManager.Instance.GetNearestOutCell(transform.position, targetObj.transform.position, 1);
 
         var path = GroundManager.Instance.GetPath(transform.position, targetPos, false);
@@ -121,7 +122,50 @@ public class CharacterObj : BaseObj
             }
             else
             {
+                wayPointIndex++;
                 FinishWalk();
+            }
+        }
+    }
+
+    void AttackMove_Enter()
+    {
+        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
+        var targetPos = GroundManager.Instance.GetNearestOutCell(transform.position, targetObj.transform.position, 1);
+
+        var path = GroundManager.Instance.GetPath(transform.position, targetPos, false);
+        if (path.nodes == null || path.nodes.Length == 0)
+        {
+            // Check 
+            FinishWalk();
+            return;
+        }
+
+        //_baseItem.SetState(GameData.State.WALK);
+        _path = path;
+        _currentNodeIndex = 0;
+        if (path != null || path.nodes != null && path.nodes.Length > 0)
+        {
+            //MoveToPosition(_path.nodes[_currentNodeIndex]);
+            LookAt(_path.nodes[_currentNodeIndex]);
+        }
+        UpdateRenderQuads();
+    }
+    void AttackMove_Update()
+    {
+        float frameDistance = Time.deltaTime * speed;
+        float interpolationValue = frameDistance / (_path.nodes[_currentNodeIndex] - transform.localPosition).magnitude;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, _path.nodes[_currentNodeIndex], interpolationValue);
+
+        if (transform.localPosition == _path.nodes[_currentNodeIndex])
+        {
+            if (_path != null && _path.nodes != null && _currentNodeIndex < _path.nodes.Length - 1)
+            {
+                _currentNodeIndex++;
+            }
+            else
+            {
+                StartAttack();
             }
         }
     }
@@ -133,11 +177,11 @@ public class CharacterObj : BaseObj
         {
             await UniTask.Delay(1000);
 
-            if (UserData.Instance.LocalData.HasObj(moveTargetUID))
+            if (UserData.Instance.LocalData.HasObj(targetUID))
             {
-                GameManager.Instance.DetroyEnemy(moveTargetUID);
+                GameManager.Instance.DetroyEnemy(targetUID);
             }
-            moveTargetUID = -1;
+            targetUID = -1;
             fsm.ChangeState(FSMStates.Idle);
         });
     }
@@ -156,8 +200,10 @@ public class CharacterObj : BaseObj
         {
             if (Vector3.Distance(nearestTargetObj.transform.position, transform.position) <= attackRange)
             {
-                moveTargetUID = nearestTargetObj.BaseObjData.UID;
-                StartAttack();
+                targetUID = nearestTargetObj.BaseObjData.UID;
+
+                // Start Move To Attack
+                fsm.ChangeState(FSMStates.AttackMove);
             }
         }
     }
@@ -172,12 +218,10 @@ public class CharacterObj : BaseObj
         //}
     }
 
+
     private void FinishWalk()
     {
-        cts?.Clear();
-        cts = null;
-
-        moveTargetUID = -1;
+        targetUID = -1;
         fsm.ChangeState(FSMStates.Idle);
 
         //StartAttack();
