@@ -23,7 +23,8 @@ public class CharacterObj : BaseObj
     private int _currentNodeIndex;
     private int wayPointIndex = 0;
 
-    private int targetUID = -1;
+    private int moveTargetUID = -1;
+    private int attackTargetUID = -1;
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
     private float commonDelay;
@@ -62,7 +63,7 @@ public class CharacterObj : BaseObj
         var targetObj =  GameManager.Instance.GetNextWayPoint(wayPointIndex++);
         if (targetObj != null)
         {
-            targetUID = targetObj.BaseObjData.UID;
+            moveTargetUID = targetObj.BaseObjData.UID;
             fsm.ChangeState(FSMStates.Walk);
         }
     }
@@ -72,14 +73,14 @@ public class CharacterObj : BaseObj
         var targetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
         if (targetObj != null)
         {
-            targetUID = targetObj.BaseObjData.UID;
+            moveTargetUID = targetObj.BaseObjData.UID;
             fsm.ChangeState(FSMStates.Walk);
         }
     }
 
     void Walk_Enter()
     {
-        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
+        var targetObj = GameManager.Instance.GetBaseObj(moveTargetUID);
         var targetPos = GroundManager.Instance.GetNearestOutCell(transform.position, targetObj.transform.position, 1);
 
         var path = GroundManager.Instance.GetPath(transform.position, targetPos, false);
@@ -112,7 +113,7 @@ public class CharacterObj : BaseObj
             if (_path != null && _path.nodes != null && _currentNodeIndex < _path.nodes.Length - 1)
             {
                 _currentNodeIndex++;
-                //CheckTargetBeyondRange();
+                CheckTargetBeyondRange();
                 //if (this.OnBetweenWalk != null)
                 //{
                 //    this.OnBetweenWalk.Invoke();
@@ -132,11 +133,11 @@ public class CharacterObj : BaseObj
         {
             await UniTask.Delay(1000);
 
-            if (UserData.Instance.LocalData.HasObj(targetUID))
+            if (UserData.Instance.LocalData.HasObj(moveTargetUID))
             {
-                GameManager.Instance.DetroyEnemy(targetUID);
+                GameManager.Instance.DetroyEnemy(moveTargetUID);
             }
-            targetUID = -1;
+            moveTargetUID = -1;
             fsm.ChangeState(FSMStates.Idle);
         });
     }
@@ -148,11 +149,14 @@ public class CharacterObj : BaseObj
 
     public void CheckTargetBeyondRange()
     {
-        var targetObj = GameManager.Instance.GetBaseObj(targetUID);
-        if (targetObj != null)
+        var nearestTargetObj = GameManager.Instance.GetnearestTarget(BaseObjData.UID);
+
+        //var targetObj = GameManager.Instance.GetBaseObj(moveTargetUID);
+        if (nearestTargetObj != null)
         {
-            if (Vector3.Distance(targetObj.transform.position, transform.position) <= attackRange)
+            if (Vector3.Distance(nearestTargetObj.transform.position, transform.position) <= attackRange)
             {
+                moveTargetUID = nearestTargetObj.BaseObjData.UID;
                 StartAttack();
             }
         }
@@ -173,7 +177,7 @@ public class CharacterObj : BaseObj
         cts?.Clear();
         cts = null;
 
-        targetUID = -1;
+        moveTargetUID = -1;
         fsm.ChangeState(FSMStates.Idle);
 
         //StartAttack();
