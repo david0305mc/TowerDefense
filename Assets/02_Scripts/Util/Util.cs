@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using System.Linq;
+
 public partial class Utill
 {
     public static T MakeGameObject<T>(string objectname, Transform parent) where T : MonoBehaviour
@@ -98,6 +100,20 @@ public partial class Utill
     public static T Load<T>(string path) where T : UnityEngine.Object
     {
         return Resources.Load<T>(path);
+    }
+
+    public static RaycastHit2D? Get2DHitObject()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos2d = new Vector2(mousePos.x, mousePos.y);
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos2d, Vector2.zero);
+        if (hits.Length > 0)
+        {
+            return hits.OrderByDescending(i => i.collider.transform.position.z).First();
+        }
+
+        return null;
     }
 }
 
