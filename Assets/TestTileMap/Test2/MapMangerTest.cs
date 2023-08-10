@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class MapMangerTest : MonoBehaviour
 {
 
-    [SerializeField] private GameObject TestObj;
+    [SerializeField] private TestHeroObj testHeroObj;
     [SerializeField] private Tilemap tileMap;
     [SerializeField] private TileBase tilebase;
     //TileBase
@@ -19,7 +19,8 @@ public class MapMangerTest : MonoBehaviour
             var gridPos = tileMap.WorldToCell(worldPos);
             
             var cellWorldPos = tileMap.GetCellCenterWorld(gridPos);
-            TestObj.transform.position = new Vector3(cellWorldPos.x, cellWorldPos.y, 2);
+
+            testHeroObj.MoveTo(new Vector3(cellWorldPos.x, cellWorldPos.y, 2));
         }
         
         
