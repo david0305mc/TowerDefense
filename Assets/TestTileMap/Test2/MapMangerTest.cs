@@ -38,8 +38,8 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
             {
                 Debug.Log($"pathNode  {item}");
             }
-            testHeroObj.MoveTo(path);
-            //testHeroObj.MoveTo(new Vector3(targetWorldPos.x, targetWorldPos.y, 2));
+            //testHeroObj.MoveTo(path);
+            testHeroObj.MoveTo(new Vector3(targetWorldPos.x, targetWorldPos.y, 2));
             Debug.Log($"gridpos {targetGridPos}");
         }
 
