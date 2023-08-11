@@ -7,6 +7,9 @@ using System.Linq;
 public class MapMangerTest : SingletonMono<MapMangerTest>
 {
 
+    [SerializeField] private ProjectileStraight projStraight;
+    [SerializeField] private ProjectileParabola projParabola;
+
     [SerializeField] private MHeroObj testHeroObj;
     [SerializeField] public Tilemap tileMap;
     [SerializeField] private TileBase tilebase;
@@ -46,6 +49,13 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
         TestGroundManager.Instance.UpdateAllNodes();
 
         testHeroObj.StartFSM();
+    }
+
+    public void LauchProjectile(MHeroObj heroObj, EnemyObj enemyObj)
+    {
+        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
+        bullet.Shoot(enemyObj, 1);
+
     }
 
     public void RemoveEnemy(EnemyObj targetObj)

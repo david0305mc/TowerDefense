@@ -17,6 +17,7 @@ public class MHeroObj : MBaseObj
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
     private float commonDelay;
+    private int testCnt;
     Vector2 targetWorldPos;
     EnemyObj targetObj;
 
@@ -82,15 +83,27 @@ public class MHeroObj : MBaseObj
     void Attack_Enter()
     {
         commonDelay = 0;
+        testCnt = 0;
     }
 
     void Attack_Update()
     {
         commonDelay += Time.deltaTime;
-        if (commonDelay >= 2f)
+        if (commonDelay >= 1f)
         {
-            MapMangerTest.Instance.RemoveEnemy(targetObj);
-            fsm.ChangeState(FSMStates.Idle);
+            testCnt++;
+            commonDelay = 0;
+            if (testCnt >= 5)
+            {
+                MapMangerTest.Instance.RemoveEnemy(targetObj);
+                fsm.ChangeState(FSMStates.Idle);
+            }
+            else
+            {
+                MapMangerTest.Instance.LauchProjectile(this, targetObj);
+            }
         }
+
+        
     }
 }

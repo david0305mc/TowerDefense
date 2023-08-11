@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class GameUtil 
 {
+
+    public enum FacingDirection
+    {
+        UP = 270,
+        DOWN = 90,
+        LEFT = 180,
+        RIGHT = 0
+    }
+    public static Quaternion LookAt2D(Vector2 startingPosition, Vector2 targetPosition, FacingDirection facing)
+    {
+        Vector2 direction = targetPosition - startingPosition;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        angle -= (float)facing;
+        return Quaternion.AngleAxis(angle, Vector3.forward);
+    }
     public static Vector2 WorldPositionToScreenSpaceCameraPosition(Camera worldCamera, Canvas canvas, Vector3 position)
     {
         Vector2 viewport = worldCamera.WorldToViewportPoint(position);
