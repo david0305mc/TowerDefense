@@ -42,24 +42,7 @@ public class TestHeroObj : MonoBehaviour
     }
     void Idle_Update()
     {
-        commonDelay += Time.deltaTime;
-        if (commonDelay >= 1f)
-        {
-            DetectEnemy();
-        }
-        
-    }
 
-    private void DetectEnemy()
-    {
-        commonDelay = 0;
-        var enemyObj = MapMangerTest.Instance.GetNearestEnemyObj(transform.position);
-
-        if (enemyObj != null)
-        {
-            var path = MapMangerTest.Instance.GetPath(transform.position, enemyObj.transform.position);
-            MoveTo(path);
-        }
     }
 
     public void MoveTo(TestGroundManager.Path _path)
