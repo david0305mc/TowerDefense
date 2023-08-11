@@ -7,7 +7,76 @@ using UnityEngine;
 
 public class MBaseObj : MonoBehaviour
 {
-  
+    public enum FSMStates
+    {
+        Idle,
+        Move,
+        AttackMove,
+        Attack,
+    }
+    StateMachine<FSMStates, StateDriverUnity> fsm;
+
+    private float commonDelay;
+    Vector2 targetWorldPos;
+
+    void Awake()
+    {
+        fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
+    }
+
+    public void StartFSM()
+    {
+        fsm.ChangeState(FSMStates.Idle);
+    }
+    void Update()
+    {
+        fsm.Driver.Update.Invoke();
+    }
+
+    void Idle_Enter()
+    {
+        commonDelay = 0f;
+
+    }
+    void Idle_Update()
+    {
+        commonDelay += Time.deltaTime;
+        if (commonDelay >= 1f)
+        {
+            DetectEnemy();
+        }
+
+    }
+
+    private void DetectEnemy()
+    {
+        commonDelay = 0;
+        var enemyObj = MapMangerTest.Instance.GetNearestEnemyObj(transform.position);
+
+        if (enemyObj != null)
+        {
+            var path = MapMangerTest.Instance.GetPath(transform.position, enemyObj.transform.position);
+            MoveTo(path);
+        }
+    }
+
+    public void MoveTo(TestGroundManager.Path _path)
+    {
+        fsm.ChangeState(FSMStates.Move);
+    }
+    void Move_Enter()
+    {
+    }
+    void Move_Update()
+    {
+        transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 30f);
+        if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
+        {
+            transform.position = targetWorldPos;
+            fsm.ChangeState(FSMStates.Idle);
+        }
+    }
+
     private CancellationTokenSource cts;
     public void MoveTo(Vector3 targetPos)
     {
@@ -26,17 +95,5 @@ public class MBaseObj : MonoBehaviour
                 await UniTask.WaitForFixedUpdate(cancellationToken: cts.Token);
             }
         });
-    }
-
-    protected void FlipRenderers(bool value)
-    {
-        if (value)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
     }
 }
