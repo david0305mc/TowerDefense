@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class MHeroObj : MonoBehaviour
+public class MHeroObj : MBaseObj
 {
     public enum FSMStates
     {
@@ -56,8 +56,8 @@ public class MHeroObj : MonoBehaviour
 
         if (targetObj != null)
         {
-            float randX = Random.RandomRange(1, 2);
-            float randY = Random.RandomRange(-2, 2);
+            float randX = Random.Range(1, 2);
+            float randY = Random.Range(-2, 2);
 
             targetWorldPos = targetObj.transform.position + new Vector3(randX, randY, 0);
             fsm.ChangeState(FSMStates.Move);
@@ -71,31 +71,26 @@ public class MHeroObj : MonoBehaviour
     void Move_Update()
     {
         transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 3f);
+        FlipRenderers(transform.position.x > targetObj.transform.position.x);
         if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
         {
             transform.position = targetWorldPos;
-            MapMangerTest.Instance.RemoveEnemy(targetObj);
-            fsm.ChangeState(FSMStates.Idle);
+            fsm.ChangeState(FSMStates.Attack);
         }
     }
 
-    private CancellationTokenSource cts;
-    public void MoveTo(Vector3 targetPos)
+    void Attack_Enter()
     {
-        cts?.Cancel();
-        cts = new CancellationTokenSource();
-        UniTask.Create(async () => {
+        commonDelay = 0;
+    }
 
-            while (true)
-            {
-                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 10f);
-                if (Vector2.Distance(transform.position, targetPos) < 0.1f)
-                {
-                    cts.Cancel();
-                    break;
-                }
-                await UniTask.WaitForFixedUpdate(cancellationToken: cts.Token);
-            }
-        });
+    void Attack_Update()
+    {
+        commonDelay += Time.deltaTime;
+        if (commonDelay >= 2f)
+        {
+            MapMangerTest.Instance.RemoveEnemy(targetObj);
+            fsm.ChangeState(FSMStates.Idle);
+        }
     }
 }
