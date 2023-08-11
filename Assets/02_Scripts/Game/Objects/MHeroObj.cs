@@ -1,12 +1,11 @@
+using Cysharp.Threading.Tasks;
+using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
 using System.Threading;
-using MonsterLove.StateMachine;
+using UnityEngine;
 
-
-public class TestHeroObj : MonoBehaviour
+public class MHeroObj : MonoBehaviour
 {
     public enum FSMStates
     {
@@ -18,8 +17,8 @@ public class TestHeroObj : MonoBehaviour
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
     private float commonDelay;
-    private TestGroundManager.Path path;
-    private int pathIndex;
+    Vector2 targetWorldPos;
+    EnemyObj targetObj;
 
     void Awake()
     {
@@ -38,7 +37,7 @@ public class TestHeroObj : MonoBehaviour
     void Idle_Enter()
     {
         commonDelay = 0f;
-     
+
     }
     void Idle_Update()
     {
@@ -47,43 +46,36 @@ public class TestHeroObj : MonoBehaviour
         {
             DetectEnemy();
         }
-        
+
     }
 
     private void DetectEnemy()
     {
         commonDelay = 0;
-        var enemyObj = MapMangerTest.Instance.GetNearestEnemyObj(transform.position);
+        targetObj = MapMangerTest.Instance.GetNearestEnemyObj(transform.position);
 
-        if (enemyObj != null)
+        if (targetObj != null)
         {
-            var path = MapMangerTest.Instance.GetPath(transform.position, enemyObj.transform.position);
-            MoveTo(path);
+            float randX = Random.RandomRange(1, 2);
+            float randY = Random.RandomRange(-2, 2);
+
+            targetWorldPos = targetObj.transform.position + new Vector3(randX, randY, 0);
+            fsm.ChangeState(FSMStates.Move);
         }
     }
 
-    public void MoveTo(TestGroundManager.Path _path)
-    {
-        pathIndex = 0;
-        path = _path;
-        fsm.ChangeState(FSMStates.Move);
-    }
     void Move_Enter()
     {
+
     }
     void Move_Update()
     {
-        var targetWorldPos = MapMangerTest.Instance.tileMap.GetCellCenterWorld(new Vector3Int((int)path.nodes[pathIndex].x, (int)path.nodes[pathIndex].z, (int)path.nodes[pathIndex].y));
-        targetWorldPos = new Vector3(targetWorldPos.x, targetWorldPos.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 30f);
+        transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 3f);
         if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
         {
             transform.position = targetWorldPos;
-            pathIndex++;
-            if (pathIndex >= path.nodes.Length)
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
+            MapMangerTest.Instance.RemoveEnemy(targetObj);
+            fsm.ChangeState(FSMStates.Idle);
         }
     }
 

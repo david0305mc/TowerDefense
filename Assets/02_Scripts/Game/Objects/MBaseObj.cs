@@ -1,12 +1,11 @@
+using Cysharp.Threading.Tasks;
+using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
 using System.Threading;
-using MonsterLove.StateMachine;
+using UnityEngine;
 
-
-public class TestHeroObj : MonoBehaviour
+public class MBaseObj : MonoBehaviour
 {
     public enum FSMStates
     {
@@ -18,8 +17,7 @@ public class TestHeroObj : MonoBehaviour
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
     private float commonDelay;
-    private TestGroundManager.Path path;
-    private int pathIndex;
+    Vector2 targetWorldPos;
 
     void Awake()
     {
@@ -38,7 +36,7 @@ public class TestHeroObj : MonoBehaviour
     void Idle_Enter()
     {
         commonDelay = 0f;
-     
+
     }
     void Idle_Update()
     {
@@ -47,7 +45,7 @@ public class TestHeroObj : MonoBehaviour
         {
             DetectEnemy();
         }
-        
+
     }
 
     private void DetectEnemy()
@@ -64,8 +62,6 @@ public class TestHeroObj : MonoBehaviour
 
     public void MoveTo(TestGroundManager.Path _path)
     {
-        pathIndex = 0;
-        path = _path;
         fsm.ChangeState(FSMStates.Move);
     }
     void Move_Enter()
@@ -73,17 +69,11 @@ public class TestHeroObj : MonoBehaviour
     }
     void Move_Update()
     {
-        var targetWorldPos = MapMangerTest.Instance.tileMap.GetCellCenterWorld(new Vector3Int((int)path.nodes[pathIndex].x, (int)path.nodes[pathIndex].z, (int)path.nodes[pathIndex].y));
-        targetWorldPos = new Vector3(targetWorldPos.x, targetWorldPos.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 30f);
         if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
         {
             transform.position = targetWorldPos;
-            pathIndex++;
-            if (pathIndex >= path.nodes.Length)
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
+            fsm.ChangeState(FSMStates.Idle);
         }
     }
 
