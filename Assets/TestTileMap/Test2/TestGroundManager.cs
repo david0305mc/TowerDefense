@@ -32,8 +32,8 @@ public class TestGroundManager : Singleton<TestGroundManager>
         REMOVE
     }
 
-    public const int nodeWidth = 44;
-    public const int nodeHeight = 44;
+    public const int nodeWidth = 100;
+    public const int nodeHeight = 100;
 
     private int[,] instanceNodes;
     private bool[,] pathNodesWithoutWall;
