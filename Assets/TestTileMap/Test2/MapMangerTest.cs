@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class MapMangerTest : SingletonMono<MapMangerTest>
 {
@@ -11,13 +12,13 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
     [SerializeField] private TileBase tilebase;
     //TileBase
     
-    private Vector3 prevPos;
+    private Vector3 heroPos;
 
     private void Start()
     {
         TestGroundManager.Instance.UpdateAllNodes();
 
-
+        testHeroObj.StartFSM();
     }
     private void Update()
     {
@@ -25,22 +26,29 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
         if (Input.GetMouseButtonDown(0))
         {
             
-            prevPos = testHeroObj.transform.position;
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            heroPos = testHeroObj.transform.position;
+            heroPos = new Vector3(heroPos.x, heroPos.y, worldPos.z);
 
-            var heroGridPos = tileMap.WorldToCell(prevPos);
+            var heroGridPos = tileMap.WorldToCell(heroPos);
             var targetGridPos = tileMap.WorldToCell(worldPos);
             var targetWorldPos = tileMap.GetCellCenterWorld(targetGridPos);
 
-            var path = TestGroundManager.Instance.GetPath(new Vector3(heroGridPos.x, 0, heroGridPos.y), new Vector3(targetGridPos.x, 0, targetGridPos.y) , false);
+            Debug.Log($"Start gridpos {heroGridPos}");
+            Debug.Log($"End gridpos {targetGridPos}");
 
-            foreach (var item in path.nodes)
-            {
-                Debug.Log($"pathNode  {item}");
-            }
-            //testHeroObj.MoveTo(path);
-            testHeroObj.MoveTo(new Vector3(targetWorldPos.x, targetWorldPos.y, 2));
-            Debug.Log($"gridpos {targetGridPos}");
+            var path = TestGroundManager.Instance.GetPath(new Vector3(heroGridPos.x, heroGridPos.z, heroGridPos.y), new Vector3(targetGridPos.x, targetGridPos.z, targetGridPos.y) , false);
+
+            //foreach (var item in path.nodes)
+            //{
+            //    Debug.Log($"pathNode  {item}");
+            //}
+            
+            var targetWorldPos2 = tileMap.GetCellCenterWorld(new Vector3Int((int)path.nodes.Last().x, (int)path.nodes.Last().z, (int)path.nodes.Last().y));
+
+            testHeroObj.MoveTo(path);
+
+            //testHeroObj.MoveTo(new Vector3(targetWorldPos2.x, targetWorldPos2.y, 2));
         }
 
         //if (Input.GetMouseButtonUp(0))

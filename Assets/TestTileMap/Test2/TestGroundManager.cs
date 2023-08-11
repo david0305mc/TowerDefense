@@ -67,7 +67,7 @@ public class TestGroundManager : Singleton<TestGroundManager>
         foreach (Vector2 point in points)
         {
             index++;
-            Vector3 pointInGround = new Vector3(point.x, 0, point.y);
+            Vector3 pointInGround = new Vector3(point.x, -10, point.y);
             nodes.Add(pointInGround);
         }
         path.nodes = nodes.ToArray();
