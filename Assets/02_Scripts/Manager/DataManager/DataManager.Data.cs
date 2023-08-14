@@ -74,4 +74,23 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class Character {
+		public int id;
+		public int hp;
+		public string thumbnailpath;
+	};
+	public Character[] CharacterArray { get; private set; }
+	public Dictionary<int, Character> CharacterDic { get; private set; }
+	public void BindCharacterData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(CharacterArray)).SetValue(this, deserializaedData, null);
+		CharacterDic = CharacterArray.ToDictionary(i => i.id);
+	}
+	public Character GetCharacterData(int _id){
+		if (CharacterDic.TryGetValue(_id, out Character value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

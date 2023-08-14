@@ -20,6 +20,7 @@ public partial class DataManager : Singleton<DataManager>
 			"ObjTable",
 			"SpriteSheet",
 			"SpriteCollection",
+			"Character"
 		};
 
 	public async UniTask LoadDataAsync()

@@ -19,7 +19,7 @@ public class MHeroObj : MBaseObj
     private float commonDelay;
     private int testCnt;
     Vector2 targetWorldPos;
-    EnemyObj targetObj;
+    MEnemyObj targetObj;
 
     void Awake()
     {

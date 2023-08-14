@@ -12,7 +12,7 @@ public class ProjectileStraight : MonoBehaviour
     private float elapse;
     private float speed;
     private Vector2 prevPos;
-    EnemyObj enemyObj;
+    MEnemyObj enemyObj;
 
     private Quaternion quaternionRot;
 
@@ -22,7 +22,7 @@ public class ProjectileStraight : MonoBehaviour
         //spriteRenderer.SetSprite(itemData.iconpath);
     }
 
-    public void Shoot(EnemyObj _enemyObj, float _speed)
+    public void Shoot(MEnemyObj _enemyObj, float _speed)
     {
         enemyObj = _enemyObj;
         dstPos = enemyObj.transform.position;

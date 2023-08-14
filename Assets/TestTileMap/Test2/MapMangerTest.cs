@@ -18,18 +18,18 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
     //TileBase
 
     private Vector3 heroPos;
-    private List<EnemyObj> enemyLists;
+    private List<MEnemyObj> enemyLists;
 
     protected override void OnSingletonAwake()
     {
         base.OnSingletonAwake();
-        var enemies = objRoot.GetComponentsInChildren<EnemyObj>();
+        var enemies = objRoot.GetComponentsInChildren<MEnemyObj>();
         enemyLists = enemies.ToList();
     }
 
-    public EnemyObj GetNearestEnemyObj(Vector3 srcPos)
+    public MEnemyObj GetNearestEnemyObj(Vector3 srcPos)
     {
-        EnemyObj nearestObj = null;
+        MEnemyObj nearestObj = null;
         float shortDist = float.MaxValue;
         foreach (var item in enemyLists)
         {
@@ -51,14 +51,14 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
         testHeroObj.StartFSM();
     }
 
-    public void LauchProjectile(MHeroObj heroObj, EnemyObj enemyObj)
+    public void LauchProjectile(MHeroObj heroObj, MEnemyObj enemyObj)
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
         bullet.Shoot(enemyObj, 1);
 
     }
 
-    public void RemoveEnemy(EnemyObj targetObj)
+    public void RemoveEnemy(MEnemyObj targetObj)
     {
         Destroy(targetObj.gameObject);
         enemyLists.Remove(targetObj);
