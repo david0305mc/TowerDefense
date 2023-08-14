@@ -57,3 +57,26 @@ public class BaseObjData
         return data;
     }
 }
+
+
+public class CharacterData
+{
+    public int uid;
+    public int tid;
+    public bool IsEnemy;
+    public int hp;
+    public DataManager.Character refData;
+
+    public static CharacterData Create(int _uid, int _tid, bool _isEnemy)
+    {
+        CharacterData data = new CharacterData() { 
+            uid = _uid, 
+            tid = _tid, 
+            IsEnemy = _isEnemy, 
+            refData = DataManager.Instance.GetCharacterData(_tid),
+        };
+        data.hp = data.refData.hp;
+
+        return data;
+    }
+}

@@ -53,7 +53,7 @@ public class MHeroObj : MBaseObj
     private void DetectEnemy()
     {
         commonDelay = 0;
-        targetObj = MapMangerTest.Instance.GetNearestEnemyObj(transform.position);
+        targetObj = MGameManager.Instance.GetNearestEnemyObj(transform.position);
 
         if (targetObj != null)
         {
@@ -95,12 +95,12 @@ public class MHeroObj : MBaseObj
             commonDelay = 0;
             if (testCnt >= 5)
             {
-                MapMangerTest.Instance.RemoveEnemy(targetObj);
+                MGameManager.Instance.RemoveEnemy(targetObj);
                 fsm.ChangeState(FSMStates.Idle);
             }
             else
             {
-                MapMangerTest.Instance.LauchProjectile(this, targetObj);
+                MGameManager.Instance.LauchProjectile(this, targetObj);
             }
         }
 

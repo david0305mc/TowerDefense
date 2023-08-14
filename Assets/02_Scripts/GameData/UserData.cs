@@ -12,6 +12,7 @@ public partial class UserData : Singleton<UserData>
     private static readonly string InBuildDataImportPath = "InBuildData";
     private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
     public LocalData LocalData { get; set; }
+    public Dictionary<int, CharacterData> enemyDataDic;
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
@@ -19,6 +20,7 @@ public partial class UserData : Singleton<UserData>
     public void InitData()
     {
         ShopSelectedItem = -1;
+        enemyDataDic = new Dictionary<int, CharacterData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
@@ -86,6 +88,17 @@ public partial class UserData : Singleton<UserData>
     {
         BaseObjData data = BaseObjData.Create(GameManager.GenerateUID(), tid, x, y, isEnemy);
         LocalData.BaseObjDic.Add(data.UID, data);
+        return data;
+    }
+
+
+
+    /// New Game
+    
+    public CharacterData AddEnemyData(int _tid)
+    {
+        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, true);
+        enemyDataDic.Add(data.uid, data);
         return data;
     }
 }
