@@ -27,7 +27,7 @@ public class MyShortCut : Editor
             Undo.RecordObject(go.transform, "Reset Transform");
             go.transform.position = Vector3.zero;
             go.transform.rotation = Quaternion.identity;
-            go.transform.localScale = Vector3.zero;
+            go.transform.localScale = Vector3.one;
         }
     }
 }
