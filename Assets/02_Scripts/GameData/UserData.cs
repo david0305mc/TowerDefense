@@ -29,6 +29,12 @@ public partial class UserData : Singleton<UserData>
         LocalData.BaseObjDic.Remove(uid);
     }
 
+    public CharacterData GetEnemyData(int _uid)
+    {
+        if(enemyDataDic.ContainsKey(_uid))
+            return enemyDataDic[_uid];
+        return null;
+    }
     public InBuildData LoadInBuildData()
     {
         var textAsset = Resources.Load("textData") as TextAsset;
@@ -100,5 +106,22 @@ public partial class UserData : Singleton<UserData>
         var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, true);
         enemyDataDic.Add(data.uid, data);
         return data;
+    }
+
+    public bool AttackToEnmey(int _enemyUID, int _damage)
+    {
+        var enemyData = enemyDataDic[_enemyUID];
+        enemyData.hp -= _damage;
+        if (enemyData.hp <= 0)
+        {
+            RemoveEnmey(_enemyUID);
+            return true;
+        }
+        return false;
+    }
+
+    public void RemoveEnmey(int _enemyUID)
+    {
+        enemyDataDic.Remove(_enemyUID);
     }
 }

@@ -10,6 +10,7 @@ public class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private Transform objRoot;
     [SerializeField] private Transform enemyObjRoot;
     [SerializeField] private MHeroObj testHeroObj;
+    [SerializeField] private GameObject boomPref;
 
 
     private Dictionary<int, MEnemyObj> enemyDic;
@@ -60,21 +61,49 @@ public class MGameManager : SingletonMono<MGameManager>
         foreach (var enemyObj in enemies)
         {
             var data = UserData.Instance.AddEnemyData(enemyObj.TID);
-            enemyObj.InitObject(data.uid);
+            enemyObj.InitObject(data.uid, ()=> {
+
+                bool isDead = UserData.Instance.AttackToEnmey(data.uid, 1);
+                if (isDead)
+                {
+                    RemoveEnemy(data.uid);
+                }
+
+            });
             enemyDic.Add(data.uid, enemyObj);
         }
     }
 
-    public void RemoveEnemy(MEnemyObj targetObj)
+    public void RemoveEnemy(int _uid)
     {
-        Destroy(targetObj.gameObject);
-        enemyDic.Remove(targetObj.UID);
+        Destroy(enemyDic[_uid].gameObject);
+        enemyDic.Remove(_uid);
     }
 
     public void LauchProjectile(MHeroObj heroObj, MEnemyObj enemyObj)
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
         bullet.Shoot(enemyObj, 1);
+    }
+
+    public void ShowBoomEffect(Vector2 _pos, string name = default)
+    {
+        var boomEffect = Instantiate(boomPref);
+        boomEffect.name = name;
+        boomEffect.transform.position = _pos;
+
+        boomEffect.gameObject.SetActive(false);
+        boomEffect.gameObject.SetActive(true);
+        //ParticleSystem ps = boomEffect.GetComponent<ParticleSystem>();
+        //if (ps != null)
+        //{
+        //    var main = ps.main;
+        //    if (main.loop)
+        //    {
+        //        ps.gameObject.AddComponent<CFX_AutoStopLoopedEffect>();
+        //        ps.gameObject.AddComponent<CFX_AutoDestructShuriken>();
+        //    }
+        //}
     }
 
 }

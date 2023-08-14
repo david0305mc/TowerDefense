@@ -5,10 +5,16 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class MBaseObj : MonoBehaviour
+public class MBaseObj : MonoBehaviour, Damageable
 {
   
     private CancellationTokenSource cts;
+
+    public virtual void GetDamaged(int _damage)
+    {
+
+    }
+
     public void MoveTo(Vector3 targetPos)
     {
         cts?.Cancel();

@@ -7,9 +7,17 @@ public class MEnemyObj : MBaseObj
     public int UID { get; private set;}
     public int TID;
 
-    public void InitObject(int _uid)
+    private System.Action getDamageAction;
+    
+
+    public void InitObject(int _uid, System.Action _getDamageAction)
     {
         UID = _uid;
+        getDamageAction = _getDamageAction;
     }
 
+    public override void GetDamaged(int _damage)
+    {
+        getDamageAction?.Invoke();
+    }
 }

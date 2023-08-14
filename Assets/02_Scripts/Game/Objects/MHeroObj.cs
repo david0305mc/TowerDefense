@@ -93,14 +93,15 @@ public class MHeroObj : MBaseObj
         {
             testCnt++;
             commonDelay = 0;
-            if (testCnt >= 5)
+
+            var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
+            if (enemyData != null)
             {
-                MGameManager.Instance.RemoveEnemy(targetObj);
-                fsm.ChangeState(FSMStates.Idle);
+                MGameManager.Instance.LauchProjectile(this, targetObj);
             }
             else
             {
-                MGameManager.Instance.LauchProjectile(this, targetObj);
+                fsm.ChangeState(FSMStates.Idle);
             }
         }
 
