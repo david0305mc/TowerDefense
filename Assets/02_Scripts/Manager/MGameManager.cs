@@ -58,15 +58,20 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         enemyDic = new Dictionary<int, MEnemyObj>();
         var enemies = enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
-        foreach (var enemyObj in enemies)
+        foreach (MEnemyObj enemyObj in enemies)
         {
             var data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, ()=> {
 
+                // GetDamaged
                 bool isDead = UserData.Instance.AttackToEnmey(data.uid, 1);
                 if (isDead)
                 {
                     RemoveEnemy(data.uid);
+                }
+                else
+                {
+                    enemyObj.SetHPBar(data.hp / (float)data.refData.hp);
                 }
 
             });

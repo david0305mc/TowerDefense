@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MBaseObj : MonoBehaviour, Damageable
 {
-  
+    [SerializeField] private Slider hpBar;
     private CancellationTokenSource cts;
 
     public virtual void GetDamaged(int _damage)
@@ -34,6 +35,10 @@ public class MBaseObj : MonoBehaviour, Damageable
         });
     }
 
+    public void SetHPBar(float _value)
+    {
+        hpBar.value = _value;
+    }
     protected void FlipRenderers(bool value)
     {
         if (value)
