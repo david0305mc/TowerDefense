@@ -16,14 +16,31 @@ public class MHeroObj : MBaseObj
     }
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
+    [SerializeField] private Animator animator;
+    [SerializeField] private AnimationLink animationLink;
+
     private float commonDelay;
     private int testCnt;
     Vector2 targetWorldPos;
     MEnemyObj targetObj;
+    
 
     void Awake()
     {
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
+        animationLink.SetFireEvent(() =>
+        {
+            var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
+            if (enemyData != null)
+            {
+                MGameManager.Instance.LauchProjectile(this, targetObj);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
+
+        });
     }
 
     public void StartFSM()
@@ -37,6 +54,7 @@ public class MHeroObj : MBaseObj
 
     void Idle_Enter()
     {
+        animator.Play("char_01_idle");
         commonDelay = 0f;
 
     }
@@ -47,7 +65,6 @@ public class MHeroObj : MBaseObj
         {
             DetectEnemy();
         }
-
     }
 
     private void DetectEnemy()
@@ -57,8 +74,8 @@ public class MHeroObj : MBaseObj
 
         if (targetObj != null)
         {
-            float randX = Random.Range(1, 2);
-            float randY = Random.Range(-2, 2);
+            float randX = Random.Range(3, 4);
+            float randY = Random.Range(-3, 4);
 
             targetWorldPos = targetObj.transform.position + new Vector3(randX, randY, 0);
             fsm.ChangeState(FSMStates.Move);
@@ -67,7 +84,7 @@ public class MHeroObj : MBaseObj
 
     void Move_Enter()
     {
-
+        animator.Play("char_01_walk");
     }
     void Move_Update()
     {
@@ -82,29 +99,13 @@ public class MHeroObj : MBaseObj
 
     void Attack_Enter()
     {
+        animator.Play("char_01_atk");
         commonDelay = 0;
         testCnt = 0;
     }
 
     void Attack_Update()
     {
-        commonDelay += Time.deltaTime;
-        if (commonDelay >= 1f)
-        {
-            testCnt++;
-            commonDelay = 0;
-
-            var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
-            if (enemyData != null)
-            {
-                MGameManager.Instance.LauchProjectile(this, targetObj);
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
-        }
-
         
     }
 }
