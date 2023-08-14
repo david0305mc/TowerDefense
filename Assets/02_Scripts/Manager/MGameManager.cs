@@ -110,6 +110,7 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         Destroy(currStage.gameObject);
         currStage = Instantiate(stage02pref, Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
+        InitEnemies();
         
     }
     public void ShowBoomEffect(Vector2 _pos, string name = default)
