@@ -74,7 +74,7 @@ public class MHeroObj : MBaseObj
 
         if (targetObj != null)
         {
-            float randX = Random.Range(3, 4);
+            float randX = Random.Range(3, 6);
             float randY = Random.Range(-3, 4);
 
             targetWorldPos = targetObj.transform.position + new Vector3(randX, randY, 0);

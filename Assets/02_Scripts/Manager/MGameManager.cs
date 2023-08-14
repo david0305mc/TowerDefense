@@ -7,9 +7,11 @@ public class MGameManager : SingletonMono<MGameManager>
 {
     [SerializeField] private ProjectileStraight projStraight;
 
+    [SerializeField] private Transform heroSpawnPos;
+
     [SerializeField] private Transform objRoot;
     [SerializeField] private Transform enemyObjRoot;
-    [SerializeField] private MHeroObj testHeroObj;
+    [SerializeField] private MHeroObj heroObjPref;
     [SerializeField] private GameObject boomPref;
 
 
@@ -51,7 +53,6 @@ public class MGameManager : SingletonMono<MGameManager>
     private void InitGame()
     {
         InitEnemies();
-        testHeroObj.StartFSM();
     }
 
     private void InitEnemies()
@@ -89,6 +90,13 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
         bullet.Shoot(enemyObj, 1);
+    }
+
+    public void AddHero()
+    {
+        Vector3 spawnPos = heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+        var heroObj = Lean.Pool.LeanPool.Spawn(heroObjPref, spawnPos, Quaternion.identity, objRoot);
+        heroObj.StartFSM();
     }
 
     public void ShowBoomEffect(Vector2 _pos, string name = default)
