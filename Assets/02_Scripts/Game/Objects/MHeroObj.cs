@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MHeroObj : MBaseObj
 {
@@ -18,22 +19,25 @@ public class MHeroObj : MBaseObj
 
     [SerializeField] private Animator animator;
     [SerializeField] private AnimationLink animationLink;
+    [SerializeField] private NavMeshAgent agent;
 
     private float commonDelay;
     private int testCnt;
     Vector2 targetWorldPos;
-    MEnemyObj targetObj;
+    int targetObjUID;
     
 
     void Awake()
     {
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         animationLink.SetFireEvent(() =>
         {
-            var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
+            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
-                MGameManager.Instance.LauchProjectile(this, targetObj);
+                MGameManager.Instance.LauchProjectile(this, targetObjUID);
             }
             else
             {
@@ -70,14 +74,14 @@ public class MHeroObj : MBaseObj
     private void DetectEnemy()
     {
         commonDelay = 0;
-        targetObj = MGameManager.Instance.GetNearestEnemyObj(transform.position);
-
-        if (targetObj != null)
+        targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position);
+        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+        if (enemyObj != null)
         {
             float randX = Random.Range(3, 6);
             float randY = Random.Range(-3, 4);
 
-            targetWorldPos = targetObj.transform.position + new Vector3(randX, randY, 0);
+            targetWorldPos = enemyObj.transform.position + new Vector3(randX, randY, 0);
             fsm.ChangeState(FSMStates.Move);
         }
     }
@@ -85,16 +89,26 @@ public class MHeroObj : MBaseObj
     void Move_Enter()
     {
         animator.Play("char_01_walk");
+        agent.SetDestination(targetWorldPos);
     }
     void Move_Update()
     {
-        transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 3f);
-        FlipRenderers(transform.position.x > targetObj.transform.position.x);
-        if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
+        //transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 3f);
+        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+        if (enemyObj != null)
         {
-            transform.position = targetWorldPos;
-            fsm.ChangeState(FSMStates.Attack);
+            FlipRenderers(transform.position.x > enemyObj.transform.position.x);
+            if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
+            {
+                transform.position = targetWorldPos;
+                fsm.ChangeState(FSMStates.Attack);
+            }
         }
+        else
+        {
+            fsm.ChangeState(FSMStates.Idle);
+        }
+        
     }
 
     void Attack_Enter()

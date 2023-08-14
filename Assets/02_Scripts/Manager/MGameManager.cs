@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MGameManager : SingletonMono<MGameManager>
 {
+    [SerializeField] private GameObject stage01pref;
     [SerializeField] private ProjectileStraight projStraight;
 
     [SerializeField] private Transform heroSpawnPos;
@@ -26,10 +27,15 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         return UserData.Instance.LocalData.uidSeed++;
     }
-
-    public MEnemyObj GetNearestEnemyObj(Vector3 srcPos)
+    public MEnemyObj GetEnemyObj(int _uid)
     {
-        MEnemyObj nearestObj = null;
+        if (enemyDic.ContainsKey(_uid))
+            return enemyDic[_uid];
+        return null;
+    }
+    public int GetNearestEnemyObj(Vector3 srcPos)
+    {
+        int nearestObjUID = -1;
         float shortDist = float.MaxValue;
         foreach (var item in enemyDic)
         {
@@ -38,11 +44,11 @@ public class MGameManager : SingletonMono<MGameManager>
             if (dist < shortDist)
             {
                 shortDist = dist;
-                nearestObj = item.Value;
+                nearestObjUID = item.Value.UID;
             }
         }
 
-        return nearestObj;
+        return nearestObjUID;
     }
 
     private void Start()
@@ -86,10 +92,10 @@ public class MGameManager : SingletonMono<MGameManager>
         enemyDic.Remove(_uid);
     }
 
-    public void LauchProjectile(MHeroObj heroObj, MEnemyObj enemyObj)
+    public void LauchProjectile(MHeroObj heroObj, int _enemyUID)
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
-        bullet.Shoot(enemyObj, 1);
+        bullet.Shoot(enemyDic[_enemyUID], 1);
     }
 
     public void AddHero()
