@@ -99,8 +99,18 @@ public class MHeroObj : MBaseObj
             float randX = Random.Range(0.5f, 1.5f);
             float randY = Random.Range(-1, 2);
 
-            targetWorldPos = enemyObj.transform.position + new Vector3(randX, randY, 0);
-            fsm.ChangeState(FSMStates.Move);
+            Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
+            Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
+            if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
+            {
+                targetWorldPos = pos01;
+                fsm.ChangeState(FSMStates.Move);
+            }
+            else
+            {
+                targetWorldPos = pos02;
+                fsm.ChangeState(FSMStates.Move);
+            }
         }
     }
 
