@@ -102,7 +102,7 @@ public partial class UserData : Singleton<UserData>
 
 
     /// New Game
-    
+
     public CharacterData AddEnemyData(int _tid)
     {
         var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, true);
@@ -116,7 +116,6 @@ public partial class UserData : Singleton<UserData>
         enemyData.hp -= _damage;
         if (enemyData.hp <= 0)
         {
-            RemoveEnmey(_enemyUID);
             return true;
         }
         return false;

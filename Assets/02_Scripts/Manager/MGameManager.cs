@@ -68,6 +68,7 @@ public class MGameManager : SingletonMono<MGameManager>
         InitEnemies();
     }
 
+
     private void InitEnemies()
     {
         enemyDic = new Dictionary<int, MEnemyObj>();
@@ -95,6 +96,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void RemoveEnemy(int _uid)
     {
+        UserData.Instance.RemoveEnmey(_uid);
         Destroy(enemyDic[_uid].gameObject);
         enemyDic.Remove(_uid);
     }
@@ -114,8 +116,18 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void NextStage()
     {
+        if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
+        {
+            return;
+        }
         UserData.Instance.CurrStage++;
         SpawnStage(UserData.Instance.CurrStage);
+
+        for (int i = UserData.Instance.enemyDataDic.Count - 1; i >= 0; i--)
+        {
+            RemoveEnemy(UserData.Instance.enemyDataDic.ElementAt(i).Key);
+        }
+        
         InitEnemies();
         
     }
