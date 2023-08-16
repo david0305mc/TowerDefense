@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProjectileStraight : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D rigidBody2d;
     [SerializeField] private AnimationCurve curve;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private Vector3 srcPos;
@@ -45,13 +46,13 @@ public class ProjectileStraight : MonoBehaviour
         }
 
         float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.fixedDeltaTime / dist * 5f;
+        elapse += Time.deltaTime / dist * 5f;
 
         var height = curve.Evaluate(elapse);
 
         var pos = Vector2.Lerp(srcPos, dstPos, elapse) + new Vector2(0, height);
-        transform.position = pos;
-        transform.rotation = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
+        rigidBody2d.MovePosition(pos);
+        rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
 
         prevPos = pos;
         if (elapse >= 1)
