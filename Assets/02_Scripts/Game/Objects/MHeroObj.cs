@@ -23,7 +23,7 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
 
     [SerializeField] private int tid;
-    public int TID { get; }
+    public int TID { get { return tid; } }
 
     private float commonDelay;
     private int UID;
@@ -126,7 +126,7 @@ public class MHeroObj : MBaseObj
         if (enemyObj != null)
         {
             FlipRenderers(transform.position.x > enemyObj.transform.position.x);
-            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange * 0.1f + 0.01f)
+            if (Vector2.Distance(transform.position, targetWorldPos) < refData.attackrange * 0.1f + 0.01f)
             {
                 agent.isStopped = true;
                 fsm.ChangeState(FSMStates.Attack);

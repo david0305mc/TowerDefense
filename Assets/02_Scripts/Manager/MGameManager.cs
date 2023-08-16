@@ -9,7 +9,7 @@ public class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private ProjectileStraight projStraight;
 
     [SerializeField] private Transform objRoot;
-    [SerializeField] private MHeroObj heroObjPref;
+    [SerializeField] private List<MHeroObj> heroObjPrefList;
     [SerializeField] private List<GameObject> boomPrefList;
 
     private Dictionary<int, MEnemyObj> enemyDic;
@@ -113,11 +113,11 @@ public class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(enemyDic[_enemyUID], 1);
     }
 
-    public void AddHero()
+    public void AddHero(int index)
     {   
-        var heroData = UserData.Instance.AddHeroData(heroObjPref.TID);
+        var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
-        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPref, spawnPos, Quaternion.identity, objRoot);
+        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, () =>
         {
 

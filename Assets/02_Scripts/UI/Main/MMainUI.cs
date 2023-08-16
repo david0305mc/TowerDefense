@@ -5,13 +5,18 @@ using UnityEngine.UI;
 
 public class MMainUI : MonoBehaviour
 {
-    [SerializeField] private Button test01Btn;
+    [SerializeField] private Button tankerBtn;
+    [SerializeField] private Button archerBtn;
     [SerializeField] private Button nextStageBtn;
     private void Awake()
     {
-        test01Btn.onClick.AddListener(() =>
+        tankerBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddHero();
+            MGameManager.Instance.AddHero(0);
+        });
+        archerBtn.onClick.AddListener(() =>
+        {
+            MGameManager.Instance.AddHero(1);
         });
         nextStageBtn.onClick.AddListener(() =>
         {
