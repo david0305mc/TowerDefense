@@ -14,6 +14,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
 
     private Dictionary<int, MEnemyObj> enemyDic;
+    private Dictionary<int, MHeroObj> heroDic;
     private StageObject currStageObj;
 
     protected override void OnSingletonAwake()
@@ -66,6 +67,7 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         SpawnStage(UserData.Instance.CurrStage);
         InitEnemies();
+        InitHeroes();
     }
 
 
@@ -94,6 +96,11 @@ public class MGameManager : SingletonMono<MGameManager>
         }
     }
 
+    private void InitHeroes()
+    {
+        heroDic = new Dictionary<int, MHeroObj>();
+    }
+
     public void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
@@ -108,10 +115,16 @@ public class MGameManager : SingletonMono<MGameManager>
     }
 
     public void AddHero()
-    {
+    {   
+        var heroData = UserData.Instance.AddHeroData(heroObjPref.TID);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
-        var heroObj = Lean.Pool.LeanPool.Spawn(heroObjPref, spawnPos, Quaternion.identity, objRoot);
+        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPref, spawnPos, Quaternion.identity, objRoot);
+        heroObj.InitObject(heroData.uid, () =>
+        {
+
+        });
         heroObj.StartFSM();
+        heroDic.Add(heroData.uid, heroObj);
     }
 
     public void NextStage()

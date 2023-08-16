@@ -16,6 +16,7 @@ public class ProjectileStraight : MonoBehaviour
     MEnemyObj enemyObj;
 
     private Quaternion quaternionRot;
+    private bool ToEnemy;
 
     public void UpdateData(int _itemTID)
     {
@@ -31,6 +32,7 @@ public class ProjectileStraight : MonoBehaviour
         elapse = 0f;
         speed = _speed;
         prevPos = srcPos;
+        ToEnemy = true;
     }
 
     private void FixedUpdate()
@@ -57,6 +59,20 @@ public class ProjectileStraight : MonoBehaviour
         prevPos = pos;
         if (elapse >= 1)
         {
+            if (enemyObj != null)
+            {
+                var enemyData = UserData.Instance.GetEnemyData(enemyObj.UID);
+                if (enemyData != null)
+                {
+                    Debug.Log("enemyData != null");
+                    if (enemyData.hp > 0)
+                    {
+                        Debug.Log("enemyData.hp > 0");
+                    }
+                }
+            }
+            
+            //Debug.Log($"Dispose boomed : {boomed}");
             Dispose();
         }
     }
@@ -74,8 +90,7 @@ public class ProjectileStraight : MonoBehaviour
         {
             damagable.GetDamaged(1);
             MGameManager.Instance.ShowBoomEffect(collision.ClosestPoint(transform.position));
-
+            Dispose();
         }
-        Dispose();
     }
 }

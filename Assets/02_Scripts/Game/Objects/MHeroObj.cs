@@ -21,8 +21,14 @@ public class MHeroObj : MBaseObj
     [SerializeField] private AnimationLink animationLink;
     [SerializeField] private NavMeshAgent agent;
 
+    [SerializeField] private int tid;
+    public int TID { get; }
+
     private float commonDelay;
-    private int testCnt;
+    private int UID;
+    public System.Action getDamageAction { get; private set; }
+
+    private DataManager.Character refData;
     Vector2 targetWorldPos;
     int targetObjUID;
     
@@ -45,6 +51,13 @@ public class MHeroObj : MBaseObj
             }
 
         });
+    }
+
+    public void InitObject(int _uid, System.Action _getDamageAction)
+    {
+        UID = _uid;
+        getDamageAction = _getDamageAction;
+        refData = DataManager.Instance.GetCharacterData(TID);
     }
 
     public void StartFSM()
@@ -98,7 +111,7 @@ public class MHeroObj : MBaseObj
         if (enemyObj != null)
         {
             FlipRenderers(transform.position.x > enemyObj.transform.position.x);
-            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange)
+            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange + 0.01f)
             {
                 agent.isStopped = true;
                 fsm.ChangeState(FSMStates.Attack);
@@ -115,7 +128,6 @@ public class MHeroObj : MBaseObj
     {
         animator.Play("char_01_atk");
         commonDelay = 0;
-        testCnt = 0;
     }
 
     void Attack_Update()
