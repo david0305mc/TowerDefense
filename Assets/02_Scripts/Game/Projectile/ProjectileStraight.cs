@@ -89,7 +89,7 @@ public class ProjectileStraight : MonoBehaviour
         if (damagable != null)
         {
             damagable.GetDamaged(1);
-            MGameManager.Instance.ShowBoomEffect(collision.ClosestPoint(transform.position));
+            MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
             Dispose();
         }
     }

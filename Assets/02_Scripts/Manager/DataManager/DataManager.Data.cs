@@ -76,6 +76,7 @@ public partial class DataManager {
 	}
 	public partial class Character {
 		public int id;
+		public CHARACTER_TYPE charactertype;
 		public int attackrange;
 		public int hp;
 		public string thumbnailpath;

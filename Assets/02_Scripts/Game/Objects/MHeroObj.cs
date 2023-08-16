@@ -20,6 +20,7 @@ public class MHeroObj : MBaseObj
     [SerializeField] private Animator animator;
     [SerializeField] private AnimationLink animationLink;
     [SerializeField] private NavMeshAgent agent;
+    private SwordAttackChecker swordAttackChecker;
 
     [SerializeField] private int tid;
     public int TID { get; }
@@ -35,6 +36,7 @@ public class MHeroObj : MBaseObj
 
     void Awake()
     {
+        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
@@ -43,7 +45,10 @@ public class MHeroObj : MBaseObj
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
-                MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                if (refData.charactertype == CHARACTER_TYPE.ARCHER)
+                {
+                    MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                }
             }
             else
             {
@@ -91,8 +96,8 @@ public class MHeroObj : MBaseObj
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         if (enemyObj != null)
         {
-            float randX = Random.Range(3, 6);
-            float randY = Random.Range(-3, 4);
+            float randX = Random.Range(0.5f, 1.5f);
+            float randY = Random.Range(-1, 2);
 
             targetWorldPos = enemyObj.transform.position + new Vector3(randX, randY, 0);
             fsm.ChangeState(FSMStates.Move);
@@ -111,7 +116,7 @@ public class MHeroObj : MBaseObj
         if (enemyObj != null)
         {
             FlipRenderers(transform.position.x > enemyObj.transform.position.x);
-            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange + 0.01f)
+            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange * 0.1f + 0.01f)
             {
                 agent.isStopped = true;
                 fsm.ChangeState(FSMStates.Attack);

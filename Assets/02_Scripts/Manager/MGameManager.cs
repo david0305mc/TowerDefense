@@ -10,8 +10,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private MHeroObj heroObjPref;
-    [SerializeField] private GameObject boomPref;
-
+    [SerializeField] private List<GameObject> boomPrefList;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -144,9 +143,9 @@ public class MGameManager : SingletonMono<MGameManager>
         InitEnemies();
         
     }
-    public void ShowBoomEffect(Vector2 _pos, string name = default)
+    public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
     {
-        var boomEffect = Instantiate(boomPref);
+        var boomEffect = Instantiate(boomPrefList[boomIndex]);
         boomEffect.name = name;
         boomEffect.transform.position = _pos;
 

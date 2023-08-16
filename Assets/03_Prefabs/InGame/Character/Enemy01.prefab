@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 1255159191235152632}
   - component: {fileID: 4443264505418764175}
   - component: {fileID: -5465289397527364852}
+  - component: {fileID: 2332636290596936008}
   m_Layer: 0
   m_Name: Enemy01
   m_TagString: Untagged
@@ -402,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 1152821737}
-  TID: 1
+  tid: 0
 --- !u!61 &-5465289397527364852
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -429,3 +430,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.375, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &2332636290596936008
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255159191235152634}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
