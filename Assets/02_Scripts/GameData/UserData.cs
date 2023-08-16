@@ -112,6 +112,11 @@ public partial class UserData : Singleton<UserData>
 
     public bool AttackToEnmey(int _enemyUID, int _damage)
     {
+        if (!enemyDataDic.ContainsKey(_enemyUID))
+        {
+            Debug.LogError($"already detroyed {_enemyUID}");
+            return false;
+        }
         var enemyData = enemyDataDic[_enemyUID];
         enemyData.hp -= _damage;
         if (enemyData.hp <= 0)

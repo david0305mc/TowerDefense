@@ -89,18 +89,18 @@ public class MHeroObj : MBaseObj
     void Move_Enter()
     {
         animator.Play("char_01_walk");
+        agent.isStopped = false;
         agent.SetDestination(targetWorldPos);
     }
     void Move_Update()
     {
-        //transform.position = Vector3.Lerp(transform.position, targetWorldPos, Time.deltaTime * 3f);
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         if (enemyObj != null)
         {
             FlipRenderers(transform.position.x > enemyObj.transform.position.x);
-            if (Vector2.Distance(transform.position, targetWorldPos) < 0.1f)
+            if (Vector2.Distance(transform.position, targetWorldPos) < enemyObj.refData.attackrange)
             {
-                transform.position = targetWorldPos;
+                agent.isStopped = true;
                 fsm.ChangeState(FSMStates.Attack);
             }
         }

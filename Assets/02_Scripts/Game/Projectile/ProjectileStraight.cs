@@ -32,7 +32,7 @@ public class ProjectileStraight : MonoBehaviour
         prevPos = srcPos;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         UpdateMissile();
     }
@@ -45,7 +45,7 @@ public class ProjectileStraight : MonoBehaviour
         }
 
         float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * 5f;
+        elapse += Time.fixedDeltaTime / dist * 5f;
 
         var height = curve.Evaluate(elapse);
 
