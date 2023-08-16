@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class MGameManager : SingletonMono<MGameManager>
 {
-    [SerializeField] private GameObject stage01pref;
-    [SerializeField] private GameObject stage02pref;
+    [SerializeField] private List<GameObject> stageprefLists;
     [SerializeField] private ProjectileStraight projStraight;
 
     [SerializeField] private Transform objRoot;
@@ -15,7 +14,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
 
     private Dictionary<int, MEnemyObj> enemyDic;
-    private StageObject currStage;
+    private StageObject currStageObj;
 
     protected override void OnSingletonAwake()
     {
@@ -55,17 +54,24 @@ public class MGameManager : SingletonMono<MGameManager>
         InitGame();
     }
 
+    private void SpawnStage(int stage)
+    {
+        if (currStageObj != null)
+        {
+            Destroy(currStageObj.gameObject);
+        }
+        currStageObj = Instantiate(stageprefLists[stage], Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
+    }
     private void InitGame()
     {
-        currStage = Instantiate(stage01pref, Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
-        
+        SpawnStage(UserData.Instance.CurrStage);
         InitEnemies();
     }
 
     private void InitEnemies()
     {
         enemyDic = new Dictionary<int, MEnemyObj>();
-        var enemies = currStage.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
+        var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
             var data = UserData.Instance.AddEnemyData(enemyObj.TID);
@@ -101,15 +107,15 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void AddHero()
     {
-        Vector3 spawnPos = currStage.heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+        Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
         var heroObj = Lean.Pool.LeanPool.Spawn(heroObjPref, spawnPos, Quaternion.identity, objRoot);
         heroObj.StartFSM();
     }
 
     public void NextStage()
     {
-        Destroy(currStage.gameObject);
-        currStage = Instantiate(stage02pref, Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
+        UserData.Instance.CurrStage++;
+        SpawnStage(UserData.Instance.CurrStage);
         InitEnemies();
         
     }

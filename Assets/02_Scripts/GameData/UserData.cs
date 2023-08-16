@@ -11,6 +11,8 @@ public partial class UserData : Singleton<UserData>
     private static readonly string LocalFilePath = Path.Combine(Application.persistentDataPath, "LocalData");
     private static readonly string InBuildDataImportPath = "InBuildData";
     private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
+
+    public int CurrStage { get; set; }
     public LocalData LocalData { get; set; }
     public Dictionary<int, CharacterData> enemyDataDic;
 
