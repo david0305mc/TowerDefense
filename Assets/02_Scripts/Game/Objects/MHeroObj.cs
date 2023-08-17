@@ -133,6 +133,8 @@ public class MHeroObj : MBaseObj
     void Move_Update()
     {
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+        var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
+        agent.speed = speed;
         if (enemyObj != null)
         {
             FlipRenderers(transform.position.x > enemyObj.transform.position.x);

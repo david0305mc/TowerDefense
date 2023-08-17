@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class MGameManager : SingletonMono<MGameManager>
 {
@@ -16,9 +17,21 @@ public class MGameManager : SingletonMono<MGameManager>
     private Dictionary<int, MHeroObj> heroDic;
     private StageObject currStageObj;
 
+    [SerializeField] private List<TileData> tileDatas;
+    private Dictionary<TileBase, TileData> dataFromTileMap;
+
     protected override void OnSingletonAwake()
     {
         base.OnSingletonAwake();
+
+        dataFromTileMap = new Dictionary<TileBase, TileData>();
+        foreach (var tileData in tileDatas)
+        {
+            foreach (var tile in tileData.tiles)
+            {
+                dataFromTileMap.Add(tile, tileData);
+            }
+        }
     }
 
     public static int GenerateUID()
@@ -140,9 +153,33 @@ public class MGameManager : SingletonMono<MGameManager>
             RemoveEnemy(UserData.Instance.enemyDataDic.ElementAt(i).Key);
         }
         
-        InitEnemies();
-        
+        InitEnemies();   
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int gridPosition = currStageObj.tileMap.WorldToCell(mousePosition);
+
+            TileBase clickedTile = currStageObj.tileMap.GetTile(gridPosition);
+            float walkingSpeed = dataFromTileMap[clickedTile].walkingSpeed;
+            Debug.Log($"walkingSpeed {walkingSpeed}");
+        }
+    }
+
+    public float GetTileWalkingSpeed(Vector3 worldPosition) 
+    {
+        Vector3Int gridPosition = currStageObj.tileMap.WorldToCell(new Vector3(worldPosition.x, worldPosition.y, 0) );
+        TileBase tilebase = currStageObj.tileMap.GetTile(gridPosition);
+        if (tilebase == null)
+            return 1f;
+
+        float walkingSpeed = dataFromTileMap[tilebase].walkingSpeed;
+        return walkingSpeed;
+    }
+
     public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
     {
         var boomEffect = Instantiate(boomPrefList[boomIndex]);
