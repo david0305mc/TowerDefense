@@ -15,31 +15,21 @@ public class MHeroObj : MBaseObj
         AttackMove,
         Attack,
     }
-    StateMachine<FSMStates, StateDriverUnity> fsm;
 
-    [SerializeField] private Animator animator;
-    [SerializeField] private AnimationLink animationLink;
-    [SerializeField] private NavMeshAgent agent;
     private SwordAttackChecker swordAttackChecker;
+    private StateMachine<FSMStates, StateDriverUnity> fsm;
 
-    [SerializeField] private int tid;
-    public int TID { get { return tid; } }
-
-    private float commonDelay;
-    private int UID;
     public System.Action getDamageAction { get; private set; }
 
     private DataManager.Character refData;
     Vector2 targetWorldPos;
-    int targetObjUID;
     
 
-    void Awake()
+    protected override void Awake()
     {
-        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        base.Awake();
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
+        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         animationLink.SetFireEvent(() =>
         {
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
@@ -60,7 +50,7 @@ public class MHeroObj : MBaseObj
 
     public void InitObject(int _uid, System.Action _getDamageAction)
     {
-        UID = _uid;
+        uid = _uid;
         getDamageAction = _getDamageAction;
         refData = DataManager.Instance.GetCharacterData(TID);
     }

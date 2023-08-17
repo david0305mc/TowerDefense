@@ -4,12 +4,33 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class MBaseObj : MonoBehaviour, Damageable
 {
     [SerializeField] private Slider hpBar;
-    private CancellationTokenSource cts;
+    [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] protected int tid;
+
+    protected CancellationTokenSource cts;
+    protected Animator animator;
+    protected AnimationLink animationLink;
+
+    protected int uid;
+    public int TID { get { return tid; } }
+    public int UID { get { return uid; } }
+
+    protected float commonDelay;
+    protected int targetObjUID;
+
+    protected virtual void Awake()
+    {
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+        animator = GetComponentInChildren<Animator>();
+        animationLink = animator.GetComponent<AnimationLink>();
+    }
 
     public virtual void GetDamaged(int _damage)
     {
