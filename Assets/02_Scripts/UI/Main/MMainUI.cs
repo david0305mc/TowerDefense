@@ -12,11 +12,17 @@ public class MMainUI : MonoBehaviour
     {
         tankerBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddHero(0);
+            for (int i = 0; i < 10; i++)
+            {
+                MGameManager.Instance.AddHero(0);
+            }
         });
         archerBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddHero(1);
+            for (int i = 0; i < 10; i++)
+            {
+                MGameManager.Instance.AddHero(1);
+            }
         });
         nextStageBtn.onClick.AddListener(() =>
         {

@@ -118,7 +118,17 @@ public class MHeroObj : MBaseObj
     {
         animator.Play("char_01_walk");
         agent.isStopped = false;
-        agent.SetDestination(targetWorldPos);
+        SetDestination(targetWorldPos);
+    }
+    static float agentDrift = 0.0001f; // minimal
+    void SetDestination(Vector3 target)
+    {
+        Vector3 driftPos = target;
+        if (Mathf.Abs(transform.position.x - target.x) < agentDrift)
+        {
+            driftPos = target + new Vector3(agentDrift, 0f, 0f);
+        }
+        agent.SetDestination(driftPos);
     }
     void Move_Update()
     {
