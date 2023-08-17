@@ -27,6 +27,7 @@ public class MHeroObj : MBaseObj
 
     protected override void Awake()
     {
+        isEnemy = false;
         base.Awake();
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
@@ -37,7 +38,7 @@ public class MHeroObj : MBaseObj
             {
                 if (refData.charactertype == CHARACTER_TYPE.ARCHER)
                 {
-                    MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                    MGameManager.Instance.LauchProjectileToEnemy(this, targetObjUID);
                 }
             }
             else

@@ -13,7 +13,7 @@ public class ProjectileStraight : MonoBehaviour
     private float elapse;
     private float speed;
     private Vector2 prevPos;
-    MEnemyObj enemyObj;
+    MBaseObj targetObj;
 
     private Quaternion quaternionRot;
     private bool ToEnemy;
@@ -24,10 +24,11 @@ public class ProjectileStraight : MonoBehaviour
         //spriteRenderer.SetSprite(itemData.iconpath);
     }
 
-    public void Shoot(MEnemyObj _enemyObj, float _speed)
+    public void Shoot(MBaseObj _targetObj, float _speed)
     {
-        enemyObj = _enemyObj;
-        dstPos = enemyObj.transform.position;
+        targetObj = _targetObj;
+        
+        dstPos = targetObj.transform.position;
         srcPos = transform.position;
         elapse = 0f;
         speed = _speed;
@@ -42,9 +43,9 @@ public class ProjectileStraight : MonoBehaviour
 
     private void UpdateMissile()
     {
-        if (enemyObj != null)
+        if (targetObj != null)
         {
-            dstPos = enemyObj.transform.position;
+            dstPos = targetObj.transform.position;
         }
 
         float dist = Vector2.Distance(srcPos, dstPos);
@@ -59,15 +60,18 @@ public class ProjectileStraight : MonoBehaviour
         prevPos = pos;
         if (elapse >= 1)
         {
-            if (enemyObj != null)
+            if (targetObj != null)
             {
-                var enemyData = UserData.Instance.GetEnemyData(enemyObj.UID);
-                if (enemyData != null)
+                if (targetObj.isEnemy)
                 {
-                    Debug.Log("enemyData != null");
-                    if (enemyData.hp > 0)
+                    var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
+                    if (enemyData != null)
                     {
-                        Debug.Log("enemyData.hp > 0");
+                        Debug.Log("enemyData != null");
+                        if (enemyData.hp > 0)
+                        {
+                            Debug.Log("enemyData.hp > 0");
+                        }
                     }
                 }
             }
@@ -88,9 +92,24 @@ public class ProjectileStraight : MonoBehaviour
         var damagable = collision.GetComponent<Damageable>();
         if (damagable != null)
         {
-            damagable.GetDamaged(1);
-            MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
-            Dispose();
+            if (damagable.IsEnemey())
+            {
+                if (targetObj.isEnemy)
+                {
+                    damagable.GetDamaged(1);
+                    MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    Dispose();
+                }
+            }
+            else 
+            {
+                if (!targetObj.isEnemy)
+                {
+                    damagable.GetDamaged(1);
+                    MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    Dispose();
+                }
+            }
         }
     }
 }

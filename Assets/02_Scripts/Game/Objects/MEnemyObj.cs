@@ -2,6 +2,8 @@ using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class MEnemyObj : MBaseObj
 {
@@ -27,18 +29,15 @@ public class MEnemyObj : MBaseObj
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         animationLink.SetFireEvent(() =>
         {
-            //var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
-            //if (enemyData != null)
-            //{
-            //    if (refData.charactertype == CHARACTER_TYPE.ARCHER)
-            //    {
-            //        MGameManager.Instance.LauchProjectile(this, targetObjUID);
-            //    }
-            //}
-            //else
-            //{
-            //    fsm.ChangeState(FSMStates.Idle);
-            //}
+            var enemyData = UserData.Instance.GetHeroData(targetObjUID);
+            if (enemyData != null)
+            {
+                MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
 
         });
     }
@@ -81,32 +80,26 @@ public class MEnemyObj : MBaseObj
     {
         commonDelay = 0;
 
-        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, 3);
+        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, 5);
         if (detectedObjs.Length > 0)
-        {   
-            var heroObj = detectedObjs[0].GetComponent<MHeroObj>();
-            targetObjUID = heroObj.UID;
-            fsm.ChangeState(FSMStates.Attack);
-        }
-        //targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position);
-        //MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-        //if (enemyObj != null)
-        //{
-        //    float randX = Random.Range(0.5f, 1.5f);
-        //    float randY = Random.Range(-1, 2);
+        {
+            var heroObj = detectedObjs.FirstOrDefault(item => { return item.GetComponent<MHeroObj>() != null; });
 
-        //    Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
-        //    Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
-        //    if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
-        //    {
-        //        targetWorldPos = pos01;
-        //        fsm.ChangeState(FSMStates.Move);
-        //    }
-        //    else
-        //    {
-        //        targetWorldPos = pos02;
-        //        fsm.ChangeState(FSMStates.Move);
-        //    }
-        //}
+            if (heroObj != default)
+            {
+                targetObjUID = heroObj.GetComponent<MHeroObj>().UID;
+                fsm.ChangeState(FSMStates.Attack);
+            }
+        }
+        
+    }
+    void Attack_Enter()
+    {
+        animator.Play("char_01_atk");
+        commonDelay = 0;
+    }
+    void Attack_Update()
+    {
+
     }
 }
