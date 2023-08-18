@@ -36,7 +36,7 @@ public class ProjectileStraight : MonoBehaviour
         ToEnemy = true;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         UpdateMissile();
     }
