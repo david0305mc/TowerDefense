@@ -21,7 +21,7 @@ public class MHeroObj : MBaseObj
 
 
     private DataManager.Character refData;
-    Vector2 targetWorldPos;
+    public Vector2 targetWorldPos;
     
 
     protected override void Awake()
@@ -94,11 +94,13 @@ public class MHeroObj : MBaseObj
             if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
             {
                 targetWorldPos = pos01;
+                targetWorldPos = enemyObj.transform.position;
                 fsm.ChangeState(FSMStates.Move);
             }
             else
             {
                 targetWorldPos = pos02;
+                targetWorldPos = enemyObj.transform.position;
                 fsm.ChangeState(FSMStates.Move);
             }
         }
@@ -122,18 +124,11 @@ public class MHeroObj : MBaseObj
     }
     void Move_Update()
     {
-        commonDelay += Time.deltaTime;
-        if (commonDelay >= 1f)
-        {
-            DetectEnemy();
-        }
-
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
         agent.speed = speed;
 
         FlipRenderers(agent.velocity.x < 0);
-
         if (enemyObj != null)
         {
             //FlipRenderers(transform.position.x > enemyObj.transform.position.x);

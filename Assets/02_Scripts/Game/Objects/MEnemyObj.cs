@@ -31,8 +31,10 @@ public class MEnemyObj : MBaseObj
             var enemyData = UserData.Instance.GetHeroData(targetObjUID);
             if (enemyData != null)
             {
-                //MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
-
+                if (refData.charactertype == CHARACTER_TYPE.ARCHER)
+                {
+                    MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
+                }
             }
             else
             {
@@ -84,6 +86,7 @@ public class MEnemyObj : MBaseObj
             {
                 targetObjUID = heroObj.GetComponent<MHeroObj>().UID;
                 fsm.ChangeState(FSMStates.Attack);
+                FlipRenderers(heroObj.transform.position.x < transform.position.x);
             }
         }
         

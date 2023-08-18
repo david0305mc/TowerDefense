@@ -156,14 +156,14 @@ public partial class UserData : Singleton<UserData>
 
     public CharacterData AddHeroData(int _tid)
     {
-        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, true);
+        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, false);
         heroDataDic.Add(data.uid, data);
         return data;
     }
 
-    public void RemoveHero(int _enemyUID)
+    public void RemoveHero(int _heroUID)
     {
-        heroDataDic.Remove(_enemyUID);
+        heroDataDic.Remove(_heroUID);
     }
 
 }

@@ -117,7 +117,7 @@ public class MGameManager : SingletonMono<MGameManager>
     private void RemoveHero(int _uid)
     {
         UserData.Instance.RemoveHero(_uid);
-        Destroy(heroDic[_uid].gameObject);
+        Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
         heroDic.Remove(_uid);
     }
     public void RemoveEnemy(int _uid)
@@ -146,6 +146,7 @@ public class MGameManager : SingletonMono<MGameManager>
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, () =>
         {
+            Debug.Log($"Get Damaged {heroData.uid}");
             // GetDamaged
             bool isDead = UserData.Instance.AttackToHero(heroData.uid, 10);
 
