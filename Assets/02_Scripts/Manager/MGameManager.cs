@@ -114,6 +114,12 @@ public class MGameManager : SingletonMono<MGameManager>
         heroDic = new Dictionary<int, MHeroObj>();
     }
 
+    private void RemoveHero(int _uid)
+    {
+        UserData.Instance.RemoveHero(_uid);
+        Destroy(heroDic[_uid].gameObject);
+        heroDic.Remove(_uid);
+    }
     public void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
@@ -140,7 +146,17 @@ public class MGameManager : SingletonMono<MGameManager>
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, () =>
         {
+            // GetDamaged
+            bool isDead = UserData.Instance.AttackToHero(heroData.uid, 10);
 
+            if (isDead)
+            {
+                 RemoveHero(heroData.uid);
+            }
+            else
+            {
+                //heroObj.SetHPBar(heroData.hp / (float)heroData.refData.hp);
+            }
         });
         heroObj.StartFSM();
         heroDic.Add(heroData.uid, heroObj);

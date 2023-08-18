@@ -133,6 +133,21 @@ public partial class UserData : Singleton<UserData>
         }
         return false;
     }
+    public bool AttackToHero(int _heroUID, int _damage)
+    {
+        if (!heroDataDic.ContainsKey(_heroUID))
+        {
+            Debug.LogError($"already detroyed {_heroUID}");
+            return false;
+        }
+        var heroData = heroDataDic[_heroUID];
+        heroData.hp -= _damage;
+        if (heroData.hp <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void RemoveEnmey(int _enemyUID)
     {

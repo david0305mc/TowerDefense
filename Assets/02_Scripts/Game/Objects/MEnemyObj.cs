@@ -17,7 +17,6 @@ public class MEnemyObj : MBaseObj
 
     public DataManager.Character refData { get; set; }
 
-    private System.Action getDamageAction;
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
     private float commonDelay;
@@ -32,7 +31,8 @@ public class MEnemyObj : MBaseObj
             var enemyData = UserData.Instance.GetHeroData(targetObjUID);
             if (enemyData != null)
             {
-                MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
+                //MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
+
             }
             else
             {
@@ -47,11 +47,6 @@ public class MEnemyObj : MBaseObj
         getDamageAction = _getDamageAction;
         refData = DataManager.Instance.GetCharacterData(TID);
         agent.isStopped = true;
-    }
-
-    public override void GetDamaged(int _damage)
-    {
-        getDamageAction?.Invoke();
     }
 
     public void StartFSM()

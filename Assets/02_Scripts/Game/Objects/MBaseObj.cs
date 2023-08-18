@@ -14,6 +14,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected int tid;
 
+    protected System.Action getDamageAction;
     protected CancellationTokenSource cts;
     protected Animator animator;
     protected AnimationLink animationLink;
@@ -36,7 +37,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public virtual void GetDamaged(int _damage)
     {
-
+        getDamageAction?.Invoke();
     }
 
     public void MoveTo(Vector3 targetPos)

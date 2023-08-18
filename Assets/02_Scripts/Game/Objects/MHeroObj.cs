@@ -19,7 +19,6 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
 
-    public System.Action getDamageAction { get; private set; }
 
     private DataManager.Character refData;
     Vector2 targetWorldPos;
@@ -123,6 +122,12 @@ public class MHeroObj : MBaseObj
     }
     void Move_Update()
     {
+        commonDelay += Time.deltaTime;
+        if (commonDelay >= 1f)
+        {
+            DetectEnemy();
+        }
+
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
         agent.speed = speed;
