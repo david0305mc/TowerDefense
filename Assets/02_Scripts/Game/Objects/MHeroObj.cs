@@ -126,9 +126,12 @@ public class MHeroObj : MBaseObj
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
         agent.speed = speed;
+
+        FlipRenderers(agent.velocity.x < 0);
+
         if (enemyObj != null)
         {
-            FlipRenderers(transform.position.x > enemyObj.transform.position.x);
+            //FlipRenderers(transform.position.x > enemyObj.transform.position.x);
             if (Vector2.Distance(transform.position, targetWorldPos) < refData.attackrange * 0.1f + 0.01f)
             {
                 agent.isStopped = true;
@@ -141,6 +144,7 @@ public class MHeroObj : MBaseObj
         }
         
     }
+
 
     void Attack_Enter()
     {

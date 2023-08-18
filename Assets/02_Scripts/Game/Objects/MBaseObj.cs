@@ -11,6 +11,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 {
     [SerializeField] private Slider hpBar;
     [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected int tid;
 
     protected CancellationTokenSource cts;
