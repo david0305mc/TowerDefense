@@ -47896,6 +47896,9 @@ GameObject:
   - component: {fileID: 483889097935924806}
   - component: {fileID: 4205446892994798989}
   - component: {fileID: 5531676838592357510}
+  - component: {fileID: 4060706108449551790}
+  - component: {fileID: 8227993937626988563}
+  - component: {fileID: 8274620422351295178}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -48877,6 +48880,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 47, y: 26, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 4
+      m_TileSpriteIndex: 4
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 67, y: 26, z: 0}
     second:
       serializedVersion: 2
@@ -48938,6 +48951,16 @@ Tilemap:
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
   - first: {x: 16, y: 27, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 4
+      m_TileSpriteIndex: 4
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 36, y: 27, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 4
@@ -52197,7 +52220,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 5dd902959addeb34ba0b00d8ab8cb542, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 60216d214614f374c8c5e440b29b952b, type: 2}
-  - m_RefCount: 326
+  - m_RefCount: 328
     m_Data: {fileID: 11400000, guid: 08e027e402936324ea692b153d9b6767, type: 2}
   - m_RefCount: 11
     m_Data: {fileID: 11400000, guid: 28c970fc878e8ce46affa0140659b74a, type: 2}
@@ -52210,12 +52233,12 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 47a05eead79ec0448b096ec8b43ab661, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 21300000, guid: eb387dc68d9f4134191fe562daca6ef0, type: 3}
-  - m_RefCount: 326
+  - m_RefCount: 328
     m_Data: {fileID: 21300000, guid: a0b0b7e656ebee942b7e7bc94200ddfd, type: 3}
   - m_RefCount: 11
     m_Data: {fileID: 21300000, guid: 4482067803d03be4bacae21b239235ca, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 426
+  - m_RefCount: 428
     m_Data:
       e00: 1
       e01: 0
@@ -52234,7 +52257,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 426
+  - m_RefCount: 428
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -52325,6 +52348,65 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!19719996 &4060706108449551790
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579864194880847765}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0.00001
+--- !u!50 &8227993937626988563
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579864194880847765}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!66 &8274620422351295178
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579864194880847765}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
 --- !u!1 &8069810211610388144
 GameObject:
   m_ObjectHideFlags: 0
@@ -52377,7 +52459,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_UseGeometry: 0
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1
@@ -52387,7 +52469,7 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: e1140b2a23f955f43a09c5eda2f696f9, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: b1798c854e36fbf4ca2b110db66df109, type: 2}
 --- !u!114 &6385775399067138522
 MonoBehaviour:
   m_ObjectHideFlags: 0
