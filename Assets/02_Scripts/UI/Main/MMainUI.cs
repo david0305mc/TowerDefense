@@ -12,14 +12,14 @@ public class MMainUI : MonoBehaviour
     {
         tankerBtn.onClick.AddListener(() =>
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 MGameManager.Instance.AddHero(0);
             }
         });
         archerBtn.onClick.AddListener(() =>
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 MGameManager.Instance.AddHero(1);
             }

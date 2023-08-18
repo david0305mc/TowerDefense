@@ -451,6 +451,7 @@ namespace CartoonFX
 		public AnimatedLight[] animatedLights;
 		[Tooltip("Defines which Particle System to track to trigger light fading out.\nLeave empty if not using fading out.")]
 		public ParticleSystem fadeOutReference;
+		public System.Action EndAction { set; get; }
 
 		float time;
 		ParticleSystem rootParticleSystem;
@@ -553,14 +554,15 @@ namespace CartoonFX
 				{
 					if (!rootParticleSystem.IsAlive(true))
 					{
-						if (clearBehavior == ClearBehavior.Destroy)
-						{
-							GameObject.Destroy(this.gameObject);
-						}
-						else
-						{
-							this.gameObject.SetActive(false);
-						}
+						EndAction?.Invoke();
+						//if (clearBehavior == ClearBehavior.Destroy)
+						//{
+						//	GameObject.Destroy(this.gameObject);
+						//}
+						//else
+						//{
+						//	this.gameObject.SetActive(false);
+						//}
 					}
 				}
 			}

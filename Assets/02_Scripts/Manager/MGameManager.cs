@@ -146,7 +146,7 @@ public class MGameManager : SingletonMono<MGameManager>
     }
 
     public void NextStage()
-    {
+    {   
         if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
         {
             return;
@@ -188,12 +188,15 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
     {
-        var boomEffect = Instantiate(boomPrefList[boomIndex]);
-        boomEffect.name = name;
+        //return;
+        var boomEffect = Lean.Pool.LeanPool.Spawn(stageprefLists[boomIndex]);
+
+        //var boomEffect = Instantiate(boomPrefList[boomIndex]);
+        //boomEffect.name = name;
         boomEffect.transform.position = _pos;
 
-        boomEffect.gameObject.SetActive(false);
-        boomEffect.gameObject.SetActive(true);
+        //boomEffect.gameObject.SetActive(false);
+        //boomEffect.gameObject.SetActive(true);
         //ParticleSystem ps = boomEffect.GetComponent<ParticleSystem>();
         //if (ps != null)
         //{
