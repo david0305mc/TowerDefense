@@ -680,6 +680,7 @@ GameObject:
   - component: {fileID: 4795326557743024580}
   - component: {fileID: 4795326556918913792}
   - component: {fileID: -6364832738066904887}
+  - component: {fileID: -2146682729542032630}
   m_Layer: 0
   m_Name: Hero04
   m_TagString: Untagged
@@ -716,10 +717,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 0}
-  animator: {fileID: 1294803747445160395}
-  animationLink: {fileID: 4795326557743024582}
   agent: {fileID: 4795326556918913792}
   tid: 1
+  isEnemy: 1
 --- !u!195 &4795326556918913792
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -763,6 +763,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!210 &-2146682729542032630
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294803747366169658}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &1294803747445160389
 GameObject:
   m_ObjectHideFlags: 0

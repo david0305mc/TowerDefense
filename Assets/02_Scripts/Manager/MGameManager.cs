@@ -135,7 +135,7 @@ public class MGameManager : SingletonMono<MGameManager>
     public void AddHero(int index)
     {   
         var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
-        Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+        Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, () =>
         {

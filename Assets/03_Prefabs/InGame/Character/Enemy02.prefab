@@ -1122,6 +1122,7 @@ GameObject:
   - component: {fileID: 2612150332714658175}
   - component: {fileID: 7091301600054615015}
   - component: {fileID: -2023185599908557466}
+  - component: {fileID: -2302215163559217558}
   m_Layer: 0
   m_Name: Enemy02
   m_TagString: Untagged
@@ -1159,10 +1160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 1098909549136046841}
-  tid: 0
   agent: {fileID: 2612150332714658175}
-  animator: {fileID: 8589567210733046708}
-  animationLink: {fileID: 2612150333463542713}
+  tid: 0
+  isEnemy: 1
 --- !u!195 &2612150332714658175
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1232,6 +1232,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!210 &-2302215163559217558
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8589567210863517253}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &8589567211231454233
 GameObject:
   m_ObjectHideFlags: 0

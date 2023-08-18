@@ -681,6 +681,7 @@ GameObject:
   - component: {fileID: 4795326556918913792}
   - component: {fileID: 334684469362174360}
   - component: {fileID: 2504958540779021822}
+  - component: {fileID: 7768979626919415564}
   m_Layer: 0
   m_Name: Hero03
   m_TagString: Untagged
@@ -729,7 +730,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1294803747366169658}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.2
+  m_Radius: 0.01
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 1
@@ -789,6 +790,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!210 &7768979626919415564
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294803747366169658}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &1294803747445160389
 GameObject:
   m_ObjectHideFlags: 0
