@@ -11,7 +11,8 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<MHeroObj> heroObjPrefList;
-    [SerializeField] private List<GameObject> boomPrefList;
+    [SerializeField] private List<CartoonFX.CFXR_Effect> boomPrefList;
+    [SerializeField] private CartoonFX.CFXR_Effect effectPref;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -188,25 +189,11 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
     {
-        //return;
-        var boomEffect = Lean.Pool.LeanPool.Spawn(stageprefLists[boomIndex]);
-
-        //var boomEffect = Instantiate(boomPrefList[boomIndex]);
-        //boomEffect.name = name;
-        boomEffect.transform.position = _pos;
-
-        //boomEffect.gameObject.SetActive(false);
-        //boomEffect.gameObject.SetActive(true);
-        //ParticleSystem ps = boomEffect.GetComponent<ParticleSystem>();
-        //if (ps != null)
-        //{
-        //    var main = ps.main;
-        //    if (main.loop)
-        //    {
-        //        ps.gameObject.AddComponent<CFX_AutoStopLoopedEffect>();
-        //        ps.gameObject.AddComponent<CFX_AutoDestructShuriken>();
-        //    }
-        //}
+        var effect = Lean.Pool.LeanPool.Spawn(boomPrefList[boomIndex]);
+        effect.EndAction = () => {
+            Lean.Pool.LeanPool.Despawn(effect);
+        };
+        effect.transform.position = _pos;
     }
 
 }
