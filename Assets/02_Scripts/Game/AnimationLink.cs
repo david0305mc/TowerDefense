@@ -4,13 +4,41 @@ using UnityEngine;
 
 public class AnimationLink : MonoBehaviour
 {
-    System.Action action;
-    public void SetFireEvent(System.Action _action)
+    System.Action fireAction;
+    System.Action aniEndAction;
+    private Animator animator;
+    public void SetEvent(System.Action _fireAction, System.Action _aniEndAction)
     {
-        action = _action;
+        fireAction = _fireAction;
+        aniEndAction = _aniEndAction;
     }
     public void Fire()
     {
-        action?.Invoke();
+        fireAction?.Invoke();
+    }
+    public void AniEnd()
+    {
+        fireAction?.Invoke();
+    }
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        for (int i = 0; i < animator.runtimeAnimatorController.animationClips.Length; i++)
+        {
+            AnimationClip clip = animator.runtimeAnimatorController.animationClips[i];
+
+            AnimationEvent animationEndEvent = new AnimationEvent();
+            animationEndEvent.time = clip.length;
+            animationEndEvent.functionName = "AniEnd";
+            animationEndEvent.stringParameter = clip.name;
+            clip.AddEvent(animationEndEvent);
+
+            AnimationEvent fireEvent = new AnimationEvent();
+            fireEvent.time = clip.length;
+            fireEvent.functionName = "Fire";
+            fireEvent.stringParameter = clip.name;
+            clip.AddEvent(fireEvent);
+        }
     }
 }

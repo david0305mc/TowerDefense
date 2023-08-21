@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 public class MGameManager : SingletonMono<MGameManager>
@@ -45,12 +46,15 @@ public class MGameManager : SingletonMono<MGameManager>
             return enemyDic[_uid];
         return null;
     }
-    public int GetNearestEnemyObj(Vector3 srcPos)
+    public int GetNearestEnemyObj(Vector3 srcPos, List<int> _blackList)
     {
         int nearestObjUID = -1;
         float shortDist = float.MaxValue;
         foreach (var item in enemyDic)
         {
+            if (_blackList.Contains(item.Key))
+                continue;
+
             float dist = Vector3.Distance(srcPos, item.Value.transform.position);
 
             if (dist < shortDist)

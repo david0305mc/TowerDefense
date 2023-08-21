@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
+using NavMeshPlus;
 
 public class MHeroObj : MBaseObj
 {
@@ -18,19 +19,23 @@ public class MHeroObj : MBaseObj
 
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
-
-
+    
     private DataManager.Character refData;
     public Vector2 targetWorldPos;
-    
+    private NavMeshPath currNavPath;
+    private List<int> blackList;
+
+    static readonly float agentDrift = 0.0001f; // minimal
 
     protected override void Awake()
     {
         isEnemy = false;
+        blackList = new List<int>();
+        currNavPath = new NavMeshPath();
         base.Awake();
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
-        animationLink.SetFireEvent(() =>
+        animationLink.SetEvent(() =>
         {
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
@@ -45,6 +50,12 @@ public class MHeroObj : MBaseObj
                 fsm.ChangeState(FSMStates.Idle);
             }
 
+        }, ()=> {
+            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
+            if (enemyData == null)
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
         });
     }
 
@@ -82,46 +93,55 @@ public class MHeroObj : MBaseObj
     private void DetectEnemy()
     {
         commonDelay = 0;
-        targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position);
+        targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position, blackList);
+
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         if (enemyObj != null)
         {
-            float randX = Random.Range(0.5f, 1.5f);
-            float randY = Random.Range(-1, 2);
-
-            Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
-            Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
-            if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
+            if (!agent.CalculatePath(enemyObj.transform.position, currNavPath))
             {
-                targetWorldPos = pos01;
-                targetWorldPos = enemyObj.transform.position;
-                fsm.ChangeState(FSMStates.Move);
+                blackList.Add(targetObjUID);
             }
             else
             {
-                targetWorldPos = pos02;
-                targetWorldPos = enemyObj.transform.position;
+                float randX = Random.Range(0.5f, 1.5f);
+                float randY = Random.Range(-1, 2);
+
+                Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
+                Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
+                if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
+                {
+                    //targetWorldPos = FixStuckPos(pos01);
+                    targetWorldPos = enemyObj.transform.position;
+                }
+                else
+                {
+                    //targetWorldPos = FixStuckPos(pos02);
+                    targetWorldPos = enemyObj.transform.position;
+                }
+
                 fsm.ChangeState(FSMStates.Move);
             }
         }
+    }
+
+    private Vector3 FixStuckPos(Vector3 _pos)
+    {
+        if (Mathf.Abs(transform.position.x - _pos.x) < agentDrift)
+        {
+            var driftPos = _pos + new Vector3(agentDrift, 0f, 0f);
+            return driftPos;
+        }
+        return _pos;
     }
 
     void Move_Enter()
     {
         animator.Play("char_01_walk");
         agent.isStopped = false;
-        SetDestination(targetWorldPos);
+        agent.SetDestination(targetWorldPos);
     }
-    static float agentDrift = 0.0001f; // minimal
-    void SetDestination(Vector3 target)
-    {
-        Vector3 driftPos = target;
-        if (Mathf.Abs(transform.position.x - target.x) < agentDrift)
-        {
-            driftPos = target + new Vector3(agentDrift, 0f, 0f);
-        }
-        agent.SetDestination(driftPos);
-    }
+    
     void Move_Update()
     {
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
@@ -131,6 +151,12 @@ public class MHeroObj : MBaseObj
         FlipRenderers(agent.velocity.x < 0);
         if (enemyObj != null)
         {
+            //if (!agent.CalculatePath(targetWorldPos, currNavPath))
+            //{
+            //    fsm.ChangeState(FSMStates.Idle);
+            //    return;
+            //}
+            
             //FlipRenderers(transform.position.x > enemyObj.transform.position.x);
             if (Vector2.Distance(transform.position, targetWorldPos) < refData.attackrange * 0.1f + 0.01f)
             {

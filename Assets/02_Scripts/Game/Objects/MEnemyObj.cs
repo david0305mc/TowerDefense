@@ -25,7 +25,7 @@ public class MEnemyObj : MBaseObj
         base.Awake();
         
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
-        animationLink.SetFireEvent(() =>
+        animationLink.SetEvent(() =>
         {
             var enemyData = UserData.Instance.GetHeroData(targetObjUID);
             if (enemyData != null)
@@ -39,7 +39,12 @@ public class MEnemyObj : MBaseObj
             {
                 fsm.ChangeState(FSMStates.Idle);
             }
-
+        }, ()=> {
+            var enemyData = UserData.Instance.GetHeroData(targetObjUID);
+            if (enemyData != null)
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
         });
     }
     public void InitObject(int _uid, System.Action _getDamageAction)
