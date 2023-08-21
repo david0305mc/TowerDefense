@@ -13,6 +13,7 @@ public class MHeroObj : MBaseObj
     {
         Idle,
         Move,
+        WaypointMove,
         AttackMove,
         Attack,
     }
@@ -24,8 +25,10 @@ public class MHeroObj : MBaseObj
     public Vector2 targetWorldPos;
     private NavMeshPath currNavPath;
     private List<int> blackList;
+    private int wayPointIndex;
 
     static readonly float agentDrift = 0.0001f; // minimal
+
 
     protected override void Awake()
     {
@@ -35,8 +38,25 @@ public class MHeroObj : MBaseObj
         base.Awake();
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.SetAttackAction(collision =>
+            {
+                // Attack
+                var damagable = collision.GetComponent<Damageable>();
+                if (damagable != null)
+                {
+                    if (damagable.IsEnemey())
+                    {
+                        damagable.GetDamaged(1);
+                        MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    }
+                }
+            });
+        }
         animationLink.SetEvent(() =>
         {
+            // Fire
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
@@ -51,6 +71,7 @@ public class MHeroObj : MBaseObj
             }
 
         }, ()=> {
+            // Ani End
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData == null)
             {
@@ -68,6 +89,7 @@ public class MHeroObj : MBaseObj
 
     public void StartFSM()
     {
+        wayPointIndex = 0;
         fsm.ChangeState(FSMStates.Idle);
     }
     void Update()
@@ -86,7 +108,39 @@ public class MHeroObj : MBaseObj
         commonDelay += Time.deltaTime;
         if (commonDelay >= 1f)
         {
-            DetectEnemy();
+            if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
+            {
+                targetWorldPos = MGameManager.Instance.WayPoints[wayPointIndex].transform.position;
+                agent.SetDestination(targetWorldPos);
+                fsm.ChangeState(FSMStates.WaypointMove);
+            }
+
+            //DetectEnemy();
+        }
+    }
+
+    void WaypointMove_Enter()
+    {
+        animator.Play("char_01_walk");
+        agent.isStopped = false;
+    }
+
+    void WaypointMove_Update()
+    {
+        FlipRenderers(agent.velocity.x < 0);
+        if (Vector2.Distance(transform.position, targetWorldPos) < 0.3f)
+        {
+            wayPointIndex++;
+
+            if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
+            {
+                targetWorldPos = MGameManager.Instance.WayPoints[wayPointIndex].transform.position;
+                agent.SetDestination(targetWorldPos);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
         }
     }
 
@@ -151,12 +205,6 @@ public class MHeroObj : MBaseObj
         FlipRenderers(agent.velocity.x < 0);
         if (enemyObj != null)
         {
-            //if (!agent.CalculatePath(targetWorldPos, currNavPath))
-            //{
-            //    fsm.ChangeState(FSMStates.Idle);
-            //    return;
-            //}
-            
             //FlipRenderers(transform.position.x > enemyObj.transform.position.x);
             if (Vector2.Distance(transform.position, targetWorldPos) < refData.attackrange * 0.1f + 0.01f)
             {
@@ -168,7 +216,6 @@ public class MHeroObj : MBaseObj
         {
             fsm.ChangeState(FSMStates.Idle);
         }
-        
     }
 
 

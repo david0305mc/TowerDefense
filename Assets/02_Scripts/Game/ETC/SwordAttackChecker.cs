@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class SwordAttackChecker : MonoBehaviour
 {
+    private System.Action<Collider2D> attackAction;
+
+    public void SetAttackAction(System.Action<Collider2D> _attackAction)
+    {
+        attackAction = _attackAction;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var damagable = collision.GetComponent<Damageable>();
         if (damagable != null)
         {
-            damagable.GetDamaged(1);
-            MGameManager.Instance.ShowBoomEffect(1, collision.ClosestPoint(transform.position));
+            attackAction?.Invoke(collision);
         }
     }
 }

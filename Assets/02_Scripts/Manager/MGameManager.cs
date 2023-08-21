@@ -19,6 +19,8 @@ public class MGameManager : SingletonMono<MGameManager>
     private Dictionary<int, MHeroObj> heroDic;
     private StageObject currStageObj;
 
+    public List<GameObject> WayPoints => currStageObj.wayPointLists;
+
     [SerializeField] private List<TileData> tileDatas;
     private Dictionary<TileBase, TileData> dataFromTileMap;
 

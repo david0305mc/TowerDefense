@@ -18,13 +18,30 @@ public class MEnemyObj : MBaseObj
     public DataManager.Character refData { get; set; }
 
     StateMachine<FSMStates, StateDriverUnity> fsm;
-
+    private SwordAttackChecker swordAttackChecker;
 
     protected override void Awake()
     {
         base.Awake();
         
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
+        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.SetAttackAction(collision =>
+            {
+                // Attack
+                var damagable = collision.GetComponent<Damageable>();
+                if (damagable != null)
+                {
+                    if (!damagable.IsEnemey())
+                    {
+                        damagable.GetDamaged(1);
+                        MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    }
+                }
+            });
+        }
         animationLink.SetEvent(() =>
         {
             var enemyData = UserData.Instance.GetHeroData(targetObjUID);
