@@ -19,7 +19,6 @@ public class MEnemyObj : MBaseObj
 
     StateMachine<FSMStates, StateDriverUnity> fsm;
 
-    private float commonDelay;
 
     protected override void Awake()
     {
