@@ -34,10 +34,10 @@ public class MEnemyObj : MBaseObj
                 var damagable = collision.GetComponent<Damageable>();
                 if (damagable != null)
                 {
-                    if (!damagable.IsEnemey())
+                    if (!damagable.IsEnemy())
                     {
                         damagable.GetDamaged(1);
-                        MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                        MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(swordAttackChecker.transform.position));
                     }
                 }
             });

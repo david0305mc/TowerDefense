@@ -62,7 +62,7 @@ public class ProjectileStraight : MonoBehaviour
         {
             if (targetObj != null)
             {
-                if (targetObj.isEnemy)
+                if (targetObj.IsEnemy())
                 {
                     var enemyData = UserData.Instance.GetEnemyData(targetObj.UID);
                     if (enemyData != null)
@@ -92,9 +92,9 @@ public class ProjectileStraight : MonoBehaviour
         var damagable = collision.GetComponent<Damageable>();
         if (damagable != null)
         {
-            if (damagable.IsEnemey())
+            if (damagable.IsEnemy())
             {
-                if (targetObj.isEnemy)
+                if (targetObj.IsEnemy())
                 {
                     damagable.GetDamaged(1);
                     MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
@@ -103,7 +103,8 @@ public class ProjectileStraight : MonoBehaviour
             }
             else 
             {
-                if (!targetObj.isEnemy)
+                
+                if (!targetObj.IsEnemy())
                 {
                     damagable.GetDamaged(1);
                     MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));

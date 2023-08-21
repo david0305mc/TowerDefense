@@ -32,7 +32,6 @@ public class MHeroObj : MBaseObj
 
     protected override void Awake()
     {
-        isEnemy = false;
         blackList = new List<int>();
         currNavPath = new NavMeshPath();
         base.Awake();
@@ -46,7 +45,7 @@ public class MHeroObj : MBaseObj
                 var damagable = collision.GetComponent<Damageable>();
                 if (damagable != null)
                 {
-                    if (damagable.IsEnemey())
+                    if (damagable.IsEnemy())
                     {
                         damagable.GetDamaged(1);
                         MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
@@ -85,6 +84,10 @@ public class MHeroObj : MBaseObj
         uid = _uid;
         getDamageAction = _getDamageAction;
         refData = DataManager.Instance.GetCharacterData(TID);
+    }
+    public override bool IsEnemy()
+    {
+        return false;
     }
 
     public void StartFSM()

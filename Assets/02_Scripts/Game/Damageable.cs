@@ -5,5 +5,5 @@ using UnityEngine;
 public interface Damageable
 {
     public void GetDamaged(int _damage);
-    public bool IsEnemey();
+    public bool IsEnemy();
 }

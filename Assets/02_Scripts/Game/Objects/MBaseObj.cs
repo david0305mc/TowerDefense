@@ -19,7 +19,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected Animator animator;
     protected AnimationLink animationLink;
 
-    public bool isEnemy = true;
     protected int uid;
     public int TID { get { return tid; } }
     public int UID { get { return uid; } }
@@ -75,8 +74,8 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    public bool IsEnemey()
+    public virtual bool IsEnemy()
     {
-        return isEnemy;
+        return false;
     }
 }
