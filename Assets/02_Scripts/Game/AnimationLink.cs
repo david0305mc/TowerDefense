@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class AnimationLink : MonoBehaviour
 {
@@ -27,12 +28,14 @@ public class AnimationLink : MonoBehaviour
         for (int i = 0; i < animator.runtimeAnimatorController.animationClips.Length; i++)
         {
             AnimationClip clip = animator.runtimeAnimatorController.animationClips[i];
-
-            AnimationEvent animationEndEvent = new AnimationEvent();
-            animationEndEvent.time = clip.length;
-            animationEndEvent.functionName = "AniEnd";
-            animationEndEvent.stringParameter = clip.name;
-            clip.AddEvent(animationEndEvent);
+            if (System.Array.Find(clip.events, item => item.functionName == "AniEnd") == default)
+            {
+                AnimationEvent animationEndEvent = new AnimationEvent();
+                animationEndEvent.time = clip.length;
+                animationEndEvent.functionName = "AniEnd";
+                animationEndEvent.stringParameter = clip.name;
+                clip.AddEvent(animationEndEvent);
+            }
         }
     }
 }

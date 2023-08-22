@@ -92,11 +92,25 @@ public class MHeroObj : MBaseObj
                 return;
             }
 
+            attackLongDelayCount--;
             // Attack Ani End
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData == null)
             {
                 fsm.ChangeState(FSMStates.Idle);
+            }
+            else
+            {
+                if (attackLongDelayCount <= 0)
+                {
+                    attackDelay = 3f;
+                    attackLongDelayCount = 3;
+                }
+                else
+                {
+                    attackDelay = 0.3f;
+                }
+                Debug.Log("attack End");
             }
         });
     }
@@ -217,8 +231,9 @@ public class MHeroObj : MBaseObj
     {
         agent.isStopped = true;
         animator.Play("char_01_atk");
-        
         commonDelay = 0;
+        attackDelay = 0f;
+        attackLongDelayCount = 3;
         LookTarget();
     }
 
@@ -228,6 +243,14 @@ public class MHeroObj : MBaseObj
         if (commonDelay >= 0.3f)
         {
             LookTarget();   
+        }
+        if (attackDelay > 0)
+        {
+            attackDelay -= Time.deltaTime;
+            if (attackDelay <= 0)
+            {
+                animator.Play("char_01_atk", -1, 0);
+            }
         }
     }
 

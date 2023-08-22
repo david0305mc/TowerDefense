@@ -23,6 +23,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     public int TID { get { return tid; } }
     public int UID { get { return uid; } }
 
+    protected float attackDelay;
+    protected float attackLongDelayCount;
+
     protected float commonDelay;
     protected int targetObjUID;
 
