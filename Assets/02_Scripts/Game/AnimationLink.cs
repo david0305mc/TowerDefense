@@ -33,12 +33,6 @@ public class AnimationLink : MonoBehaviour
             animationEndEvent.functionName = "AniEnd";
             animationEndEvent.stringParameter = clip.name;
             clip.AddEvent(animationEndEvent);
-
-            AnimationEvent fireEvent = new AnimationEvent();
-            fireEvent.time = clip.length;
-            fireEvent.functionName = "Fire";
-            fireEvent.stringParameter = clip.name;
-            clip.AddEvent(fireEvent);
         }
     }
 }
