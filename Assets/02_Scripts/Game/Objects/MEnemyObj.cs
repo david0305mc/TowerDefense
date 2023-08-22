@@ -16,7 +16,7 @@ public class MEnemyObj : MBaseObj
     }
 
     [SerializeField] private float rangeCheckForEditor = 3f;
-    public DataManager.Character refData { get; set; }
+    public CharacterData unitData { get; set; }
 
     StateMachine<FSMStates, StateDriverUnity> fsm;
     private SwordAttackChecker swordAttackChecker;
@@ -62,7 +62,7 @@ public class MEnemyObj : MBaseObj
             var enemyData = UserData.Instance.GetHeroData(targetObjUID);
             if (enemyData != null)
             {
-                if (refData.charactertype == CHARACTER_TYPE.ARCHER)
+                if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
                 {
                     MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
                 }
@@ -83,7 +83,7 @@ public class MEnemyObj : MBaseObj
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
-        refData = DataManager.Instance.GetCharacterData(TID);
+        unitData = UserData.Instance.GetEnemyData(_uid);
         agent.isStopped = true;
     }
 

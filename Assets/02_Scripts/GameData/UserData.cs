@@ -113,7 +113,7 @@ public partial class UserData : Singleton<UserData>
 
     public CharacterData AddEnemyData(int _tid)
     {
-        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, true);
+        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, 1, true);
         enemyDataDic.Add(data.uid, data);
         return data;
     }
@@ -156,7 +156,7 @@ public partial class UserData : Singleton<UserData>
 
     public CharacterData AddHeroData(int _tid)
     {
-        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, false);
+        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, 1, false);
         heroDataDic.Add(data.uid, data);
         return data;
     }

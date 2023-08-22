@@ -720,8 +720,9 @@ MonoBehaviour:
   hpBar: {fileID: 0}
   agent: {fileID: 4795326556918913792}
   rigidBody2d: {fileID: 334684469362174360}
-  tid: 0
-  targetWorldPos: {x: 0, y: 0}
+  tid: 1001
+  targetObj: {fileID: 0}
+  targetoffset: {x: 0, y: 0}
 --- !u!195 &4795326556918913792
 NavMeshAgent:
   m_ObjectHideFlags: 0

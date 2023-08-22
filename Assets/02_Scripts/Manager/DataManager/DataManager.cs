@@ -20,7 +20,6 @@ public partial class DataManager : Singleton<DataManager>
 			"ObjTable",
 			"SpriteSheet",
 			"SpriteCollection",
-			"Character",
 			"Unitinfo",
 			"UnitGradeInfo",
 			"ProjectileInfo",

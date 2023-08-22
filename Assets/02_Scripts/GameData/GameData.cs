@@ -65,17 +65,19 @@ public class CharacterData
     public int tid;
     public bool IsEnemy;
     public int hp;
-    public DataManager.Character refData;
+    public DataManager.Unitinfo refData;
+    public DataManager.UnitGradeInfo refUnitGradeData;
 
-    public static CharacterData Create(int _uid, int _tid, bool _isEnemy)
+    public static CharacterData Create(int _uid, int _tid, int _grade, bool _isEnemy)
     {
-        CharacterData data = new CharacterData() { 
-            uid = _uid, 
-            tid = _tid, 
-            IsEnemy = _isEnemy, 
-            refData = DataManager.Instance.GetCharacterData(_tid),
+        CharacterData data = new CharacterData() {
+            uid = _uid,
+            tid = _tid,
+            IsEnemy = _isEnemy,
+            refData = DataManager.Instance.GetUnitinfoData(_tid),
+            refUnitGradeData = DataManager.Instance.GetUnitGrade(_tid, _grade)
         };
-        data.hp = data.refData.hp;
+        data.hp = data.refUnitGradeData.hp;
 
         return data;
     }

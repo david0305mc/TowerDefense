@@ -21,7 +21,7 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
     
-    private DataManager.Character refData;
+    private CharacterData refData;
     public GameObject targetObj;
     public Vector2 targetoffset;
     private NavMeshPath currNavPath;
@@ -75,7 +75,7 @@ public class MHeroObj : MBaseObj
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
-                if (refData.charactertype == CHARACTER_TYPE.ARCHER)
+                if (refData.refData.unit_type == UNIT_TYPE.ARCHER)
                 {
                     MGameManager.Instance.LauchProjectileToEnemy(this, targetObjUID);
                 }
@@ -105,7 +105,7 @@ public class MHeroObj : MBaseObj
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
-        refData = DataManager.Instance.GetCharacterData(TID);
+        refData = UserData.Instance.GetHeroData(_uid);
     }
     public override bool IsEnemy()
     {
@@ -201,7 +201,7 @@ public class MHeroObj : MBaseObj
                 Debug.Log("Error");
             }
 
-            if (Vector2.Distance(transform.position, targetObj.transform.position) < refData.attackrange * 0.5f + 0.01f)
+            if (Vector2.Distance(transform.position, targetObj.transform.position) < refData.refUnitGradeData.attackrange * 0.5f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }

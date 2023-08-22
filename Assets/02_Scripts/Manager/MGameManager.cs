@@ -96,7 +96,7 @@ public class MGameManager : SingletonMono<MGameManager>
         var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
-            var data = UserData.Instance.AddEnemyData(enemyObj.TID);
+            CharacterData data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, ()=> {
 
                 // GetDamaged
@@ -107,7 +107,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 }
                 else
                 {
-                    enemyObj.SetHPBar(data.hp / (float)data.refData.hp);
+                    enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
                 }
 
             });
