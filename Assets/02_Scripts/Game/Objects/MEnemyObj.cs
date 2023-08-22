@@ -20,6 +20,11 @@ public class MEnemyObj : MBaseObj
     StateMachine<FSMStates, StateDriverUnity> fsm;
     private SwordAttackChecker swordAttackChecker;
 
+    public override bool IsEnemy()
+    {
+        return true;
+    }
+
     protected override void Awake()
     {
         base.Awake();
