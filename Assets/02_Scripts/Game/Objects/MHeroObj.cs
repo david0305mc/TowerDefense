@@ -21,7 +21,7 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
     
-    private UnitData refData;
+    private UnitData unitData;
     public GameObject targetObj;
     public Vector2 targetoffset;
     private NavMeshPath currNavPath;
@@ -75,7 +75,7 @@ public class MHeroObj : MBaseObj
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
-                if (refData.refData.unit_type == UNIT_TYPE.ARCHER)
+                if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
                 {
                     MGameManager.Instance.LauchProjectileToEnemy(this, targetObjUID);
                 }
@@ -105,7 +105,7 @@ public class MHeroObj : MBaseObj
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
-        refData = UserData.Instance.GetHeroData(_uid);
+        unitData = UserData.Instance.GetHeroData(_uid);
     }
     public override bool IsEnemy()
     {
@@ -149,10 +149,10 @@ public class MHeroObj : MBaseObj
     {
         agent.SetDestination(FixStuckPos(targetObj.transform.position));
         FlipRenderers(agent.velocity.x < 0);
-        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, 5, Game.GameConfig.UnitLayerMask);
+        
+        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
         {
-            
             var objLists = detectedObjs.Where(item=>item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
             var enemyObj = GetNearestEnemy(objLists);
 
@@ -201,7 +201,7 @@ public class MHeroObj : MBaseObj
                 Debug.Log("Error");
             }
 
-            if (Vector2.Distance(transform.position, targetObj.transform.position) < refData.refUnitGradeData.attackrange * 0.5f + 0.01f)
+            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.5f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
@@ -217,6 +217,7 @@ public class MHeroObj : MBaseObj
     {
         agent.isStopped = true;
         animator.Play("char_01_atk");
+        
         commonDelay = 0;
         LookTarget();
     }
