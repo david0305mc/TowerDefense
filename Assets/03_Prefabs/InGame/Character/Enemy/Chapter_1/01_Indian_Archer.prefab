@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945536975646371}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirePos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945537072668256}
   - component: {fileID: 6488945537072668257}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945537181982591}
   - component: {fileID: 6488945537181982584}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945537192346034}
   - component: {fileID: 6488945537192346035}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945537206965177}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 6488945537334392226}
   - component: {fileID: 6488945537334392236}
   - component: {fileID: 6488945537334392227}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945537386294904}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Upper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945537422415137}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 6488945537912930186}
   - component: {fileID: 6488945537912930185}
   - component: {fileID: 6488945537912930184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945538029791734}
   - component: {fileID: 6488945538029791735}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 6488945538131905290}
   - component: {fileID: 6488945538131905289}
   - component: {fileID: 6488945538131905288}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 01_Indian_Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +687,7 @@ MonoBehaviour:
   agent: {fileID: 6488945538131905291}
   rigidBody2d: {fileID: 6488945538131905290}
   tid: 1001
-  isEnemy: 1
+  rangeCheckForEditor: 3
 --- !u!195 &6488945538131905291
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -778,7 +778,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945538195045931}
   - component: {fileID: 6488945538195045940}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -864,7 +864,7 @@ GameObject:
   - component: {fileID: 6488945538244810555}
   - component: {fileID: 6488945538244810554}
   - component: {fileID: 6488945538244810553}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -991,7 +991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945538327138302}
   - component: {fileID: 6488945538327138303}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945538418424675}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,7 +1107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488945538714292645}
   - component: {fileID: 6488945538714292646}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 6488945538745796031}
   - component: {fileID: 6488945538745796025}
   - component: {fileID: 6488945538745796024}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Progressbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1266,7 +1266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6488945538913816436}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1300,6 +1300,10 @@ PrefabInstance:
     - target: {fileID: 644771012505844121, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
       propertyPath: m_Name
       value: Stone
+      objectReference: {fileID: 0}
+    - target: {fileID: 644771012505844121, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 644771012505844122, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
       propertyPath: m_RootOrder

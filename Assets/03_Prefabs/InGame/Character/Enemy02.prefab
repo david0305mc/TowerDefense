@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6573258242411819513}
   - component: {fileID: 3599162855653457080}
   - component: {fileID: 7284211574104768565}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 125963801010570153}
   - component: {fileID: 8543999179262855208}
   - component: {fileID: 3812409946406649306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 5176670045887921645}
   - component: {fileID: 7229456617163907934}
   - component: {fileID: 1098909549136046841}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 2940042906393168048}
   - component: {fileID: 9030786647466077512}
   - component: {fileID: 1551771660702578515}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Progressbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8589567209352040885}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8589567209512624045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567209632139893}
   - component: {fileID: 8589567209632139894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Char_1_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8589567209810825499}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567209975526344}
   - component: {fileID: 8589567209975526345}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8589567210265028305}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -681,7 +681,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567210270323361}
   - component: {fileID: 8589567210270323362}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8589567210432010627}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,7 +797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567210476621814}
   - component: {fileID: 8589567210476621815}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567210603495190}
   - component: {fileID: 8589567210603495191}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -967,7 +967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567210634365448}
   - component: {fileID: 8589567210634365449}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Char_1_1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1052,7 +1052,7 @@ GameObject:
   - component: {fileID: 8589567210733046715}
   - component: {fileID: 8589567210733046708}
   - component: {fileID: 2612150333463542713}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1123,7 +1123,7 @@ GameObject:
   - component: {fileID: 7091301600054615015}
   - component: {fileID: -2023185599908557466}
   - component: {fileID: -2302215163559217558}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1163,7 @@ MonoBehaviour:
   agent: {fileID: 2612150332714658175}
   rigidBody2d: {fileID: 0}
   tid: 0
-  isEnemy: 1
+  rangeCheckForEditor: 3
 --- !u!195 &2612150332714658175
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1254,7 +1254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567211231454234}
   - component: {fileID: 8589567211231454235}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1385,7 +1385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8589567211232181181}
   - component: {fileID: 8589567211232181182}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}

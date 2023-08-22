@@ -18,7 +18,7 @@ public class AnimationLink : MonoBehaviour
     }
     public void AniEnd()
     {
-        fireAction?.Invoke();
+        aniEndAction?.Invoke();
     }
 
     private void Awake()

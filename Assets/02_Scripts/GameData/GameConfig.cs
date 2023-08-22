@@ -9,6 +9,7 @@ namespace Game
     {
         public static readonly int ItemSelectedLayerOrder = 10;
 
+        public static int UnitLayerMask = LayerMask.GetMask("Unit");
         public static int ItemLayerMask = LayerMask.GetMask("Item");
         public static int GroundLayerMask = LayerMask.GetMask("Ground");
         public static int UILayerMask = LayerMask.GetMask("UI");

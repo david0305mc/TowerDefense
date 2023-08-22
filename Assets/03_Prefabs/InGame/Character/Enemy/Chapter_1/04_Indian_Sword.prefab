@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556141177242690116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5556141177543354511}
   - component: {fileID: 5556141177543354505}
   - component: {fileID: 5556141177543354504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Progressbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141177574734997}
   - component: {fileID: 5556141177574734998}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141177661596366}
   - component: {fileID: 5556141177661596367}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556141177836787283}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: L_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,7 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141177985025222}
   - component: {fileID: 5556141177985025223}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 5556141178016867898}
   - component: {fileID: 5556141178016867897}
   - component: {fileID: 5556141178016867896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 04_Indian_Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,6 +446,7 @@ MonoBehaviour:
   agent: {fileID: 5556141178016867899}
   rigidBody2d: {fileID: 5556141178016867898}
   tid: 1004
+  rangeCheckForEditor: 3
 --- !u!195 &5556141178016867899
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -536,7 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141178062131995}
   - component: {fileID: 5556141178062131972}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +623,7 @@ GameObject:
   - component: {fileID: 5556141178180139531}
   - component: {fileID: 5556141178180139530}
   - component: {fileID: 5556141178180139529}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -751,7 +752,7 @@ GameObject:
   - component: {fileID: 5556141178334679738}
   - component: {fileID: 5556141178334679737}
   - component: {fileID: 5556141178334679736}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +846,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556141178773782153}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +880,7 @@ GameObject:
   - component: {fileID: 5556141178812160146}
   - component: {fileID: 5556141178812160156}
   - component: {fileID: 5556141178812160147}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -947,7 +948,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556141178869302088}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Upper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -981,7 +982,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556141178967275537}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: R_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1015,7 +1016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141179176383312}
   - component: {fileID: 5556141179176383313}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1099,7 +1100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141179201811023}
   - component: {fileID: 5556141179201811016}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,7 +1184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556141179224730754}
   - component: {fileID: 5556141179224730755}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1268,7 +1269,7 @@ GameObject:
   - component: {fileID: 4923181060705197543}
   - component: {fileID: 4108526891724688822}
   - component: {fileID: 8815987391637011419}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

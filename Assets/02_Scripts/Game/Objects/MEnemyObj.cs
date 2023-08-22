@@ -106,10 +106,10 @@ public class MEnemyObj : MBaseObj
         commonDelay += Time.deltaTime;
         if (commonDelay >= 1f)
         {
-            DetectEnemy();
+            DetectHero();
         }
     }
-    private void DetectEnemy()
+    private void DetectHero()
     {
         commonDelay = 0;
 
@@ -124,8 +124,7 @@ public class MEnemyObj : MBaseObj
                 fsm.ChangeState(FSMStates.Attack);
                 FlipRenderers(heroObj.transform.position.x < transform.position.x);
             }
-        }
-        
+        }        
     }
     void Attack_Enter()
     {
