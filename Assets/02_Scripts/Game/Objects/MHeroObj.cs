@@ -14,7 +14,7 @@ public class MHeroObj : MBaseObj
     {
         Idle,
         WaypointMove,
-        Move,
+        DashMove,
         Attack,
     }
 
@@ -160,7 +160,7 @@ public class MHeroObj : MBaseObj
             {
                 targetObjUID = enemyObj.UID;
                 targetObj = enemyObj.gameObject;
-                fsm.ChangeState(FSMStates.Move);
+                fsm.ChangeState(FSMStates.DashMove);
                 return;
             }
         }
@@ -181,14 +181,14 @@ public class MHeroObj : MBaseObj
     }
 
 
-    void Move_Enter()
+    void DashMove_Enter()
     {
         animator.Play("char_01_walk");
         agent.isStopped = false;
         
     }
     
-    void Move_Update()
+    void DashMove_Update()
     {
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         if (enemyObj != null)
@@ -277,7 +277,7 @@ public class MHeroObj : MBaseObj
                     targetObj = enemyObj.gameObject;
                 }
 
-                fsm.ChangeState(FSMStates.Move);
+                fsm.ChangeState(FSMStates.DashMove);
             }
         }
     }
@@ -300,12 +300,10 @@ public class MHeroObj : MBaseObj
 
     private Vector3 FixStuckPos(Vector3 _pos)
     {
-        return new Vector3(_pos.x, _pos.y, 0);
         if (Mathf.Abs(transform.position.x - _pos.x) < agentDrift)
         {
-            var driftPos = _pos + new Vector3(agentDrift, 0f, 0f);
-            return driftPos;
+            _pos = _pos + new Vector3(agentDrift, 0f, 0f);
         }
-        return _pos;
+        return new Vector3(_pos.x, _pos.y, 0);
     }
 }
