@@ -126,7 +126,7 @@ public class MHeroObj : MBaseObj
     {
         animator.Play("char_01_idle");
         commonDelay = 0f;
-        agent.isStopped = false;
+        agent.isStopped = true;
 
     }
     void Idle_Update()
@@ -203,7 +203,6 @@ public class MHeroObj : MBaseObj
 
             if (Vector2.Distance(transform.position, targetObj.transform.position) < refData.attackrange * 0.5f + 0.01f)
             {
-                agent.isStopped = true;
                 fsm.ChangeState(FSMStates.Attack);
             }
         }
@@ -216,17 +215,29 @@ public class MHeroObj : MBaseObj
 
     void Attack_Enter()
     {
-        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-        FlipRenderers(enemyObj.transform.position.x < transform.position.x);
+        agent.isStopped = true;
         animator.Play("char_01_atk");
         commonDelay = 0;
+        LookTarget();
     }
 
     void Attack_Update()
     {
-        
+        commonDelay += Time.deltaTime;
+        if (commonDelay >= 0.3f)
+        {
+            LookTarget();   
+        }
     }
 
+    private void LookTarget()
+    {
+        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+        if (enemyObj != null)
+        {
+            FlipRenderers(enemyObj.transform.position.x < transform.position.x);
+        }
+    }
 
     private void DetectHero()
     {
