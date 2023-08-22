@@ -21,7 +21,7 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
     
-    private CharacterData refData;
+    private UnitData refData;
     public GameObject targetObj;
     public Vector2 targetoffset;
     private NavMeshPath currNavPath;

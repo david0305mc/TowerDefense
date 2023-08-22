@@ -14,8 +14,8 @@ public partial class UserData : Singleton<UserData>
 
     public int CurrStage { get; set; }
     public LocalData LocalData { get; set; }
-    public Dictionary<int, CharacterData> enemyDataDic;
-    public Dictionary<int, CharacterData> heroDataDic;
+    public Dictionary<int, UnitData> enemyDataDic;
+    public Dictionary<int, UnitData> heroDataDic;
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
@@ -23,8 +23,8 @@ public partial class UserData : Singleton<UserData>
     public void InitData()
     {
         ShopSelectedItem = -1;
-        enemyDataDic = new Dictionary<int, CharacterData>();
-        heroDataDic = new Dictionary<int, CharacterData>();
+        enemyDataDic = new Dictionary<int, UnitData>();
+        heroDataDic = new Dictionary<int, UnitData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
@@ -33,13 +33,13 @@ public partial class UserData : Singleton<UserData>
         LocalData.BaseObjDic.Remove(uid);
     }
 
-    public CharacterData GetEnemyData(int _uid)
+    public UnitData GetEnemyData(int _uid)
     {
         if(enemyDataDic.ContainsKey(_uid))
             return enemyDataDic[_uid];
         return null;
     }
-    public CharacterData GetHeroData(int _uid)
+    public UnitData GetHeroData(int _uid)
     {
         if (heroDataDic.ContainsKey(_uid))
             return heroDataDic[_uid];
@@ -111,9 +111,9 @@ public partial class UserData : Singleton<UserData>
 
     /// New Game
 
-    public CharacterData AddEnemyData(int _tid)
+    public UnitData AddEnemyData(int _tid)
     {
-        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, 1, true);
+        var data = UnitData.Create(MGameManager.GenerateUID(), _tid, 1, true);
         enemyDataDic.Add(data.uid, data);
         return data;
     }
@@ -154,9 +154,9 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic.Remove(_enemyUID);
     }
 
-    public CharacterData AddHeroData(int _tid)
+    public UnitData AddHeroData(int _tid)
     {
-        var data = CharacterData.Create(MGameManager.GenerateUID(), _tid, 1, false);
+        var data = UnitData.Create(MGameManager.GenerateUID(), _tid, 1, false);
         heroDataDic.Add(data.uid, data);
         return data;
     }

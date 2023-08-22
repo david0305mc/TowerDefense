@@ -59,7 +59,7 @@ public class BaseObjData
 }
 
 
-public class CharacterData
+public class UnitData
 {
     public int uid;
     public int tid;
@@ -68,9 +68,9 @@ public class CharacterData
     public DataManager.Unitinfo refData;
     public DataManager.UnitGradeInfo refUnitGradeData;
 
-    public static CharacterData Create(int _uid, int _tid, int _grade, bool _isEnemy)
+    public static UnitData Create(int _uid, int _tid, int _grade, bool _isEnemy)
     {
-        CharacterData data = new CharacterData() {
+        UnitData data = new UnitData() {
             uid = _uid,
             tid = _tid,
             IsEnemy = _isEnemy,

@@ -96,7 +96,7 @@ public class MGameManager : SingletonMono<MGameManager>
         var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
-            CharacterData data = UserData.Instance.AddEnemyData(enemyObj.TID);
+            UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, ()=> {
 
                 // GetDamaged
