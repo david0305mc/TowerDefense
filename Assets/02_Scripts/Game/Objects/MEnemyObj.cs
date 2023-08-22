@@ -15,6 +15,7 @@ public class MEnemyObj : MBaseObj
         Attack,
     }
 
+    [SerializeField] private float rangeCheckForEditor = 3f;
     public DataManager.Character refData { get; set; }
 
     StateMachine<FSMStates, StateDriverUnity> fsm;
@@ -23,6 +24,15 @@ public class MEnemyObj : MBaseObj
     public override bool IsEnemy()
     {
         return true;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1.0f, 0, 0, 0.3f);
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawSphere(Vector3.zero, rangeCheckForEditor);
+
     }
 
     protected override void Awake()
