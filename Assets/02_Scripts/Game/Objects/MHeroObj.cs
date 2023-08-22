@@ -239,24 +239,6 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    private void DetectHero()
-    {
-        commonDelay = 0;
-
-        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, 5);
-        if (detectedObjs.Length > 0)
-        {
-            var heroObj = detectedObjs.FirstOrDefault(item => { return item.GetComponent<MHeroObj>() != null; });
-
-            if (heroObj != default)
-            {
-                targetObjUID = heroObj.GetComponent<MHeroObj>().UID;
-                fsm.ChangeState(FSMStates.Attack);
-                FlipRenderers(heroObj.transform.position.x < transform.position.x);
-            }
-        }
-    }
-
 
     private void DetectEnemy()
     {

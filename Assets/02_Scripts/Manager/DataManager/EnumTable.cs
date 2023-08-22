@@ -19,3 +19,8 @@ public enum CHARACTER_TYPE
 	TANKER                       = 0,        	// 탱커
 	ARCHER                       = 1,        	// 궁수
 }
+public enum UNIT_TYPE 
+{ 
+	TANKER                       = 0,        	// 탱커
+	ARCHER                       = 1,        	// 궁수
+}

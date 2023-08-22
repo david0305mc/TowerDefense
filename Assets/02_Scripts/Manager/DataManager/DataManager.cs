@@ -20,11 +20,15 @@ public partial class DataManager : Singleton<DataManager>
 			"ObjTable",
 			"SpriteSheet",
 			"SpriteCollection",
-			"Character"
+			"Character",
+			"Unitinfo",
+			"UnitGradeInfo",
+			"ProjectileInfo",
 		};
 
 	public async UniTask LoadDataAsync()
 	{
+		
 		foreach (var tableName in tableNames)
 		{
 #if DEV
@@ -33,8 +37,15 @@ public partial class DataManager : Singleton<DataManager>
 			string data = await Utill.LoadFromFileAsync(Path.Combine(LOCAL_CSV_PATH, $"{tableName}.csv"));
 #endif
 
-			MethodInfo method = GetType().GetMethod($"Bind{tableName}Data");
-            method.Invoke(DataManager.Instance, new object[] { Type.GetType($"DataManager+{tableName}"), data});
+			try
+			{
+				MethodInfo method = GetType().GetMethod($"Bind{tableName}Data");
+				method.Invoke(DataManager.Instance, new object[] { Type.GetType($"DataManager+{tableName}"), data });
+			}
+			catch
+			{
+				Debug.LogError($"Table Load Failed {tableName}");
+			}
         }
 	}
 

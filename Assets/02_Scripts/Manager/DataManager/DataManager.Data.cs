@@ -95,4 +95,73 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class Unitinfo {
+		public int id;
+		public UNIT_TYPE unit_type;
+		public int checkrange;
+		public int aggroorder;
+		public int defaultgrade;
+		public int maxgrade;
+		public string thumbnailpath;
+		public string prefabname;
+	};
+	public Unitinfo[] UnitinfoArray { get; private set; }
+	public Dictionary<int, Unitinfo> UnitinfoDic { get; private set; }
+	public void BindUnitinfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(UnitinfoArray)).SetValue(this, deserializaedData, null);
+		UnitinfoDic = UnitinfoArray.ToDictionary(i => i.id);
+	}
+	public Unitinfo GetUnitinfoData(int _id){
+		if (UnitinfoDic.TryGetValue(_id, out Unitinfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class UnitGradeInfo {
+		public int id;
+		public int unitid;
+		public int grade;
+		public int hp;
+		public int walkspeed;
+		public int attackdmg;
+		public int attackrange;
+		public int attackspeed;
+		public int attackcount;
+		public int attackinterval;
+		public int projectileid;
+	};
+	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
+	public Dictionary<int, UnitGradeInfo> UnitgradeinfoDic { get; private set; }
+	public void BindUnitGradeInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(UnitgradeinfoArray)).SetValue(this, deserializaedData, null);
+		UnitgradeinfoDic = UnitgradeinfoArray.ToDictionary(i => i.id);
+	}
+	public UnitGradeInfo GetUnitGradeInfoData(int _id){
+		if (UnitgradeinfoDic.TryGetValue(_id, out UnitGradeInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class ProjectileInfo {
+		public int id;
+		public string prefabname;
+	};
+	public ProjectileInfo[] ProjectileinfoArray { get; private set; }
+	public Dictionary<int, ProjectileInfo> ProjectileinfoDic { get; private set; }
+	public void BindProjectileInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(ProjectileinfoArray)).SetValue(this, deserializaedData, null);
+		ProjectileinfoDic = ProjectileinfoArray.ToDictionary(i => i.id);
+	}
+	public ProjectileInfo GetProjectileInfoData(int _id){
+		if (ProjectileinfoDic.TryGetValue(_id, out ProjectileInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };
