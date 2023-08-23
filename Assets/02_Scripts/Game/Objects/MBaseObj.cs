@@ -48,8 +48,20 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
-        unitData = UserData.Instance.GetHeroData(_uid);
+        if (IsEnemy())
+        {
+            unitData = UserData.Instance.GetEnemyData(_uid);
+        }
+        else
+        {
+            unitData = UserData.Instance.GetHeroData(_uid);
+        }
+        StartFSM();
     }
+    public virtual void StartFSM()
+    {
+    }
+
     public virtual void GetDamaged(int _damage)
     {
         getDamageAction?.Invoke();

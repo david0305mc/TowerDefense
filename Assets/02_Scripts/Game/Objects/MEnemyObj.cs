@@ -78,15 +78,8 @@ public class MEnemyObj : MBaseObj
             }
         });
     }
-    public void InitObject(int _uid, System.Action _getDamageAction)
-    {
-        uid = _uid;
-        getDamageAction = _getDamageAction;
-        unitData = UserData.Instance.GetEnemyData(_uid);
-        agent.isStopped = true;
-    }
 
-    public void StartFSM()
+    public override void StartFSM()
     {
         fsm.ChangeState(FSMStates.Idle);
     }
@@ -99,6 +92,7 @@ public class MEnemyObj : MBaseObj
     {
         animator.Play("char_01_idle");
         commonDelay = 0f;
+        agent.isStopped = true;
     }
     void Idle_Update()
     {

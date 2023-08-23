@@ -118,7 +118,7 @@ public class MHeroObj : MBaseObj
         return false;
     }
 
-    public void StartFSM()
+    public override void StartFSM()
     {
         wayPointIndex = 0;
         fsm.ChangeState(FSMStates.Idle);
