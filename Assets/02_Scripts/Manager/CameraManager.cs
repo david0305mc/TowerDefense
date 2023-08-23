@@ -52,7 +52,7 @@ public class CameraManager : SingletonMono<CameraManager>
         float oldZoom = newZoom;
 
         BaseObj selectedObj = default;
-
+        
         UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.Update).ForEachAwaitAsync(async _ =>
         {
             if (IsUsingUI())
