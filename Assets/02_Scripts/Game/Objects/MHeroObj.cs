@@ -91,7 +91,6 @@ public class MHeroObj : MBaseObj
             }
 
             attackLongDelayCount--;
-            Debug.Log($"attackLongDelayCount {attackLongDelayCount}");
             if (attackLongDelayCount <= 0)
             {
                 commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;

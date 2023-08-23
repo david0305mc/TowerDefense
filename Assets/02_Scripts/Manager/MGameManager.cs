@@ -135,13 +135,13 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void LauchProjectileToHero(MBaseObj enemyObj, int _heroUID)
     {
-        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, enemyObj.transform.position, Quaternion.identity, objRoot);
+        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, enemyObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(heroDic[_heroUID], 1);
     }
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
     {
-        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
+        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(enemyDic[_enemyUID], 1);
     }
 

@@ -12,12 +12,14 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] private Slider hpBar;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Rigidbody2D rigidBody2d;
+    [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
 
     protected System.Action getDamageAction;
     protected CancellationTokenSource cts;
     protected Animator animator;
     protected AnimationLink animationLink;
+    public Vector3 FirePos => firePos.position;
 
     protected int uid;
     public int TID { get { return tid; } }
@@ -33,6 +35,10 @@ public class MBaseObj : MonoBehaviour, Damageable
         agent.updateUpAxis = false;
         animator = GetComponentInChildren<Animator>();
         animationLink = animator.GetComponent<AnimationLink>();
+        if (firePos == default)
+        {
+            firePos = transform;
+        }
     }
 
     public virtual void GetDamaged(int _damage)
