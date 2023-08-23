@@ -27,13 +27,12 @@ public class MCameraManager : MonoBehaviour
     private void Awake()
     {
         mainCamera = GetComponent<Camera>();
+        newPos = transform.position;
+        oldPos = newPos;
     }
 
     void Start()
     {
-        newPos = Vector3.zero;
-        oldPos = newPos;
-
         dragStartPos = Vector3.zero;
         groundDragStarted = false;
     }
