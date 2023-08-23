@@ -166,7 +166,7 @@ public class MHeroObj : MBaseObj
         if (detectedObjs.Length > 0)
         {
             var objLists = detectedObjs.Where(item=>item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
-            var enemyObj = GetNearestEnemy(objLists);
+            var enemyObj = GetNearestEnemyByAggro(objLists);
 
             if (enemyObj != null)
             {
@@ -321,8 +321,10 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    private MEnemyObj GetNearestEnemy(IEnumerable<MEnemyObj> enemyObjs)
+    private MEnemyObj GetNearestEnemyByAggro(IEnumerable<MEnemyObj> enemyObjs)
     {
+        int maxAggroOrder = enemyObjs.Max(item => item.UnitData.refData.aggroorder);
+        enemyObjs = enemyObjs.Where(item => item.UnitData.refData.aggroorder == maxAggroOrder);
         float nearestDist = float.MaxValue;
         MEnemyObj nearestEnemy = default;
         foreach (var item in enemyObjs)

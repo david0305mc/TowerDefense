@@ -16,8 +16,7 @@ public class MEnemyObj : MBaseObj
     }
 
     [SerializeField] private float rangeCheckForEditor = 3f;
-    public UnitData unitData { get; set; }
-
+    
     StateMachine<FSMStates, StateDriverUnity> fsm;
     private SwordAttackChecker swordAttackChecker;
 
