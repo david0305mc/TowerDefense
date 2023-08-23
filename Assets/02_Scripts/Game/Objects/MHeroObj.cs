@@ -211,6 +211,17 @@ public class MHeroObj : MBaseObj
                 Debug.Log("Error");
             }
 
+            var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
+            if (detectedObjs.Length > 0)
+            {
+                var objLists = detectedObjs.Where(item => item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
+                MEnemyObj findEnemyObj = GetNearestEnemyByAggro(objLists);
+                if (findEnemyObj != null)
+                {
+                    targetObjUID = findEnemyObj.UID;
+                }
+            }
+
             if (Vector2.Distance(transform.position, enemyObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
