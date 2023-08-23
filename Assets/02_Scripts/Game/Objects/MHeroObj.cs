@@ -22,7 +22,7 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
     
-    public GameObject targetObj;
+    public GameObject targetWayPoint;
     public Vector2 targetoffset;
     private NavMeshPath currNavPath;
     private List<int> blackList;
@@ -143,8 +143,8 @@ public class MHeroObj : MBaseObj
         {
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
-                targetObj = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
-                agent.SetDestination(FixStuckPos(targetObj.transform.position));
+                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
+                agent.SetDestination(FixStuckPos(targetWayPoint.transform.position));
                 fsm.ChangeState(FSMStates.WaypointMove);
             }
         }
@@ -159,7 +159,7 @@ public class MHeroObj : MBaseObj
 
     void WaypointMove_Update()
     {
-        agent.SetDestination(FixStuckPos(targetObj.transform.position));
+        agent.SetDestination(FixStuckPos(targetWayPoint.transform.position));
         FlipRenderers(agent.velocity.x < 0);
         
         var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
@@ -171,19 +171,18 @@ public class MHeroObj : MBaseObj
             if (enemyObj != null)
             {
                 targetObjUID = enemyObj.UID;
-                targetObj = enemyObj.gameObject;
                 fsm.ChangeState(FSMStates.DashMove);
                 return;
             }
         }
 
-        if (Vector2.Distance(transform.position, targetObj.transform.position) < 0.3f)
+        if (Vector2.Distance(transform.position, targetWayPoint.transform.position) < 0.3f)
         {
             wayPointIndex++;
 
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
-                targetObj = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
+                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
             }
             else
             {
@@ -207,12 +206,12 @@ public class MHeroObj : MBaseObj
             FlipRenderers(agent.velocity.x < 0);
             var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
             agent.speed = speed;
-            if (!agent.SetDestination(FixStuckPos(targetObj.transform.position)))
+            if (!agent.SetDestination(FixStuckPos(enemyObj.transform.position)))
             {
                 Debug.Log("Error");
             }
 
-            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
+            if (Vector2.Distance(transform.position, enemyObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
@@ -286,43 +285,46 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    private void DetectEnemy()
-    {
-        commonDelay = 0;
-        targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position, blackList);
+    //private void DetectEnemy()
+    //{
+    //    commonDelay = 0;
+    //    targetObjUID = MGameManager.Instance.GetNearestEnemyObj(transform.position, blackList);
 
-        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-        if (enemyObj != null)
-        {
-            if (!agent.CalculatePath(enemyObj.transform.position, currNavPath))
-            {
-                blackList.Add(targetObjUID);
-            }
-            else
-            {
-                float randX = Random.Range(0.5f, 1.5f);
-                float randY = Random.Range(-1, 2);
+    //    MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+    //    if (enemyObj != null)
+    //    {
+    //        if (!agent.CalculatePath(enemyObj.transform.position, currNavPath))
+    //        {
+    //            blackList.Add(targetObjUID);
+    //        }
+    //        else
+    //        {
+    //            float randX = Random.Range(0.5f, 1.5f);
+    //            float randY = Random.Range(-1, 2);
 
-                Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
-                Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
-                if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
-                {
-                    //targetWorldPos = FixStuckPos(pos01);
-                    targetObj = enemyObj.gameObject;
-                }
-                else
-                {
-                    //targetWorldPos = FixStuckPos(pos02);
-                    targetObj = enemyObj.gameObject;
-                }
+    //            Vector3 pos01 = enemyObj.transform.position + new Vector3(randX, randY, 0);
+    //            Vector3 pos02 = enemyObj.transform.position + new Vector3(-randX, randY, 0);
+    //            if (Vector3.Distance(transform.position, pos01) < Vector3.Distance(transform.position, pos02))
+    //            {
+    //                //targetWorldPos = FixStuckPos(pos01);
+    //                //targetWayPoint = enemyObj.gameObject;
+    //            }
+    //            else
+    //            {
+    //                //targetWorldPos = FixStuckPos(pos02);
+    //                //targetWayPoint = enemyObj.gameObject;
+    //            }
 
-                fsm.ChangeState(FSMStates.DashMove);
-            }
-        }
-    }
+    //            fsm.ChangeState(FSMStates.DashMove);
+    //        }
+    //    }
+    //}
 
     private MEnemyObj GetNearestEnemyByAggro(IEnumerable<MEnemyObj> enemyObjs)
     {
+        if (enemyObjs.Count() == 0)
+            return null;
+
         int maxAggroOrder = enemyObjs.Max(item => item.UnitData.refData.aggroorder);
         enemyObjs = enemyObjs.Where(item => item.UnitData.refData.aggroorder == maxAggroOrder);
         float nearestDist = float.MaxValue;
