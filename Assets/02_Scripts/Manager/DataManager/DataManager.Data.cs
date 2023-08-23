@@ -106,9 +106,9 @@ public partial class DataManager {
 		public int walkspeed;
 		public int attackdmg;
 		public int attackrange;
-		public int attackspeed;
 		public int attackcount;
-		public int attackinterval;
+		public int attackshortdelay;
+		public int attacklongdelay;
 		public int projectileid;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }

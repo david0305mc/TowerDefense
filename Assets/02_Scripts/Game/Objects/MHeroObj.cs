@@ -94,18 +94,23 @@ public class MHeroObj : MBaseObj
             Debug.Log($"attackLongDelayCount {attackLongDelayCount}");
             if (attackLongDelayCount <= 0)
             {
-                commonDelay = 3f;
-                attackLongDelayCount = 3;
+                commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
+                attackLongDelayCount = unitData.refUnitGradeData.attackcount;
             }
             else
             {
-                commonDelay = 0.5f;
+                commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
             }
 
-            // 
-            //animator.GetCurrentAnimatorClipInfo(0).
-            fsm.ChangeState(FSMStates.AttackDelay);
-            
+            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
+            if (enemyData != null)
+            {
+                fsm.ChangeState(FSMStates.AttackDelay);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
         });
     }
 
@@ -134,7 +139,7 @@ public class MHeroObj : MBaseObj
     {
         PlayAni("char_01_idle");
         agent.isStopped = true;
-        attackLongDelayCount = 3;
+        attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
     }
     void Idle_Update()
@@ -211,7 +216,7 @@ public class MHeroObj : MBaseObj
                 Debug.Log("Error");
             }
 
-            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.5f + 0.01f)
+            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
