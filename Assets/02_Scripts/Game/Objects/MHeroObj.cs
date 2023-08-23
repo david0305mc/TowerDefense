@@ -27,6 +27,7 @@ public class MHeroObj : MBaseObj
     private NavMeshPath currNavPath;
     private List<int> blackList;
     private int wayPointIndex;
+    public string state;
 
     static readonly float agentDrift = 0.0001f; // minimal
 
@@ -133,6 +134,7 @@ public class MHeroObj : MBaseObj
         agent.isStopped = true;
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
+        state = fsm.State.ToString();
     }
     void Idle_Update()
     {
@@ -152,6 +154,7 @@ public class MHeroObj : MBaseObj
     {
         PlayAni("char_01_walk");
         agent.isStopped = false;
+        state = fsm.State.ToString();
     }
 
     void WaypointMove_Update()
@@ -192,7 +195,8 @@ public class MHeroObj : MBaseObj
     void DashMove_Enter()
     {
         PlayAni("char_01_walk");
-        agent.isStopped = false;   
+        agent.isStopped = false;
+        state = fsm.State.ToString();
     }
     
     void DashMove_Update()
@@ -226,6 +230,7 @@ public class MHeroObj : MBaseObj
         PlayAni("char_01_atk");
         
         LookTarget();
+        state = fsm.State.ToString();
     }
 
     void Attack_Update()
