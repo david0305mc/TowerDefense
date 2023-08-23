@@ -32,6 +32,7 @@ public class UIIntro : MonoBehaviour
         DataManager.Instance.MakeClientDT();
         UserData.Instance.InitData();
         UserData.Instance.LoadLocalData();
+        MResourceManager.Instance.LoadResources();
 
         var mainSceneAsync = SceneManager.LoadSceneAsync("Isometric");
         await mainSceneAsync;

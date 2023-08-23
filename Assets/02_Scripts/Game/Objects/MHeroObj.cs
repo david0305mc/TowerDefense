@@ -22,7 +22,6 @@ public class MHeroObj : MBaseObj
     private SwordAttackChecker swordAttackChecker;
     private StateMachine<FSMStates, StateDriverUnity> fsm;
     
-    private UnitData unitData;
     public GameObject targetObj;
     public Vector2 targetoffset;
     private NavMeshPath currNavPath;
@@ -113,12 +112,6 @@ public class MHeroObj : MBaseObj
         });
     }
 
-    public void InitObject(int _uid, System.Action _getDamageAction)
-    {
-        uid = _uid;
-        getDamageAction = _getDamageAction;
-        unitData = UserData.Instance.GetHeroData(_uid);
-    }
     public override bool IsEnemy()
     {
         return false;

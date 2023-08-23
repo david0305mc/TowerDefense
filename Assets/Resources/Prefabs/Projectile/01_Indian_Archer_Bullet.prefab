@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 644771012505844123}
   - component: {fileID: -8975742130445068985}
   - component: {fileID: 5941912649541973482}
+  - component: {fileID: -318068065912879656}
   m_Layer: 0
   m_Name: 01_Indian_Archer_Bullet
   m_TagString: Untagged
@@ -133,3 +134,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-318068065912879656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644771012505844121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43672f0a7e978b848bf97dbb0638fd6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidBody2d: {fileID: 0}
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spriteRenderer: {fileID: 0}

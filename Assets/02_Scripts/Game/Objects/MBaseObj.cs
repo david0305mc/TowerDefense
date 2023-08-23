@@ -14,6 +14,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
+    
+    protected UnitData unitData;
+    public UnitData UnitData => unitData;
 
     protected System.Action getDamageAction;
     protected CancellationTokenSource cts;
@@ -41,6 +44,12 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
+    public void InitObject(int _uid, System.Action _getDamageAction)
+    {
+        uid = _uid;
+        getDamageAction = _getDamageAction;
+        unitData = UserData.Instance.GetHeroData(_uid);
+    }
     public virtual void GetDamaged(int _damage)
     {
         getDamageAction?.Invoke();

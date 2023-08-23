@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ProjectileStraight : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rigidBody2d;
+    
     [SerializeField] private AnimationCurve curve;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rigidBody2d;
+
     private Vector3 srcPos;
     private Vector3 dstPos;
 
@@ -17,6 +19,13 @@ public class ProjectileStraight : MonoBehaviour
 
     private Quaternion quaternionRot;
     private bool ToEnemy;
+
+    private void Awake()
+    {
+        rigidBody2d = GetComponent<Rigidbody2D>();
+        //var data = GetComponentInParent<GameObject>();
+        //Debug.Log($"data {data.name}");
+    }
 
     public void UpdateData(int _itemTID)
     {

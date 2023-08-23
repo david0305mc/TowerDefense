@@ -686,6 +686,7 @@ MonoBehaviour:
   hpBar: {fileID: 6488945538244810553}
   agent: {fileID: 6488945538131905291}
   rigidBody2d: {fileID: 6488945538131905290}
+  firePos: {fileID: 6488945536975646371}
   tid: 1001
   rangeCheckForEditor: 3
 --- !u!195 &6488945538131905291
@@ -1297,13 +1298,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6488945538913816436}
     m_Modifications:
+    - target: {fileID: -318068065912879656, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 644771012505844121, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
       propertyPath: m_Name
       value: Stone
-      objectReference: {fileID: 0}
-    - target: {fileID: 644771012505844121, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 644771012505844122, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
       propertyPath: m_RootOrder
@@ -1349,7 +1350,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -318068065912879656, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fba378284666ffe46894bfa71e7393aa, type: 3}
 --- !u!4 &6488945538890046258 stripped
 Transform:

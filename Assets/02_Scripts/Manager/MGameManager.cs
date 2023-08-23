@@ -141,7 +141,8 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
     {
-        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.FirePos, Quaternion.identity, objRoot);
+        var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
+        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(enemyDic[_enemyUID], 1);
     }
 
@@ -152,7 +153,6 @@ public class MGameManager : SingletonMono<MGameManager>
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, () =>
         {
-            Debug.Log($"Get Damaged {heroData.uid}");
             // GetDamaged
             bool isDead = UserData.Instance.AttackToHero(heroData.uid, 10);
 
