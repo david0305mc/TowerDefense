@@ -250,7 +250,15 @@ public class MHeroObj : MBaseObj
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0f)
         {
-            fsm.ChangeState(FSMStates.Attack);
+            MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
+            if (enemyObj != null)
+            {
+                fsm.ChangeState(FSMStates.Attack);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
         }
     }
 
