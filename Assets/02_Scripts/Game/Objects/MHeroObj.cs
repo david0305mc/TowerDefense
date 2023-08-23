@@ -130,7 +130,7 @@ public class MHeroObj : MBaseObj
 
     void Idle_Enter()
     {
-        PlayAni("char_01_idle");
+        PlayAni("Idle");
         agent.isStopped = true;
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
@@ -152,7 +152,7 @@ public class MHeroObj : MBaseObj
 
     void WaypointMove_Enter()
     {
-        PlayAni("char_01_walk");
+        PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
     }
@@ -193,7 +193,7 @@ public class MHeroObj : MBaseObj
 
     void DashMove_Enter()
     {
-        PlayAni("char_01_walk");
+        PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
     }
@@ -237,7 +237,7 @@ public class MHeroObj : MBaseObj
     void Attack_Enter()
     {
         agent.isStopped = true;
-        PlayAni("char_01_atk");
+        PlayAni("Attack");
         
         LookTarget();
         state = fsm.State.ToString();
@@ -249,7 +249,7 @@ public class MHeroObj : MBaseObj
     }
     void AttackDelay_Enter()
     {
-        PlayAni("char_01_idle");
+        PlayAni("Idle");
     }
 
     void AttackDelay_Update()
@@ -278,13 +278,6 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    private void PlayAni(string str)
-    {
-        //ResetTrigger();
-        //animator.SetTrigger(str);
-        animator.Play(str);
-        animator.Update(0);
-    }
     private void ResetTrigger()
     {
         foreach (var p in animator.parameters)

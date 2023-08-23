@@ -67,6 +67,14 @@ public class MBaseObj : MonoBehaviour, Damageable
         getDamageAction?.Invoke();
     }
 
+    protected void PlayAni(string str)
+    {
+        //ResetTrigger();
+        //animator.SetTrigger(str);
+
+        animator.Play(str);
+        animator.Update(0);
+    }
     public void MoveTo(Vector3 targetPos)
     {
         cts?.Cancel();

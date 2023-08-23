@@ -10,7 +10,6 @@ public class MEnemyObj : MBaseObj
     public enum FSMStates
     {
         Idle,
-        Move,
         AttackMove,
         Attack,
     }
@@ -90,7 +89,7 @@ public class MEnemyObj : MBaseObj
 
     void Idle_Enter()
     {
-        animator.Play("char_01_idle");
+        PlayAni("Idle");
         commonDelay = 0f;
         agent.isStopped = true;
     }
@@ -121,7 +120,7 @@ public class MEnemyObj : MBaseObj
     }
     void Attack_Enter()
     {
-        animator.Play("char_01_atk");
+        PlayAni("Attack");
         commonDelay = 0;
     }
     void Attack_Update()
