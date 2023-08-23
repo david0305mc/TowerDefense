@@ -209,7 +209,6 @@ public class MGameManager : SingletonMono<MGameManager>
         float walkingSpeed = dataFromTileMap[tilebase].walkingSpeed;
         return walkingSpeed;
     }
-
     public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
     {
         var effect = Lean.Pool.LeanPool.Spawn(boomPrefList[boomIndex]);

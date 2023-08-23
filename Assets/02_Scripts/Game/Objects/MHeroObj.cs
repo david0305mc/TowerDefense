@@ -16,6 +16,7 @@ public class MHeroObj : MBaseObj
         WaypointMove,
         DashMove,
         Attack,
+        AttackDelay,
     }
 
     private SwordAttackChecker swordAttackChecker;
@@ -53,8 +54,8 @@ public class MHeroObj : MBaseObj
                 {
                     if (damagable.IsEnemy())
                     {
-                        damagable.GetDamaged(1);
                         MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                        damagable.GetDamaged(1);
 
                         var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
                         if (enemyData == null)
@@ -71,7 +72,7 @@ public class MHeroObj : MBaseObj
             {
                 return;
             }
-            // Fire
+            // Fire Only For Projectile
             var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
             if (enemyData != null)
             {
@@ -80,38 +81,31 @@ public class MHeroObj : MBaseObj
                     MGameManager.Instance.LauchProjectileToEnemy(this, targetObjUID);
                 }
             }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
 
         }, ()=> {
 
+            // Attack Ani End
             if (fsm.State != FSMStates.Attack)
             {
                 return;
             }
 
             attackLongDelayCount--;
-            // Attack Ani End
-            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
-            if (enemyData == null)
+            Debug.Log($"attackLongDelayCount {attackLongDelayCount}");
+            if (attackLongDelayCount <= 0)
             {
-                fsm.ChangeState(FSMStates.Idle);
+                commonDelay = 3f;
+                attackLongDelayCount = 3;
             }
             else
             {
-                if (attackLongDelayCount <= 0)
-                {
-                    attackDelay = 3f;
-                    attackLongDelayCount = 3;
-                }
-                else
-                {
-                    attackDelay = 0.3f;
-                }
-                Debug.Log("attack End");
+                commonDelay = 0.5f;
             }
+
+            // 
+            //animator.GetCurrentAnimatorClipInfo(0).
+            fsm.ChangeState(FSMStates.AttackDelay);
+            
         });
     }
 
@@ -138,24 +132,28 @@ public class MHeroObj : MBaseObj
 
     void Idle_Enter()
     {
-        animator.Play("char_01_idle");
-        commonDelay = 0f;
+        PlayAni("char_01_idle");
         agent.isStopped = true;
-
+        attackLongDelayCount = 3;
+        commonDelay = 0f;
     }
     void Idle_Update()
     {
-        if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
+        commonDelay -= Time.deltaTime;
+        if (commonDelay <= 0)
         {
-            targetObj = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
-            agent.SetDestination(FixStuckPos(targetObj.transform.position));
-            fsm.ChangeState(FSMStates.WaypointMove);
+            if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
+            {
+                targetObj = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
+                agent.SetDestination(FixStuckPos(targetObj.transform.position));
+                fsm.ChangeState(FSMStates.WaypointMove);
+            }
         }
     }
 
     void WaypointMove_Enter()
     {
-        animator.Play("char_01_walk");
+        PlayAni("char_01_walk");
         agent.isStopped = false;
     }
 
@@ -194,12 +192,10 @@ public class MHeroObj : MBaseObj
         }
     }
 
-
     void DashMove_Enter()
     {
-        animator.Play("char_01_walk");
-        agent.isStopped = false;
-        
+        PlayAni("char_01_walk");
+        agent.isStopped = false;   
     }
     
     void DashMove_Update()
@@ -230,27 +226,26 @@ public class MHeroObj : MBaseObj
     void Attack_Enter()
     {
         agent.isStopped = true;
-        animator.Play("char_01_atk");
-        commonDelay = 0;
-        attackDelay = 0f;
-        attackLongDelayCount = 3;
+        PlayAni("char_01_atk");
+        
         LookTarget();
     }
 
     void Attack_Update()
     {
-        commonDelay += Time.deltaTime;
-        if (commonDelay >= 0.3f)
+
+    }
+    void AttackDelay_Enter()
+    {
+        PlayAni("char_01_idle");
+    }
+
+    void AttackDelay_Update()
+    {
+        commonDelay -= Time.deltaTime;
+        if (commonDelay <= 0f)
         {
-            LookTarget();   
-        }
-        if (attackDelay > 0)
-        {
-            attackDelay -= Time.deltaTime;
-            if (attackDelay <= 0)
-            {
-                animator.Play("char_01_atk", -1, 0);
-            }
+            fsm.ChangeState(FSMStates.Attack);
         }
     }
 
@@ -263,6 +258,23 @@ public class MHeroObj : MBaseObj
         }
     }
 
+    private void PlayAni(string str)
+    {
+        //ResetTrigger();
+        //animator.SetTrigger(str);
+        animator.Play(str);
+        animator.Update(0);
+    }
+    private void ResetTrigger()
+    {
+        foreach (var p in animator.parameters)
+        {
+            if (p.type == AnimatorControllerParameterType.Trigger)
+            {
+                animator.ResetTrigger(p.name);
+            }
+        }
+    }
 
     private void DetectEnemy()
     {
