@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +15,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
-    
+
+    [SerializeField] protected string state;
     protected UnitData unitData;
     public UnitData UnitData => unitData;
 
@@ -31,6 +33,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected float attackLongDelayCount;
     protected float commonDelay;
     protected int targetObjUID;
+
+    static readonly float agentDrift = 0.0001f; // minimal
+
 
     protected virtual void Awake()
     {
@@ -93,7 +98,14 @@ public class MBaseObj : MonoBehaviour, Damageable
             }
         });
     }
-
+    protected Vector3 GetFixedStuckPos(Vector3 _pos)
+    {
+        if (Mathf.Abs(transform.position.x - _pos.x) < agentDrift)
+        {
+            _pos = _pos + new Vector3(agentDrift, 0f, 0f);
+        }
+        return new Vector3(_pos.x, _pos.y, 0);
+    }
     public void SetHPBar(float _value)
     {
         hpBar.value = _value;
@@ -110,6 +122,31 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
+    protected MBaseObj GetNearestTargetByAggro(IEnumerable<MBaseObj> targetObjs)
+    {
+        if (targetObjs.Count() == 0)
+            return null;
+
+        int maxAggroOrder = targetObjs.Max(item => item.UnitData.refData.aggroorder);
+        targetObjs = targetObjs.Where(item => item.UnitData.refData.aggroorder == maxAggroOrder);
+        float nearestDist = float.MaxValue;
+        MBaseObj nearestTarget = default;
+        foreach (var item in targetObjs)
+        {
+            float dist = Vector2.Distance(transform.position, item.transform.position);
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                nearestTarget = item;
+            }
+        }
+        return nearestTarget;
+    }
+    protected void UpdateAgentSpeed()
+    {
+        var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
+        agent.speed = UnitData.refUnitGradeData.walkspeed * 0.1f * speed;
+    }
     public virtual bool IsEnemy()
     {
         return false;

@@ -42,11 +42,20 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         return UserData.Instance.LocalData.uidSeed++;
     }
+
+    public MHeroObj GetHeroObj(int _uid)
+    {
+        if (heroDic.TryGetValue(_uid, out MHeroObj heroObj))
+        {
+            return heroObj;
+        }
+        return default;
+    }
     public MEnemyObj GetEnemyObj(int _uid)
     {
-        if (enemyDic.ContainsKey(_uid))
-            return enemyDic[_uid];
-        return null;
+        if (enemyDic.TryGetValue(_uid, out MEnemyObj enemyObj))
+            return enemyObj;
+        return default;
     }
     public int GetNearestEnemyObj(Vector3 srcPos, List<int> _blackList)
     {

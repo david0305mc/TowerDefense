@@ -27,9 +27,6 @@ public class MHeroObj : MBaseObj
     private NavMeshPath currNavPath;
     private List<int> blackList;
     private int wayPointIndex;
-    public string state;
-
-    static readonly float agentDrift = 0.0001f; // minimal
 
 
     protected override void Awake()
@@ -144,7 +141,7 @@ public class MHeroObj : MBaseObj
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
                 targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
-                agent.SetDestination(FixStuckPos(targetWayPoint.transform.position));
+                agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
                 fsm.ChangeState(FSMStates.WaypointMove);
             }
         }
@@ -159,14 +156,15 @@ public class MHeroObj : MBaseObj
 
     void WaypointMove_Update()
     {
-        agent.SetDestination(FixStuckPos(targetWayPoint.transform.position));
+        UpdateAgentSpeed();
+        agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
         FlipRenderers(agent.velocity.x < 0);
         
         var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
         {
             var objLists = detectedObjs.Where(item=>item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
-            var enemyObj = GetNearestEnemyByAggro(objLists);
+            var enemyObj = GetNearestTargetByAggro(objLists);
 
             if (enemyObj != null)
             {
@@ -204,21 +202,22 @@ public class MHeroObj : MBaseObj
         if (enemyObj != null)
         {
             FlipRenderers(agent.velocity.x < 0);
-            var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
-            agent.speed = speed;
-            if (!agent.SetDestination(FixStuckPos(enemyObj.transform.position)))
-            {
-                Debug.Log("Error");
-            }
+            UpdateAgentSpeed();
+            agent.SetDestination(GetFixedStuckPos(enemyObj.transform.position));
 
             var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
             if (detectedObjs.Length > 0)
             {
-                var objLists = detectedObjs.Where(item => item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
-                MEnemyObj findEnemyObj = GetNearestEnemyByAggro(objLists);
-                if (findEnemyObj != null)
+                var objLists = detectedObjs.Where(item =>
                 {
-                    targetObjUID = findEnemyObj.UID;
+                    MBaseObj baseObj = item.GetComponent<MBaseObj>();
+                    return baseObj != null && baseObj.IsEnemy();
+                }).Select(item => item.GetComponent<MBaseObj>());
+
+                MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
+                if (findTargetObj != null)
+                {
+                    targetObjUID = findTargetObj.UID;
                 }
             }
 
@@ -324,33 +323,4 @@ public class MHeroObj : MBaseObj
     //    }
     //}
 
-    private MEnemyObj GetNearestEnemyByAggro(IEnumerable<MEnemyObj> enemyObjs)
-    {
-        if (enemyObjs.Count() == 0)
-            return null;
-
-        int maxAggroOrder = enemyObjs.Max(item => item.UnitData.refData.aggroorder);
-        enemyObjs = enemyObjs.Where(item => item.UnitData.refData.aggroorder == maxAggroOrder);
-        float nearestDist = float.MaxValue;
-        MEnemyObj nearestEnemy = default;
-        foreach (var item in enemyObjs)
-        {
-            float dist = Vector2.Distance(transform.position, item.transform.position);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                nearestEnemy = item;
-            }
-        }
-        return nearestEnemy;
-    }
-
-    private Vector3 FixStuckPos(Vector3 _pos)
-    {
-        if (Mathf.Abs(transform.position.x - _pos.x) < agentDrift)
-        {
-            _pos = _pos + new Vector3(agentDrift, 0f, 0f);
-        }
-        return new Vector3(_pos.x, _pos.y, 0);
-    }
 }
