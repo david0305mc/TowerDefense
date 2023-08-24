@@ -251,6 +251,10 @@ public class MEnemyObj : MBaseObj
             targetObjUID = _attackerUID;
         }
         isFixedTarget = true;
+        if (fsm.State == FSMStates.Idle)
+        {
+            fsm.ChangeState(FSMStates.DashMove);
+        }
     }
     private void LookTarget()
     {

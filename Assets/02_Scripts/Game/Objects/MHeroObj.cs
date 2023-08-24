@@ -162,7 +162,7 @@ public class MHeroObj : MBaseObj
         PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
-        agent.avoidancePriority = 51;
+        agent.avoidancePriority = 11;
     }
 
     void WaypointMove_Update()
@@ -209,7 +209,7 @@ public class MHeroObj : MBaseObj
         PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
-        agent.avoidancePriority = 51;
+        agent.avoidancePriority = 11;
     }
     
     void DashMove_Update()
@@ -296,6 +296,10 @@ public class MHeroObj : MBaseObj
             targetObjUID = _attackerUID;
         }
         isFixedTarget = true;
+        if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.WaypointMove)
+        {
+            fsm.ChangeState(FSMStates.DashMove);
+        }
     }
 
     private void LookTarget()
