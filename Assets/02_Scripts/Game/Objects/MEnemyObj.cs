@@ -125,6 +125,7 @@ public class MEnemyObj : MBaseObj
         commonDelay = 0f;
         agent.isStopped = true;
         state = fsm.State.ToString();
+        agent.avoidancePriority = 1;
     }
     void Idle_Update()
     {
@@ -157,6 +158,7 @@ public class MEnemyObj : MBaseObj
         commonDelay = 0;
         agent.isStopped = false;
         state = fsm.State.ToString();
+        agent.avoidancePriority = 1;
     }
 
     void DashMove_Update()
@@ -205,6 +207,7 @@ public class MEnemyObj : MBaseObj
         agent.isStopped = true;
         LookTarget();
         state = fsm.State.ToString();
+        agent.avoidancePriority = 1;
     }
     void Attack_Update()
     {

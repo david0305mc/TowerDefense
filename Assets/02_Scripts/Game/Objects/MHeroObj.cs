@@ -132,6 +132,7 @@ public class MHeroObj : MBaseObj
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
         state = fsm.State.ToString();
+        agent.avoidancePriority = 11;
     }
     void Idle_Update()
     {
@@ -152,6 +153,7 @@ public class MHeroObj : MBaseObj
         PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
+        agent.avoidancePriority = 51;
     }
 
     void WaypointMove_Update()
@@ -194,6 +196,7 @@ public class MHeroObj : MBaseObj
         PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
+        agent.avoidancePriority = 51;
     }
     
     void DashMove_Update()
@@ -237,18 +240,20 @@ public class MHeroObj : MBaseObj
     {
         agent.isStopped = true;
         PlayAni("Attack");
-        
         LookTarget();
         state = fsm.State.ToString();
+        agent.avoidancePriority = 11;
+        commonDelay = 0f;
     }
 
     void Attack_Update()
     {
-
+        LookTarget();
     }
     void AttackDelay_Enter()
     {
         PlayAni("Idle");
+        agent.avoidancePriority = 11;
     }
 
     void AttackDelay_Update()
