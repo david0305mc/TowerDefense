@@ -230,6 +230,7 @@ public class MEnemyObj : MBaseObj
 
     void AttackDelay_Update()
     {
+        LookTarget();
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0f)
         {
