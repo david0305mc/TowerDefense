@@ -82,3 +82,17 @@ public class UnitData
         return data;
     }
 }
+
+public class AttackData
+{
+    public int attackerUID;
+    public int attackerTID;
+    public int damage;
+
+    public AttackData(int _uid, int _tid, int _damage)
+    {
+        attackerUID = _uid;
+        attackerTID = _tid;
+        damage = _damage;
+    }
+}

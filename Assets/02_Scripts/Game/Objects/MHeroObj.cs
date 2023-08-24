@@ -52,7 +52,7 @@ public class MHeroObj : MBaseObj
                     if (damagable.IsEnemy())
                     {
                         MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
-                        damagable.GetDamaged(uid);
+                        damagable.GetDamaged(new AttackData(unitData.uid, unitData.tid, unitData.refUnitGradeData.attackdmg));
 
                         var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
                         if (enemyData == null)

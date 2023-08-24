@@ -20,7 +20,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected UnitData unitData;
     public UnitData UnitData => unitData;
 
-    protected System.Action<int> getDamageAction;
+    protected System.Action<AttackData> getDamageAction;
     protected CancellationTokenSource cts;
     protected Animator animator;
     protected AnimationLink animationLink;
@@ -50,7 +50,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    public void InitObject(int _uid, System.Action<int> _getDamageAction)
+    public void InitObject(int _uid, System.Action<AttackData> _getDamageAction)
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
@@ -62,15 +62,16 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             unitData = UserData.Instance.GetHeroData(_uid);
         }
+        hpBar.value = 1F;
         StartFSM();
     }
     public virtual void StartFSM()
     {
     }
 
-    public virtual void GetDamaged(int _attackerUID)
+    public virtual void GetDamaged(AttackData _attackData)
     {
-        getDamageAction?.Invoke(_attackerUID);
+        getDamageAction?.Invoke(_attackData);
     }
 
     protected void PlayAni(string str)

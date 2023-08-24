@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface Damageable
 {
-    public void GetDamaged(int _attackerUID);
+    public void GetDamaged(AttackData _attackData);
     public bool IsEnemy();
 }

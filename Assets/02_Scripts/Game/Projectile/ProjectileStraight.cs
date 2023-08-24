@@ -12,7 +12,7 @@ public class ProjectileStraight : MonoBehaviour
     private Vector3 srcPos;
     private Vector3 dstPos;
 
-    private int attackerUID;
+    private AttackData attackData;
     private float elapse;
     private float speed;
     private Vector2 prevPos;
@@ -34,9 +34,9 @@ public class ProjectileStraight : MonoBehaviour
         //spriteRenderer.SetSprite(itemData.iconpath);
     }
 
-    public void Shoot(int _attackerUID, MBaseObj _targetObj, float _speed)
+    public void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
     {
-        attackerUID = _attackerUID;
+        attackData = _attackData;
         targetObj = _targetObj;
         
         dstPos = targetObj.transform.position;
@@ -107,7 +107,7 @@ public class ProjectileStraight : MonoBehaviour
             {
                 if (targetObj.IsEnemy())
                 {
-                    damagable.GetDamaged(attackerUID);
+                    damagable.GetDamaged(attackData);
                     MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
                     Dispose();
                 }
@@ -117,7 +117,7 @@ public class ProjectileStraight : MonoBehaviour
                 
                 if (!targetObj.IsEnemy())
                 {
-                    damagable.GetDamaged(attackerUID);
+                    damagable.GetDamaged(attackData);
                     MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
                     Dispose();
                 }
