@@ -45,7 +45,6 @@ public class MEnemyObj : MBaseObj
             swordAttackChecker.SetAttackAction(collision =>
             {
                 // Attack
-
                 if (fsm.State != FSMStates.Attack)
                 {
                     return;
@@ -56,7 +55,7 @@ public class MEnemyObj : MBaseObj
                 {
                     if (!damagable.IsEnemy())
                     {
-                        damagable.GetDamaged(1);
+                        damagable.GetDamaged(uid);
                         MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(swordAttackChecker.transform.position));
                     }
                 }
@@ -101,7 +100,15 @@ public class MEnemyObj : MBaseObj
             var targetUnitData = UserData.Instance.GetHeroData(targetObjUID);
             if (targetUnitData != null)
             {
-                fsm.ChangeState(FSMStates.AttackDelay);
+                MHeroObj heroObj = MGameManager.Instance.GetHeroObj(targetObjUID);
+                if (Vector2.Distance(transform.position, heroObj.transform.position) > unitData.refUnitGradeData.attackrange)
+                {
+                    fsm.ChangeState(FSMStates.DashMove);
+                }
+                else
+                {
+                    fsm.ChangeState(FSMStates.AttackDelay);
+                }
             }
             else
             {
@@ -126,6 +133,7 @@ public class MEnemyObj : MBaseObj
         agent.isStopped = true;
         state = fsm.State.ToString();
         agent.avoidancePriority = 1;
+        isFixedTarget = false;
     }
     void Idle_Update()
     {
@@ -168,24 +176,24 @@ public class MEnemyObj : MBaseObj
         {
             FlipRenderers(agent.velocity.x < 0);
             UpdateAgentSpeed();
-            if (!agent.SetDestination(GetFixedStuckPos(heroObj.transform.position)))
-            {
-                Debug.Log("Error");
-            }
+            agent.SetDestination(GetFixedStuckPos(heroObj.transform.position));
 
-            var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
-            if (detectedObjs.Length > 0)
+            if (!isFixedTarget)
             {
-                var objLists = detectedObjs.Where(item =>
+                var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
+                if (detectedObjs.Length > 0)
                 {
-                    MBaseObj baseObj = item.GetComponent<MBaseObj>();
-                    return baseObj != null && !baseObj.IsEnemy();
-                }).Select(item => item.GetComponent<MBaseObj>());
+                    var objLists = detectedObjs.Where(item =>
+                    {
+                        MBaseObj baseObj = item.GetComponent<MBaseObj>();
+                        return baseObj != null && !baseObj.IsEnemy();
+                    }).Select(item => item.GetComponent<MBaseObj>());
 
-                MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
-                if (findTargetObj != null)
-                {
-                    targetObjUID = findTargetObj.UID;
+                    MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
+                    if (findTargetObj != null)
+                    {
+                        targetObjUID = findTargetObj.UID;
+                    }
                 }
             }
 
@@ -208,6 +216,7 @@ public class MEnemyObj : MBaseObj
         LookTarget();
         state = fsm.State.ToString();
         agent.avoidancePriority = 1;
+        isFixedTarget = true;
     }
     void Attack_Update()
     {
@@ -235,7 +244,14 @@ public class MEnemyObj : MBaseObj
             }
         }
     }
-
+    public override void DoDamage(int _attackerUID)
+    {
+        if (!isFixedTarget)
+        {
+            targetObjUID = _attackerUID;
+        }
+        isFixedTarget = true;
+    }
     private void LookTarget()
     {
         MHeroObj targetObj = MGameManager.Instance.GetHeroObj(targetObjUID);

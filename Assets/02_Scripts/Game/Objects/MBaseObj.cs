@@ -20,7 +20,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected UnitData unitData;
     public UnitData UnitData => unitData;
 
-    protected System.Action getDamageAction;
+    protected System.Action<int> getDamageAction;
     protected CancellationTokenSource cts;
     protected Animator animator;
     protected AnimationLink animationLink;
@@ -33,6 +33,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected float attackLongDelayCount;
     protected float commonDelay;
     protected int targetObjUID;
+    protected bool isFixedTarget;
 
     static readonly float agentDrift = 0.0001f; // minimal
 
@@ -49,7 +50,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    public void InitObject(int _uid, System.Action _getDamageAction)
+    public void InitObject(int _uid, System.Action<int> _getDamageAction)
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
@@ -67,9 +68,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
     }
 
-    public virtual void GetDamaged(int _damage)
+    public virtual void GetDamaged(int _attackerUID)
     {
-        getDamageAction?.Invoke();
+        getDamageAction?.Invoke(_attackerUID);
     }
 
     protected void PlayAni(string str)
@@ -105,6 +106,10 @@ public class MBaseObj : MonoBehaviour, Damageable
             _pos = _pos + new Vector3(agentDrift, 0f, 0f);
         }
         return new Vector3(_pos.x, _pos.y, 0);
+    }
+    public virtual void DoDamage(int _attackerUID)
+    { 
+        
     }
     public void SetHPBar(float _value)
     {

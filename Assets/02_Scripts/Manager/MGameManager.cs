@@ -106,7 +106,7 @@ public class MGameManager : SingletonMono<MGameManager>
         foreach (MEnemyObj enemyObj in enemies)
         {
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
-            enemyObj.InitObject(data.uid, ()=> {
+            enemyObj.InitObject(data.uid, (_attackerUID)=> {
 
                 // GetDamaged
                 bool isDead = UserData.Instance.AttackToEnmey(data.uid, 1);
@@ -145,14 +145,14 @@ public class MGameManager : SingletonMono<MGameManager>
     public void LauchProjectileToHero(MBaseObj enemyObj, int _heroUID)
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, enemyObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(heroDic[_heroUID], 1);
+        bullet.Shoot(enemyObj.UID, heroDic[_heroUID], 1);
     }
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
     {
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(enemyDic[_enemyUID], 1);
+        bullet.Shoot(heroObj.UID, enemyDic[_enemyUID], 1);
     }
 
     public void AddHero(int index)
@@ -160,17 +160,17 @@ public class MGameManager : SingletonMono<MGameManager>
         var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
-        heroObj.InitObject(heroData.uid, () =>
+        heroObj.InitObject(heroData.uid, (_attackerUID) =>
         {
             // GetDamaged
             bool isDead = UserData.Instance.AttackToHero(heroData.uid, 10);
-
             if (isDead)
             {
                  RemoveHero(heroData.uid);
             }
             else
             {
+                heroObj.DoDamage(_attackerUID);
                 //heroObj.SetHPBar(heroData.hp / (float)heroData.refData.hp);
             }
         });

@@ -54,7 +54,7 @@ public class MapMangerTest : SingletonMono<MapMangerTest>
     public void LauchProjectile(MHeroObj heroObj, MEnemyObj enemyObj)
     {
         ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(projStraight, heroObj.transform.position, Quaternion.identity, objRoot);
-        bullet.Shoot(enemyObj, 1);
+        bullet.Shoot(heroObj.UID, enemyObj, 1);
 
     }
 
