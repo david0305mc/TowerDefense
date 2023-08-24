@@ -46,5 +46,16 @@ public class GameUtil
 
         return angle;
     }
+
+    public static void DrawEdges(Vector3[] worldPoints, int size, Color color, float duration = 0.01f)
+    {
+        // Draw each segment except the last
+        for (int i = 0; i < size - 1; i++)
+        {
+            Vector3 nextPoint = worldPoints[i + 1];
+            Vector3 currentPoint = worldPoints[i];
+            Debug.DrawLine(currentPoint, nextPoint, color, duration);
+        }
+    }
 }
 
