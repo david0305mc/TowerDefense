@@ -100,15 +100,6 @@ public partial class UserData : Singleton<UserData>
         Utill.SaveFile(LocalFilePath, saveData);
     }
 
-    public BaseObjData CreateBaseObjData(int tid, int x, int y, bool isEnemy)
-    {
-        BaseObjData data = BaseObjData.Create(GameManager.GenerateUID(), tid, x, y, isEnemy);
-        LocalData.BaseObjDic.Add(data.UID, data);
-        return data;
-    }
-
-
-
     /// New Game
 
     public UnitData AddEnemyData(int _tid)

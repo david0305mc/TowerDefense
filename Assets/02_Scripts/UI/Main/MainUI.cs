@@ -20,12 +20,7 @@ public class MainUI : MonoBehaviour
 
         loadEnemyBtn.onClick.AddListener(() =>
         {
-            var enemyData = UserData.Instance.LoadInBuildData();
 
-            foreach (var item in enemyData.BaseObjDic)
-            {
-                GameManager.Instance.SpawnBaseObjEvent(item.Value.TID, item.Value.X, item.Value.Y, true);
-            }
         });
         UserData.Instance.LocalData.Gold.Subscribe(v =>
         {
