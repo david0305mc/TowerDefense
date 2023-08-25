@@ -19,10 +19,17 @@ public class BezierShooter : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetMouseButtonDown(0))
         {
-            // Shot.
-            StartCoroutine(CreateMissile());
+            for (int i = 0; i < 3; i++)
+            {
+                Debug.Log("KeyCode.A");
+                BezierMissile missile = Lean.Pool.LeanPool.Spawn(m_missilePrefab);
+                //GameObject missile = Instantiate(m_missilePrefab.gameObject);
+                missile.transform.position = this.gameObject.transform.position;
+                missile.GetComponent<BezierMissile>().Init(this.gameObject.transform, m_target.transform, m_speed, m_distanceFromStart, m_distanceFromEnd);
+
+            }
         }
     }
 

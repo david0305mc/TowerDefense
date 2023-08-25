@@ -9,9 +9,14 @@ public class BezierMissile : MonoBehaviour
     private float m_timerMax = 0;
     private float m_timerCurrent = 0;
     private float m_speed;
-
+    private TrailRenderer trailRenderer;
+    private void Awake()
+    {
+        trailRenderer = GetComponent<TrailRenderer>();
+    }
     public void Init(Transform _startTr, Transform _endTr, float _speed, float _newPointDistanceFromStartTr, float _newPointDistanceFromEndTr)
     {
+        trailRenderer.Clear();
         m_timerCurrent = 0f;
         m_speed = _speed;
 
@@ -44,6 +49,8 @@ public class BezierMissile : MonoBehaviour
     {
         if (m_timerCurrent > m_timerMax)
         {
+            m_timerCurrent = 0f;
+            Lean.Pool.LeanPool.Despawn(gameObject);
             return;
         }
 
@@ -90,10 +97,10 @@ public class BezierMissile : MonoBehaviour
         return Mathf.Lerp(abbc, bccd, t);
     }
 
-    void OnTriggerEnter(Collider collision)
-    {
-        m_timerCurrent = 0f;
-        Lean.Pool.LeanPool.Despawn(gameObject);
-        //Destroy(this.gameObject, 0.35f); // 한쪽에 Trigger 체크하는 것과 Rigidbody 컴포넌트 추가 잊지 말기.
-    }
+    //void OnTriggerEnter(Collider collision)
+    //{
+    //    m_timerCurrent = 0f;
+    //    Lean.Pool.LeanPool.Despawn(gameObject);
+    //    //Destroy(this.gameObject, 0.35f); // 한쪽에 Trigger 체크하는 것과 Rigidbody 컴포넌트 추가 잊지 말기.
+    //}
 }
