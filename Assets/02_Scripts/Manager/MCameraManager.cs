@@ -15,11 +15,22 @@ public class MCameraManager : MonoBehaviour
 
     [SerializeField] private float dragSpeed = 3f;
 
+    [SerializeField] private float maxZoomFactor = 50;
+    [SerializeField] private float minZoomFactor = 3;
+    [SerializeField] private float zoomSpeed = 10f;
+
+
     private static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private Camera mainCamera;
 
     private Vector3 newPos;
     private Vector3 oldPos;
+
+    private float newZoom;
+    private float oldZoom;
+
+    bool pinchStarted = false;
+    float oldPinchDist = 0f;
 
     private Vector3 dragStartPos = Vector3.zero;
     private bool groundDragStarted = false;
@@ -36,10 +47,17 @@ public class MCameraManager : MonoBehaviour
         dragStartPos = Vector3.zero;
         groundDragStarted = false;
     }
-    
+
     private void Update()
     {
         UpdateOneTouch();
+#if UNITY_EDITOR
+        UpdateEditorInput();
+#else
+        UpdateTwoTouch();
+        CheckTouchRelesase();
+#endif
+
     }
 
     private void FixedUpdate()
@@ -50,7 +68,52 @@ public class MCameraManager : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed);
             oldPos = transform.position;
         }
+
+        newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+        if (!newZoom.Equals(oldZoom))
+        {
+            mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, newZoom, Time.deltaTime * zoomSpeed);
+        }
+        newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+
     }
+    void UpdateEditorInput()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (Input.GetMouseButton(0))
+            {
+                Vector3 touchPoint0 = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+                var touchPoint1 = new Vector3(480, 960, 0);
+                float pinchDist = Vector3.Distance(touchPoint0, touchPoint1);
+
+                if (!pinchStarted)
+                {
+                    oldPinchDist = pinchDist;
+                    pinchStarted = true;
+                }
+                else
+                {
+                    float delta = oldPinchDist - pinchDist;
+                    newZoom = mainCamera.orthographicSize + delta / 2;
+                }
+            }
+            else
+            {
+                pinchStarted = false;
+            }
+        }
+        else
+        {
+            pinchStarted = false;
+            float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
+            if (scrollAmount != 0)
+            {
+                newZoom = newZoom - scrollAmount;
+            }
+        }
+    }
+
     private void UpdateOneTouch()
     {
         if (Input.GetMouseButtonDown(0))
@@ -81,6 +144,68 @@ public class MCameraManager : MonoBehaviour
             dragStartPos = PositiveInfinityVector;
         }
     }
+
+    private void UpdateTwoTouch()
+    {
+        if (Input.touchCount == 0 || Input.touchCount == 1)
+        {
+            pinchStarted = false;
+        }
+
+        if (Input.touchCount == 2)
+        {
+            var touchPoint0 = TryGetRayCastHitPoint(Input.GetTouch(0).position, GameConfig.GroundLayerMask);
+            var touchPoint1 = TryGetRayCastHitPoint(Input.GetTouch(1).position, GameConfig.GroundLayerMask);
+            float pinchDist = Vector3.Distance(touchPoint0, touchPoint1);
+
+            if (!pinchStarted)
+            {
+                oldPinchDist = pinchDist;
+                pinchStarted = true;
+            }
+            else
+            {
+                float delta = oldPinchDist - pinchDist;
+                newZoom = mainCamera.orthographicSize + delta / 2;
+            }
+        }
+    }
+
+    private void CheckTouchRelesase()
+    {
+        int releaseTouchIndex = -1;
+        if (Input.touchCount == 2)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                var touch = Input.GetTouch(i);
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    releaseTouchIndex = i;
+                }
+            }
+        }
+        if (releaseTouchIndex > -1)
+        {    
+            dragStartPos = TryGetRayCastHitPoint(Input.GetTouch(releaseTouchIndex == 0 ? 1 : 0).position, GameConfig.GroundLayerMask);
+            groundDragStarted = true;
+        }
+    }
+    //private void ZoomCamera()
+    //{
+    //    Touch touchZero = Input.GetTouch(0);
+    //    Touch touchOne = Input.GetTouch(1);
+
+    //    var touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+    //    var touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+    //    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+    //    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+    //    float deltamagnitudeDiff = touchDeltaMag - prevTouchDeltaMag;
+
+    //    newZoom += zoomAmount * deltamagnitudeDiff;
+    //}
 
     public bool IsUsingUI()
     {
