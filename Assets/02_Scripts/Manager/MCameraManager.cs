@@ -40,6 +40,8 @@ public class MCameraManager : MonoBehaviour
         mainCamera = GetComponent<Camera>();
         newPos = transform.position;
         oldPos = newPos;
+        newZoom = mainCamera.orthographicSize;
+        oldZoom = newZoom;
     }
 
     void Start()
@@ -73,8 +75,8 @@ public class MCameraManager : MonoBehaviour
         if (!newZoom.Equals(oldZoom))
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, newZoom, Time.deltaTime * zoomSpeed);
+            oldZoom = mainCamera.orthographicSize;
         }
-        newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
 
     }
     void UpdateEditorInput()
