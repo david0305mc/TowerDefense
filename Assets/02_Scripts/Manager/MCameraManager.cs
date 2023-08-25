@@ -116,6 +116,9 @@ public class MCameraManager : MonoBehaviour
 
     private void UpdateOneTouch()
     {
+        if (Input.touchCount > 1)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
