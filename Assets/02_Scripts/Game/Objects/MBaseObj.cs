@@ -108,7 +108,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         return new Vector3(_pos.x, _pos.y, 0);
     }
-    public virtual void DoDamage(int _attackerUID)
+    public virtual void DoAggro(int _attackerUID)
     { 
         
     }

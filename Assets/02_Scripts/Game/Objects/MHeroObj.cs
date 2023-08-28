@@ -290,7 +290,7 @@ public class MHeroObj : MBaseObj
             }
         }
     }
-    public override void DoDamage(int _attackerUID)
+    public override void DoAggro(int _attackerUID)
     {
         if (!isFixedTarget)
         {

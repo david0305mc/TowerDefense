@@ -18,6 +18,7 @@ public class MEnemyObj : MBaseObj
     [SerializeField] private float rangeCheckForEditor = 3f;
     
     StateMachine<FSMStates, StateDriverUnity> fsm;
+
     private SwordAttackChecker swordAttackChecker;
 
     public override bool IsEnemy()
@@ -245,8 +246,34 @@ public class MEnemyObj : MBaseObj
             }
         }
     }
-    public override void DoDamage(int _attackerUID)
+
+    public void DoDashMove(int _targetUID)
     {
+        targetObjUID = _targetUID;
+        fsm.ChangeState(FSMStates.DashMove);
+    }
+
+    public override void DoAggro(int _attackerUID)
+    {
+        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
+        if (detectedObjs.Length > 0)
+        {
+            foreach (var obj in detectedObjs)
+            {
+                MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
+                if (enemyObj != null)
+                {
+                    if (enemyObj == this)
+                        continue;
+
+                    if (enemyObj.fsm.State == FSMStates.Idle)
+                    {
+                        enemyObj.DoDashMove(_attackerUID);
+                    }
+                }   
+            }
+        }
+
         if (!isFixedTarget)
         {
             targetObjUID = _attackerUID;

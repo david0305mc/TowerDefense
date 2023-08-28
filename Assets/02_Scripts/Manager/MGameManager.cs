@@ -108,6 +108,8 @@ public class MGameManager : SingletonMono<MGameManager>
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, (_attackData)=> {
 
+                // Check Friend Status
+                enemyObj.DoAggro(_attackData.attackerUID);
                 // GetDamaged
                 bool isDead = UserData.Instance.AttackToEnmey(data.uid, _attackData.damage);
                 if (isDead)
@@ -116,7 +118,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 }
                 else
                 {
-                    enemyObj.DoDamage(_attackData.attackerUID);
+                    
                     enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
                 }
 
@@ -172,7 +174,7 @@ public class MGameManager : SingletonMono<MGameManager>
             }
             else
             {
-                heroObj.DoDamage(_attackData.attackerUID);
+                heroObj.DoAggro(_attackData.attackerUID);
                 heroObj.SetHPBar(heroData.hp / (float)heroData.refUnitGradeData.hp);
             }
         });
