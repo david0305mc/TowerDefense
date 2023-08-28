@@ -1,24 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class ProjectileBezier : MonoBehaviour
+public class ProjectileBezier : ProjectileBase
 {
     [Range(0.01f, 1f)]
     public float gizmoRadius = 0.3f;
 
-    [Range(0f, 1f)]
-    public float progression = 0f;
-
-    [SerializeField] private Transform startTr;
-
-    public Transform secondTr;
-    public Transform[] points;
-
-    private float elpase;
-
     [Space, Range(2, 100)]
     public int samplePointCount = 100;
+
+    [SerializeField] private Transform startTR;
+    [SerializeField] private Transform secondTR;
+
+    private Vector3[] points;
 
     // Check Changed
     private int _prevLength = 0;
@@ -28,52 +24,58 @@ public class ProjectileBezier : MonoBehaviour
     // curve
     private Vector3[] curvePoints;
 
-    private Rigidbody2D rigidBody2d;
-    private Vector3 prevPos;
 
-    private void Awake()
+    protected override void Awake()
     {
-        rigidBody2d = GetComponent<Rigidbody2D>();
+        base.Awake();
+        startTR = transform.Find("StartTR");
+        secondTR = transform.Find("SecondTR");
     }
-    public void Init(Transform _startTr, Transform _endTr, float _speed)
+    public override void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
     {
-        elpase = 0f;
-        startTr = _startTr;
-        transform.position = _startTr.position;
-        secondTr.position = _startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
-        points = new[] { _startTr, secondTr, _endTr };
+        base.Shoot(_attackData, _targetObj, _speed);
+        startTR.position = transform.position;
+        startTR.SetPositionAndRotation(transform.position, GameUtil.LookAt2D(startTR.position, _targetObj.transform.position, GameUtil.FacingDirection.RIGHT));
+        
+        secondTR.position = startTR.TransformPoint(new Vector2(-5, 0));
+        points = new Vector3[] { transform.position, secondTR.position, targetObj.transform.position };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();
-        Update();
+        UpdateMissile();
     }
-    private void Update()
+
+    protected override bool UpdateMissile()
     {
-        elpase += Time.deltaTime;
-
-        if (elpase >= 1f)
+        if (!base.UpdateMissile())
         {
-
-            Lean.Pool.LeanPool.Despawn(gameObject);
-            return;
+            return false;
         }
-
-        secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
+        points[points.Length - 1] = dstPos;
+        
         if (PointsChanged())
             CalculateCurvePoints(samplePointCount);
 
-        float fLen = (curvePoints.Length - 1) * elpase;
+        float dist = Vector2.Distance(srcPos, dstPos);
+        elapse += Time.deltaTime / dist * 5f;
+
+        float fLen = (curvePoints.Length - 1) * elapse;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);
         var pos = curvePoints[(int)fLen];
 
         rigidBody2d.MovePosition(pos);
-        //if (prevPos != pos)
-        //{
-        //    rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
-        //}
-
+        if (prevPos != pos)
+        {
+            rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
+        }
         prevPos = pos;
+
         SavePrevious();
+        return true;
     }
+
+
+
+    #region Bezier Logic
     private bool PointsChanged()
     {
         if (points == null || _prevPositions == null || points.Length == 0) return false;
@@ -86,7 +88,7 @@ public class ProjectileBezier : MonoBehaviour
 
         for (int i = 0; i < points.Length && i < _prevPositions.Length; i++)
         {
-            if (Vector3.SqrMagnitude(points[i].position - _prevPositions[i]) > 0.01f)
+            if (Vector3.SqrMagnitude(points[i] - _prevPositions[i]) > 0.01f)
                 return true;
         }
         return false;
@@ -98,7 +100,7 @@ public class ProjectileBezier : MonoBehaviour
         curvePoints = new Vector3[count + 1];
         float unit = 1.0f / count;
 
-        ref Transform[] P = ref points;
+        ref Vector3[] P = ref points;
 
         int n = P.Length - 1;
         int[] C = GetCombinationValues(n); // nCi
@@ -127,7 +129,7 @@ public class ProjectileBezier : MonoBehaviour
             // Iterate Bezier Points : 0 ~ n(number of points - 1)
             for (int i = 0; i <= n; i++)
             {
-                curvePoints[k] += C[i] * T[i] * U[n - i] * P[i].position;
+                curvePoints[k] += C[i] * T[i] * U[n - i] * P[i];
             }
         }
     }
@@ -184,19 +186,19 @@ public class ProjectileBezier : MonoBehaviour
     }
 
 
-    private void DrawCurve()
-    {
-        if (points == null || points.Length < 2) return;
-        if (curvePoints == null || curvePoints.Length < 2) return;
+    //private void DrawCurve()
+    //{
+    //    if (points == null || points.Length < 2) return;
+    //    if (curvePoints == null || curvePoints.Length < 2) return;
 
-        float fLen = (curvePoints.Length - 1) * progression;
-        int i = 0;
-        for (; i < fLen; i++)
-        {
-            Gizmos.DrawLine(curvePoints[i], curvePoints[i + 1]);
-        }
-        Gizmos.DrawWireSphere(curvePoints[i], gizmoRadius * 0.8f);
-    }
+    //    float fLen = (curvePoints.Length - 1) * elapse;
+    //    int i = 0;
+    //    for (; i < fLen; i++)
+    //    {
+    //        Gizmos.DrawLine(curvePoints[i], curvePoints[i + 1]);
+    //    }
+    //    Gizmos.DrawWireSphere(curvePoints[i], gizmoRadius * 0.8f);
+    //}
 
     private void SavePrevious()
     {
@@ -208,10 +210,12 @@ public class ProjectileBezier : MonoBehaviour
 
         for (int i = 0; i < _prevLength; i++)
         {
-            _prevPositions[i] = points[i].position;
+            _prevPositions[i] = points[i];
         }
 
         _prevSampleCount = samplePointCount;
     }
+
+    #endregion
 
 }

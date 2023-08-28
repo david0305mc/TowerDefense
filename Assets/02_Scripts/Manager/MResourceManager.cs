@@ -5,17 +5,17 @@ using System.Linq;
 
 public class MResourceManager : SingletonMono<MResourceManager>
 {
-    private Dictionary<string, ProjectileStraight> projectileDic;
-    public Dictionary<string, ProjectileStraight> ProjectileDic => projectileDic;
+    private Dictionary<string, ProjectileBase> projectileDic;
+    public Dictionary<string, ProjectileBase> ProjectileDic => projectileDic;
     public void LoadResources()
     {
-        ProjectileStraight[] arrayData =  Resources.LoadAll<ProjectileStraight>("Prefabs/Projectile");
+        ProjectileBase[] arrayData =  Resources.LoadAll<ProjectileBase>("Prefabs/Projectile");
         projectileDic = arrayData.ToDictionary(item => item.name, item => item);
     }
 
-    public ProjectileStraight GetProjectile(string _name)
+    public ProjectileBase GetProjectile(string _name)
     {
-        if (ProjectileDic.TryGetValue(_name, out ProjectileStraight obj))
+        if (ProjectileDic.TryGetValue(_name, out ProjectileBase obj))
         {
             return obj;
         }

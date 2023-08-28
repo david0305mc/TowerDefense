@@ -151,8 +151,9 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
     {
-        var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
-        ProjectileStraight bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
+        //var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
+        var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
+        ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(new AttackData(heroObj.UID, heroObj.UnitData.tid, heroObj.UnitData.refUnitGradeData.attackdmg) , enemyDic[_enemyUID], 1);
     }
 
