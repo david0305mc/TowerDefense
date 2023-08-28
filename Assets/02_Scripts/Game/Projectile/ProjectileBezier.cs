@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BezierMissile2D : MonoBehaviour
+public class ProjectileBezier : MonoBehaviour
 {
     [Range(0.01f, 1f)]
     public float gizmoRadius = 0.3f;
@@ -10,12 +10,12 @@ public class BezierMissile2D : MonoBehaviour
     [Range(0f, 1f)]
     public float progression = 0f;
 
-    public Transform startTr;
-    public Transform endTr;
+    [SerializeField] private Transform startTr;
+
     public Transform secondTr;
     public Transform[] points;
 
-    public float elpase;
+    private float elpase;
 
     [Space, Range(2, 100)]
     public int samplePointCount = 100;
@@ -24,7 +24,6 @@ public class BezierMissile2D : MonoBehaviour
     private int _prevLength = 0;
     private int _prevSampleCount = 0;
     private Vector3[] _prevPositions;
-
 
     // curve
     private Vector3[] curvePoints;
@@ -36,37 +35,17 @@ public class BezierMissile2D : MonoBehaviour
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
     }
-    public void Init(Transform _startTr, Transform _endTr, float _speed, float _newPointDistanceFromStartTr, float _newPointDistanceFromEndTr)
+    public void Init(Transform _startTr, Transform _endTr, float _speed)
     {
         elpase = 0f;
         startTr = _startTr;
-        endTr = _endTr;
         transform.position = _startTr.position;
-        secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
-        points = new[] { startTr, secondTr, endTr };
+        secondTr.position = _startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
+        points = new[] { _startTr, secondTr, _endTr };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();
         Update();
     }
-
-    //private void Start()
-    //{
-    //    secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
-    //    points = new[] { startTr, secondTr, endTr };
-    //    CalculateCurvePoints(samplePointCount);
-    //    SavePrevious();
-    //}
-
-    //private void OnDrawGizmos()
-    //{
-    //    if (PointsChanged())
-    //        CalculateCurvePoints(samplePointCount);
-
-    //    Gizmos.color = Color.yellow;
-    //    DrawCurve();
-
-    //    SavePrevious();
-    //}
     private void Update()
     {
         elpase += Time.deltaTime;
@@ -77,23 +56,21 @@ public class BezierMissile2D : MonoBehaviour
             Lean.Pool.LeanPool.Despawn(gameObject);
             return;
         }
-        
+
         secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
         if (PointsChanged())
             CalculateCurvePoints(samplePointCount);
 
-        //transform.position = Vector2.Lerp(startTr.position, endTr.position, elpase);
-
         float fLen = (curvePoints.Length - 1) * elpase;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);
-        var pos = curvePoints[(int) fLen];
-        
+        var pos = curvePoints[(int)fLen];
+
         rigidBody2d.MovePosition(pos);
         //if (prevPos != pos)
         //{
         //    rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
         //}
-        
+
         prevPos = pos;
         SavePrevious();
     }
@@ -238,5 +215,3 @@ public class BezierMissile2D : MonoBehaviour
     }
 
 }
-
-

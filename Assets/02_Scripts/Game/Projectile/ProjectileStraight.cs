@@ -24,14 +24,6 @@ public class ProjectileStraight : MonoBehaviour
     private void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
-        //var data = GetComponentInParent<GameObject>();
-        //Debug.Log($"data {data.name}");
-    }
-
-    public void UpdateData(int _itemTID)
-    {
-        //DataManager.ItemLevel itemData = DataManager.Instance.GetItemLevelData(_itemTID);
-        //spriteRenderer.SetSprite(itemData.iconpath);
     }
 
     public void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
