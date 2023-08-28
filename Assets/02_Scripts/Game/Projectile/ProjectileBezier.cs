@@ -23,21 +23,25 @@ public class ProjectileBezier : ProjectileBase
 
     // curve
     private Vector3[] curvePoints;
+    private TrailRenderer trainRenderer;
 
 
     protected override void Awake()
     {
         base.Awake();
+        trainRenderer = GetComponent<TrailRenderer>();
         startTR = transform.Find("StartTR");
         secondTR = transform.Find("SecondTR");
     }
     public override void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
     {
         base.Shoot(_attackData, _targetObj, _speed);
+        trainRenderer.Clear();
         startTR.position = transform.position;
-        startTR.SetPositionAndRotation(transform.position, GameUtil.LookAt2D(startTR.position, _targetObj.transform.position, GameUtil.FacingDirection.RIGHT));
+        startTR.rotation = GameUtil.LookAt2D(startTR.position, _targetObj.transform.position, GameUtil.FacingDirection.DOWN);
+        //startTR.SetPositionAndRotation(transform.position, );
         
-        secondTR.position = startTR.TransformPoint(new Vector2(-5, 0));
+        secondTR.position = startTR.TransformPoint(new Vector2(Random.Range(0, 2) == 0 ? -3 : 3, -2));
         points = new Vector3[] { transform.position, secondTR.position, targetObj.transform.position };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();

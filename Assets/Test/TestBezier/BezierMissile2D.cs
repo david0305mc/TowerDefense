@@ -10,9 +10,9 @@ public class BezierMissile2D : MonoBehaviour
     [Range(0f, 1f)]
     public float progression = 0f;
 
-    public Transform startTr;
-    public Transform endTr;
-    public Transform secondTr;
+    private Transform startTr;
+    private Transform endTr;
+    private Transform secondTr;
     public Transform[] points;
 
     public float elpase;
@@ -36,13 +36,14 @@ public class BezierMissile2D : MonoBehaviour
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
     }
-    public void Init(Transform _startTr, Transform _endTr, float _speed, float _newPointDistanceFromStartTr, float _newPointDistanceFromEndTr)
+    public void Init(Transform _startTr, Transform _secondTR,  Transform _endTr, float _speed, float _newPointDistanceFromStartTr, float _newPointDistanceFromEndTr)
     {
         elpase = 0f;
         startTr = _startTr;
         endTr = _endTr;
+        secondTr = _secondTR;
         transform.position = _startTr.position;
-        secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
+        
         points = new[] { startTr, secondTr, endTr };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();
@@ -78,7 +79,6 @@ public class BezierMissile2D : MonoBehaviour
             return;
         }
         
-        secondTr.position = startTr.TransformPoint(new Vector2(-1.2f, -0.5f));
         if (PointsChanged())
             CalculateCurvePoints(samplePointCount);
 

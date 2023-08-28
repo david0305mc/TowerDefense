@@ -6,6 +6,8 @@ public class BezierShooter2D : MonoBehaviour
 {
     public BezierMissile2D m_missilePrefab; // 미사일 프리팹.
     public GameObject m_target; // 도착 지점.
+    public Transform secondTR;
+    public Vector2 secondTROffset;
 
     [Header("미사일 기능 관련")]
     public float m_speed = 2; // 미사일 속도.
@@ -17,8 +19,12 @@ public class BezierShooter2D : MonoBehaviour
     [Range(0, 1)] public float m_interval = 0.15f;
     public int m_shotCountEveryInterval = 2; // 한번에 몇 개씩 발사할건지.
 
+
     private void Update()
     {
+        transform.position = transform.position;
+        transform.rotation = GameUtil.LookAt2D(transform.position, m_target.transform.position, GameUtil.FacingDirection.UP);
+        secondTR.position = transform.TransformPoint(secondTROffset);
         if (Input.GetMouseButtonDown(0))
         {
             for (int i = 0; i < 3; i++)
@@ -26,7 +32,7 @@ public class BezierShooter2D : MonoBehaviour
                 Debug.Log("KeyCode.A");
                 BezierMissile2D missile = Lean.Pool.LeanPool.Spawn(m_missilePrefab);
                 missile.transform.position = this.gameObject.transform.position;
-                missile.GetComponent<BezierMissile2D>().Init(this.gameObject.transform, m_target.transform, m_speed, m_distanceFromStart, m_distanceFromEnd);
+                missile.GetComponent<BezierMissile2D>().Init(this.gameObject.transform, secondTR, m_target.transform, m_speed, m_distanceFromStart, m_distanceFromEnd);
 
             }
         }
