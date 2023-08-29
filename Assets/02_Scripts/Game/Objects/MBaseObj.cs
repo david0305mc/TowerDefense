@@ -42,7 +42,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     private SpriteRenderer[] spriteRenderers;
     private Material originMaterial;
     private Color originColor;
-    protected Vector3 originVelocity;
     protected virtual void Awake()
     {
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -52,7 +51,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         animationLink = animator.GetComponent<AnimationLink>();
         originMaterial = spriteRenderers[0].material;
         originColor = spriteRenderers[0].color;
-        originVelocity = agent.velocity;
         if (firePos == default)
         {
             firePos = transform;

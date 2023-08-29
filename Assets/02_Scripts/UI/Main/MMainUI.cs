@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MMainUI : MonoBehaviour
@@ -26,7 +27,8 @@ public class MMainUI : MonoBehaviour
         });
         nextStageBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.NextStage();
+            //MGameManager.Instance.NextStage();
+            SceneManager.LoadSceneAsync("Intro");
         });
     }
 }

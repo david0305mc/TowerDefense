@@ -78,7 +78,7 @@ public class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         InitGame();
     }

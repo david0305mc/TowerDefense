@@ -15,7 +15,6 @@ public class UIMain : SingletonMono<UIMain>
     [SerializeField] private RectTransform damageObj;
     [SerializeField] private TextMeshProUGUI damageText;
 
-    private CancellationTokenSource cts;
 
     public void SetUIWorldPosToCameraPos(RectTransform ui, Vector2 _worldPos)
     {
@@ -31,10 +30,5 @@ public class UIMain : SingletonMono<UIMain>
     {
         UIDamageText damageText = Lean.Pool.LeanPool.Spawn(uiDamageTextPref, _pos, Quaternion.identity, worldCanvas.transform);
         damageText.SetData(_damage);
-    }
-    private void OnDestroy()
-    {
-        cts?.Cancel();
-        cts?.Dispose();
     }
 }

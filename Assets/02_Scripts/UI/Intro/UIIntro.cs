@@ -22,11 +22,13 @@ public class UIIntro : MonoBehaviour
     private void OnEnable()
     {
         startBtn.enabled = true;
+
     }
 
     private async UniTaskVoid StartGame()
     {
         Debug.Log("StartGame");
+        await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
         await DataManager.Instance.LoadConfigTable();
         DataManager.Instance.MakeClientDT();
