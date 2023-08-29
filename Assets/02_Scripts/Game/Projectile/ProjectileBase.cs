@@ -73,7 +73,6 @@ public class ProjectileBase : MonoBehaviour
             }
             else
             {
-
                 if (!targetObj.IsEnemy())
                 {
                     damagable.GetDamaged(attackData);
