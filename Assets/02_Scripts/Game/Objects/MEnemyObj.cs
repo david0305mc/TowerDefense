@@ -132,6 +132,7 @@ public class MEnemyObj : MBaseObj
         PlayAni("Idle");
         commonDelay = 0f;
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         state = fsm.State.ToString();
         agent.avoidancePriority = 1;
         isFixedTarget = false;
@@ -214,6 +215,7 @@ public class MEnemyObj : MBaseObj
         PlayAni("Attack");
         commonDelay = 0;
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         LookTarget();
         state = fsm.State.ToString();
         agent.avoidancePriority = 1;

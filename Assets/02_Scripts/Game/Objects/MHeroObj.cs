@@ -137,6 +137,7 @@ public class MHeroObj : MBaseObj
     {
         PlayAni("Idle");
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
         state = fsm.State.ToString();
@@ -255,6 +256,7 @@ public class MHeroObj : MBaseObj
     void Attack_Enter()
     {
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
         PlayAni("Attack");
         LookTarget();
         state = fsm.State.ToString();
