@@ -21,6 +21,7 @@ public class MEnemyObj : MBaseObj
 
     private SwordAttackChecker swordAttackChecker;
 
+
     public override bool IsEnemy()
     {
         return true;
@@ -38,7 +39,6 @@ public class MEnemyObj : MBaseObj
     protected override void Awake()
     {
         base.Awake();
-        
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         if (swordAttackChecker != null)
@@ -273,6 +273,7 @@ public class MEnemyObj : MBaseObj
                 }   
             }
         }
+        FlashEffect();
 
         if (!isFixedTarget)
         {
@@ -284,6 +285,7 @@ public class MEnemyObj : MBaseObj
             fsm.ChangeState(FSMStates.DashMove);
         }
     }
+
     private void LookTarget()
     {
         MHeroObj targetObj = MGameManager.Instance.GetHeroObj(targetObjUID);

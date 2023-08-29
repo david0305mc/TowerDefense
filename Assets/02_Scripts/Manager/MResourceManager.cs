@@ -5,8 +5,12 @@ using System.Linq;
 
 public class MResourceManager : SingletonMono<MResourceManager>
 {
+    public Material FlashMaterial;
+    public Color FlashColor;
+
     private Dictionary<string, ProjectileBase> projectileDic;
     public Dictionary<string, ProjectileBase> ProjectileDic => projectileDic;
+
     public void LoadResources()
     {
         ProjectileBase[] arrayData =  Resources.LoadAll<ProjectileBase>("Prefabs/Projectile");

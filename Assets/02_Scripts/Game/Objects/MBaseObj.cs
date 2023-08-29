@@ -22,6 +22,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected System.Action<AttackData> getDamageAction;
     protected CancellationTokenSource cts;
+    protected CancellationTokenSource flashCts;
+
     protected Animator animator;
     protected AnimationLink animationLink;
     public Vector3 FirePos => firePos.position;
@@ -37,9 +39,12 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     static readonly float agentDrift = 0.0001f; // minimal
 
+    private SpriteRenderer[] spriteRenderers;
+    
 
     protected virtual void Awake()
     {
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         animator = GetComponentInChildren<Animator>();
@@ -48,6 +53,20 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             firePos = transform;
         }
+    }
+
+    private void OnDisable()
+    {
+        cts?.Cancel();
+        flashCts?.Cancel();
+    }
+
+    private void OnDestroy()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
+        flashCts?.Cancel();
+        flashCts?.Dispose();
     }
 
     public void InitObject(int _uid, System.Action<AttackData> _getDamageAction)
@@ -152,6 +171,29 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
         agent.speed = UnitData.refUnitGradeData.walkspeed * 0.1f * speed;
+    }
+
+    public void FlashEffect()
+    {
+        flashCts?.Cancel();
+        flashCts = new CancellationTokenSource();
+
+        Material originMaterial = spriteRenderers[0].material;
+        Color originColor = spriteRenderers[0].color;
+        UniTask.Create(async () =>
+        {
+            foreach (var item in spriteRenderers)
+            {
+                item.material = MResourceManager.Instance.FlashMaterial;
+                item.color = MResourceManager.Instance.FlashColor;
+            }
+            await UniTask.Delay(300, cancellationToken: flashCts.Token);
+            foreach (var item in spriteRenderers)
+            {
+                item.material = originMaterial;
+                item.color = originColor;
+            }
+        });
     }
     public virtual bool IsEnemy()
     {
