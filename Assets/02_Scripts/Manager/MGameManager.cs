@@ -118,9 +118,9 @@ public class MGameManager : SingletonMono<MGameManager>
                 }
                 else
                 {
-                    
                     enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
                 }
+                UIMain.Instance.ShowDamageText(enemyObj.transform.position, _attackData.damage);
 
             });
             enemyDic.Add(data.uid, enemyObj);
