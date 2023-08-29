@@ -40,8 +40,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     static readonly float agentDrift = 0.0001f; // minimal
 
     private SpriteRenderer[] spriteRenderers;
-    
-
+    private Material originMaterial;
+    private Color originColor;
     protected virtual void Awake()
     {
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -49,6 +49,8 @@ public class MBaseObj : MonoBehaviour, Damageable
         agent.updateUpAxis = false;
         animator = GetComponentInChildren<Animator>();
         animationLink = animator.GetComponent<AnimationLink>();
+        originMaterial = spriteRenderers[0].material;
+        originColor = spriteRenderers[0].color;
         if (firePos == default)
         {
             firePos = transform;
@@ -177,16 +179,14 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         flashCts?.Cancel();
         flashCts = new CancellationTokenSource();
+        foreach (var item in spriteRenderers)
+        {
+            item.material = MResourceManager.Instance.FlashMaterial;
+            item.color = MResourceManager.Instance.FlashColor;
+        }
 
-        Material originMaterial = spriteRenderers[0].material;
-        Color originColor = spriteRenderers[0].color;
         UniTask.Create(async () =>
         {
-            foreach (var item in spriteRenderers)
-            {
-                item.material = MResourceManager.Instance.FlashMaterial;
-                item.color = MResourceManager.Instance.FlashColor;
-            }
             await UniTask.Delay(300, cancellationToken: flashCts.Token);
             foreach (var item in spriteRenderers)
             {
