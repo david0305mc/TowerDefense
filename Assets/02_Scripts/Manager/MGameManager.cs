@@ -108,8 +108,6 @@ public class MGameManager : SingletonMono<MGameManager>
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, (_attackData)=> {
 
-                // Check Friend Status
-                enemyObj.DoAggro(_attackData.attackerUID);
                 // GetDamaged
                 bool isDead = UserData.Instance.AttackToEnmey(data.uid, _attackData.damage);
                 if (isDead)
@@ -118,6 +116,8 @@ public class MGameManager : SingletonMono<MGameManager>
                 }
                 else
                 {
+                    // Check Friend Status
+                    enemyObj.DoAggro(_attackData.attackerUID);
                     enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
                 }
                 UIMain.Instance.ShowDamageText(enemyObj.transform.position, _attackData.damage);
@@ -147,15 +147,15 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void LauchProjectileToHero(MBaseObj enemyObj, int _heroUID)
     {
-        var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
+        var projectileInfo = DataManager.Instance.GetProjectileInfoData(enemyObj.UnitData.refUnitGradeData.projectileid);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), enemyObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(new AttackData(enemyObj.UID, enemyObj.UnitData.tid, enemyObj.UnitData.refUnitGradeData.attackdmg) , heroDic[_heroUID], 1);
     }
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
     {
-        //var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
-        var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
+        var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
+        //var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
         bullet.Shoot(new AttackData(heroObj.UID, heroObj.UnitData.tid, heroObj.UnitData.refUnitGradeData.attackdmg) , enemyDic[_enemyUID], 1);
     }
