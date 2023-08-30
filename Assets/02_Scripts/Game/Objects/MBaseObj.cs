@@ -175,7 +175,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         agent.speed = UnitData.refUnitGradeData.walkspeed * 0.1f * speed;
     }
 
-    public void FlashEffect()
+    public void DoFlashEffect()
     {
         flashCts?.Cancel();
         flashCts = new CancellationTokenSource();

@@ -110,20 +110,65 @@ public class MGameManager : SingletonMono<MGameManager>
 
                 // GetDamaged
                 bool isDead = UserData.Instance.AttackToEnmey(data.uid, _attackData.damage);
+                DoAggroToHero(enemyObj, _attackData.attackerUID);
+
                 if (isDead)
                 {
                     RemoveEnemy(data.uid);
                 }
                 else
                 {
-                    // Check Friend Status
-                    enemyObj.DoAggro(_attackData.attackerUID);
+                    enemyObj.DoFlashEffect();
                     enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
                 }
                 UIMain.Instance.ShowDamageText(enemyObj.transform.position, _attackData.damage);
 
             });
             enemyDic.Add(data.uid, enemyObj);
+        }
+    }
+
+    private void DoAggroToEnemy(MHeroObj _heroObj, int _attackerUID)
+    {
+        var detectedObjs = Physics2D.OverlapCircleAll(_heroObj.transform.position, 5, Game.GameConfig.UnitLayerMask);
+        if (detectedObjs.Length > 0)
+        {
+            foreach (var obj in detectedObjs)
+            {
+                MHeroObj heroObj = obj.GetComponent<MHeroObj>();
+                if (heroObj != null)
+                {
+                    if (heroObj == this)
+                        continue;
+
+                    if (heroObj.State == MHeroObj.FSMStates.Idle)
+                    {
+                        heroObj.DoAggro(_attackerUID);
+                    }
+                }
+            }
+        }
+    }
+
+    private void DoAggroToHero(MEnemyObj _enemyObj, int _attackerUID) 
+    {
+        var detectedObjs = Physics2D.OverlapCircleAll(_enemyObj.transform.position, 5, Game.GameConfig.UnitLayerMask);
+        if (detectedObjs.Length > 0)
+        {
+            foreach (var obj in detectedObjs)
+            {
+                MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
+                if (enemyObj != null)
+                {
+                    if (enemyObj == this)
+                        continue;
+
+                    if (enemyObj.State == MEnemyObj.FSMStates.Idle)
+                    {
+                        enemyObj.DoAggro(_attackerUID);
+                    }
+                }
+            }
         }
     }
 
@@ -169,13 +214,14 @@ public class MGameManager : SingletonMono<MGameManager>
         {
             // GetDamaged
             bool isDead = UserData.Instance.AttackToHero(heroData.uid, _attackData.damage);
+            DoAggroToEnemy(heroObj, _attackData.attackerUID);
+
             if (isDead)
             {
                  RemoveHero(heroData.uid);
             }
             else
             {
-                heroObj.DoAggro(_attackData.attackerUID);
                 heroObj.SetHPBar(heroData.hp / (float)heroData.refUnitGradeData.hp);
             }
         });
