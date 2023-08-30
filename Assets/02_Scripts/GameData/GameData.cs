@@ -88,11 +88,13 @@ public class AttackData
     public int attackerUID;
     public int attackerTID;
     public int damage;
+    public bool attackToEnemy;
 
-    public AttackData(int _uid, int _tid, int _damage)
+    public AttackData(int _uid, int _tid, int _damage, bool _attackToEnemy)
     {
         attackerUID = _uid;
         attackerTID = _tid;
         damage = _damage;
+        attackToEnemy = _attackToEnemy;
     }
 }

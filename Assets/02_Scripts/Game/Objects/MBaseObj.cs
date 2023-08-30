@@ -61,6 +61,11 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         cts?.Cancel();
         flashCts?.Cancel();
+        foreach (var item in spriteRenderers)
+        {
+            item.material = originMaterial;
+            item.color = originColor;
+        }
     }
 
     private void OnDestroy()
@@ -133,9 +138,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     { 
         
     }
-    public void SetHPBar(float _value)
+    public void UpdateHPBar()
     {
-        hpBar.value = _value;
+        hpBar.value = UnitData.hp / (float)UnitData.refUnitGradeData.hp;
     }
     protected void FlipRenderers(bool value)
     {

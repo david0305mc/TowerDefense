@@ -15,6 +15,7 @@ public class ProjectileBase : MonoBehaviour
     protected Vector3 srcPos;
     protected Vector3 dstPos;
 
+    private bool isDisposed;
     protected virtual void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
@@ -29,6 +30,7 @@ public class ProjectileBase : MonoBehaviour
         elapse = 0f;
         speed = _speed;
         prevPos = srcPos;
+        isDisposed = false;
     }
     private void Update()
     {
@@ -53,8 +55,12 @@ public class ProjectileBase : MonoBehaviour
 
     protected void Dispose()
     {
-        Lean.Pool.LeanPool.Despawn(gameObject);
-        elapse = 0f;
+        if (!isDisposed)
+        {
+            Lean.Pool.LeanPool.Despawn(gameObject);
+            elapse = 0f;
+            isDisposed = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -66,8 +72,9 @@ public class ProjectileBase : MonoBehaviour
             {
                 if (targetObj.IsEnemy())
                 {
-                    damagable.GetDamaged(attackData);
-                    MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    //damagable.GetDamaged(attackData);
+                    MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                    MGameManager.Instance.DoAreaAttack(attackData, collision.ClosestPoint(transform.position));
                     Dispose();
                 }
             }
@@ -75,8 +82,9 @@ public class ProjectileBase : MonoBehaviour
             {
                 if (!targetObj.IsEnemy())
                 {
-                    damagable.GetDamaged(attackData);
-                    MGameManager.Instance.ShowBoomEffect(0, collision.ClosestPoint(transform.position));
+                    //damagable.GetDamaged(attackData);
+                    MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                    MGameManager.Instance.DoAreaAttack(attackData, collision.ClosestPoint(transform.position));
                     Dispose();
                 }
             }

@@ -12,8 +12,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<MHeroObj> heroObjPrefList;
-    [SerializeField] private List<CartoonFX.CFXR_Effect> boomPrefList;
-    [SerializeField] private CartoonFX.CFXR_Effect effectPref;
+    [SerializeField] private List<ExplosionEffect> explosionPrefList;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -106,26 +105,46 @@ public class MGameManager : SingletonMono<MGameManager>
         foreach (MEnemyObj enemyObj in enemies)
         {
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
-            enemyObj.InitObject(data.uid, (_attackData)=> {
-
-                // GetDamaged
-                bool isDead = UserData.Instance.AttackToEnmey(data.uid, _attackData.damage);
-                DoAggroToHero(enemyObj, _attackData.attackerUID);
-
-                if (isDead)
-                {
-                    RemoveEnemy(data.uid);
-                }
-                else
-                {
-                    enemyObj.DoFlashEffect();
-                    enemyObj.SetHPBar(data.hp / (float)data.refUnitGradeData.hp);
-                }
-                UIMain.Instance.ShowDamageText(enemyObj.transform.position, _attackData.damage);
-
+            enemyObj.InitObject(data.uid, (_attackData) => {
+                DoEnemyGetDamage(enemyObj, _attackData);
             });
             enemyDic.Add(data.uid, enemyObj);
         }
+    }
+
+    private void DoEnemyGetDamage(MEnemyObj _enemyObj, AttackData _attackData)
+    {
+        // GetDamaged
+        bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _attackData.damage);
+        DoAggroToHero(_enemyObj, _attackData.attackerUID);
+
+        if (isDead)
+        {
+            RemoveEnemy(_enemyObj.UID);
+        }
+        else
+        {
+            _enemyObj.DoFlashEffect();
+            _enemyObj.UpdateHPBar();
+        }
+        UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _attackData.damage);
+    }
+
+    private void DoHeroGetDamage(MHeroObj _heroObj, AttackData _attackData)
+    {
+        bool isDead = UserData.Instance.AttackToHero(_heroObj.UID, _attackData.damage);
+        DoAggroToEnemy(_heroObj, _attackData.attackerUID);
+
+        if (isDead)
+        {
+            RemoveHero(_heroObj.UID);
+        }
+        else
+        {
+            _heroObj.DoFlashEffect();
+            _heroObj.UpdateHPBar();
+        }
+        UIMain.Instance.ShowDamageText(_heroObj.transform.position, _attackData.damage);
     }
 
     private void DoAggroToEnemy(MHeroObj _heroObj, int _attackerUID)
@@ -194,7 +213,7 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(enemyObj.UnitData.refUnitGradeData.projectileid);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), enemyObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(enemyObj.UID, enemyObj.UnitData.tid, enemyObj.UnitData.refUnitGradeData.attackdmg) , heroDic[_heroUID], 1);
+        bullet.Shoot(new AttackData(enemyObj.UID, enemyObj.UnitData.tid, enemyObj.UnitData.refUnitGradeData.attackdmg, false) , heroDic[_heroUID], 1);
     }
 
     public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
@@ -202,7 +221,7 @@ public class MGameManager : SingletonMono<MGameManager>
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
         //var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(heroObj.UID, heroObj.UnitData.tid, heroObj.UnitData.refUnitGradeData.attackdmg) , enemyDic[_enemyUID], 1);
+        bullet.Shoot(new AttackData(heroObj.UID, heroObj.UnitData.tid, heroObj.UnitData.refUnitGradeData.attackdmg, true) , enemyDic[_enemyUID], 1);
     }
 
     public void AddHero(int index)
@@ -212,18 +231,7 @@ public class MGameManager : SingletonMono<MGameManager>
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
         heroObj.InitObject(heroData.uid, (_attackData) =>
         {
-            // GetDamaged
-            bool isDead = UserData.Instance.AttackToHero(heroData.uid, _attackData.damage);
-            DoAggroToEnemy(heroObj, _attackData.attackerUID);
-
-            if (isDead)
-            {
-                 RemoveHero(heroData.uid);
-            }
-            else
-            {
-                heroObj.SetHPBar(heroData.hp / (float)heroData.refUnitGradeData.hp);
-            }
+            DoHeroGetDamage(heroObj, _attackData);
         });
         heroObj.StartFSM();
         heroDic.Add(heroData.uid, heroObj);
@@ -269,13 +277,41 @@ public class MGameManager : SingletonMono<MGameManager>
         float walkingSpeed = dataFromTileMap[tilebase].walkingSpeed;
         return walkingSpeed;
     }
-    public void ShowBoomEffect(int boomIndex, Vector2 _pos, string name = default)
+    public void DoAreaAttack(AttackData _attackData, Vector2 _pos)
     {
-        var effect = Lean.Pool.LeanPool.Spawn(boomPrefList[boomIndex]);
-        effect.EndAction = () => {
+        var detectedObjs = Physics2D.OverlapCircleAll(_pos, 2, Game.GameConfig.UnitLayerMask);
+        if (detectedObjs.Length > 0)
+        {
+            foreach (var obj in detectedObjs)
+            {
+                if (_attackData.attackToEnemy)
+                {
+                    MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
+                    if (enemyObj != null)
+                    {
+                        DoEnemyGetDamage(enemyObj, _attackData);
+                    }
+                }
+                else
+                {
+                    MHeroObj heroObj = obj.GetComponent<MHeroObj>();
+                    if (heroObj != null)
+                    {
+                        DoHeroGetDamage(heroObj, _attackData);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void ShowBoomEffect(int boomIndex, AttackData _attackData, Vector2 _pos, string name = default)
+    {
+        ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(explosionPrefList[boomIndex], _pos, Quaternion.identity, objRoot);
+        effect.SetData(_attackData, () =>
+        {
             Lean.Pool.LeanPool.Despawn(effect);
-        };
-        effect.transform.position = _pos;
+        });
     }
 
 }
