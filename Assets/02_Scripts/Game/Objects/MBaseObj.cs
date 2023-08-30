@@ -131,6 +131,48 @@ public class MBaseObj : MonoBehaviour, Damageable
     
     }
 
+    protected virtual void Idle_Enter()
+    { 
+        
+    }
+    protected virtual void Idle_Update()
+    {
+
+    }
+
+    protected virtual void DashMove_Enter()
+    {
+
+    }
+    protected virtual void DashMove_Update()
+    {
+
+    }
+
+    protected virtual void Attack_Enter()
+    {
+    
+    }
+    protected virtual void Attack_Update()
+    {
+
+    }
+
+    protected virtual void AttackDelay_Enter()
+    {
+    
+    }
+
+    protected virtual void AttackDelay_Update()
+    {
+    }
+
+
+    protected virtual void Update()
+    {
+        fsm.Driver.Update.Invoke();
+    }
+
     private void OnDisable()
     {
         cts?.Cancel();
@@ -178,6 +220,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     public virtual void StartFSM()
     {
+        fsm.ChangeState(FSMStates.Idle);
     }
 
     public virtual void GetDamaged(AttackData _attackData)
@@ -287,6 +330,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     public virtual bool IsEnemy()
     {
-        return false;
+        return UnitData.IsEnemy;
     }
 }

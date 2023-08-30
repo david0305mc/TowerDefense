@@ -20,22 +20,11 @@ public class MHeroObj : MBaseObj
         base.Awake();
     }
 
-    public override bool IsEnemy()
-    {
-        return UnitData.IsEnemy;
-    }
-    
     public override void StartFSM()
     {
         wayPointIndex = 0;
-        fsm.ChangeState(FSMStates.Idle);
+        base.StartFSM();
     }
-
-    void Update()
-    {
-        fsm.Driver.Update.Invoke();
-    }
-
 
     protected override void DoSwordAttack(Collider2D collision)
     {
@@ -58,7 +47,7 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    void Idle_Enter()
+    protected override void Idle_Enter()
     {
         PlayAni("Idle");
         agent.isStopped = true;
@@ -69,7 +58,7 @@ public class MHeroObj : MBaseObj
         agent.avoidancePriority = 11;
         isFixedTarget = false;
     }
-    void Idle_Update()
+    protected override void Idle_Update()
     {
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0)
@@ -130,15 +119,15 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    void DashMove_Enter()
+    protected override void DashMove_Enter()
     {
         PlayAni("Walk");
         agent.isStopped = false;
         state = fsm.State.ToString();
         agent.avoidancePriority = 11;
     }
-    
-    void DashMove_Update()
+
+    protected override void DashMove_Update()
     {
         MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
         if (enemyObj != null)
@@ -178,7 +167,7 @@ public class MHeroObj : MBaseObj
     }
 
 
-    void Attack_Enter()
+    protected override void Attack_Enter()
     {
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
@@ -190,17 +179,17 @@ public class MHeroObj : MBaseObj
         isFixedTarget = true;
     }
 
-    void Attack_Update()
+    protected override void Attack_Update()
     {
         LookTarget();
     }
-    void AttackDelay_Enter()
+    protected override void AttackDelay_Enter()
     {
         PlayAni("Idle");
         agent.avoidancePriority = 11;
     }
 
-    void AttackDelay_Update()
+    protected override void AttackDelay_Update()
     {
         LookTarget();
         commonDelay -= Time.deltaTime;
