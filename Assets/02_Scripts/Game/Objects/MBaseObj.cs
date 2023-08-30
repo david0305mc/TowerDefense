@@ -10,6 +10,15 @@ using UnityEngine.UI;
 
 public class MBaseObj : MonoBehaviour, Damageable
 {
+    public enum FSMStates
+    {
+        Idle,
+        WaypointMove,
+        DashMove,
+        Attack,
+        AttackDelay,
+    }
+
     [SerializeField] private Slider hpBar;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Rigidbody2D rigidBody2d;
@@ -39,6 +48,10 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     static readonly float agentDrift = 0.0001f; // minimal
 
+    protected StateMachine<FSMStates, StateDriverUnity> fsm;
+    public FSMStates State => fsm.State;
+
+    protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
     private Material originMaterial;
     private Color originColor;
@@ -49,12 +62,73 @@ public class MBaseObj : MonoBehaviour, Damageable
         agent.updateUpAxis = false;
         animator = GetComponentInChildren<Animator>();
         animationLink = animator.GetComponent<AnimationLink>();
+        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         originMaterial = spriteRenderers[0].material;
         originColor = spriteRenderers[0].color;
         if (firePos == default)
         {
             firePos = transform;
         }
+
+        fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
+        animationLink.SetEvent(() =>
+        {
+            if (fsm.State != FSMStates.Attack)
+            {
+                return;
+            }
+            // Fire Only For Projectile
+            var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
+            if (opponentUnitData != null)
+            {
+                if (this.unitData.refData.unit_type == UNIT_TYPE.ARCHER)
+                {
+                    MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                }
+            }
+
+        }, () => {
+
+            // Attack Ani End
+            if (fsm.State != FSMStates.Attack)
+            {
+                return;
+            }
+
+            attackLongDelayCount--;
+            if (attackLongDelayCount <= 0)
+            {
+                commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
+                attackLongDelayCount = unitData.refUnitGradeData.attackcount;
+            }
+            else
+            {
+                commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
+            }
+
+            var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
+            if (opponentUnitData != null)
+            {
+                MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
+                if (Vector2.Distance(transform.position, opponentUnitObj.transform.position) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+                {
+                    fsm.ChangeState(FSMStates.DashMove);
+                }
+                else
+                {
+                    fsm.ChangeState(FSMStates.AttackDelay);
+                }
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
+        });
+    }
+
+    protected virtual void DoSwordAttack(Collider2D collision)
+    {
+    
     }
 
     private void OnDisable()
@@ -76,11 +150,11 @@ public class MBaseObj : MonoBehaviour, Damageable
         flashCts?.Dispose();
     }
 
-    public void InitObject(int _uid, System.Action<AttackData> _getDamageAction)
+    public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
     {
         uid = _uid;
         getDamageAction = _getDamageAction;
-        if (IsEnemy())
+        if (_isEnemy)
         {
             unitData = UserData.Instance.GetEnemyData(_uid);
         }
@@ -89,6 +163,17 @@ public class MBaseObj : MonoBehaviour, Damageable
             unitData = UserData.Instance.GetHeroData(_uid);
         }
         hpBar.value = 1F;
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.SetAttackAction(_isEnemy, collision =>
+            {
+                if (fsm.State != FSMStates.Attack)
+                {
+                    return;
+                }
+                DoSwordAttack(collision);
+            });
+        }
         StartFSM();
     }
     public virtual void StartFSM()

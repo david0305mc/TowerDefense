@@ -42,6 +42,16 @@ public class MGameManager : SingletonMono<MGameManager>
         return UserData.Instance.LocalData.uidSeed++;
     }
 
+    public MBaseObj GetUnitObj(int _uid, bool isEnemy)
+    {
+        if (isEnemy)
+        {
+            return GetEnemyObj(_uid);
+        }
+        return GetHeroObj(_uid);
+    }
+
+
     public MHeroObj GetHeroObj(int _uid)
     {
         if (heroDic.TryGetValue(_uid, out MHeroObj heroObj))
@@ -105,7 +115,7 @@ public class MGameManager : SingletonMono<MGameManager>
         foreach (MEnemyObj enemyObj in enemies)
         {
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
-            enemyObj.InitObject(data.uid, (_attackData) => {
+            enemyObj.InitObject(data.uid, true, (_attackData) => {
                 DoEnemyGetDamage(enemyObj, _attackData);
             });
             enemyDic.Add(data.uid, enemyObj);
@@ -209,19 +219,11 @@ public class MGameManager : SingletonMono<MGameManager>
         enemyDic.Remove(_uid);
     }
 
-    public void LauchProjectileToHero(MBaseObj enemyObj, int _heroUID)
+    public void LauchProjectile(MBaseObj attackerObj, int _targetUID)
     {
-        var projectileInfo = DataManager.Instance.GetProjectileInfoData(enemyObj.UnitData.refUnitGradeData.projectileid);
-        ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), enemyObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(enemyObj.UID, enemyObj.UnitData.tid, enemyObj.UnitData.refUnitGradeData.attackdmg, false) , heroDic[_heroUID], 1);
-    }
-
-    public void LauchProjectileToEnemy(MBaseObj heroObj, int _enemyUID)
-    {
-        var projectileInfo = DataManager.Instance.GetProjectileInfoData(heroObj.UnitData.refUnitGradeData.projectileid);
-        //var projectileInfo = DataManager.Instance.GetProjectileInfoData(2);
-        ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), heroObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(heroObj.UID, heroObj.UnitData.tid, heroObj.UnitData.refUnitGradeData.attackdmg, true) , enemyDic[_enemyUID], 1);
+        var projectileInfo = DataManager.Instance.GetProjectileInfoData(attackerObj.UnitData.refUnitGradeData.projectileid);
+        ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), attackerObj.FirePos, Quaternion.identity, objRoot);
+        bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), 1);
     }
 
     public void AddHero(int index)
@@ -229,7 +231,7 @@ public class MGameManager : SingletonMono<MGameManager>
         var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
-        heroObj.InitObject(heroData.uid, (_attackData) =>
+        heroObj.InitObject(heroData.uid, false, (_attackData) =>
         {
             DoHeroGetDamage(heroObj, _attackData);
         });

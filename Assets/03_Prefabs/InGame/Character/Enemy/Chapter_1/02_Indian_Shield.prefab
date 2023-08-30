@@ -350,7 +350,9 @@ MonoBehaviour:
   hpBar: {fileID: 4942780593494039477}
   agent: {fileID: 4942780593649567623}
   rigidBody2d: {fileID: 4942780593649567622}
+  firePos: {fileID: 0}
   tid: 1002
+  state: 
   rangeCheckForEditor: 3
 --- !u!195 &4942780593649567623
 NavMeshAgent:
@@ -1315,7 +1317,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7574283, y: 0.86667156}
+  m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
 --- !u!114 &56723393130285903
 MonoBehaviour:

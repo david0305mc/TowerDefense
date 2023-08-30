@@ -7,25 +7,13 @@ using System.Linq;
 
 public class MEnemyObj : MBaseObj
 {
-    public enum FSMStates
-    {
-        Idle,
-        DashMove,
-        Attack,
-        AttackDelay,
-    }
 
     [SerializeField] private float rangeCheckForEditor = 3f;
     
-    private StateMachine<FSMStates, StateDriverUnity> fsm;
-    public FSMStates State => fsm.State;
-
-    private SwordAttackChecker swordAttackChecker;
-
 
     public override bool IsEnemy()
     {
-        return true;
+        return UnitData.IsEnemy;
     }
 
 
@@ -40,84 +28,6 @@ public class MEnemyObj : MBaseObj
     protected override void Awake()
     {
         base.Awake();
-        fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
-        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
-        if (swordAttackChecker != null)
-        {
-            swordAttackChecker.SetAttackAction(collision =>
-            {
-                // Attack
-                if (fsm.State != FSMStates.Attack)
-                {
-                    return;
-                }
-
-                var damagable = collision.GetComponent<Damageable>();
-                if (damagable != null)
-                {
-                    if (!damagable.IsEnemy())
-                    {
-                        var attackData = new AttackData(unitData.uid, unitData.tid, unitData.refUnitGradeData.attackdmg, IsEnemy());
-                        damagable.GetDamaged(attackData);
-                        MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(swordAttackChecker.transform.position));
-                    }
-                }
-            });
-        }
-        animationLink.SetEvent(() =>
-        {
-            if (fsm.State != FSMStates.Attack)
-            {
-                return;
-            }
-            // Fire Only For Projectile
-
-            var targetUnitData = UserData.Instance.GetHeroData(targetObjUID);
-            if (targetUnitData != null)
-            {
-                if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
-                {
-                    MGameManager.Instance.LauchProjectileToHero(this, targetObjUID);
-                }
-            }
-
-        }, ()=> {
-
-            // Attack Ani End
-            if (fsm.State != FSMStates.Attack)
-            {
-                return;
-            }
-
-            attackLongDelayCount--;
-            if (attackLongDelayCount <= 0)
-            {
-                commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
-                attackLongDelayCount = unitData.refUnitGradeData.attackcount;
-            }
-            else
-            {
-                commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
-            }
-
-            var targetUnitData = UserData.Instance.GetHeroData(targetObjUID);
-            if (targetUnitData != null)
-            {
-                MHeroObj heroObj = MGameManager.Instance.GetHeroObj(targetObjUID);
-                if (Vector2.Distance(transform.position, heroObj.transform.position) > unitData.refUnitGradeData.attackrange)
-                {
-                    fsm.ChangeState(FSMStates.DashMove);
-                }
-                else
-                {
-                    fsm.ChangeState(FSMStates.AttackDelay);
-                }
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
-        });
     }
 
     public override void StartFSM()
@@ -147,6 +57,26 @@ public class MEnemyObj : MBaseObj
             DetectHero();
         }
     }
+    protected override void DoSwordAttack(Collider2D collision)
+    {
+        var damagable = collision.GetComponent<Damageable>();
+        if (damagable != null)
+        {
+            if (!damagable.IsEnemy())
+            {
+                var attackData = new AttackData(this.unitData.uid, this.unitData.tid, this.unitData.refUnitGradeData.attackdmg, !UnitData.IsEnemy);
+                MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                damagable.GetDamaged(attackData);
+
+                var unitData = UserData.Instance.GetHeroData(targetObjUID);
+                if (unitData == null)
+                {
+                    fsm.ChangeState(FSMStates.Idle);
+                }
+            }
+        }
+    }
+    
     private void DetectHero()
     {
         commonDelay = 0;
@@ -201,7 +131,7 @@ public class MEnemyObj : MBaseObj
                 }
             }
 
-            if (Vector2.Distance(transform.position, heroObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
+            if (Vector2.Distance(transform.position, heroObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }

@@ -10,115 +10,19 @@ using System.Linq;
 
 public class MHeroObj : MBaseObj
 {
-    public enum FSMStates
-    {
-        Idle,
-        WaypointMove,
-        DashMove,
-        Attack,
-        AttackDelay,
-    }
-
-    private SwordAttackChecker swordAttackChecker;
-    private StateMachine<FSMStates, StateDriverUnity> fsm;
-    public FSMStates State => fsm.State;
 
     public GameObject targetWayPoint;
     public Vector2 targetoffset;
     private int wayPointIndex;
 
-
     protected override void Awake()
     {
         base.Awake();
-        fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
-        swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
-        if (swordAttackChecker != null)
-        {
-            swordAttackChecker.SetAttackAction(collision =>
-            {
-                if (fsm.State != FSMStates.Attack)
-                {
-                    return;
-                }
-
-                // Attack
-                var damagable = collision.GetComponent<Damageable>();
-                if (damagable != null)
-                {
-                    if (damagable.IsEnemy())
-                    {
-                        var attackData = new AttackData(unitData.uid, unitData.tid, unitData.refUnitGradeData.attackdmg, IsEnemy());
-                        MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
-                        damagable.GetDamaged(attackData);
-
-                        var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
-                        if (enemyData == null)
-                        {
-                            fsm.ChangeState(FSMStates.Idle);
-                        }
-                    }
-                }
-            });
-        }
-        animationLink.SetEvent(() =>
-        {
-            if (fsm.State != FSMStates.Attack)
-            {
-                return;
-            }
-            // Fire Only For Projectile
-            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
-            if (enemyData != null)
-            {
-                if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
-                {
-                    MGameManager.Instance.LauchProjectileToEnemy(this, targetObjUID);
-                }
-            }
-
-        }, ()=> {
-
-            // Attack Ani End
-            if (fsm.State != FSMStates.Attack)
-            {
-                return;
-            }
-
-            attackLongDelayCount--;
-            if (attackLongDelayCount <= 0)
-            {
-                commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
-                attackLongDelayCount = unitData.refUnitGradeData.attackcount;
-            }
-            else
-            {
-                commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
-            }
-
-            var enemyData = UserData.Instance.GetEnemyData(targetObjUID);
-            if (enemyData != null)
-            {
-                MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-                if (Vector2.Distance(transform.position, enemyObj.transform.position) > unitData.refUnitGradeData.attackrange)
-                {
-                    fsm.ChangeState(FSMStates.DashMove);
-                }
-                else
-                {
-                    fsm.ChangeState(FSMStates.AttackDelay);
-                }
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
-        });
     }
 
     public override bool IsEnemy()
     {
-        return false;
+        return UnitData.IsEnemy;
     }
     
     public override void StartFSM()
@@ -126,9 +30,32 @@ public class MHeroObj : MBaseObj
         wayPointIndex = 0;
         fsm.ChangeState(FSMStates.Idle);
     }
+
     void Update()
     {
         fsm.Driver.Update.Invoke();
+    }
+
+
+    protected override void DoSwordAttack(Collider2D collision)
+    {
+        // Attack
+        var damagable = collision.GetComponent<Damageable>();
+        if (damagable != null)
+        {
+            if (damagable.IsEnemy())
+            {
+                var attackData = new AttackData(this.unitData.uid, this.unitData.tid, this.unitData.refUnitGradeData.attackdmg, !UnitData.IsEnemy);
+                MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                damagable.GetDamaged(attackData);
+
+                var unitData = UserData.Instance.GetEnemyData(targetObjUID);
+                if (unitData == null)
+                {
+                    fsm.ChangeState(FSMStates.Idle);
+                }
+            }
+        }
     }
 
     void Idle_Enter()
@@ -239,7 +166,7 @@ public class MHeroObj : MBaseObj
                 }
             }
 
-            if (Vector2.Distance(transform.position, enemyObj.transform.position) < unitData.refUnitGradeData.attackrange + 0.01f)
+            if (Vector2.Distance(transform.position, enemyObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }

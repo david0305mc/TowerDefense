@@ -33,6 +33,12 @@ public partial class UserData : Singleton<UserData>
         LocalData.BaseObjDic.Remove(uid);
     }
 
+    public UnitData GetUnitData(int _uid, bool isEnemy)
+    {
+        if (isEnemy)
+            return GetEnemyData(_uid);
+        return GetHeroData(_uid);
+    }
     public UnitData GetEnemyData(int _uid)
     {
         if(enemyDataDic.ContainsKey(_uid))

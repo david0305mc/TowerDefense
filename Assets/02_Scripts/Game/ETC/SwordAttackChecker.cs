@@ -5,9 +5,10 @@ using UnityEngine;
 public class SwordAttackChecker : MonoBehaviour
 {
     private System.Action<Collider2D> attackAction;
-
-    public void SetAttackAction(System.Action<Collider2D> _attackAction)
+    private bool isEnemy;
+    public void SetAttackAction(bool _isEnemy, System.Action<Collider2D> _attackAction)
     {
+        isEnemy = _isEnemy;
         attackAction = _attackAction;
     }
 
@@ -16,7 +17,21 @@ public class SwordAttackChecker : MonoBehaviour
         var damagable = collision.GetComponent<Damageable>();
         if (damagable != null)
         {
-            attackAction?.Invoke(collision);
+            if (isEnemy)
+            {
+                if (!damagable.IsEnemy())
+                {
+                    attackAction?.Invoke(collision);
+                }
+            }
+            else
+            {
+                if (damagable.IsEnemy())
+                {
+                    attackAction?.Invoke(collision);
+                }
+            }
+            
         }
     }
 }
