@@ -25,15 +25,11 @@ public class MHeroObj : MBaseObj
 
     public GameObject targetWayPoint;
     public Vector2 targetoffset;
-    private NavMeshPath currNavPath;
-    private List<int> blackList;
     private int wayPointIndex;
 
 
     protected override void Awake()
     {
-        blackList = new List<int>();
-        currNavPath = new NavMeshPath();
         base.Awake();
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
