@@ -130,7 +130,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
 
     protected virtual void DoSwordAttack(Collider2D collision)
-    {   
+    {
     }
     protected virtual void DoAttackEnd()
     {
@@ -180,8 +180,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
 
     protected virtual void WaypointMove_Enter()
-    { 
-    
+    {
+
     }
     protected virtual void WaypointMove_Update()
     {
@@ -221,7 +221,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             FlipRenderers(agent.velocity.x < 0);
             UpdateAgentSpeed();
             DoAgentMove(targetObj.transform.position + targetoffset);
-            
+
             if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
@@ -478,7 +478,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         float targetDist02 = CalcPathLength(pos02 + targetObj.transform.position);
         if (targetDist01 == float.MaxValue && targetDist02 == float.MaxValue)
         {
-            Debug.LogError(targetDist01 == float.MaxValue && targetDist02 == float.MaxValue);
+            Debug.Log("new Target Offset");
             SetTargetObject(_uid);
             return;
         }
@@ -514,6 +514,26 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
 
         return _pathLength;
+    }
+
+    private Vector3 SamplePosition(Vector3 _pos)
+    {
+        //transform.position + Random.insideUnitSphere * maxRange,
+        NavMeshHit navMeshHit;
+        float maxRange = 3f;
+        bool foundPosition =
+            NavMesh.SamplePosition(
+                _pos,
+                out navMeshHit,
+                maxRange,
+                NavMesh.AllAreas);
+
+        if (foundPosition)
+        {
+            return navMeshHit.position;
+        }
+
+        return Game.GameConfig.PositiveInfinityVector;
     }
 
     private void ResetTrigger()

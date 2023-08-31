@@ -24,8 +24,10 @@ namespace Game
         {190, GameType.Direction.TOP_LEFT },
         {220, GameType.Direction.TOP },
         {290, GameType.Direction.TOP_RIGHT },
-        {357, GameType.Direction.RIGHT }
-    };
+        {357, GameType.Direction.RIGHT } };
+
+
+        public static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     }
 
     public class GamePath
