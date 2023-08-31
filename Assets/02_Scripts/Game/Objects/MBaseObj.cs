@@ -185,7 +185,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected virtual void WaypointMove_Update()
     {
-
+          
     }
 
     protected virtual void DashMove_Enter()
