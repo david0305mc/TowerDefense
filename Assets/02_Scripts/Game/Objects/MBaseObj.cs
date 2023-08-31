@@ -193,6 +193,24 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected virtual void DashMove_Update()
     {
+        if (!isFixedTarget)
+        {
+            commonDelay -= Time.deltaTime;
+            if (commonDelay <= 0)
+            {
+                commonDelay = 0.3f;
+                var targetLists = FindUnitListByArea(unitData.refData.checkrange, !IsEnemy());
+                if (targetLists != null && targetLists.Count > 0)
+                {
+                    MBaseObj findTargetObj = FindNearestTargetByAggroOrder(targetLists);
+                    if (findTargetObj != null)
+                    {
+                        targetObjUID = findTargetObj.UID;
+                    }
+                }
+            }
+        }
+
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
         if (targetObj != null)
         {
@@ -200,24 +218,6 @@ public class MBaseObj : MonoBehaviour, Damageable
             UpdateAgentSpeed();
             agent.SetDestination(GetFixedStuckPos(targetObj.transform.position));
 
-            //if (!isFixedTarget)
-            //{
-            //    var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
-            //    if (detectedObjs.Length > 0)
-            //    {
-            //        var objLists = detectedObjs.Where(item =>
-            //        {
-            //            MBaseObj baseObj = item.GetComponent<MBaseObj>();
-            //            return baseObj != null && !baseObj.IsEnemy();
-            //        }).Select(item => item.GetComponent<MBaseObj>());
-
-            //        MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
-            //        if (findTargetObj != null)
-            //        {
-            //            targetObjUID = findTargetObj.UID;
-            //        }
-            //    }
-            //}
 
             if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
@@ -364,7 +364,34 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    protected MBaseObj GetNearestTargetByAggro(IEnumerable<MBaseObj> targetObjs)
+    protected List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
+    {
+        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, _range, Game.GameConfig.UnitLayerMask);
+        if (detectedObjs.Length > 0)
+        {
+            return detectedObjs.Where(item =>
+            {
+                MBaseObj baseObj = item.GetComponent<MBaseObj>();
+                if (baseObj != null)
+                {
+                    if (isTargetEnemy)
+                    {
+                        return baseObj.IsEnemy();
+                    }
+                    else
+                    {
+                        return !baseObj.IsEnemy();
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }).Select(item => item.GetComponent<MBaseObj>()).ToList();
+        }
+        return null;
+    }
+    protected MBaseObj FindNearestTargetByAggroOrder(IEnumerable<MBaseObj> targetObjs)
     {
         if (targetObjs.Count() == 0)
             return null;

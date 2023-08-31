@@ -79,25 +79,19 @@ public class MHeroObj : MBaseObj
         UpdateAgentSpeed();
         agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
         FlipRenderers(agent.velocity.x < 0);
-
-        if (!isFixedTarget)
+ 
+        var targetLists = FindUnitListByArea(unitData.refData.checkrange, true);
+        if (targetLists.Count > 0)
         {
-            var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
-            if (detectedObjs.Length > 0)
+            var enemyObj = FindNearestTargetByAggroOrder(targetLists);
+            if (enemyObj != null)
             {
-                var objLists = detectedObjs.Where(item => item.GetComponent<MEnemyObj>() != null).Select(item => item.GetComponent<MEnemyObj>());
-                var enemyObj = GetNearestTargetByAggro(objLists);
-
-                if (enemyObj != null)
-                {
-                    targetObjUID = enemyObj.UID;
-                    fsm.ChangeState(FSMStates.DashMove);
-                    return;
-                }
+                targetObjUID = enemyObj.UID;
+                fsm.ChangeState(FSMStates.DashMove);
+                return;
             }
         }
         
-
         if (Vector2.Distance(transform.position, targetWayPoint.transform.position) < 0.3f)
         {
             wayPointIndex++;
@@ -121,43 +115,8 @@ public class MHeroObj : MBaseObj
 
     protected override void DashMove_Update()
     {
-        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-        if (enemyObj != null)
-        {
-            FlipRenderers(agent.velocity.x < 0);
-            UpdateAgentSpeed();
-            agent.SetDestination(GetFixedStuckPos(enemyObj.transform.position));
-
-            if (!isFixedTarget)
-            {
-                var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
-                if (detectedObjs.Length > 0)
-                {
-                    var objLists = detectedObjs.Where(item =>
-                    {
-                        MBaseObj baseObj = item.GetComponent<MBaseObj>();
-                        return baseObj != null && baseObj.IsEnemy();
-                    }).Select(item => item.GetComponent<MBaseObj>());
-
-                    MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
-                    if (findTargetObj != null)
-                    {
-                        targetObjUID = findTargetObj.UID;
-                    }
-                }
-            }
-
-            if (Vector2.Distance(transform.position, enemyObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
-            {
-                fsm.ChangeState(FSMStates.Attack);
-            }
-        }
-        else
-        {
-            fsm.ChangeState(FSMStates.Idle);
-        }
+        base.DashMove_Update();
     }
-
 
     protected override void Attack_Enter()
     {
