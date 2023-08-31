@@ -30,13 +30,8 @@ public class MEnemyObj : MBaseObj
     }
     protected override void Idle_Enter()
     {
-        PlayAni("Idle");
-        commonDelay = 0f;
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        state = fsm.State.ToString();
+        base.Idle_Enter();
         agent.avoidancePriority = 1;
-        isFixedTarget = false;
     }
     protected override void Idle_Update()
     {
@@ -45,6 +40,14 @@ public class MEnemyObj : MBaseObj
         {
             DetectHero();
         }
+    }
+    protected override void WaypointMove_Enter()
+    {
+        Debug.LogError("Enemy Doesnt Have WaypointState");
+    }
+    protected override void WaypointMove_Update()
+    {
+        Debug.LogError("Enemy Doesnt Have WaypointState Update");
     }
     protected override void DoSwordAttack(Collider2D collision)
     {
@@ -69,7 +72,6 @@ public class MEnemyObj : MBaseObj
     private void DetectHero()
     {
         commonDelay = 0;
-        
         var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange);
         if (detectedObjs.Length > 0)
         {
@@ -85,116 +87,33 @@ public class MEnemyObj : MBaseObj
     }
     protected override void DashMove_Enter()
     {
-        PlayAni("Walk");
-        commonDelay = 0;
-        agent.isStopped = false;
-        state = fsm.State.ToString();
+        base.DashMove_Enter();
         agent.avoidancePriority = 1;
     }
 
     protected override void DashMove_Update()
     {
-        MHeroObj heroObj = MGameManager.Instance.GetHeroObj(targetObjUID);
-        if (heroObj != null)
-        {
-            FlipRenderers(agent.velocity.x < 0);
-            UpdateAgentSpeed();
-            agent.SetDestination(GetFixedStuckPos(heroObj.transform.position));
-
-            if (!isFixedTarget)
-            {
-                var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
-                if (detectedObjs.Length > 0)
-                {
-                    var objLists = detectedObjs.Where(item =>
-                    {
-                        MBaseObj baseObj = item.GetComponent<MBaseObj>();
-                        return baseObj != null && !baseObj.IsEnemy();
-                    }).Select(item => item.GetComponent<MBaseObj>());
-
-                    MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
-                    if (findTargetObj != null)
-                    {
-                        targetObjUID = findTargetObj.UID;
-                    }
-                }
-            }
-
-            if (Vector2.Distance(transform.position, heroObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
-            {
-                fsm.ChangeState(FSMStates.Attack);
-            }
-        }
-        else
-        {
-            fsm.ChangeState(FSMStates.Idle);
-        }
+        base.DashMove_Update();
     }
 
     protected override void Attack_Enter()
     {
-        PlayAni("Attack");
-        commonDelay = 0;
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        LookTarget();
-        state = fsm.State.ToString();
+        base.Attack_Enter();
         agent.avoidancePriority = 1;
-        isFixedTarget = true;
     }
     protected override void Attack_Update()
     {
-
+        base.Attack_Update();
     }
 
     protected override void AttackDelay_Enter()
     {
-        PlayAni("Idle");
+        base.AttackDelay_Enter();
+        agent.avoidancePriority = 1;
     }
 
     protected override void AttackDelay_Update()
     {
-        LookTarget();
-        commonDelay -= Time.deltaTime;
-        if (commonDelay <= 0f)
-        {
-            MHeroObj targetObj = MGameManager.Instance.GetHeroObj(targetObjUID);
-            if (targetObj != null)
-            {
-                fsm.ChangeState(FSMStates.Attack);
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
-        }
-    }
-
-    public void DoDashMove(int _targetUID)
-    {
-        targetObjUID = _targetUID;
-        fsm.ChangeState(FSMStates.DashMove);
-    }
-
-    public override void DoAggro(int _attackerUID)
-    {
-        if (!isFixedTarget)
-        {
-            targetObjUID = _attackerUID;
-        }
-        isFixedTarget = true;
-        if (fsm.State == FSMStates.Idle)
-        {
-            fsm.ChangeState(FSMStates.DashMove);
-        }
-    }
-
-    private void LookTarget()
-    {
-        MHeroObj targetObj = MGameManager.Instance.GetHeroObj(targetObjUID);
-        if (targetObj != null)
-        {
-            FlipRenderers(targetObj.transform.position.x < transform.position.x);
-        }
+        base.AttackDelay_Update();
     }
 }

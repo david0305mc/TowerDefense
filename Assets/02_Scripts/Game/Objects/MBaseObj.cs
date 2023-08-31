@@ -95,101 +95,8 @@ public class MBaseObj : MonoBehaviour, Damageable
                 return;
             }
 
-            attackLongDelayCount--;
-            if (attackLongDelayCount <= 0)
-            {
-                commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
-                attackLongDelayCount = unitData.refUnitGradeData.attackcount;
-            }
-            else
-            {
-                commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
-            }
-
-            var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
-            if (opponentUnitData != null)
-            {
-                MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
-                if (Vector2.Distance(transform.position, opponentUnitObj.transform.position) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
-                {
-                    fsm.ChangeState(FSMStates.DashMove);
-                }
-                else
-                {
-                    fsm.ChangeState(FSMStates.AttackDelay);
-                }
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
+            DoAttackEnd();
         });
-    }
-
-    protected virtual void DoSwordAttack(Collider2D collision)
-    {
-    
-    }
-
-    protected virtual void Idle_Enter()
-    { 
-        
-    }
-    protected virtual void Idle_Update()
-    {
-
-    }
-
-    protected virtual void DashMove_Enter()
-    {
-
-    }
-    protected virtual void DashMove_Update()
-    {
-
-    }
-
-    protected virtual void Attack_Enter()
-    {
-    
-    }
-    protected virtual void Attack_Update()
-    {
-
-    }
-
-    protected virtual void AttackDelay_Enter()
-    {
-    
-    }
-
-    protected virtual void AttackDelay_Update()
-    {
-    }
-
-
-    protected virtual void Update()
-    {
-        fsm.Driver.Update.Invoke();
-    }
-
-    private void OnDisable()
-    {
-        cts?.Cancel();
-        flashCts?.Cancel();
-        foreach (var item in spriteRenderers)
-        {
-            item.material = originMaterial;
-            item.color = originColor;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        cts?.Cancel();
-        cts?.Dispose();
-        flashCts?.Cancel();
-        flashCts?.Dispose();
     }
 
     public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
@@ -218,6 +125,173 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         StartFSM();
     }
+
+    protected virtual void DoSwordAttack(Collider2D collision)
+    {   
+    }
+    protected virtual void DoAttackEnd()
+    {
+        attackLongDelayCount--;
+        if (attackLongDelayCount <= 0)
+        {
+            commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
+            attackLongDelayCount = unitData.refUnitGradeData.attackcount;
+        }
+        else
+        {
+            commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
+        }
+
+        var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
+        if (opponentUnitData != null)
+        {
+            MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
+            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            {
+                fsm.ChangeState(FSMStates.DashMove);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.AttackDelay);
+            }
+        }
+        else
+        {
+            fsm.ChangeState(FSMStates.Idle);
+        }
+    }
+
+    protected virtual void Idle_Enter()
+    {
+        PlayAni("Idle");
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        attackLongDelayCount = unitData.refUnitGradeData.attackcount;
+        commonDelay = 0f;
+        state = fsm.State.ToString();
+        isFixedTarget = false;
+    }
+    protected virtual void Idle_Update()
+    {
+    }
+
+    protected virtual void WaypointMove_Enter()
+    { 
+    
+    }
+    protected virtual void WaypointMove_Update()
+    {
+
+    }
+
+    protected virtual void DashMove_Enter()
+    {
+        PlayAni("Walk");
+        agent.isStopped = false;
+        state = fsm.State.ToString();
+        commonDelay = 0;
+    }
+    protected virtual void DashMove_Update()
+    {
+        MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
+        if (targetObj != null)
+        {
+            FlipRenderers(agent.velocity.x < 0);
+            UpdateAgentSpeed();
+            agent.SetDestination(GetFixedStuckPos(targetObj.transform.position));
+
+            //if (!isFixedTarget)
+            //{
+            //    var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange, Game.GameConfig.UnitLayerMask);
+            //    if (detectedObjs.Length > 0)
+            //    {
+            //        var objLists = detectedObjs.Where(item =>
+            //        {
+            //            MBaseObj baseObj = item.GetComponent<MBaseObj>();
+            //            return baseObj != null && !baseObj.IsEnemy();
+            //        }).Select(item => item.GetComponent<MBaseObj>());
+
+            //        MBaseObj findTargetObj = GetNearestTargetByAggro(objLists);
+            //        if (findTargetObj != null)
+            //        {
+            //            targetObjUID = findTargetObj.UID;
+            //        }
+            //    }
+            //}
+
+            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            {
+                fsm.ChangeState(FSMStates.Attack);
+            }
+        }
+        else
+        {
+            fsm.ChangeState(FSMStates.Idle);
+        }
+    }
+
+    protected virtual void Attack_Enter()
+    {
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        PlayAni("Attack");
+        LookTarget();
+        state = fsm.State.ToString();
+        commonDelay = 0f;
+        isFixedTarget = true;
+    }
+    protected virtual void Attack_Update()
+    {
+        LookTarget();
+    }
+
+    protected virtual void AttackDelay_Enter()
+    {
+        PlayAni("Idle");
+    }
+
+    protected virtual void AttackDelay_Update()
+    {
+        LookTarget();
+        commonDelay -= Time.deltaTime;
+        if (commonDelay <= 0f)
+        {
+            if (UserData.Instance.GetUnitData(targetObjUID, !IsEnemy()) != null)
+            {
+                fsm.ChangeState(FSMStates.Attack);
+            }
+            else
+            {
+                fsm.ChangeState(FSMStates.Idle);
+            }
+        }
+    }
+
+
+    protected virtual void Update()
+    {
+        fsm.Driver.Update.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        cts?.Cancel();
+        flashCts?.Cancel();
+        foreach (var item in spriteRenderers)
+        {
+            item.material = originMaterial;
+            item.color = originColor;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
+        flashCts?.Cancel();
+        flashCts?.Dispose();
+    }
+
     public virtual void StartFSM()
     {
         fsm.ChangeState(FSMStates.Idle);
@@ -263,8 +337,16 @@ public class MBaseObj : MonoBehaviour, Damageable
         return new Vector3(_pos.x, _pos.y, 0);
     }
     public virtual void DoAggro(int _attackerUID)
-    { 
-        
+    {
+        if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.WaypointMove)
+        {
+            if (!isFixedTarget)
+            {
+                targetObjUID = _attackerUID;
+                isFixedTarget = true;
+            }
+            fsm.ChangeState(FSMStates.DashMove);
+        }
     }
     public void UpdateHPBar()
     {
@@ -328,8 +410,29 @@ public class MBaseObj : MonoBehaviour, Damageable
             }
         });
     }
+    protected void LookTarget()
+    {
+        MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
+        if (targetObj != null)
+        {
+            FlipRenderers(targetObj.transform.position.x < transform.position.x);
+        }
+    }
+
     public virtual bool IsEnemy()
     {
         return UnitData.IsEnemy;
+    }
+
+
+    private void ResetTrigger()
+    {
+        foreach (var p in animator.parameters)
+        {
+            if (p.type == AnimatorControllerParameterType.Trigger)
+            {
+                animator.ResetTrigger(p.name);
+            }
+        }
     }
 }

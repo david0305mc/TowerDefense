@@ -10,7 +10,6 @@ using System.Linq;
 
 public class MHeroObj : MBaseObj
 {
-
     public GameObject targetWayPoint;
     public Vector2 targetoffset;
     private int wayPointIndex;
@@ -49,17 +48,12 @@ public class MHeroObj : MBaseObj
 
     protected override void Idle_Enter()
     {
-        PlayAni("Idle");
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        attackLongDelayCount = unitData.refUnitGradeData.attackcount;
-        commonDelay = 0f;
-        state = fsm.State.ToString();
+        base.Idle_Enter();
         agent.avoidancePriority = 11;
-        isFixedTarget = false;
     }
     protected override void Idle_Update()
     {
+        base.Idle_Update();
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0)
         {
@@ -72,7 +66,7 @@ public class MHeroObj : MBaseObj
         }
     }
 
-    void WaypointMove_Enter()
+    protected override void WaypointMove_Enter()
     {
         PlayAni("Walk");
         agent.isStopped = false;
@@ -80,7 +74,7 @@ public class MHeroObj : MBaseObj
         agent.avoidancePriority = 11;
     }
 
-    void WaypointMove_Update()
+    protected override void WaypointMove_Update()
     {
         UpdateAgentSpeed();
         agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
@@ -121,9 +115,7 @@ public class MHeroObj : MBaseObj
 
     protected override void DashMove_Enter()
     {
-        PlayAni("Walk");
-        agent.isStopped = false;
-        state = fsm.State.ToString();
+        base.DashMove_Enter();
         agent.avoidancePriority = 11;
     }
 
@@ -169,75 +161,25 @@ public class MHeroObj : MBaseObj
 
     protected override void Attack_Enter()
     {
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        PlayAni("Attack");
-        LookTarget();
-        state = fsm.State.ToString();
+        base.Attack_Enter();
         agent.avoidancePriority = 11;
-        commonDelay = 0f;
-        isFixedTarget = true;
     }
 
     protected override void Attack_Update()
     {
-        LookTarget();
+        base.Attack_Update();
     }
     protected override void AttackDelay_Enter()
     {
-        PlayAni("Idle");
+        base.AttackDelay_Enter();
         agent.avoidancePriority = 11;
     }
 
     protected override void AttackDelay_Update()
     {
-        LookTarget();
-        commonDelay -= Time.deltaTime;
-        if (commonDelay <= 0f)
-        {
-            MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-            if (enemyObj != null)
-            {
-                fsm.ChangeState(FSMStates.Attack);
-            }
-            else
-            {
-                fsm.ChangeState(FSMStates.Idle);
-            }
-        }
-    }
-    public override void DoAggro(int _attackerUID)
-    {
-        if (!isFixedTarget)
-        {
-            targetObjUID = _attackerUID;
-        }
-        isFixedTarget = true;
-        if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.WaypointMove)
-        {
-            fsm.ChangeState(FSMStates.DashMove);
-        }
+        base.AttackDelay_Update();
     }
 
-    private void LookTarget()
-    {
-        MEnemyObj enemyObj = MGameManager.Instance.GetEnemyObj(targetObjUID);
-        if (enemyObj != null)
-        {
-            FlipRenderers(enemyObj.transform.position.x < transform.position.x);
-        }
-    }
-
-    private void ResetTrigger()
-    {
-        foreach (var p in animator.parameters)
-        {
-            if (p.type == AnimatorControllerParameterType.Trigger)
-            {
-                animator.ResetTrigger(p.name);
-            }
-        }
-    }
 
     //private void DetectEnemy()
     //{
