@@ -11,7 +11,6 @@ using System.Linq;
 public class MHeroObj : MBaseObj
 {
     public GameObject targetWayPoint;
-    public Vector2 targetoffset;
     private int wayPointIndex;
 
     protected override void Awake()
@@ -60,7 +59,6 @@ public class MHeroObj : MBaseObj
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
                 targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
-                agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
                 fsm.ChangeState(FSMStates.WaypointMove);
             }
         }
@@ -77,7 +75,7 @@ public class MHeroObj : MBaseObj
     protected override void WaypointMove_Update()
     {
         UpdateAgentSpeed();
-        agent.SetDestination(GetFixedStuckPos(targetWayPoint.transform.position));
+        DoAgentMove(targetWayPoint.transform.position);
         FlipRenderers(agent.velocity.x < 0);
  
         var targetLists = FindUnitListByArea(unitData.refData.checkrange, true);
@@ -86,7 +84,7 @@ public class MHeroObj : MBaseObj
             var enemyObj = FindNearestTargetByAggroOrder(targetLists);
             if (enemyObj != null)
             {
-                targetObjUID = enemyObj.UID;
+                SetTargetObject(enemyObj.UID);
                 fsm.ChangeState(FSMStates.DashMove);
                 return;
             }
@@ -138,7 +136,6 @@ public class MHeroObj : MBaseObj
     {
         base.AttackDelay_Update();
     }
-
 
     //private void DetectEnemy()
     //{

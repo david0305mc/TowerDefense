@@ -55,6 +55,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     private SpriteRenderer[] spriteRenderers;
     private Material originMaterial;
     private Color originColor;
+    private NavMeshPath currNavPath;
+    public Vector3 targetoffset;
+
     protected virtual void Awake()
     {
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -170,6 +173,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         commonDelay = 0f;
         state = fsm.State.ToString();
         isFixedTarget = false;
+        targetoffset = Vector2.zero;
     }
     protected virtual void Idle_Update()
     {
@@ -205,7 +209,7 @@ public class MBaseObj : MonoBehaviour, Damageable
                     MBaseObj findTargetObj = FindNearestTargetByAggroOrder(targetLists);
                     if (findTargetObj != null)
                     {
-                        targetObjUID = findTargetObj.UID;
+                        SetTargetObject(findTargetObj.UID);
                     }
                 }
             }
@@ -216,10 +220,9 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             FlipRenderers(agent.velocity.x < 0);
             UpdateAgentSpeed();
-            agent.SetDestination(GetFixedStuckPos(targetObj.transform.position));
-
-
-            if (Vector2.Distance(transform.position, targetObj.transform.position) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            DoAgentMove(targetObj.transform.position + targetoffset);
+            
+            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
@@ -342,12 +345,18 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             if (!isFixedTarget)
             {
-                targetObjUID = _attackerUID;
+                SetTargetObject(_attackerUID);
                 isFixedTarget = true;
             }
             fsm.ChangeState(FSMStates.DashMove);
         }
     }
+    protected void DoAgentMove(Vector3 _pos)
+    {
+        Vector3 fixedPos = GetFixedStuckPos(_pos);
+        agent.SetDestination(fixedPos);
+    }
+
     public void UpdateHPBar()
     {
         hpBar.value = UnitData.hp / (float)UnitData.refUnitGradeData.hp;
@@ -451,6 +460,61 @@ public class MBaseObj : MonoBehaviour, Damageable
         return UnitData.IsEnemy;
     }
 
+    protected void SetTargetObject(int _uid)
+    {
+        if (targetObjUID == _uid)
+        {
+            return;
+        }
+        targetObjUID = _uid;
+        MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
+        float randX = Random.Range(0.5f, 1.5f);
+        float randY = Random.Range(-1, 2);
+
+        Vector3 pos01 = new Vector3(randX, randY, 0);
+        Vector3 pos02 = new Vector3(-randX, randY, 0);
+
+        float targetDist01 = CalcPathLength(pos01 + targetObj.transform.position);
+        float targetDist02 = CalcPathLength(pos02 + targetObj.transform.position);
+        if (targetDist01 == float.MaxValue && targetDist02 == float.MaxValue)
+        {
+            Debug.LogError(targetDist01 == float.MaxValue && targetDist02 == float.MaxValue);
+            SetTargetObject(_uid);
+            return;
+        }
+
+        if (targetDist01 < targetDist02)
+        {
+            targetoffset = pos01;
+        }
+        else
+        {
+            targetoffset = pos02;
+        }
+    }
+
+    private float CalcPathLength(Vector3 _targetPos)
+    {
+        NavMeshPath _path = new NavMeshPath();
+        if (!agent.CalculatePath(_targetPos, _path))
+        {
+            return float.MaxValue;
+        }
+        
+        Vector3[] _wayPoint = new Vector3[_path.corners.Length + 2];
+
+        _wayPoint[0] = transform.position;
+        _wayPoint[_path.corners.Length + 1] = _targetPos;
+
+        float _pathLength = 0;  // 경로 길이를 더함
+        for (int i = 0; i < _path.corners.Length; i++)
+        {
+            _wayPoint[i + 1] = _path.corners[i];
+            _pathLength += Vector3.Distance(_wayPoint[i], _wayPoint[i + 1]);
+        }
+
+        return _pathLength;
+    }
 
     private void ResetTrigger()
     {

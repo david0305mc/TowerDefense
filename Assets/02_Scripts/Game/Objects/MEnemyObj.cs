@@ -72,18 +72,17 @@ public class MEnemyObj : MBaseObj
     private void DetectHero()
     {
         commonDelay = 0;
-        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, unitData.refData.checkrange);
-        if (detectedObjs.Length > 0)
+        var detectedObjs = FindUnitListByArea(unitData.refData.checkrange, false);
+        if (detectedObjs.Count > 0)
         {
-            var heroObj = detectedObjs.FirstOrDefault(item => { return item.GetComponent<MHeroObj>() != null; });
-
+            var heroObj = FindNearestTargetByAggroOrder(detectedObjs);
             if (heroObj != default)
             {
-                targetObjUID = heroObj.GetComponent<MHeroObj>().UID;
+                SetTargetObject(heroObj.UID);
                 fsm.ChangeState(FSMStates.DashMove);
                 FlipRenderers(heroObj.transform.position.x < transform.position.x);
             }
-        }        
+        }
     }
     protected override void DashMove_Enter()
     {

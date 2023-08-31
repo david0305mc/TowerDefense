@@ -126,8 +126,11 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         // GetDamaged
         bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _attackData.damage);
-        DoAggroToHero(_enemyObj, _attackData.attackerUID);
-
+        if (UserData.Instance.GetHeroData(_attackData.attackerUID) != null)
+        {
+            DoAggroToHero(_enemyObj, _attackData.attackerUID);
+        }
+        
         if (isDead)
         {
             RemoveEnemy(_enemyObj.UID);
@@ -143,8 +146,10 @@ public class MGameManager : SingletonMono<MGameManager>
     private void DoHeroGetDamage(MHeroObj _heroObj, AttackData _attackData)
     {
         bool isDead = UserData.Instance.AttackToHero(_heroObj.UID, _attackData.damage);
-        DoAggroToEnemy(_heroObj, _attackData.attackerUID);
-
+        if (UserData.Instance.GetEnemyData(_attackData.attackerUID) != null)
+        {
+            DoAggroToEnemy(_heroObj, _attackData.attackerUID);
+        }
         if (isDead)
         {
             RemoveHero(_heroObj.UID);
