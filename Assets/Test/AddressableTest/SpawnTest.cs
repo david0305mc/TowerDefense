@@ -5,7 +5,6 @@ using UnityEngine.AddressableAssets;
 
 public class SpawnTest : MonoBehaviour
 {
-
     private void Update()
     {
         if (Input.GetKey(KeyCode.T))
