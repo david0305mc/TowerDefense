@@ -37,6 +37,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected AnimationLink animationLink;
     public Vector3 FirePos => firePos.position;
 
+    public GameObject targetObj_Test;
+
     protected int uid;
     public int TID { get { return tid; } }
     public int UID { get { return uid; } }
@@ -202,7 +204,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             commonDelay -= Time.deltaTime;
             if (commonDelay <= 0)
             {
-                commonDelay = 0.3f;
+                commonDelay = 0.01f;
                 var targetLists = FindUnitListByArea(unitData.refData.checkrange, !IsEnemy());
                 if (targetLists != null && targetLists.Count > 0)
                 {
@@ -341,20 +343,33 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     public virtual void DoAggro(int _attackerUID)
     {
-        if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.WaypointMove)
+        if (!isFixedTarget)
         {
-            if (!isFixedTarget)
-            {
-                SetTargetObject(_attackerUID);
-                isFixedTarget = true;
-            }
+            SetTargetObject(_attackerUID);
             fsm.ChangeState(FSMStates.DashMove);
         }
     }
     protected void DoAgentMove(Vector3 _pos)
     {
         Vector3 fixedPos = GetFixedStuckPos(_pos);
-        agent.SetDestination(fixedPos);
+        NavMeshPath path = new NavMeshPath();
+        if (agent.CalculatePath(fixedPos, path))
+        {
+            agent.SetPath(path);
+        }
+        else
+        {
+            Debug.Log("path not found");
+            Vector3 samplePos = SamplePosition(fixedPos);
+            if (samplePos != Game.GameConfig.PositiveInfinityVector)
+            {
+                if (agent.CalculatePath(samplePos, path))
+                {
+                    agent.SetPath(path);
+                }
+            }
+            //agent.SetDestination(fixedPos);
+        }
     }
 
     public void UpdateHPBar()
@@ -375,7 +390,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
     {
-        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, _range, Game.GameConfig.UnitLayerMask);
+        var detectedObjs = Physics2D.OverlapCircleAll(transform.position, _range * 0.1f, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
         {
             return detectedObjs.Where(item =>
@@ -460,30 +475,31 @@ public class MBaseObj : MonoBehaviour, Damageable
         return UnitData.IsEnemy;
     }
 
-    protected void SetTargetObject(int _uid)
+    protected virtual bool SetTargetObject(int _uid)
     {
         if (targetObjUID == _uid)
         {
-            return;
+            return false;
         }
-        targetObjUID = _uid;
-        MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
-        float randX = Random.Range(0.5f, 1.5f);
-        float randY = Random.Range(-1, 2);
+        MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_uid, !IsEnemy());
+        float randX = Random.Range(0.5f, 1f);
+        float randY = Random.Range(-1f, 1f);
 
         Vector3 pos01 = new Vector3(randX, randY, 0);
         Vector3 pos02 = new Vector3(-randX, randY, 0);
 
-        float targetDist01 = CalcPathLength(pos01 + targetObj.transform.position);
-        float targetDist02 = CalcPathLength(pos02 + targetObj.transform.position);
-        if (targetDist01 == float.MaxValue && targetDist02 == float.MaxValue)
-        {
-            Debug.Log("new Target Offset");
-            SetTargetObject(_uid);
-            return;
-        }
+        var samplePos01 = pos01 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0);
+        var samplePos02 = pos02 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0);
 
-        if (targetDist01 < targetDist02)
+        //var samplePos01 = SamplePosition(pos01 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0));
+        //var samplePos02 = SamplePosition(pos02 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0));
+        //if (samplePos01  == Game.GameConfig.PositiveInfinityVector && samplePos02 == Game.GameConfig.PositiveInfinityVector)
+        //{
+        //    Debug.Log("not available TargetPos");
+        //    return false;
+        //}
+
+        if (Vector2.Distance(samplePos01, transform.position) < Vector2.Distance(samplePos02, transform.position))
         {
             targetoffset = pos01;
         }
@@ -491,6 +507,9 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             targetoffset = pos02;
         }
+        targetObj_Test = targetObj.gameObject;
+        targetObjUID = _uid;
+        return true;
     }
 
     private float CalcPathLength(Vector3 _targetPos)
@@ -520,7 +539,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         //transform.position + Random.insideUnitSphere * maxRange,
         NavMeshHit navMeshHit;
-        float maxRange = 3f;
+        float maxRange = 10f;
         bool foundPosition =
             NavMesh.SamplePosition(
                 _pos,

@@ -36,7 +36,7 @@ public class MEnemyObj : MBaseObj
     protected override void Idle_Update()
     {
         commonDelay += Time.deltaTime;
-        if (commonDelay >= 1f)
+        if (commonDelay >= 0.1f)
         {
             DetectHero();
         }
@@ -78,7 +78,10 @@ public class MEnemyObj : MBaseObj
             var heroObj = FindNearestTargetByAggroOrder(detectedObjs);
             if (heroObj != default)
             {
-                SetTargetObject(heroObj.UID);
+                if(!SetTargetObject(heroObj.UID))
+                {
+                    return;
+                }
                 fsm.ChangeState(FSMStates.DashMove);
                 FlipRenderers(heroObj.transform.position.x < transform.position.x);
             }

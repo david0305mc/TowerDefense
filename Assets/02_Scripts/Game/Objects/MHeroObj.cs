@@ -84,9 +84,11 @@ public class MHeroObj : MBaseObj
             var enemyObj = FindNearestTargetByAggroOrder(targetLists);
             if (enemyObj != null)
             {
-                SetTargetObject(enemyObj.UID);
-                fsm.ChangeState(FSMStates.DashMove);
-                return;
+                if (SetTargetObject(enemyObj.UID))
+                {
+                    fsm.ChangeState(FSMStates.DashMove);
+                    return;
+                }
             }
         }
         
@@ -136,6 +138,13 @@ public class MHeroObj : MBaseObj
     {
         base.AttackDelay_Update();
     }
+
+    protected override bool SetTargetObject(int _uid)
+    {
+        return base.SetTargetObject(_uid);
+    }
+
+
 
     //private void DetectEnemy()
     //{

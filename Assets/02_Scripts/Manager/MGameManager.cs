@@ -8,7 +8,6 @@ using UnityEngine.Tilemaps;
 public class MGameManager : SingletonMono<MGameManager>
 {
     [SerializeField] private List<GameObject> stageprefLists;
-    [SerializeField] private ProjectileStraight projStraight;
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<MHeroObj> heroObjPrefList;
@@ -118,6 +117,7 @@ public class MGameManager : SingletonMono<MGameManager>
             enemyObj.InitObject(data.uid, true, (_attackData) => {
                 DoEnemyGetDamage(enemyObj, _attackData);
             });
+            //enemyObj.transform.SetPosition(new Vector3(enemyObj.transform.position.x, enemyObj.transform.position.y, 0));
             enemyDic.Add(data.uid, enemyObj);
         }
     }
@@ -172,10 +172,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 MHeroObj heroObj = obj.GetComponent<MHeroObj>();
                 if (heroObj != null)
                 {
-                    if (heroObj == this)
-                        continue;
-
-                    if (heroObj.State == MHeroObj.FSMStates.Idle)
+                    if (heroObj.State == MHeroObj.FSMStates.Idle || heroObj.State == MHeroObj.FSMStates.WaypointMove || heroObj.State == MHeroObj.FSMStates.DashMove)
                     {
                         heroObj.DoAggro(_attackerUID);
                     }
@@ -194,10 +191,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
                 if (enemyObj != null)
                 {
-                    if (enemyObj == this)
-                        continue;
-
-                    if (enemyObj.State == MEnemyObj.FSMStates.Idle)
+                    if (enemyObj.State == MEnemyObj.FSMStates.Idle || enemyObj.State == MEnemyObj.FSMStates.DashMove)
                     {
                         enemyObj.DoAggro(_attackerUID);
                     }
