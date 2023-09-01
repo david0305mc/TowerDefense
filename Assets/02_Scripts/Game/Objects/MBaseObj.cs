@@ -151,7 +151,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         if (opponentUnitData != null)
         {
             MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
-            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
             {
                 fsm.ChangeState(FSMStates.DashMove);
             }
