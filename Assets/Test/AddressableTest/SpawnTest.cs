@@ -20,14 +20,11 @@ public class SpawnTest : MonoBehaviour
             //    //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
             //}
 
-            for (int j = 0; j < 1000; j++)
+            for (int i = 1; i < 6; i++)
             {
-                for (int i = 1; i < 6; i++)
-                {
-                    string name = $"Unit/AddressablePrefab0{i}.prefab";
-                    //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
-                    var go = Addressables.InstantiateAsync(name, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity, transform);
-                }
+                string name = $"Unit/AddressablePrefab0{i}.prefab";
+                //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
+                var go = Addressables.InstantiateAsync(name, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity, transform);
             }
         }
         if (Input.GetKeyDown(KeyCode.O))
@@ -35,8 +32,7 @@ public class SpawnTest : MonoBehaviour
             for (int i = 1; i < 6; i++)
             {
                 string name = $"Unit/AddressablePrefab0{i}.prefab";
-                prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
-                //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
+                LoadAsync(name);
             }
         }
 
@@ -55,6 +51,14 @@ public class SpawnTest : MonoBehaviour
             sw.Stop();
             UnityEngine.Debug.Log($"Time : {sw.ElapsedMilliseconds}ms");
         }
+    }
 
+    private async UniTask LoadAsync(string _name)
+    {
+        if (!prefabDic.ContainsKey(name))
+        {
+            prefabDic[_name] = await Addressables.LoadAssetAsync<GameObject>(_name);
+        }
+        Instantiate(prefabDic[_name], new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
     }
 }
