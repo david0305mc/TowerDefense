@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-6062301516879187379
+--- !u!1102 &-4398926191334561610
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle
+  m_Name: 02_Character_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,20 +20,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 2d103fd8495b00144a538692b1c99407, type: 2}
+  m_Motion: {fileID: 7400000, guid: 48b59812265aa6248ac5bda5f5971609, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-43509975485999058
+--- !u!1102 &-104870605128979793
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack
+  m_Name: 02_Character_walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 01408d8baa7e774429357d40f0c592e6, type: 2}
+  m_Motion: {fileID: 7400000, guid: 45f249581e4550149b2af409519d96f3, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -58,13 +58,13 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 03_Enemy_Animator
+  m_Name: 02_Character_Animator
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: 2917630163693759009}
+    m_StateMachine: {fileID: 6886981033425891831}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -74,14 +74,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &2119899411207557892
+--- !u!1102 &961094745298605754
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walk
+  m_Name: 02_Character_attack_idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -94,13 +94,13 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a4fdd693c2175634b80d5ca734263c00, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2db7535e3dfe88640b4f417feb2303e6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1107 &2917630163693759009
+--- !u!1107 &6886981033425891831
 AnimatorStateMachine:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -110,17 +110,17 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: -43509975485999058}
-    m_Position: {x: 410, y: -40, z: 0}
+    m_State: {fileID: 8207671833070505830}
+    m_Position: {x: 390, y: 130, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -6062301516879187379}
-    m_Position: {x: 430, y: 150, z: 0}
+    m_State: {fileID: 961094745298605754}
+    m_Position: {x: 420, y: 60, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 2119899411207557892}
-    m_Position: {x: 380, y: 60, z: 0}
+    m_State: {fileID: -4398926191334561610}
+    m_Position: {x: 430, y: 10, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 5793795252890176788}
-    m_Position: {x: 415, y: 125, z: 0}
+    m_State: {fileID: -104870605128979793}
+    m_Position: {x: 447.24026, y: -49.94986, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -130,15 +130,15 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 2119899411207557892}
---- !u!1102 &5793795252890176788
+  m_DefaultState: {fileID: -104870605128979793}
+--- !u!1102 &8207671833070505830
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 03_Enemy_attack_idle
+  m_Name: 02_Character_attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -151,7 +151,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 71a0fa701a15a864194f4684532af149, type: 2}
+  m_Motion: {fileID: 7400000, guid: 162a907175bd7da4db092a38df36b52c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
