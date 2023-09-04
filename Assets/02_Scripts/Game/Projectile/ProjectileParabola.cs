@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileStraight : ProjectileBase
+public class ProjectileParabola : ProjectileBase
 {
     
     [SerializeField] private AnimationCurve curve;
