@@ -124,7 +124,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         hpBar.value = 1F;
         if (swordAttackChecker != null)
         {
-            swordAttackChecker.SetAttackAction(_isEnemy, collision =>
+            swordAttackChecker.SetAttackAction(_isEnemy, 2, collision =>
             {
                 if (fsm.State != FSMStates.Attack)
                 {
@@ -253,6 +253,14 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Attack_Update()
     {
         LookTarget();
+    }
+
+    protected virtual void Attack_Exit()
+    {
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.ResetAttackCount();
+        }
     }
 
     protected virtual void AttackDelay_Enter()

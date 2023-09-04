@@ -229,7 +229,9 @@ public class MGameManager : SingletonMono<MGameManager>
     {   
         var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
-        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(heroObjPrefList[index], spawnPos, Quaternion.identity, objRoot);
+
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
+        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
         heroObj.InitObject(heroData.uid, false, (_attackData) =>
         {
             DoHeroGetDamage(heroObj, _attackData);
