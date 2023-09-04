@@ -688,6 +688,9 @@ MonoBehaviour:
   rigidBody2d: {fileID: 6488945538131905290}
   firePos: {fileID: 6488945536975646371}
   tid: 1001
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
   rangeCheckForEditor: 3
 --- !u!195 &6488945538131905291
 NavMeshAgent:
@@ -698,7 +701,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6488945538131905295}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.45
+  m_Radius: 0.1
   m_Speed: 3.31
   m_Acceleration: 8
   avoidancePriority: 1

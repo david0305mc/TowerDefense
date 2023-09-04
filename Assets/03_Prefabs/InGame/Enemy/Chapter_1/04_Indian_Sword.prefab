@@ -445,7 +445,11 @@ MonoBehaviour:
   hpBar: {fileID: 5556141178180139529}
   agent: {fileID: 5556141178016867899}
   rigidBody2d: {fileID: 5556141178016867898}
+  firePos: {fileID: 0}
   tid: 1004
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
   rangeCheckForEditor: 3
 --- !u!195 &5556141178016867899
 NavMeshAgent:
@@ -456,7 +460,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5556141178016867903}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.45
+  m_Radius: 0.1
   m_Speed: 3.31
   m_Acceleration: 8
   avoidancePriority: 1

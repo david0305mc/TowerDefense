@@ -56,7 +56,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
     private Material originMaterial;
-    private Color originColor;
+    private List<Color> originColorLists;
     private NavMeshPath currNavPath;
     public Vector3 targetoffset;
 
@@ -69,7 +69,12 @@ public class MBaseObj : MonoBehaviour, Damageable
         animationLink = animator.GetComponent<AnimationLink>();
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         originMaterial = spriteRenderers[0].material;
-        originColor = spriteRenderers[0].color;
+        originColorLists = new List<Color>();
+
+        Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i => {
+            originColorLists.Add(spriteRenderers[i].color);
+        });
+        
         if (firePos == default)
         {
             firePos = transform;
@@ -282,11 +287,12 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         cts?.Cancel();
         flashCts?.Cancel();
-        foreach (var item in spriteRenderers)
+
+        Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
         {
-            item.material = originMaterial;
-            item.color = originColor;
-        }
+            spriteRenderers[i].material = originMaterial;
+            spriteRenderers[i].color = originColorLists[i];
+        });
     }
 
     private void OnDestroy()
@@ -454,11 +460,11 @@ public class MBaseObj : MonoBehaviour, Damageable
         UniTask.Create(async () =>
         {
             await UniTask.Delay(300, cancellationToken: flashCts.Token);
-            foreach (var item in spriteRenderers)
+            Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
             {
-                item.material = originMaterial;
-                item.color = originColor;
-            }
+                spriteRenderers[i].material = originMaterial;
+                spriteRenderers[i].color = originColorLists[i];
+            });
         });
     }
     protected void LookTarget()
@@ -482,8 +488,8 @@ public class MBaseObj : MonoBehaviour, Damageable
             return false;
         }
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_uid, !IsEnemy());
-        float randX = Random.Range(0.5f, 1f);
-        float randY = Random.Range(-1f, 1f);
+        float randX = Random.Range(0.5f, 1.5f);
+        float randY = Random.Range(-1.5f, 1.5f);
 
         Vector3 pos01 = new Vector3(randX, randY, 0);
         Vector3 pos02 = new Vector3(-randX, randY, 0);
