@@ -257,7 +257,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual void AttackDelay_Enter()
     {
-        PlayAni("Idle");
+        PlayAni("AttackIdle");
+        state = fsm.State.ToString();
     }
 
     protected virtual void AttackDelay_Update()
