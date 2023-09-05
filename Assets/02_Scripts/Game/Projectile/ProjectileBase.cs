@@ -72,9 +72,9 @@ public class ProjectileBase : MonoBehaviour
             {
                 if (targetObj.IsEnemy())
                 {
-                    //damagable.GetDamaged(attackData);
-                    MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                    MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                     MGameManager.Instance.DoAreaAttack(attackData, collision.ClosestPoint(transform.position));
+                    damagable.GetDamaged(attackData);
                     Dispose();
                 }
             }
@@ -82,9 +82,9 @@ public class ProjectileBase : MonoBehaviour
             {
                 if (!targetObj.IsEnemy())
                 {
-                    //damagable.GetDamaged(attackData);
-                    MGameManager.Instance.ShowBoomEffect(0, attackData, collision.ClosestPoint(transform.position));
+                    MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                     MGameManager.Instance.DoAreaAttack(attackData, collision.ClosestPoint(transform.position));
+                    damagable.GetDamaged(attackData);
                     Dispose();
                 }
             }
