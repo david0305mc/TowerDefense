@@ -10,8 +10,7 @@ public class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private List<GameObject> stageprefLists;
 
     [SerializeField] private Transform objRoot;
-    [SerializeField] private List<MHeroObj> heroObjPrefList;
-    [SerializeField] private List<int> heroUIDLists;
+    [SerializeField] private List<int> heroTIDLists;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -227,7 +226,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void AddHero(int index)
     {   
-        var heroData = UserData.Instance.AddHeroData(heroObjPrefList[index].TID);
+        var heroData = UserData.Instance.AddHeroData(heroTIDLists[index]);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
