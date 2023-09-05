@@ -107,9 +107,13 @@ public partial class DataManager {
 		public int attackdmg;
 		public int attackrange;
 		public int attackcount;
+		public int multiattackcount;
 		public int attackshortdelay;
 		public int attacklongdelay;
 		public int projectileid;
+		public int splashdmg;
+		public int splashrange;
+		public string splasheffectprefab;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
 	public Dictionary<int, UnitGradeInfo> UnitgradeinfoDic { get; private set; }
