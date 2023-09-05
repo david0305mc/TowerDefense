@@ -20,7 +20,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
         //projectileDic = arrayData.ToDictionary(item => item.name, item => item);
         LoadProjectile().Forget();
         LoadUnits().Forget();
-
+        LoadBoomEffect().Forget();
     }
 
     private async UniTaskVoid LoadProjectile()
@@ -37,7 +37,16 @@ public class MResourceManager : SingletonMono<MResourceManager>
             prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
         }
     }
-
+    private async UniTaskVoid LoadBoomEffect()
+    {
+        foreach (var item in DataManager.Instance.UnitgradeinfoArray)
+        {
+            if (!prefabDic.ContainsKey(item.boomeffectprefab))
+            {
+                prefabDic[item.boomeffectprefab] = await Addressables.LoadAssetAsync<GameObject>(item.boomeffectprefab);
+            }
+        }
+    }
     public ProjectileBase GetProjectile(string _name)
     {
         if (prefabDic.TryGetValue(_name, out GameObject obj))

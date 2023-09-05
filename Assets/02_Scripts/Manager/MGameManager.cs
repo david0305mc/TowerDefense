@@ -11,7 +11,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<MHeroObj> heroObjPrefList;
-    [SerializeField] private List<ExplosionEffect> explosionPrefList;
+    [SerializeField] private List<int> heroUIDLists;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -310,7 +310,8 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void ShowBoomEffect(int boomIndex, AttackData _attackData, Vector2 _pos, string name = default)
     {
-        ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(explosionPrefList[boomIndex], _pos, Quaternion.identity, objRoot);
+        var attackerUnit = UserData.Instance.GetUnitData(_attackData.attackerUID, !_attackData.attackToEnemy);
+        ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetPrefab(attackerUnit.refUnitGradeData.boomeffectprefab), _pos, Quaternion.identity, objRoot).GetComponent<ExplosionEffect>();
         effect.SetData(_attackData, () =>
         {
             Lean.Pool.LeanPool.Despawn(effect);
