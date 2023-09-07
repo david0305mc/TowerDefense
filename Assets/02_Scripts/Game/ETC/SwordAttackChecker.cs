@@ -43,7 +43,6 @@ public class SwordAttackChecker : MonoBehaviour
                     {
                         return;
                     }
-                    Debug.Log("OnTriggerEnter2D");
                     attackAction?.Invoke(collision);
                 }
             }

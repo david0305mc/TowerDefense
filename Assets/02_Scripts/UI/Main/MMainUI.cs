@@ -27,8 +27,8 @@ public class MMainUI : MonoBehaviour
         });
         nextStageBtn.onClick.AddListener(() =>
         {
-            //MGameManager.Instance.NextStage();
-            SceneManager.LoadSceneAsync("Intro");
+            MGameManager.Instance.NextStage();
+            //SceneManager.LoadSceneAsync("Intro");
         });
     }
 }

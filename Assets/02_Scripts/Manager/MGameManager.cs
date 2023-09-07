@@ -210,11 +210,27 @@ public class MGameManager : SingletonMono<MGameManager>
         Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
         heroDic.Remove(_uid);
     }
-    public void RemoveEnemy(int _uid)
+
+    private void RemoveAllHero()
+    {
+        for (int i = UserData.Instance.heroDataDic.Count - 1; i >= 0; i--)
+        {
+            RemoveHero(UserData.Instance.heroDataDic.ElementAt(i).Key);
+        }
+    }
+
+    private void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
         Destroy(enemyDic[_uid].gameObject);
         enemyDic.Remove(_uid);
+    }
+    private void RemoveAllEnemy()
+    {
+        for (int i = UserData.Instance.enemyDataDic.Count - 1; i >= 0; i--)
+        {
+            RemoveEnemy(UserData.Instance.enemyDataDic.ElementAt(i).Key);
+        }
     }
 
     public void LauchProjectile(MBaseObj attackerObj, int _targetUID)
@@ -240,18 +256,16 @@ public class MGameManager : SingletonMono<MGameManager>
     }
 
     public void NextStage()
-    {   
+    {
         if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
         {
             return;
         }
+
+        RemoveAllHero();
+        RemoveAllEnemy();
         UserData.Instance.CurrStage++;
         SpawnStage(UserData.Instance.CurrStage);
-
-        for (int i = UserData.Instance.enemyDataDic.Count - 1; i >= 0; i--)
-        {
-            RemoveEnemy(UserData.Instance.enemyDataDic.ElementAt(i).Key);
-        }
         
         InitEnemies();   
     }
