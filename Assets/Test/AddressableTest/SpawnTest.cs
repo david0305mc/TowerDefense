@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class SpawnTest : MonoBehaviour
 {
-
+    [SerializeField] private List<GameObject> stageprefLists;
     private Dictionary<string, GameObject> prefabDic = new Dictionary<string, GameObject>();
     private void Update()
     {
@@ -22,7 +22,7 @@ public class SpawnTest : MonoBehaviour
 
             for (int i = 1; i < 6; i++)
             {
-                string name = $"Unit/AddressablePrefab0{i}.prefab";
+                string name = $"Unit/Test{i.ToString("D2")}.prefab";
                 //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
                 var go = Addressables.InstantiateAsync(name, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity, transform);
             }
