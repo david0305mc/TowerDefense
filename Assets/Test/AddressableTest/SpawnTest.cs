@@ -5,22 +5,24 @@ using UnityEngine.AddressableAssets;
 using System.Diagnostics;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SpawnTest : MonoBehaviour
 {
     [SerializeField] private List<GameObject> stageprefLists;
-    private Dictionary<string, GameObject> prefabDic;
+    private Dictionary<string, AsyncOperationHandle<GameObject>> opHandleDic;
 
     private int stage;
     private StageTest currStageObj;
-    private Dictionary<string, HeroTest> heroTestDic;
+    private List<HeroTest> heroLists;
     private List<EnemyTest> enemyLists;
 
 
     private void Start()
     {
-        prefabDic = new Dictionary<string, GameObject>();
-        heroTestDic = new Dictionary<string, HeroTest>();
+        opHandleDic = new Dictionary<string, AsyncOperationHandle<GameObject>>();
+        heroLists = new List<HeroTest>();
         enemyLists = new List<EnemyTest>();
     }
     public void OnClickAddStageBtn()
@@ -40,11 +42,11 @@ public class SpawnTest : MonoBehaviour
 
     public void OnClickAddHeroBtn()
     {
-        for (int i = 1; i < 3; i++)
+        for (int i = 1; i < 4; i++)
         {
-            string name = $"Unit/HeroTest{i.ToString("D2")}.prefab";
-            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(prefabDic[name], Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
-            heroTestDic.Add(name, heroObj);
+            string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
+            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(opHandleDic[name].Result, Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
+            heroLists.Add(heroObj);
         }
         
     }
@@ -70,28 +72,43 @@ public class SpawnTest : MonoBehaviour
     }
     public void OnClickRemoveHeroBtn()
     {
-        for (int i = 1; i < 3; i++)
+        for (int i = heroLists.Count - 1; i >= 0; i--)
         {
-            string name = $"Unit/HeroTest{i.ToString("D2")}.prefab";
-            Lean.Pool.LeanPool.Despawn(heroTestDic[name]);
-            heroTestDic.Remove(name);
+            string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
+            Lean.Pool.LeanPool.Despawn(heroLists[i]);
+            heroLists.RemoveAt(i);
         }
     }
 
     public void OnClickLoadHeroAsset()
     {
-        for (int i = 1; i < 3; i++)
+        UniTask.Create(async () =>
         {
-            string name = $"Unit/HeroTest{i.ToString("D2")}.prefab";
-            prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
-            //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
-        }
+            for (int i = 1; i < 4; i++)
+            {
+
+                string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
+                opHandleDic[name] = Addressables.LoadAssetAsync<GameObject>(name);
+                await opHandleDic[name];
+                //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
+                //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
+            }
+        });
+        
     }
 
     public void OnClickGoToIntro()
     {
+        UnloadAddressable();
         SceneManager.LoadScene("IntroTest");
+    }
 
+    private void UnloadAddressable()
+    {
+        for (int i = opHandleDic.Count - 1; i >= 0; i--)
+        {
+            Addressables.Release(opHandleDic.ElementAt(i).Value);
+        }
     }
 
     //private void Update()
@@ -140,10 +157,11 @@ public class SpawnTest : MonoBehaviour
 
     private async UniTask LoadAsync(string _name)
     {
-        if (!prefabDic.ContainsKey(name))
+        if (!opHandleDic.ContainsKey(name))
         {
-            prefabDic[_name] = await Addressables.LoadAssetAsync<GameObject>(_name);
+            opHandleDic[_name] = Addressables.LoadAssetAsync<GameObject>(_name);
+            await opHandleDic[_name];
         }
-        Instantiate(prefabDic[_name], new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
+        Instantiate(opHandleDic[_name].Result, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
     }
 }
