@@ -7,36 +7,46 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEditor;
 
 public class SpawnTest : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> stageprefLists;
 
+    [SerializeField] private List<AssetReferenceGameObject> stageAssetReference;
+    [SerializeField] private AssetReferenceGameObject testAssetReference;
 
     private int stage;
     private StageTest currStageObj;
     private List<HeroTest> heroLists;
     private List<EnemyTest> enemyLists;
+    private GameObject testObj;
 
 
     private void Start()
     {
         heroLists = new List<HeroTest>();
-        enemyLists = new List<EnemyTest>();
     }
+
+    private async UniTask InstantiateStage()
+    {
+        var result = await stageAssetReference[stage].InstantiateAsync(Vector3.zero, Quaternion.identity, transform);
+        currStageObj = result.GetComponent<StageTest>();
+
+        enemyLists = new List<EnemyTest>();
+        var enemies = currStageObj.GetComponentsInChildren<EnemyTest>();
+        foreach (EnemyTest enemyObj in enemies)
+        {
+            enemyLists.Add(enemyObj);
+        }
+    }
+
     public void OnClickAddStageBtn()
     {
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
         }
-        currStageObj = Instantiate(stageprefLists[stage], Vector3.zero, Quaternion.identity, transform).GetComponent<StageTest>();
-
-        var enemies = currStageObj.GetComponentsInChildren<EnemyTest>();
-        foreach (EnemyTest enemyObj in enemies)
-        {
-            enemyLists.Add(enemyObj);
-        }
+        InstantiateStage().Forget();
     }
 
     public void OnClickAddHeroBtn()
@@ -60,11 +70,16 @@ public class SpawnTest : MonoBehaviour
         {
             Destroy(currStageObj.gameObject);
         }
-        currStageObj = Instantiate(stageprefLists[stage], Vector3.zero, Quaternion.identity, transform).GetComponent<StageTest>();
+        InstantiateStage().Forget();
+        ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
     public void OnClickRemoveStageBtn()
     {
-        Destroy(currStageObj.gameObject);
+        if (!Addressables.ReleaseInstance(currStageObj.gameObject))
+        {
+            Destroy(currStageObj.gameObject);
+        }
+        ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
     public void OnClickRemoveEnemyBtn()
     {
@@ -72,6 +87,7 @@ public class SpawnTest : MonoBehaviour
         {
             Destroy(enemyLists[i].gameObject);
         }
+        ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
     public void OnClickRemoveHeroBtn()
     {
@@ -81,6 +97,15 @@ public class SpawnTest : MonoBehaviour
             Lean.Pool.LeanPool.Despawn(heroLists[i]);
             heroLists.RemoveAt(i);
         }
+
+        var poolLists = Lean.Pool.LeanGameObjectPool.Instances.ToList();
+        for (int i = poolLists.Count - 1; i >= 0; i--)
+        {
+            Destroy(poolLists[i].gameObject);
+        }
+        
+        ResourceManagerTest.Instance.UnloadAddressable();
+        ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
 
     public void OnClickLoadHeroAsset()
@@ -107,57 +132,35 @@ public class SpawnTest : MonoBehaviour
     }
 
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.L))
-    //    {
-    //        //for (int i = 1; i < 6; i++)
-    //        //{
-    //        //    string name = $"Unit/AddressablePrefab0{i}.prefab";
-    //        //    prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
-    //        //    //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
-    //        //}
+    public void InstantiateTestReference()
+    {
+        //Addressables.InstantiateAsync("Objects/Obj01.prefab").Completed += handle => {
+        //    testObj = handle.Result;
+        //    testObj.AddComponent(typeof(SelfCleanup));
+        //};
 
-    //        for (int i = 1; i < 6; i++)
-    //        {
-    //            string name = $"Unit/Test{i.ToString("D2")}.prefab";
-    //            //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
-    //            var go = Addressables.InstantiateAsync(name, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity, transform);
-    //        }
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.O))
-    //    {
-    //        for (int i = 1; i < 6; i++)
-    //        {
-    //            string name = $"Unit/AddressablePrefab0{i}.prefab";
-    //            LoadAsync(name);
-    //        }
-    //    }
+        UniTask.Create(async () =>
+        {
+            var obj = Addressables.InstantiateAsync(testAssetReference, Vector3.zero, Quaternion.identity, transform);
+            testObj = await obj;
+            testObj.AddComponent(typeof(SelfCleanup));
+        });
 
+    }
+    public void RelseaseTestReference()
+    {
+        //Destroy(testObj);
 
-    //    if (Input.GetKeyDown(KeyCode.P))
-    //    {
-    //        Stopwatch sw = new Stopwatch();
-    //        sw.Start();
-    //        for (int i = 0; i < 1000; i++)
-    //        {
-    //            foreach (var item in prefabDic)
-    //            {
-    //                Instantiate(item.Value, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
-    //            }
-    //        }
-    //        sw.Stop();
-    //        UnityEngine.Debug.Log($"Time : {sw.ElapsedMilliseconds}ms");
-    //    }
-    //}
+        //Destroy(testObj);
+        //Addressables.Release(testObj);
 
-    //private async UniTask LoadAsync(string _name)
-    //{
-    //    if (!opHandleDic.ContainsKey(name))
-    //    {
-    //        opHandleDic[_name] = Addressables.LoadAssetAsync<GameObject>(_name);
-    //        await opHandleDic[_name];
-    //    }
-    //    Instantiate(opHandleDic[_name].Result, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
-    //}
+        Destroy(testObj);
+
+        //if (!Addressables.ReleaseInstance(testObj))
+        //{
+        //    Destroy(testObj);
+        //}
+        ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
+    }
+
 }

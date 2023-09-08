@@ -5,6 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using UnityEditor;
 
 public class ResourceManagerTest : SingletonMono<ResourceManagerTest>
 {
@@ -38,5 +39,13 @@ public class ResourceManagerTest : SingletonMono<ResourceManagerTest>
         base.OnSingletonAwake();
 
         OpHandleDic = new Dictionary<string, AsyncOperationHandle<GameObject>>();
+    }
+
+    public async UniTaskVoid UnloadUnusedAssetsImmediate()
+    {
+#if UNITY_EDITOR
+        await UniTask.Yield();
+        EditorUtility.UnloadUnusedAssetsImmediate(true);
+#endif
     }
 }
