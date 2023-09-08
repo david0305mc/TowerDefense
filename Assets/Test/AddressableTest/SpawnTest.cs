@@ -55,9 +55,9 @@ public class SpawnTest : MonoBehaviour
         {
             string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
             HeroTest heroObj = Lean.Pool.LeanPool.Spawn(ResourceManagerTest.Instance.GetAddressablePrefab(name), Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
-            heroObj.SetDestroyAction(() =>
+            heroObj.SetDestroyAction((action) =>
             {
-                // Destroy
+
             });
             heroLists.Add(heroObj);
         }
@@ -89,11 +89,17 @@ public class SpawnTest : MonoBehaviour
         }
         ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
+    public void OnDespawnHeroBtn()
+    {
+        int i = 0;
+        Lean.Pool.LeanPool.Despawn(heroLists[i]);
+        heroLists.RemoveAt(i);
+    }
+
     public void OnClickRemoveHeroBtn()
     {
         for (int i = heroLists.Count - 1; i >= 0; i--)
         {
-            string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
             Lean.Pool.LeanPool.Despawn(heroLists[i]);
             heroLists.RemoveAt(i);
         }
