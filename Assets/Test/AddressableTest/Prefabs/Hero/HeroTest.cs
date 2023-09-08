@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class HeroTest : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private System.Action destroyAction;
+    public void SetDestroyAction(System.Action _action) 
     {
-        
+        destroyAction = _action;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        Debug.Log("HeroTest destroy");
+        destroyAction?.Invoke();
     }
 }

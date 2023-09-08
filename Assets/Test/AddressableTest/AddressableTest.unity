@@ -308,7 +308,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickRemoveStageBtn
         m_Mode: 1
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickGoToIntro
         m_Mode: 1
@@ -1012,7 +1012,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickAddStageBtn
         m_Mode: 1
@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickLoadHeroAsset
         m_Mode: 1
@@ -2024,7 +2024,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickRemoveHeroBtn
         m_Mode: 1
@@ -2242,7 +2242,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickAddHeroBtn
         m_Mode: 1
@@ -2301,7 +2301,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767032447}
-  - component: {fileID: 1767032446}
+  - component: {fileID: 1767032448}
   m_Layer: 0
   m_Name: SpawnTest
   m_TagString: Untagged
@@ -2309,22 +2309,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1767032446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767032445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e89252c5bd88e44d867f560cace44eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stageprefLists:
-  - {fileID: 1730964683302090834, guid: fe5e7651a4a48d94ca690820eef6ba32, type: 3}
-  - {fileID: 5762515408405444949, guid: 8569a477599c0014cb97d1d94c54bc9f, type: 3}
-  - {fileID: 8138387741684264361, guid: 8b384cc1e11f7e7458ab92e2ecd1cc62, type: 3}
 --- !u!4 &1767032447
 Transform:
   m_ObjectHideFlags: 0
@@ -2340,6 +2324,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1767032448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767032445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e89252c5bd88e44d867f560cace44eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageprefLists:
+  - {fileID: 1730964683302090834, guid: fe5e7651a4a48d94ca690820eef6ba32, type: 3}
+  - {fileID: 5762515408405444949, guid: 8569a477599c0014cb97d1d94c54bc9f, type: 3}
+  - {fileID: 8138387741684264361, guid: 8b384cc1e11f7e7458ab92e2ecd1cc62, type: 3}
 --- !u!1 &1843905012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2424,7 +2424,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickChageStageBtn
         m_Mode: 1
@@ -2558,7 +2558,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767032446}
+      - m_Target: {fileID: 1767032448}
         m_TargetAssemblyTypeName: SpawnTest, Assembly-CSharp
         m_MethodName: OnClickRemoveEnemyBtn
         m_Mode: 1

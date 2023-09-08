@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class SpawnTest : MonoBehaviour
 {
     [SerializeField] private List<GameObject> stageprefLists;
-    private Dictionary<string, AsyncOperationHandle<GameObject>> opHandleDic;
+
 
     private int stage;
     private StageTest currStageObj;
@@ -21,7 +21,6 @@ public class SpawnTest : MonoBehaviour
 
     private void Start()
     {
-        opHandleDic = new Dictionary<string, AsyncOperationHandle<GameObject>>();
         heroLists = new List<HeroTest>();
         enemyLists = new List<EnemyTest>();
     }
@@ -45,7 +44,11 @@ public class SpawnTest : MonoBehaviour
         for (int i = 1; i < 4; i++)
         {
             string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
-            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(opHandleDic[name].Result, Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
+            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(ResourceManagerTest.Instance.GetAddressablePrefab(name), Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
+            heroObj.SetDestroyAction(() =>
+            {
+                // Destroy
+            });
             heroLists.Add(heroObj);
         }
         
@@ -88,8 +91,7 @@ public class SpawnTest : MonoBehaviour
             {
 
                 string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
-                opHandleDic[name] = Addressables.LoadAssetAsync<GameObject>(name);
-                await opHandleDic[name];
+                ResourceManagerTest.Instance.LoadAddressable(name).Forget();
                 //prefabDic[name] = Addressables.LoadAssetAsync<GameObject>(name).WaitForCompletion();
                 //var go = Addressables.InstantiateAsync($"Unit/AddressablePrefab0{i}.prefab", Vector3.zero, Quaternion.identity, transform);
             }
@@ -99,17 +101,11 @@ public class SpawnTest : MonoBehaviour
 
     public void OnClickGoToIntro()
     {
-        UnloadAddressable();
+        OnClickRemoveHeroBtn();
         SceneManager.LoadScene("IntroTest");
+        ResourceManagerTest.Instance.UnloadAddressable();
     }
 
-    private void UnloadAddressable()
-    {
-        for (int i = opHandleDic.Count - 1; i >= 0; i--)
-        {
-            Addressables.Release(opHandleDic.ElementAt(i).Value);
-        }
-    }
 
     //private void Update()
     //{
@@ -155,13 +151,13 @@ public class SpawnTest : MonoBehaviour
     //    }
     //}
 
-    private async UniTask LoadAsync(string _name)
-    {
-        if (!opHandleDic.ContainsKey(name))
-        {
-            opHandleDic[_name] = Addressables.LoadAssetAsync<GameObject>(_name);
-            await opHandleDic[_name];
-        }
-        Instantiate(opHandleDic[_name].Result, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
-    }
+    //private async UniTask LoadAsync(string _name)
+    //{
+    //    if (!opHandleDic.ContainsKey(name))
+    //    {
+    //        opHandleDic[_name] = Addressables.LoadAssetAsync<GameObject>(_name);
+    //        await opHandleDic[_name];
+    //    }
+    //    Instantiate(opHandleDic[_name].Result, new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0), Quaternion.identity);
+    //}
 }
