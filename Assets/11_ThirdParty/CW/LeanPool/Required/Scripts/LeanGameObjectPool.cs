@@ -89,6 +89,8 @@ namespace Lean.Pool
 		[SerializeField]
 		private Transform deactivatedChild;
 
+		[SerializeField] private int TEst;
+
 		private static Dictionary<GameObject, LeanGameObjectPool> prefabMap = new Dictionary<GameObject, LeanGameObjectPool>();
 
 		private static List<IPoolable> tempPoolables = new List<IPoolable>();
@@ -197,6 +199,18 @@ namespace Lean.Pool
 			}
 		}
 
+		public void RemoveAll()
+		{
+			for (int i = spawnedClonesList.Count - 1; i >= 0; i--)
+			{
+				Destroy(spawnedClonesList[i]);
+			}
+
+			for (int i = despawnedClones.Count - 1; i >= 0; i--)
+			{
+				Destroy(despawnedClones[i]);
+			}
+		}
 		/// <summary>This will either spawn a previously despawned/preloaded clone, recycle one, create a new one, or return null.
 		/// NOTE: This method is designed to work with Unity's event system, so it has no return value.</summary>
 		public void Spawn()

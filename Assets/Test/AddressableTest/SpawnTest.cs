@@ -103,13 +103,13 @@ public class SpawnTest : MonoBehaviour
             Lean.Pool.LeanPool.Despawn(heroLists[i]);
             heroLists.RemoveAt(i);
         }
-
         var poolLists = Lean.Pool.LeanGameObjectPool.Instances.ToList();
         for (int i = poolLists.Count - 1; i >= 0; i--)
         {
             Destroy(poolLists[i].gameObject);
+            Lean.Pool.LeanPool.Links.Clear();
         }
-        
+
         ResourceManagerTest.Instance.UnloadAddressable();
         ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
