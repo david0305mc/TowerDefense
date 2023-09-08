@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEditor;
+using UnityEngine.U2D;
+using UnityEngine.UI;
+using System;
 
 public class SpawnTest : MonoBehaviour
 {
@@ -15,6 +18,10 @@ public class SpawnTest : MonoBehaviour
     [SerializeField] private List<AssetReferenceGameObject> stageAssetReference;
     [SerializeField] private AssetReferenceGameObject testAssetReference;
 
+
+    [SerializeField] private Image targetImage;
+
+    private SpriteAtlas testAtlas;
     private int stage;
     private StageTest currStageObj;
     private List<HeroTest> heroLists;
@@ -54,7 +61,7 @@ public class SpawnTest : MonoBehaviour
         for (int i = 1; i < 4; i++)
         {
             string name = $"Hero/HeroTest{i.ToString("D2")}.prefab";
-            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(ResourceManagerTest.Instance.GetAddressablePrefab(name), Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
+            HeroTest heroObj = Lean.Pool.LeanPool.Spawn(ResourceManagerTest.Instance.GetAddressablePrefab(name), UnityEngine.Random.insideUnitCircle * 3, Quaternion.identity, transform).GetComponent<HeroTest>();
             heroObj.SetDestroyAction((action) =>
             {
 
@@ -167,6 +174,16 @@ public class SpawnTest : MonoBehaviour
         //    Destroy(testObj);
         //}
         ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
+    }
+
+    public void OnClickBtnChangeImage()
+    {
+        targetImage.sprite = ResourceManagerTest.Instance.GetSpriteFromAtlas("tree1");
+        //var obj = Addressables.LoadAssetAsync<SpriteAtlas>("Atlas/AtlasData.asset");
+        //testAtlas = obj.Result;
+
+        ////var test = atlasAssetReference.LoadSceneAsync(" ").Result;
+        //targetImage.sprite = testAtlas.GetSprite("tower");
     }
 
 }
