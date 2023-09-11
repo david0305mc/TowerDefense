@@ -4,9 +4,18 @@ using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using UnityEngine.U2D;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class MResourceManager : SingletonMono<MResourceManager>
 {
+
+    [System.Serializable]
+    public class AssetReferenceAtlas : AssetReferenceT<SpriteAtlas>
+    {
+        public AssetReferenceAtlas(string guid) : base(guid) { }
+    }
+
     public Material FlashMaterial;
     public Color FlashColor;
 
@@ -14,6 +23,8 @@ public class MResourceManager : SingletonMono<MResourceManager>
     public Dictionary<string, ProjectileBase> ProjectileDic => projectileDic;
 
     private Dictionary<string, GameObject> prefabDic = new Dictionary<string, GameObject>();
+    private Dictionary<string, AsyncOperationHandle<SpriteAtlas>> opAtlasHandleDic = new Dictionary<string, AsyncOperationHandle<SpriteAtlas>>();
+
     public void LoadResources()
     {
         //ProjectileBase[] arrayData = Resources.LoadAll<ProjectileBase>("Prefabs/Projectile");
@@ -21,6 +32,14 @@ public class MResourceManager : SingletonMono<MResourceManager>
         LoadProjectile().Forget();
         LoadUnits().Forget();
         LoadBoomEffect().Forget();
+        LoadAtlas().Forget();
+    }
+
+    private async UniTaskVoid LoadAtlas()
+    {
+        string key = "SpriteAtlas/Icon1.spriteatlas";
+        opAtlasHandleDic[key] = Addressables.LoadAssetAsync<SpriteAtlas>(key);
+        await opAtlasHandleDic[key];
     }
 
     private async UniTaskVoid LoadProjectile()
@@ -46,6 +65,18 @@ public class MResourceManager : SingletonMono<MResourceManager>
                 prefabDic[item.boomeffectprefab] = await Addressables.LoadAssetAsync<GameObject>(item.boomeffectprefab);
             }
         }
+    }
+    public Sprite GetSpriteFromAtlas(string _str)
+    {
+        foreach (var item in opAtlasHandleDic)
+        {
+            var sprite = item.Value.Result.GetSprite(_str);
+            if (sprite != null)
+            {
+                return sprite;
+            }
+        }
+        return null;
     }
     public ProjectileBase GetProjectile(string _name)
     {
