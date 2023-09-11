@@ -41,8 +41,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2150250696539793921}
+  - component: {fileID: 1040050700574286393}
   m_Layer: 0
-  m_Name: StageSlot
+  m_Name: WorldMapStageSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,6 +65,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1040050700574286393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2995932796275088798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30d40d424bb1114f8d2186cc1883835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3331013345559242067
 GameObject:
   m_ObjectHideFlags: 0
