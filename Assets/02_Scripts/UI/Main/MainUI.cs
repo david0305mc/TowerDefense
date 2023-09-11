@@ -6,32 +6,77 @@ using TMPro;
 using UniRx;
 public class MainUI : MonoBehaviour
 {
+    enum BottomTab
+    { 
+        Shop,
+        Arrangement,
+        Worldmap,
+        Pvp,
+        Event,
+    }
+
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private Button testBtn;
     [SerializeField] private Button loadEnemyBtn;
     [SerializeField] private Button shopBtn;
+    [SerializeField] private UIMainBottomTabGroup tabGruop;
+         
 
     private void Awake()
     {
-        testBtn.onClick.AddListener(() =>
+        tabGruop.InitTabGroup(2, (_index) =>
         {
-            UserData.Instance.SaveEnemyData();
+            OnBottomTabClicked(_index);
         });
+        //testBtn.onClick.AddListener(() =>
+        //{
+        //    UserData.Instance.SaveEnemyData();
+        //});
 
-        loadEnemyBtn.onClick.AddListener(() =>
-        {
+        //loadEnemyBtn.onClick.AddListener(() =>
+        //{
 
-        });
-        UserData.Instance.LocalData.Gold.Subscribe(v =>
-        {
-            goldText.SetText(v.ToString());
-        }).AddTo(gameObject);
+        //});
+        //UserData.Instance.LocalData.Gold.Subscribe(v =>
+        //{
+        //    goldText.SetText(v.ToString());
+        //}).AddTo(gameObject);
 
-        shopBtn.onClick.AddListener(() =>
+        //shopBtn.onClick.AddListener(() =>
+        //{
+        //    UserData.Instance.LocalData.Gold.Value++;
+        //    UserData.Instance.SaveLocalData();
+        //    PopupManager.Instance.Show<ShopPopup>();
+        //});
+    }
+    private void OnBottomTabClicked(int _index)
+    {
+        switch ((BottomTab)_index)
         {
-            UserData.Instance.LocalData.Gold.Value++;
-            UserData.Instance.SaveLocalData();
-            PopupManager.Instance.Show<ShopPopup>();
-        });
+            case BottomTab.Worldmap:
+
+                break;
+        }
+    }
+
+    public void OnClicShopBtn()
+    { 
+    
+    }
+    public void OnClicArrangeBtn()
+    {
+
+    }
+    public void OnClicWorldMapBtn()
+    {
+
+    }
+    public void OnClicPvpBtn()
+    {
+
+    }
+    public void OnClicEventBtn()
+    {
+
     }
 }

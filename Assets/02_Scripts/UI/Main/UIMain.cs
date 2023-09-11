@@ -12,9 +12,6 @@ public class UIMain : SingletonMono<UIMain>
 
     [SerializeField] private Canvas worldCanvas;
 
-    [SerializeField] private RectTransform damageObj;
-    [SerializeField] private TextMeshProUGUI damageText;
-
 
     public void SetUIWorldPosToCameraPos(RectTransform ui, Vector2 _worldPos)
     {
