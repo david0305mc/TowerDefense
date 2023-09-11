@@ -27,7 +27,6 @@ public class UIIntro : MonoBehaviour
 
     private async UniTaskVoid StartGame()
     {
-        Debug.Log("StartGame");
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
         await DataManager.Instance.LoadConfigTable();
@@ -36,7 +35,7 @@ public class UIIntro : MonoBehaviour
         UserData.Instance.LoadLocalData();
         MResourceManager.Instance.LoadResources();
 
-        var mainSceneAsync = SceneManager.LoadSceneAsync("Isometric");
+        var mainSceneAsync = SceneManager.LoadSceneAsync("Main");
         await mainSceneAsync;
         //SceneManager.LoadScene("Main");
     }
