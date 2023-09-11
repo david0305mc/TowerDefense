@@ -28,11 +28,6 @@ public partial class UserData : Singleton<UserData>
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
-    public void RemoveObj(int uid)
-    {
-        LocalData.BaseObjDic.Remove(uid);
-    }
-
     public UnitData GetUnitData(int _uid, bool isEnemy)
     {
         if (isEnemy)
@@ -68,19 +63,19 @@ public partial class UserData : Singleton<UserData>
 
     public void SaveEnemyData()
     {
-        InBuildData EnemyData = new InBuildData();
-        foreach (var item in LocalData.BaseObjDic)
-        {
-            if (item.Value.IsEnemy)
-            {
-                EnemyData.BaseObjDic.Add(item.Key, item.Value);
+        //InBuildData EnemyData = new InBuildData();
+        //foreach (var item in LocalData.BaseObjDic)
+        //{
+        //    if (item.Value.IsEnemy)
+        //    {
+        //        EnemyData.BaseObjDic.Add(item.Key, item.Value);
                 
-            }
-        }
+        //    }
+        //}
         
-        var saveData = JsonUtility.ToJson(EnemyData);
-        //saveData = Utill.EncryptXOR(saveData);
-        Utill.SaveFile(InBuildDataExportPath, saveData);
+        //var saveData = JsonUtility.ToJson(EnemyData);
+        ////saveData = Utill.EncryptXOR(saveData);
+        //Utill.SaveFile(InBuildDataExportPath, saveData);
     }
 
     public void LoadLocalData()

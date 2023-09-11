@@ -19,3 +19,7 @@ public enum UNIT_TYPE
 	TANKER                       = 0,        	// 탱커
 	ARCHER                       = 1,        	// 궁수
 }
+public enum ITEM_TYPE 
+{ 
+	SOUL                         = 0,        	// 영혼 아이템 (재화)
+}

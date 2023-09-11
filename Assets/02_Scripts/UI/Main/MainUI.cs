@@ -62,6 +62,16 @@ public class MainUI : MonoBehaviour
                     MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 2, -2, 2);
                 }
                 break;
+            case BottomTab.Event:
+                {
+                    MGameManager.Instance.SpawnStage(UserData.Instance.CurrStage);
+                }
+                break;
+            case BottomTab.Pvp:
+                {
+                    MGameManager.Instance.AddHero(1);
+                }
+                break;
         }
     }
     private void SelectTab(BottomTab _tab)

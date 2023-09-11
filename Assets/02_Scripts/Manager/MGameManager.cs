@@ -86,7 +86,7 @@ public class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    private void SpawnStage(int stage)
+    public void SpawnStage(int stage)
     {
         if (currStageObj != null)
         {
@@ -267,8 +267,6 @@ public class MGameManager : SingletonMono<MGameManager>
         RemoveAllEnemy();
         UserData.Instance.CurrStage++;
         SpawnStage(UserData.Instance.CurrStage);
-        
-        InitEnemies();   
     }
 
     //private void Update()

@@ -35,13 +35,13 @@ public class ShopPopup : PopupBase
 
     private void Start()
     {
-        shopItemDatas = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
-        gridView.UpdateContents(shopItemDatas);
+        //shopItemDatas = DataManager.Instance.ObjtableDic.Select(i => new ShopItemData(i.Key)).ToArray();
+        //gridView.UpdateContents(shopItemDatas);
 
-        gridView.OnCellClicked(index =>
-        {
-            SelectCell(index);
-        });
+        //gridView.OnCellClicked(index =>
+        //{
+        //    SelectCell(index);
+        //});
     }
     private void OnDisable()
     {

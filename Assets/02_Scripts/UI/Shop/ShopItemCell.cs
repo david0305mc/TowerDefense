@@ -20,8 +20,8 @@ public class ShopItemCell : UIGridCell
 
     public override void UpdateContent(GridItemData itemData)
     {
-        var objInfo = DataManager.Instance.GetObjTableData(itemData.id);
-        thumbNail.sprite = Utill.Load<Sprite>(objInfo.thumbnailpath);
-        selectedMark.SetActive(Index == Context.SelectedIndex);
+        //var objInfo = DataManager.Instance.GetObjTableData(itemData.id);
+        //thumbNail.sprite = Utill.Load<Sprite>(objInfo.thumbnailpath);
+        //selectedMark.SetActive(Index == Context.SelectedIndex);
     }
 }
