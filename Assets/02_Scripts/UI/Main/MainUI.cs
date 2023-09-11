@@ -24,10 +24,6 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
-        tabGruop.InitTabGroup(2, (_index) =>
-        {
-            OnBottomTabClicked(_index);
-        });
         //testBtn.onClick.AddListener(() =>
         //{
         //    UserData.Instance.SaveEnemyData();
@@ -49,14 +45,28 @@ public class MainUI : MonoBehaviour
         //    PopupManager.Instance.Show<ShopPopup>();
         //});
     }
+
+    public void InitTabGroup()
+    {
+        tabGruop.InitTabGroup((int)BottomTab.Worldmap, (_index) =>
+        {
+            OnBottomTabClicked(_index);
+        });
+    }
     private void OnBottomTabClicked(int _index)
     {
         switch ((BottomTab)_index)
         {
             case BottomTab.Worldmap:
-
+                {
+                    MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 2, -2, 2);
+                }
                 break;
         }
+    }
+    private void SelectTab(BottomTab _tab)
+    {
+        tabGruop.SelectTab((int)_tab);
     }
 
     public void OnClicShopBtn()

@@ -6,29 +6,31 @@ public class UIMainBottomTabGroup : MonoBehaviour
 {
     [SerializeField] private List<UIMainBottomTab> bottomTabList;
 
-    public void InitTabGroup(int _defaultIndex, System.Action<int> _tabAction)
+    private System.Action<int> tabAction;
+    public void SelectTab(int _index)
     {
-        void SelectTab(int _selectIndex)
+        for (int i = 0; i < bottomTabList.Count; i++)
         {
-            for (int i = 0; i < bottomTabList.Count; i++)
+            if (i == _index)
             {
-                if (i == _selectIndex)
-                {
-                    bottomTabList[i].EnableTab();
-                }
-                else
-                {
-                    bottomTabList[i].DisableTab();
-                }
+                bottomTabList[i].EnableTab();
+            }
+            else
+            {
+                bottomTabList[i].DisableTab();
             }
         }
+        tabAction?.Invoke(_index);
+    }
 
+    public void InitTabGroup(int _defaultIndex, System.Action<int> _tabAction)
+    {
+        tabAction = _tabAction;
         for (int i = 0; i < bottomTabList.Count; i++)
         {
             bottomTabList[i].SetTabData(i, (_index) =>
             {
                 SelectTab(_index);
-                _tabAction?.Invoke(_index);
             });
         }
         SelectTab(_defaultIndex);

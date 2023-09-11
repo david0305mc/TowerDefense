@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine.EventSystems;
 using Game;
 
-public class MCameraManager : MonoBehaviour
+public class MCameraManager : SingletonMono<MCameraManager>
 {
     [SerializeField] private int mapSizeMinX = -20;
     [SerializeField] private int mapSizeMaxX = 20;
@@ -35,8 +35,9 @@ public class MCameraManager : MonoBehaviour
     private Vector3 dragStartPos = Vector3.zero;
     private bool groundDragStarted = false;
 
-    private void Awake()
+    protected override void OnSingletonAwake()
     {
+        base.OnSingletonAwake();
         mainCamera = GetComponent<Camera>();
         newPos = transform.position;
         oldPos = newPos;
@@ -195,6 +196,17 @@ public class MCameraManager : MonoBehaviour
             dragStartPos = TryGetRayCastHitPoint(Input.GetTouch(releaseTouchIndex == 0 ? 1 : 0).position, GameConfig.GroundLayerMask);
             groundDragStarted = true;
         }
+    }
+
+    public void SetZoomAndSize(float _zoomMin, float _zoomMax, int _sizeMinX, int _sizeMaxX, int _sizeMinY, int _sizeMaxY)
+    {
+        minZoomFactor = _zoomMin;
+        maxZoomFactor = _zoomMax;
+
+        mapSizeMinX = _sizeMinX;
+        mapSizeMaxX = _sizeMaxX;
+        mapSizeMinY = _sizeMinY;
+        mapSizeMaxY = _sizeMaxY;
     }
     //private void ZoomCamera()
     //{

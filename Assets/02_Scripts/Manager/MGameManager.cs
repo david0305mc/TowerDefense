@@ -11,6 +11,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<int> heroTIDLists;
+    [SerializeField] private MainUI mainUl;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -85,11 +86,6 @@ public class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    private void OnEnable()
-    {
-        InitGame();
-    }
-
     private void SpawnStage(int stage)
     {
         if (currStageObj != null)
@@ -97,14 +93,19 @@ public class MGameManager : SingletonMono<MGameManager>
             Destroy(currStageObj.gameObject);
         }
         currStageObj = Instantiate(stageprefLists[stage], Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
-    }
-    private void InitGame()
-    {
-        SpawnStage(UserData.Instance.CurrStage);
+
         InitEnemies();
         InitHeroes();
     }
+    private void InitGame()
+    {
+        mainUl.InitTabGroup();
+    }
 
+    private void Start()
+    {
+        InitGame();    
+    }
 
     private void InitEnemies()
     {
