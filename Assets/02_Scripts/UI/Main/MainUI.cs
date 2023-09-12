@@ -20,6 +20,7 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Button loadEnemyBtn;
     [SerializeField] private Button shopBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
+    [SerializeField] private GameObject stageInfoPanel;
          
 
     private void Awake()
@@ -44,6 +45,12 @@ public class MainUI : MonoBehaviour
         //    UserData.Instance.SaveLocalData();
         //    PopupManager.Instance.Show<ShopPopup>();
         //});
+        stageInfoPanel.SetActive(false);
+    }
+
+    public void ShowStageInfo(bool _value)
+    {
+        stageInfoPanel.SetActive(_value);
     }
 
     public void InitTabGroup()

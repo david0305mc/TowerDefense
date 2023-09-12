@@ -4,14 +4,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
+using Game;
 
 public class MGameManager : SingletonMono<MGameManager>
 {
+    [SerializeField] private MCameraManager cameraManager;
     [SerializeField] private List<GameObject> stageprefLists;
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<int> heroTIDLists;
-    [SerializeField] private MainUI mainUl;
+    [SerializeField] private MainUI mainUI;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -21,6 +23,7 @@ public class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private List<TileData> tileDatas;
     private Dictionary<TileBase, TileData> dataFromTileMap;
+    private GameConfig.GameState gameState;
 
     protected override void OnSingletonAwake()
     {
@@ -99,12 +102,32 @@ public class MGameManager : SingletonMono<MGameManager>
     }
     private void InitGame()
     {
-        mainUl.InitTabGroup();
+        gameState = GameConfig.GameState.MainUI;
+        mainUI.InitTabGroup();
+        cameraManager.SetTouchAction(_ =>
+        {
+            if (gameState == GameConfig.GameState.MainUI)
+            {
+                GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
+                if (obj != null)
+                {
+                    WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
+                    Debug.Log($"WorldMapStageSlot {stageSlot.stage}");
+
+                    mainUI.ShowStageInfo(true);
+                    //mainUI.set
+                }
+                else
+                {
+                    mainUI.ShowStageInfo(false);
+                }
+            }
+        });
     }
 
     private void Start()
     {
-        InitGame();    
+        InitGame();
     }
 
     private void InitEnemies()

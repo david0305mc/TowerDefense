@@ -35,6 +35,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private Vector3 dragStartPos = Vector3.zero;
     private bool groundDragStarted = false;
 
+    private System.Action<GameObject> touchAction;
+
     protected override void OnSingletonAwake()
     {
         base.OnSingletonAwake();
@@ -146,6 +148,11 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
         if (Input.GetMouseButtonUp(0))
         {
+            Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+            if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.1f)
+            {
+                touchAction?.Invoke(gameObject);
+            }
             groundDragStarted = false;
             dragStartPos = PositiveInfinityVector;
         }
@@ -208,6 +215,11 @@ public class MCameraManager : SingletonMono<MCameraManager>
         mapSizeMinY = _sizeMinY;
         mapSizeMaxY = _sizeMaxY;
     }
+
+    public void SetTouchAction(System.Action<GameObject> _touchAction)
+    {
+        touchAction = _touchAction;
+    }
     //private void ZoomCamera()
     //{
     //    Touch touchZero = Input.GetTouch(0);
@@ -242,5 +254,16 @@ public class MCameraManager : SingletonMono<MCameraManager>
         {
             return PositiveInfinityVector;
         }
+    }
+
+    public GameObject TryGetRayCastObject(Vector2 _touchPoint, int _layerMask)
+    {
+        var mousePos = mainCamera.ScreenToWorldPoint(_touchPoint);
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, transform.forward, 15f, layerMask: _layerMask);
+        if (hit && hit.collider != null)
+        {
+            return hit.collider.gameObject;
+        }
+        return null;
     }
 }

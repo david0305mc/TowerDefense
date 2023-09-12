@@ -7,11 +7,18 @@ namespace Game
 {
     public static class GameConfig
     {
+        public enum GameState
+        { 
+            MainUI,
+            InGame,
+        }
+
         public static readonly int ItemSelectedLayerOrder = 10;
 
         public static int UnitLayerMask = LayerMask.GetMask("Unit");
         public static int ItemLayerMask = LayerMask.GetMask("Item");
         public static int GroundLayerMask = LayerMask.GetMask("Ground");
+        public static int StageSlotLayerMask = LayerMask.GetMask("StageSlot");
         public static int UILayerMask = LayerMask.GetMask("UI");
 
         public static readonly string BoxIcon01 = "Images/Round/hide_box_img_1";
