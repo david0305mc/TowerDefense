@@ -20,8 +20,9 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Button loadEnemyBtn;
     [SerializeField] private Button shopBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
-    [SerializeField] private GameObject stageInfoPanel;
-         
+    
+    [SerializeField] private UIPanelStageInfo stageInfoPanel;
+    [SerializeField] private UIPanelUnit unitPanel;
 
     private void Awake()
     {
@@ -45,12 +46,20 @@ public class MainUI : MonoBehaviour
         //    UserData.Instance.SaveLocalData();
         //    PopupManager.Instance.Show<ShopPopup>();
         //});
-        stageInfoPanel.SetActive(false);
+        HideStageInfo();
     }
 
-    public void ShowStageInfo(bool _value)
+    public void ShowStageInfo(int _stageID)
     {
-        stageInfoPanel.SetActive(_value);
+        stageInfoPanel.gameObject.SetActive(true);
+        stageInfoPanel.SetData(_stageID, () => {
+            Debug.Log($"StartBtn {_stageID}"); 
+        });
+    }
+
+    public void HideStageInfo()
+    {
+        stageInfoPanel.gameObject.SetActive(false);
     }
 
     public void InitTabGroup()

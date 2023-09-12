@@ -114,12 +114,12 @@ public class MGameManager : SingletonMono<MGameManager>
                     WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                     Debug.Log($"WorldMapStageSlot {stageSlot.stage}");
 
-                    mainUI.ShowStageInfo(true);
+                    mainUI.ShowStageInfo(stageSlot.stage);
                     //mainUI.set
                 }
                 else
                 {
-                    mainUI.ShowStageInfo(false);
+                    mainUI.HideStageInfo();
                 }
             }
         });
