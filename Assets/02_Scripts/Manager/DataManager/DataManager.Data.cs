@@ -79,4 +79,44 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class StageInfo {
+		public int id;
+		public string stagename;
+		public int needcombatpower;
+		public int priorstageid;
+	};
+	public StageInfo[] StageinfoArray { get; private set; }
+	public Dictionary<int, StageInfo> StageinfoDic { get; private set; }
+	public void BindStageInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(StageinfoArray)).SetValue(this, deserializaedData, null);
+		StageinfoDic = StageinfoArray.ToDictionary(i => i.id);
+	}
+	public StageInfo GetStageInfoData(int _id){
+		if (StageinfoDic.TryGetValue(_id, out StageInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class StageRewardInfo {
+		public int id;
+		public int order;
+		public int rewardtype;
+		public int rewardcount;
+	};
+	public StageRewardInfo[] StagerewardinfoArray { get; private set; }
+	public Dictionary<int, StageRewardInfo> StagerewardinfoDic { get; private set; }
+	public void BindStageRewardInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(StagerewardinfoArray)).SetValue(this, deserializaedData, null);
+		StagerewardinfoDic = StagerewardinfoArray.ToDictionary(i => i.id);
+	}
+	public StageRewardInfo GetStageRewardInfoData(int _id){
+		if (StagerewardinfoDic.TryGetValue(_id, out StageRewardInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

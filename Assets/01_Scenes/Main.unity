@@ -218,6 +218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas@MainUI
       objectReference: {fileID: 0}
+    - target: {fileID: 705623454651516607, guid: a44cf63928a6af3499b1b2d7130b18e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a44cf63928a6af3499b1b2d7130b18e1, type: 3}
 --- !u!224 &20597410 stripped
@@ -403,30 +407,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldMap
       objectReference: {fileID: 0}
-    - target: {fileID: 5045452585826752248, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045452585880961356, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045452586297658969, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045452586911734236, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045452587455485235, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045452587469588515, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
-      propertyPath: stage
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 7815749886837070355, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -478,6 +458,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7815749886837070355, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
   m_PrefabInstance: {fileID: 595377973}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &595377975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -7799993093012726439, guid: 5574e4f36e6cf4144ac50ee0ed94425d, type: 3}
+  m_PrefabInstance: {fileID: 595377973}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc61198b40dd40041b60a3e3352f41a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &684310349
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +724,7 @@ MonoBehaviour:
   objRoot: {fileID: 684310350}
   heroTIDLists: d1070000d2070000
   mainUI: {fileID: 20597411}
+  worldMap: {fileID: 595377975}
   tileDatas:
   - {fileID: 11400000, guid: e9895de3d66dda244912ce16b91d5336, type: 2}
   - {fileID: 11400000, guid: 1a0f022d2273d494186435541049e709, type: 2}

@@ -14,6 +14,7 @@ public class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<int> heroTIDLists;
     [SerializeField] private MainUI mainUI;
+    [SerializeField] private WorldMap worldMap;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -112,10 +113,11 @@ public class MGameManager : SingletonMono<MGameManager>
                 if (obj != null)
                 {
                     WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
-                    Debug.Log($"WorldMapStageSlot {stageSlot.stage}");
-
-                    mainUI.ShowStageInfo(stageSlot.stage);
-                    //mainUI.set
+                    mainUI.ShowStageInfo(stageSlot.stage, () => {
+                        // startBtn
+                        UserData.Instance.ClearStage(stageSlot.stage);
+                        worldMap.UpdateWorld();
+                    });
                 }
                 else
                 {
@@ -123,6 +125,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 }
             }
         });
+        worldMap.InitWorld();
     }
 
     private void Start()

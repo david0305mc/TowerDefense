@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WorldMapTileObj : MonoBehaviour
 {
-
     [SerializeField] private GameObject defaultObject;
     [SerializeField] private GameObject lockObject;
     [SerializeField] private GameObject occupationObject;
@@ -12,8 +11,32 @@ public class WorldMapTileObj : MonoBehaviour
     [SerializeField] private int stageID;
     public int StageID { get => stageID; }
 
-    public void SetData()
-    { 
-    
+    public void UpdateData()
+    {
+        var stageData = UserData.Instance.GetStageData(StageID);
+        switch (stageData.status)
+        {
+            case Game.StageStatus.Normal:
+                {
+                    defaultObject.SetActive(true);
+                    lockObject.SetActive(false);
+                    occupationObject.SetActive(false);
+                }
+                break;
+            case Game.StageStatus.Occupation:
+                {
+                    defaultObject.SetActive(false);
+                    lockObject.SetActive(false);
+                    occupationObject.SetActive(true);
+                }
+                break;
+            case Game.StageStatus.Lock:
+                {
+                    defaultObject.SetActive(false);
+                    lockObject.SetActive(true);
+                    occupationObject.SetActive(false);
+                }
+                break;
+        }
     }
 }

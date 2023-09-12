@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using UniRx;
+using System.Linq;
 
 public partial class UserData : Singleton<UserData>
 {
@@ -16,6 +17,10 @@ public partial class UserData : Singleton<UserData>
     public LocalData LocalData { get; set; }
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
+    private Dictionary<int, StageData> stageDataDic;
+    private HashSet<int> stageClearSet;
+    public StageData GetStageData(int _stage) => stageDataDic.GetValueOrDefault(_stage);
+    public bool IsClearedStage(int _stage) => stageClearSet.Contains(_stage);
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
@@ -26,6 +31,47 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic = new Dictionary<int, UnitData>();
         heroDataDic = new Dictionary<int, UnitData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
+        stageDataDic = new Dictionary<int, StageData>();
+        stageClearSet = new HashSet<int>();
+    }
+
+    private void InitStage()
+    {
+        stageClearSet.Add(0);
+        foreach (var item in DataManager.Instance.StageinfoArray)
+        {
+            var data = StageData.Create(item.id, Game.StageStatus.Lock);
+            stageDataDic.Add(data.stageID, data);
+        }
+        UpdateStageStatus();
+    }
+
+    public void ClearStage(int _stage)
+    {
+        stageClearSet.Add(_stage);
+        UpdateStageStatus();
+    }
+
+    private void UpdateStageStatus()
+    {
+        foreach (var item in stageDataDic)
+        {
+            if (stageClearSet.Contains(item.Value.refData.priorstageid))
+            {
+                if (stageClearSet.Contains(item.Key))
+                {
+                    item.Value.status = Game.StageStatus.Occupation;
+                }
+                else
+                {
+                    item.Value.status = Game.StageStatus.Normal;
+                }
+            }
+            else
+            {
+                item.Value.status = Game.StageStatus.Lock;
+            }
+        } 
     }
 
     public UnitData GetUnitData(int _uid, bool isEnemy)
@@ -86,11 +132,13 @@ public partial class UserData : Singleton<UserData>
             //localData = Utill.EncryptXOR(localData);
             LocalData = JsonUtility.FromJson<LocalData>(localData);
             LocalData.UpdateRefData();
+            InitStage();
         }
         else
         {
             // NewGame
             LocalData = new LocalData();
+            InitStage();
         }
     }
 

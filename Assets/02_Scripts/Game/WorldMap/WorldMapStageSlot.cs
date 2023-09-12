@@ -10,8 +10,32 @@ public class WorldMapStageSlot : MonoBehaviour
 
     public int stage;
 
-    public void SetData()
-    { 
-    
+    public void UpdateData()
+    {
+        var stageData = UserData.Instance.GetStageData(stage);
+        switch (stageData.status)
+        {
+            case Game.StageStatus.Normal:
+                {
+                    defaultObject.SetActive(true);
+                    lockObject.SetActive(false);
+                    battleObject.SetActive(false);
+                }
+                break;
+            case Game.StageStatus.Occupation:
+                {
+                    defaultObject.SetActive(false);
+                    lockObject.SetActive(false);
+                    battleObject.SetActive(true);
+                }
+                break;
+            case Game.StageStatus.Lock:
+                {
+                    defaultObject.SetActive(false);
+                    lockObject.SetActive(true);
+                    battleObject.SetActive(false);
+                }
+                break;
+        }
     }
 }

@@ -49,11 +49,11 @@ public class MainUI : MonoBehaviour
         HideStageInfo();
     }
 
-    public void ShowStageInfo(int _stageID)
+    public void ShowStageInfo(int _stageID, System.Action _startAction)
     {
         stageInfoPanel.gameObject.SetActive(true);
         stageInfoPanel.SetData(_stageID, () => {
-            Debug.Log($"StartBtn {_stageID}"); 
+            _startAction?.Invoke();
         });
     }
 

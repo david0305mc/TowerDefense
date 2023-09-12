@@ -5,11 +5,10 @@ using System.Linq;
 
 public class WorldMap : MonoBehaviour
 {
-
     private List<WorldMapTileObj> tileList;
     private Dictionary<int, WorldMapStageSlot> stageDic;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         tileList = new List<WorldMapTileObj>();
         GetComponentsInChildren(tileList);
@@ -18,9 +17,21 @@ public class WorldMap : MonoBehaviour
         stageDic = stageSlotsList.ToDictionary(item => item.stage);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitWorld()
     {
-        
+        UpdateWorld();
+    }
+
+    public void UpdateWorld()
+    {
+        foreach (var item in tileList)
+        {
+            item.UpdateData();
+        }
+
+        foreach (var item in stageDic)
+        {
+            item.Value.UpdateData();
+        }
     }
 }

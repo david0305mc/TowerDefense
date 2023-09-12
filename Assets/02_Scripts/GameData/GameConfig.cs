@@ -63,4 +63,11 @@ namespace Game
         SHADOW = 1,
         SPRITE = 2
     }
+
+    public enum StageStatus
+    { 
+        Normal,
+        Occupation,
+        Lock,
+    }
 }

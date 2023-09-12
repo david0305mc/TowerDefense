@@ -62,3 +62,20 @@ public class AttackData
         attackToEnemy = _attackToEnemy;
     }
 }
+
+public class StageData
+{
+    public int stageID;
+    public StageStatus status;
+    public DataManager.StageInfo refData;
+
+    public static StageData Create(int _stageID, StageStatus _status)
+    {
+        StageData data = new StageData()
+        {
+            stageID = _stageID, status = _status,
+            refData = DataManager.Instance.GetStageInfoData(_stageID)
+        };
+        return data;
+    }
+}
