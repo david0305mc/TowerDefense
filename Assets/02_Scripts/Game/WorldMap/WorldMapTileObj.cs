@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class WorldMapTileObj : MonoBehaviour
 {
+
+    [SerializeField] private GameObject defaultObject;
+    [SerializeField] private GameObject lockObject;
+    [SerializeField] private GameObject occupationObject;
+
     [SerializeField] private int stageID;
     public int StageID { get => stageID; }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetData()
+    { 
+    
     }
 }

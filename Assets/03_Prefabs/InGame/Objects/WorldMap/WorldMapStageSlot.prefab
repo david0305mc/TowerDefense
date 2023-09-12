@@ -78,6 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e30d40d424bb1114f8d2186cc1883835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultObject: {fileID: 3331013345559242067}
+  lockObject: {fileID: 4381522182118452945}
+  battleObject: {fileID: 9081957108926992525}
   stage: 0
 --- !u!61 &-3029063911579528850
 BoxCollider2D:
@@ -355,7 +358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2642952902502580209
 Transform:
   m_ObjectHideFlags: 0

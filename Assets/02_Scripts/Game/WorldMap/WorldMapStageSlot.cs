@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class WorldMapStageSlot : MonoBehaviour
 {
+    [SerializeField] private GameObject defaultObject;
+    [SerializeField] private GameObject lockObject;
+    [SerializeField] private GameObject battleObject;
 
     public int stage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetData()
+    { 
+    
     }
 }
