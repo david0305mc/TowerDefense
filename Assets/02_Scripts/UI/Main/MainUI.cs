@@ -64,12 +64,12 @@ public class MainUI : MonoBehaviour
                 break;
             case BottomTab.Event:
                 {
-                    MGameManager.Instance.SpawnStage(UserData.Instance.CurrStage);
+                    //MGameManager.Instance.SpawnStage(UserData.Instance.CurrStage);
                 }
                 break;
             case BottomTab.Pvp:
                 {
-                    MGameManager.Instance.AddHero(1);
+                    //MGameManager.Instance.AddHero(1);
                 }
                 break;
         }

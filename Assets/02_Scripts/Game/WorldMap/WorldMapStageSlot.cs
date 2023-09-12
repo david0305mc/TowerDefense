@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldMapStageSlot : MonoBehaviour
 {
 
+    public int stage;
     // Start is called before the first frame update
     void Start()
     {
