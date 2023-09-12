@@ -19,7 +19,7 @@ public class WorldMapStageSlot : MonoBehaviour
                 {
                     defaultObject.SetActive(true);
                     lockObject.SetActive(false);
-                    battleObject.SetActive(false);
+                    battleObject.SetActive(true);
                 }
                 break;
             case Game.StageStatus.Occupation:
