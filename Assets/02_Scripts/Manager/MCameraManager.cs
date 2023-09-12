@@ -55,6 +55,9 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
     private void Update()
     {
+        if (IsUsingUI())
+            return;
+
         UpdateOneTouch();
 #if UNITY_EDITOR
         UpdateEditorInput();
