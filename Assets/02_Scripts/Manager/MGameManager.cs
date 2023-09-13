@@ -56,7 +56,6 @@ public class MGameManager : SingletonMono<MGameManager>
         return GetHeroObj(_uid);
     }
 
-
     public MHeroObj GetHeroObj(int _uid)
     {
         if (heroDic.TryGetValue(_uid, out MHeroObj heroObj))
@@ -355,13 +354,13 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public float GetTileWalkingSpeed(Vector3 worldPosition) 
     {
+        return 3f;
         Vector3Int gridPosition = currStageObj.tileMap.WorldToCell(new Vector3(worldPosition.x, worldPosition.y, 0) );
         TileBase tilebase = currStageObj.tileMap.GetTile(gridPosition);
         if (tilebase == null)
             return 1f;
-
-        float walkingSpeed = dataFromTileMap[tilebase].walkingSpeed;
-        return walkingSpeed;
+        //float walkingSpeed = dataFromTileMap[tilebase].walkingSpeed;
+        //return walkingSpeed;
     }
     public void DoAreaAttack(AttackData _attackData, Vector2 _pos)
     {

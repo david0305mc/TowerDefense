@@ -272,7 +272,32 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
     public bool IsUsingUI()
     {
-        return EventSystem.current.IsPointerOverGameObject();
+        //return EventSystem.current.IsPointerOverGameObject();
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        if (results.Count > 0)
+        {
+            int count = 0;
+            foreach (var item in results)
+            {
+                if (item.gameObject.layer == LayerMask.NameToLayer("UI"))
+                {
+                    count++;
+                }
+                if (item.gameObject.layer == LayerMask.NameToLayer("HUD"))
+                {
+                    continue;
+                }
+            }
+            return count > 0;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private Vector3 TryGetRayCastHitPoint(Vector2 _touchPoint, int _layerMask)

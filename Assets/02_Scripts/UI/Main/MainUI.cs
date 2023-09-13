@@ -22,7 +22,7 @@ public class MainUI : MonoBehaviour
     [SerializeField] private UIMainBottomTabGroup tabGruop;
     
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
-    [SerializeField] private UIPanelUnit unitPanel;
+    [SerializeField] private UIPanelUnitSelect unitSelectPanel;
 
     private void Awake()
     {
@@ -77,6 +77,16 @@ public class MainUI : MonoBehaviour
     public void HideStageInfo()
     {
         stageInfoPanel.gameObject.SetActive(false);
+    }
+
+    public void ShowUnitInfo()
+    {
+        unitSelectPanel.SetActive(true);
+    }
+
+    public void HideUnitInfo()
+    {
+        unitSelectPanel.SetActive(false);
     }
 
     public void InitTabGroup()
