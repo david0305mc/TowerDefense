@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 using Game;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
 
 public class MGameManager : SingletonMono<MGameManager>
 {
     [SerializeField] private MCameraManager cameraManager;
-    [SerializeField] private List<GameObject> stageprefLists;
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private List<int> heroTIDLists;
@@ -19,6 +21,7 @@ public class MGameManager : SingletonMono<MGameManager>
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
     private StageObject currStageObj;
+    private AsyncOperationHandle<GameObject> currStageOpHandler; 
 
     public List<GameObject> WayPoints => currStageObj.wayPointLists;
 
@@ -90,17 +93,32 @@ public class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    public void SpawnStage(int stage)
+    private void StartStage(int stageID)
     {
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
         }
-        currStageObj = Instantiate(stageprefLists[stage], Vector3.zero, Quaternion.identity, objRoot).GetComponent<StageObject>();
+        var stageInfo = DataManager.Instance.GetStageInfoData(stageID);
+        worldMap.gameObject.SetActive(false);
+        MCameraManager.Instance.SetZoomAndSize(2, 20, -10, 25, -10, 25);
+        UniTask.Create(async () =>
+        {
+            currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
+            await currStageOpHandler;
+            currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
 
-        InitEnemies();
-        InitHeroes();
+            InitEnemies();
+            InitHeroes();
+        });
     }
+
+    private void EndStage(int _stageID)
+    {
+        UserData.Instance.ClearStage(_stageID);
+        worldMap.UpdateWorld();
+    }
+
     private void InitGame()
     {
         gameState = GameConfig.GameState.MainUI;
@@ -118,8 +136,7 @@ public class MGameManager : SingletonMono<MGameManager>
                         mainUI.ShowStageInfo(stageSlot.stage, () =>
                         {
                             // startBtn
-                            UserData.Instance.ClearStage(stageSlot.stage);
-                            worldMap.UpdateWorld();
+                            StartStage(stageSlot.stage);
                         });
                     });
                 }
@@ -295,15 +312,15 @@ public class MGameManager : SingletonMono<MGameManager>
 
     public void NextStage()
     {
-        if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
-        {
-            return;
-        }
+        //if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
+        //{
+        //    return;
+        //}
 
         RemoveAllHero();
         RemoveAllEnemy();
         UserData.Instance.CurrStage++;
-        SpawnStage(UserData.Instance.CurrStage);
+        StartStage(UserData.Instance.CurrStage);
     }
 
     //private void Update()

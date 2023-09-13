@@ -428,7 +428,7 @@ public class MBaseObj : MonoBehaviour, Damageable
                 }
             }).Select(item => item.GetComponent<MBaseObj>()).ToList();
         }
-        return null;
+        return default;
     }
     protected MBaseObj FindNearestTargetByAggroOrder(IEnumerable<MBaseObj> targetObjs)
     {

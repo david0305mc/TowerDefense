@@ -28,7 +28,7 @@ public class SpawnTest : MonoBehaviour
     private List<EnemyTest> enemyLists;
     private GameObject testObj;
 
-
+    private AsyncOperationHandle<GameObject> stageOpHandler;
     private void Start()
     {
         heroLists = new List<HeroTest>();
@@ -36,7 +36,10 @@ public class SpawnTest : MonoBehaviour
 
     private async UniTask InstantiateStage()
     {
-        var result = await stageAssetReference[stage].InstantiateAsync(Vector3.zero, Quaternion.identity, transform);
+        stageOpHandler = Addressables.InstantiateAsync("Stage/StageTest01.prefab", Vector3.zero, Quaternion.identity, transform);
+        //var result = await stageAssetReference[stage].InstantiateAsync(Vector3.zero, Quaternion.identity, transform);
+        await stageOpHandler;
+        var result = stageOpHandler.Result;
         currStageObj = result.GetComponent<StageTest>();
 
         enemyLists = new List<EnemyTest>();
@@ -82,9 +85,9 @@ public class SpawnTest : MonoBehaviour
     }
     public void OnClickRemoveStageBtn()
     {
-        if (!Addressables.ReleaseInstance(currStageObj.gameObject))
+        if (!Addressables.ReleaseInstance(stageOpHandler))
         {
-            Destroy(currStageObj.gameObject);
+            Destroy(stageOpHandler.Result.gameObject);
         }
         ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }

@@ -73,7 +73,7 @@ public class MEnemyObj : MBaseObj
     {
         commonDelay = 0;
         var detectedObjs = FindUnitListByArea(unitData.refData.checkrange, false);
-        if (detectedObjs.Count > 0)
+        if (detectedObjs != default && detectedObjs.Count > 0)
         {
             var heroObj = FindNearestTargetByAggroOrder(detectedObjs);
             if (heroObj != default)

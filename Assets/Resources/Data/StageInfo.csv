@@ -1,8 +1,8 @@
-﻿Id|stageName|needCombatPower|priorStageId
-int|string|int|int
-1|stage_01_name|100|0
-2|stage_02_name|200|1
-3|stage_03_name|300|2
-4|stage_04_name|400|3
-5|stage_05_name|500|4
-6|stage_05_name|500|5
+﻿Id|stageName|needCombatPower|priorStageId|prefabName
+int|string|int|int|string
+1|stage_01_name|100|0|Stage/Stage01.prefab
+2|stage_02_name|200|1|Stage/Stage02.prefab
+3|stage_03_name|300|2|Stage/Stage03.prefab
+4|stage_04_name|400|3|Stage/Stage01.prefab
+5|stage_05_name|500|4|Stage/Stage02.prefab
+6|stage_05_name|500|5|Stage/Stage03.prefab
