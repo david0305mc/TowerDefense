@@ -105,24 +105,35 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         gameState = GameConfig.GameState.MainUI;
         mainUI.InitTabGroup();
-        cameraManager.SetTouchAction(_ =>
+        cameraManager.SetTouchAction(() =>
         {
             if (gameState == GameConfig.GameState.MainUI)
             {
                 GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
                 if (obj != null)
                 {
-                    WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
-                    mainUI.ShowStageInfo(stageSlot.stage, () => {
-                        // startBtn
-                        UserData.Instance.ClearStage(stageSlot.stage);
-                        worldMap.UpdateWorld();
+                    cameraManager.SetFollowObject(obj, () =>
+                    {
+                        WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
+                        mainUI.ShowStageInfo(stageSlot.stage, () =>
+                        {
+                            // startBtn
+                            UserData.Instance.ClearStage(stageSlot.stage);
+                            worldMap.UpdateWorld();
+                        });
                     });
                 }
                 else
                 {
+                    cameraManager.CancelFollowTarget();
                     mainUI.HideStageInfo();
                 }
+            }
+        }, 
+        ()=> {
+            if (gameState == GameConfig.GameState.MainUI)
+            {
+                mainUI.HideStageInfo();
             }
         });
         worldMap.InitWorld();

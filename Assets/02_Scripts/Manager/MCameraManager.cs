@@ -35,7 +35,10 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private Vector3 dragStartPos = Vector3.zero;
     private bool groundDragStarted = false;
 
-    private System.Action<GameObject> touchAction;
+    private System.Action touchAction;
+    private System.Action dragStartAction;
+    private GameObject followTarget;
+    private System.Action followTargetAction;
 
     protected override void OnSingletonAwake()
     {
@@ -45,8 +48,9 @@ public class MCameraManager : SingletonMono<MCameraManager>
         oldPos = newPos;
         newZoom = mainCamera.orthographicSize;
         oldZoom = newZoom;
+        followTarget = null;
+        followTargetAction = null;
     }
-
     void Start()
     {
         dragStartPos = Vector3.zero;
@@ -56,8 +60,10 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private void Update()
     {
         if (IsUsingUI())
+        {
             return;
-
+        }
+        
         UpdateOneTouch();
 #if UNITY_EDITOR
         UpdateEditorInput();
@@ -84,6 +90,15 @@ public class MCameraManager : SingletonMono<MCameraManager>
             oldZoom = mainCamera.orthographicSize;
         }
 
+        if (followTarget != null)
+        {
+            if (Vector2.Distance(transform.position, followTarget.transform.position) <= 0.1f)
+            {
+                followTargetAction?.Invoke();
+                followTarget = null;
+                followTargetAction = null;
+            }
+        }
     }
     void UpdateEditorInput()
     {
@@ -134,6 +149,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             {
                 dragStartPos = groudHitPoint;
                 groundDragStarted = true;
+                dragStartAction?.Invoke();
             }
         }
 
@@ -154,7 +170,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
             if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.1f)
             {
-                touchAction?.Invoke(gameObject);
+                touchAction?.Invoke();
             }
             groundDragStarted = false;
             dragStartPos = PositiveInfinityVector;
@@ -219,9 +235,24 @@ public class MCameraManager : SingletonMono<MCameraManager>
         mapSizeMaxY = _sizeMaxY;
     }
 
-    public void SetTouchAction(System.Action<GameObject> _touchAction)
+    public void SetTouchAction(System.Action _touchAction, System.Action _dragStartAction)
     {
         touchAction = _touchAction;
+        dragStartAction = _dragStartAction;
+    }
+
+    public void SetFollowObject(GameObject _target, System.Action _targetAction)
+    {
+        followTarget = _target;
+        followTargetAction = _targetAction;
+        newPos = _target.transform.position;
+    }
+
+    public void CancelFollowTarget()
+    {
+        followTarget = null;
+        followTargetAction = null;
+        newPos = transform.position;
     }
     //private void ZoomCamera()
     //{
