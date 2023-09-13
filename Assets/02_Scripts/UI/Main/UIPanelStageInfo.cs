@@ -20,5 +20,18 @@ public class UIPanelStageInfo : MonoBehaviour
     {
         startBtnAction = _action;
         titleText.SetText(_stageID.ToString());
+        var stageData = UserData.Instance.GetStageData(_stageID);
+        switch (stageData.status)
+        {
+            case Game.StageStatus.Lock:
+                startBtn.SetActive(false);
+                break;
+            case Game.StageStatus.Normal:
+                startBtn.SetActive(true);
+                break;
+            case Game.StageStatus.Occupation:
+                startBtn.SetActive(true);
+                break;
+        }
     }
 }
