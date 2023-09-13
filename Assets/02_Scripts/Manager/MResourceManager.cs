@@ -42,6 +42,10 @@ public class MResourceManager : SingletonMono<MResourceManager>
         await opAtlasHandleDic[key];
     }
 
+    private async UniTaskVoid LoadPopups()
+    {
+    }
+
     private async UniTaskVoid LoadProjectile()
     {
         foreach (var item in DataManager.Instance.ProjectileinfoDic)

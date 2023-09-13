@@ -36,7 +36,11 @@ public class MainUI : MonoBehaviour
         });
         WinBtn.onClick.AddListener(() =>
         {
-            //PopupManager.Instance.Show
+            var popup = PopupManager.Instance.Show<UnitInfoPopup>(()=> { 
+                // Hide
+
+            });
+            
         });
         //testBtn.onClick.AddListener(() =>
         //{

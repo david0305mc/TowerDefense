@@ -12,26 +12,21 @@ public class ShopPopup : PopupBase
 {
     [SerializeField] private Button isEnemyBtn = default;
     [SerializeField] private GameObject IsEnemyMark = default;
-    [SerializeField] private Button closeBtn = default;
     [SerializeField] private UIGridView gridView = default;
 
     private ShopItemData[] shopItemDatas;
-    private void Awake()
-    {
-        closeBtn.onClick.AddListener(() =>
-        {
-            Hide();
-        });
-        isEnemyBtn.onClick.AddListener(() =>
-        {
-            UserData.Instance.IsEnemyItemSelected.Value = !UserData.Instance.IsEnemyItemSelected.Value;
-        });
+    //public void Awake()
+    //{
+    //    isEnemyBtn.onClick.AddListener(() =>
+    //    {
+    //        UserData.Instance.IsEnemyItemSelected.Value = !UserData.Instance.IsEnemyItemSelected.Value;
+    //    });
 
-        UserData.Instance.IsEnemyItemSelected.Subscribe(v=>
-        {
-            IsEnemyMark.SetActive(v);
-        }).AddTo(gameObject);
-    }
+    //    UserData.Instance.IsEnemyItemSelected.Subscribe(v=>
+    //    {
+    //        IsEnemyMark.SetActive(v);
+    //    }).AddTo(gameObject);
+    //}
 
     private void Start()
     {

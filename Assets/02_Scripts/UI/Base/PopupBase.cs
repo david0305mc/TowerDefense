@@ -2,13 +2,25 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PopupBase : MonoBehaviour
 {
-    [SerializeField] private Animator openAnim = null;
+    [SerializeField] private Animator openAnim = default;
+    [SerializeField] private Button closeBtn = default;
     private System.Action hideAction;
     private System.Action completeOpenAni;
 
+    private void Awake()
+    {
+        if (closeBtn != null)
+        {
+            closeBtn.onClick.AddListener(() =>
+            {
+                OnClickCloseBtn();
+            });
+        }
+    }
     private void Start()
     {
         //openAnim.Play("PopupOpen");

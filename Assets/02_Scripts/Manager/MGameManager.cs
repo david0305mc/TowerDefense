@@ -136,6 +136,7 @@ public class MGameManager : SingletonMono<MGameManager>
                         {
                             // startBtn
                             StartStage(stageSlot.stage);
+                            mainUI.HideStageInfo();
                         });
                     });
                 }
