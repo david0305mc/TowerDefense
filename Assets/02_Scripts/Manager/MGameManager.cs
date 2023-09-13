@@ -14,7 +14,6 @@ public class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private MCameraManager cameraManager;
 
     [SerializeField] private Transform objRoot;
-    [SerializeField] private List<int> heroTIDLists;
     [SerializeField] private MainUI mainUI;
     [SerializeField] private WorldMap worldMap;
 
@@ -295,9 +294,9 @@ public class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), 1);
     }
 
-    public void AddHero(int index)
+    public void AddHero(int unitTid)
     {   
-        var heroData = UserData.Instance.AddHeroData(heroTIDLists[index]);
+        var heroData = UserData.Instance.AddHeroData(unitTid);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);

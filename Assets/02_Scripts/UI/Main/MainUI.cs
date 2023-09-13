@@ -16,9 +16,9 @@ public class MainUI : MonoBehaviour
     }
 
     [SerializeField] private TextMeshProUGUI goldText;
-    [SerializeField] private Button testBtn;
-    [SerializeField] private Button loadEnemyBtn;
-    [SerializeField] private Button shopBtn;
+    [SerializeField] private Button addTankerBtn;
+    [SerializeField] private Button addArcherBtn;
+    [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
     
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
@@ -26,6 +26,18 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
+        addTankerBtn.onClick.AddListener(() =>
+        {
+            MGameManager.Instance.AddHero(2001);
+        });
+        addArcherBtn.onClick.AddListener(() =>
+        {
+            MGameManager.Instance.AddHero(2002);
+        });
+        WinBtn.onClick.AddListener(() =>
+        {
+            //PopupManager.Instance.Show
+        });
         //testBtn.onClick.AddListener(() =>
         //{
         //    UserData.Instance.SaveEnemyData();
@@ -80,12 +92,11 @@ public class MainUI : MonoBehaviour
                 break;
             case BottomTab.Event:
                 {
-                    //MGameManager.Instance.SpawnStage(UserData.Instance.CurrStage);
                 }
                 break;
             case BottomTab.Pvp:
                 {
-                    //MGameManager.Instance.AddHero(1);
+                    
                 }
                 break;
         }
