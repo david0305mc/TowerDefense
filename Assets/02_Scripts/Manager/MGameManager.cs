@@ -106,15 +106,29 @@ public class MGameManager : SingletonMono<MGameManager>
             currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
-
+            UserData.Instance.CurrStage = stageID;
             InitEnemies();
             InitHeroes();
         });
     }
 
-    private void EndStage(int _stageID)
+    private void RemoveStage()
     {
-        UserData.Instance.ClearStage(_stageID);
+        if (!Addressables.ReleaseInstance(currStageOpHandler))
+        {
+            Destroy(currStageOpHandler.Result.gameObject);
+        }
+        //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
+    }
+    public void WinStage()
+    {
+        RemoveAllHero();
+        RemoveStage();
+        RemoveAllProjectile();
+
+        MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 2, -2, 2);
+        UserData.Instance.ClearStage(UserData.Instance.CurrStage);
+        worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
     }
 
@@ -287,7 +301,10 @@ public class MGameManager : SingletonMono<MGameManager>
             RemoveEnemy(UserData.Instance.enemyDataDic.ElementAt(i).Key);
         }
     }
-
+    private void RemoveAllProjectile()
+    {
+        Lean.Pool.LeanPool.DespawnAll();
+    }
     public void LauchProjectile(MBaseObj attackerObj, int _targetUID)
     {
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(attackerObj.UnitData.refUnitGradeData.projectileid);
