@@ -35,6 +35,15 @@ public partial class UserData : Singleton<UserData>
         stageClearSet = new HashSet<int>();
     }
 
+    private void InitBeginData()
+    {
+        AddHeroData(2001);
+        AddHeroData(2001);
+        AddHeroData(2001);
+        AddHeroData(2002);
+        AddHeroData(2002);
+    }
+
     private void InitStage()
     {
         stageClearSet.Add(0);
@@ -133,12 +142,14 @@ public partial class UserData : Singleton<UserData>
             LocalData = JsonUtility.FromJson<LocalData>(localData);
             LocalData.UpdateRefData();
             InitStage();
+            InitBeginData();
         }
         else
         {
             // NewGame
             LocalData = new LocalData();
             InitStage();
+            InitBeginData();
         }
     }
 

@@ -107,7 +107,7 @@ public class MGameManager : SingletonMono<MGameManager>
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.CurrStage = stageID;
             InitEnemies();
-            InitHeroes();
+            SpawnAllHero();
         });
     }
 
@@ -267,11 +267,6 @@ public class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void InitHeroes()
-    {
-        heroDic = new Dictionary<int, MHeroObj>();
-    }
-
     private void RemoveHero(int _uid)
     {
         UserData.Instance.RemoveHero(_uid);
@@ -314,6 +309,12 @@ public class MGameManager : SingletonMono<MGameManager>
     public void AddHero(int unitTid)
     {   
         var heroData = UserData.Instance.AddHeroData(unitTid);
+        SpawnHero(heroData.uid);
+    }
+
+    private void SpawnHero(int unitUid)
+    {
+        var heroData = UserData.Instance.GetHeroData(unitUid);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
@@ -324,6 +325,20 @@ public class MGameManager : SingletonMono<MGameManager>
         });
         heroObj.StartFSM();
         heroDic.Add(heroData.uid, heroObj);
+    }
+
+    private void SpawnAllHero()
+    {
+        heroDic = new Dictionary<int, MHeroObj>();
+        UniTask.Create(async () =>
+        {
+            await UniTask.Delay(1000);
+            foreach (var item in UserData.Instance.heroDataDic)
+            {
+                await UniTask.Delay(300);
+                SpawnHero(item.Key);
+            }
+        });
     }
 
     public void NextStage()
