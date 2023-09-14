@@ -28,6 +28,7 @@ public class UnitData
     public int uid;
     public int tid;
     public bool IsEnemy;
+    public bool isInParty;
     public int hp;
     public DataManager.Unitinfo refData;
     public DataManager.UnitGradeInfo refUnitGradeData;
@@ -38,6 +39,7 @@ public class UnitData
             uid = _uid,
             tid = _tid,
             IsEnemy = _isEnemy,
+            isInParty = false,
             refData = DataManager.Instance.GetUnitinfoData(_tid),
             refUnitGradeData = DataManager.Instance.GetUnitGrade(_tid, _grade)
         };

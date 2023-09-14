@@ -17,6 +17,9 @@ public partial class UserData : Singleton<UserData>
     public LocalData LocalData { get; set; }
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
+    private Dictionary<int, int> battlePartyDic;
+    public Dictionary<int, int> BattlePartyDic => battlePartyDic;
+
     private Dictionary<int, StageData> stageDataDic;
     private HashSet<int> stageClearSet;
     public StageData GetStageData(int _stage) => stageDataDic.GetValueOrDefault(_stage);
@@ -33,6 +36,12 @@ public partial class UserData : Singleton<UserData>
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
         stageDataDic = new Dictionary<int, StageData>();
         stageClearSet = new HashSet<int>();
+
+        battlePartyDic = new Dictionary<int, int>();
+        Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
+        {
+            battlePartyDic[i] = -1;
+        });
     }
 
     private void InitBeginData()
@@ -53,6 +62,32 @@ public partial class UserData : Singleton<UserData>
             stageDataDic.Add(data.stageID, data);
         }
         UpdateStageStatus();
+    }
+
+    private int FindEmptySlot()
+    {
+        for (int i = 0; i < Game.GameConfig.MaxBattlePartyCount; i++)
+        {
+            if (battlePartyDic[i] == -1)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int AddBattleParty(int _heroUID)
+    {
+        heroDataDic[_heroUID].isInParty = true;
+        int emptySlotIndex = FindEmptySlot();
+        battlePartyDic[emptySlotIndex] = _heroUID;
+        return emptySlotIndex;
+    }
+
+    public void RemoveBattleParty(int _slotIndex)
+    {
+        int heroUid = battlePartyDic[_slotIndex];
+        heroDataDic[heroUid].isInParty = false;
+        battlePartyDic[_slotIndex] = -1;
     }
 
     public void ClearStage(int _stage)

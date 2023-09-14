@@ -13,6 +13,7 @@ namespace Game
             InGame,
         }
 
+        public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
 
         public static int UnitLayerMask = LayerMask.GetMask("Unit");
