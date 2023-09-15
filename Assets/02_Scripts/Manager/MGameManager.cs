@@ -99,7 +99,7 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         var stageInfo = DataManager.Instance.GetStageInfoData(stageID);
         worldMap.gameObject.SetActive(false);
-        MCameraManager.Instance.SetZoomAndSize(2, 20, -10, 25, -10, 25);
+        cameraManager.SetZoomAndSize(2, 20, -10, 25, -10, 25);
         UniTask.Create(async () =>
         {
             currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
@@ -125,7 +125,7 @@ public class MGameManager : SingletonMono<MGameManager>
         RemoveStage();
         RemoveAllProjectile();
 
-        MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 2, -2, 2);
+        cameraManager.SetZoomAndSize(2, 7, -2, 2, -2, 2);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();

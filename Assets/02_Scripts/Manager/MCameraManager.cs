@@ -233,6 +233,20 @@ public class MCameraManager : SingletonMono<MCameraManager>
         mapSizeMaxX = _sizeMaxX;
         mapSizeMinY = _sizeMinY;
         mapSizeMaxY = _sizeMaxY;
+
+        newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
+        if (!newPos.Equals(oldPos))
+        {
+            transform.position = newPos;
+            oldPos = transform.position;
+        }
+
+        newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+        if (!newZoom.Equals(oldZoom))
+        {
+            mainCamera.orthographicSize = newZoom;
+            oldZoom = mainCamera.orthographicSize;
+        }
     }
 
     public void SetTouchAction(System.Action _touchAction, System.Action _dragStartAction)
