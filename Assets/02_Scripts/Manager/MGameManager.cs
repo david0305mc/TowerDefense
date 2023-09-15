@@ -269,6 +269,8 @@ public class MGameManager : SingletonMono<MGameManager>
 
     private void RemoveHero(int _uid)
     {
+        if (_uid == -1)
+            return;
         UserData.Instance.RemoveHero(_uid);
         Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
         heroDic.Remove(_uid);
@@ -276,9 +278,10 @@ public class MGameManager : SingletonMono<MGameManager>
 
     private void RemoveAllHero()
     {
-        for (int i = UserData.Instance.heroDataDic.Count - 1; i >= 0; i--)
+        
+        for (int i = UserData.Instance.BattlePartyDic.Count - 1; i >= 0; i--)
         {
-            RemoveHero(UserData.Instance.heroDataDic.ElementAt(i).Key);
+            RemoveHero(UserData.Instance.BattlePartyDic.ElementAt(i).Value);
         }
     }
 
