@@ -79,12 +79,13 @@ public class MainUI : MonoBehaviour
         stageInfoPanel.gameObject.SetActive(false);
     }
 
-    public void ShowUnitInfo()
+    public void ShowArrangementUI()
     {
         unitSelectPanel.SetActive(true);
+        unitSelectPanel.InitUI();
     }
 
-    public void HideUnitInfo()
+    public void HideArrangementUI()
     {
         unitSelectPanel.SetActive(false);
     }
@@ -98,11 +99,22 @@ public class MainUI : MonoBehaviour
     }
     private void OnBottomTabClicked(int _index)
     {
+        if (tabGruop.CurrTabIndex == (int)BottomTab.Arrangement)
+        {
+            HideArrangementUI();
+        }
+
         switch ((BottomTab)_index)
         {
             case BottomTab.Worldmap:
                 {
                     MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 2, -2, 2);
+                }
+                break;
+
+            case BottomTab.Arrangement:
+                {
+                    ShowArrangementUI();  
                 }
                 break;
             case BottomTab.Event:

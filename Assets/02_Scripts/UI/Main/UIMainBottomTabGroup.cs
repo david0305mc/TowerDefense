@@ -7,6 +7,12 @@ public class UIMainBottomTabGroup : MonoBehaviour
     [SerializeField] private List<UIMainBottomTab> bottomTabList;
 
     private System.Action<int> tabAction;
+    private int currTabIndex;
+    public int CurrTabIndex => currTabIndex;
+    private void Awake()
+    {
+        currTabIndex = -1;
+    }
     public void SelectTab(int _index)
     {
         for (int i = 0; i < bottomTabList.Count; i++)
@@ -21,6 +27,7 @@ public class UIMainBottomTabGroup : MonoBehaviour
             }
         }
         tabAction?.Invoke(_index);
+        currTabIndex = _index;
     }
 
     public void InitTabGroup(int _defaultIndex, System.Action<int> _tabAction)

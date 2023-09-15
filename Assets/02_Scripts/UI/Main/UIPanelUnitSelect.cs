@@ -9,12 +9,9 @@ public class UIPanelUnitSelect : MonoBehaviour
     [SerializeField] private List<UIBattlePartySlot> battlePartyList = default;
 
     private List<UnitData> heroDataList;
-    void Start()
-    {
-        UpdateData();
-    }
-
-    private void UpdateData()
+    //private List<MHeroObj> heroObjList = new List<MHeroObj>();
+    
+    public void InitUI()
     {
         heroDataList = UserData.Instance.heroDataDic.Values.ToList();
         var itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(heroDataList[i].uid)).ToArray();
@@ -25,15 +22,9 @@ public class UIPanelUnitSelect : MonoBehaviour
             if (!heroData.isInParty)
             {
                 int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
-                battlePartyList[slotIndex].SetData(heroData.uid);
+                battlePartyList[index].AddHero(heroData.uid);
                 Debug.Log($"OnCellClicked {index}");
 
-                //var heroData = UserData.Instance.GetHeroData(unitUid);
-                
-                GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
-                MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, battlePartyList[slotIndex].CharacterViewTR).GetComponent<MHeroObj>();
-                heroObj.transform.SetLocalPosition(Vector3.zero);
-                heroObj.transform.SetScale(200);
                 //heroObj.InitObject(heroData.uid, false, (_attackData) =>
                 //{
                 //    //DoHeroGetDamage(heroObj, _attackData.attackerUID, _attackData.damage);
@@ -43,6 +34,28 @@ public class UIPanelUnitSelect : MonoBehaviour
             }
             //SelectCell(index);
         });
+        InitBattlePartyUI();
+    }
+
+    private void InitBattlePartyUI()
+    {
+        Enumerable.Range(0, battlePartyList.Count).ToList().ForEach(i =>
+        {
+            int unitUID = UserData.Instance.BattlePartyDic[i];
+            battlePartyList[i].SetData(i, unitUID, (_slotIndex) =>
+            {
+                UserData.Instance.RemoveBattleParty(_slotIndex);
+                battlePartyList[i].RemoveHero();
+            }); 
+        });
+    }
+
+    private void OnDisable()
+    {
+        foreach (var item in battlePartyList)
+        {
+            item.ClearPool();
+        }
     }
 
 }
