@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class MBaseObj : MonoBehaviour, Damageable
 {
     public enum FSMStates
     {
+        prevIdle,
         Idle,
         WaypointMove,
         DashMove,
@@ -24,7 +26,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
-
     [SerializeField] protected string state;
     protected UnitData unitData;
     public UnitData UnitData => unitData;
@@ -53,6 +54,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected StateMachine<FSMStates, StateDriverUnity> fsm;
     public FSMStates State => fsm.State;
 
+    private SortingGroup sortingGroup;
     protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
     private Material originMaterial;
@@ -62,6 +64,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual void Awake()
     {
+        sortingGroup = GetComponent<SortingGroup>();
+        sortingGroup.sortingLayerName = Game.GameConfig.OverUISoringLayerName;
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -107,6 +111,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
             DoAttackEnd();
         });
+        fsm.ChangeState(FSMStates.prevIdle);
     }
 
     public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
@@ -169,6 +174,15 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             fsm.ChangeState(FSMStates.Idle);
         }
+    }
+
+    protected virtual void PrevIdle_Enter()
+    {
+        state = fsm.State.ToString();
+    }
+
+    protected virtual void PrevIdle_Update()
+    {
     }
 
     protected virtual void Idle_Enter()

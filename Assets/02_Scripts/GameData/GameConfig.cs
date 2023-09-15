@@ -16,6 +16,7 @@ namespace Game
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
 
+        public static readonly string OverUISoringLayerName = "OverUI";
         public static int UnitLayerMask = LayerMask.GetMask("Unit");
         public static int ItemLayerMask = LayerMask.GetMask("Item");
         public static int GroundLayerMask = LayerMask.GetMask("Ground");
