@@ -24,7 +24,9 @@ public class UIPanelUnitSelect : MonoBehaviour
         gridView.OnCellClicked(index =>
         {
             UnitData heroData = heroDataList[index];
-            if (!heroData.isInParty)
+            int battleSlotIndex = UserData.Instance.GetBattleSlotIndexByUID(heroData.uid);
+
+            if (battleSlotIndex == -1)
             {
                 int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
                 battlePartyList[slotIndex].AddHero(heroData.uid);
@@ -32,7 +34,7 @@ public class UIPanelUnitSelect : MonoBehaviour
             }
             else
             {
-                int slotIndex = UserData.Instance.BattleSlotIndexByUID(heroData.uid);
+                int slotIndex = UserData.Instance.GetBattleSlotIndexByUID(heroData.uid);
                 UserData.Instance.RemoveBattleParty(slotIndex);
                 battlePartyList[slotIndex].RemoveHero();
                 InitUserListScroll();
@@ -43,7 +45,7 @@ public class UIPanelUnitSelect : MonoBehaviour
     {
         Enumerable.Range(0, battlePartyList.Count).ToList().ForEach(i =>
         {
-            int unitUID = UserData.Instance.BattlePartyDic[i];
+            int unitUID = UserData.Instance.GetBattlePartyUIDByIndex(i);
             battlePartyList[i].SetData(i, unitUID, (_slotIndex) =>
             {
                 UserData.Instance.RemoveBattleParty(_slotIndex);

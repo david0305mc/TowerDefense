@@ -36,6 +36,6 @@ public class UIUnitCell : UIGridCell
         Debug.Log($"UpdateContent {itemData.id}");
         var selected = Context.SelectedIndex == Index;
         var heroData = UserData.Instance.GetHeroData(itemData.id);
-        checkerObject.SetActive(heroData.isInParty);
+        checkerObject.SetActive(UserData.Instance.GetBattleSlotIndexByUID(heroData.uid) != -1);
     }
 }

@@ -18,8 +18,6 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
     private Dictionary<int, int> battlePartyDic;
-    public Dictionary<int, int> BattlePartyDic => battlePartyDic;       // index, uid
-    public int BattleSlotIndexByUID(int _uid) => battlePartyDic.First(i => i.Value == _uid).Key;
 
     private Dictionary<int, StageData> stageDataDic;
     private HashSet<int> stageClearSet;
@@ -28,7 +26,20 @@ public partial class UserData : Singleton<UserData>
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
-    public int ShopSelectedItem { get; set; } 
+    public int ShopSelectedItem { get; set; }
+    public int GetBattleSlotIndexByUID(int _uid)
+    {
+        KeyValuePair<int, int> data = battlePartyDic.FirstOrDefault(i => i.Value == _uid);
+        if (data.Equals(default(KeyValuePair<int, int>)))
+        {
+            return -1;
+        }
+        return data.Key;
+    }
+    public int GetBattlePartyUIDByIndex(int _index)
+    {
+        return battlePartyDic[_index];
+    }
     public void InitData()
     {
         ShopSelectedItem = -1;
@@ -78,7 +89,6 @@ public partial class UserData : Singleton<UserData>
     }
     public int AddBattleParty(int _heroUID)
     {
-        heroDataDic[_heroUID].isInParty = true;
         int emptySlotIndex = FindEmptySlot();
         battlePartyDic[emptySlotIndex] = _heroUID;
         return emptySlotIndex;
@@ -87,7 +97,6 @@ public partial class UserData : Singleton<UserData>
     public void RemoveBattleParty(int _slotIndex)
     {
         int heroUid = battlePartyDic[_slotIndex];
-        heroDataDic[heroUid].isInParty = false;
         battlePartyDic[_slotIndex] = -1;
     }
 
