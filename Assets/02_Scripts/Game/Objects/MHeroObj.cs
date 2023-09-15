@@ -24,17 +24,6 @@ public class MHeroObj : MBaseObj
         base.StartFSM();
     }
 
-    public void SetUIScale()
-    {
-        transform.SetScale(200f);
-    
-    }
-
-    public void SetBattleScale()
-    {
-        transform.SetScale(1f);
-    }
-
     protected override void DoSwordAttack(Collider2D collision)
     {
         // Attack

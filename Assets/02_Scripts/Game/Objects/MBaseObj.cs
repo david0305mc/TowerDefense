@@ -13,7 +13,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 {
     public enum FSMStates
     {
-        prevIdle,
+        PrevIdle,
         Idle,
         WaypointMove,
         DashMove,
@@ -111,7 +111,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
             DoAttackEnd();
         });
-        fsm.ChangeState(FSMStates.prevIdle);
+        fsm.ChangeState(FSMStates.PrevIdle);
     }
 
     public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
@@ -126,7 +126,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             unitData = UserData.Instance.GetHeroData(_uid);
         }
-        hpBar.value = 1F;
+        hpBar.value = 1f;
         if (swordAttackChecker != null)
         {
             swordAttackChecker.SetAttackAction(_isEnemy, 2, collision =>
@@ -139,6 +139,19 @@ public class MBaseObj : MonoBehaviour, Damageable
             });
         }
         StartFSM();
+    }
+
+    public void SetUIMode()
+    {
+        hpBar.SetActive(false);
+        transform.SetScale(200f);
+        PlayAni("Idle");
+    }
+
+    public void SetBattleMode()
+    {
+        hpBar.SetActive(true);
+        transform.SetScale(1f);
     }
 
     protected virtual void DoSwordAttack(Collider2D collision)

@@ -54,7 +54,7 @@ public class UIBattlePartySlot : MonoBehaviour
             GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
             heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<MHeroObj>();
             heroObj.transform.SetLocalPosition(Vector3.zero);
-            heroObj.SetUIScale();
+            heroObj.SetUIMode();
         }
     }
 
@@ -62,7 +62,7 @@ public class UIBattlePartySlot : MonoBehaviour
     {
         if (heroObj != null)
         {
-            heroObj.SetBattleScale();
+            heroObj.SetBattleMode();
             Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
         }
     }
