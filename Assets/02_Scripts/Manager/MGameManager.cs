@@ -333,10 +333,13 @@ public class MGameManager : SingletonMono<MGameManager>
         UniTask.Create(async () =>
         {
             await UniTask.Delay(1000);
-            foreach (var item in UserData.Instance.heroDataDic)
+            foreach (var item in UserData.Instance.BattlePartyDic)
             {
-                await UniTask.Delay(300);
-                SpawnHero(item.Key);
+                if (item.Value != -1)
+                {
+                    await UniTask.Delay(300);
+                    SpawnHero(item.Value);
+                }
             }
         });
     }

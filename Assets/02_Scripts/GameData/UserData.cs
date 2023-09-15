@@ -18,6 +18,7 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
     private Dictionary<int, int> battlePartyDic;
+    public Dictionary<int, int> BattlePartyDic => battlePartyDic;
 
     private Dictionary<int, StageData> stageDataDic;
     private HashSet<int> stageClearSet;
