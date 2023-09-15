@@ -193,7 +193,7 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         // GetDamaged
         bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _damage);
-        if (UserData.Instance.GetHeroData(_attackerUID) != null)
+        if (UserData.Instance.GetBattleHeroData(_attackerUID) != null)
         {
             DoAggroToHero(_enemyObj, _attackerUID);
         }
@@ -271,17 +271,16 @@ public class MGameManager : SingletonMono<MGameManager>
     {
         if (_uid == -1)
             return;
-        UserData.Instance.RemoveHero(_uid);
+        UserData.Instance.RemoveBattleHero(_uid);
         Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
         heroDic.Remove(_uid);
     }
 
     private void RemoveAllHero()
     {
-        
-        for (int i = UserData.Instance.BattlePartyDic.Count - 1; i >= 0; i--)
+        for (int i = UserData.Instance.battleHeroDataDic.Count - 1; i >= 0; i--)
         {
-            RemoveHero(UserData.Instance.BattlePartyDic.ElementAt(i).Value);
+            RemoveHero(UserData.Instance.battleHeroDataDic.ElementAt(i).Key);
         }
     }
 
@@ -309,25 +308,20 @@ public class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), 1);
     }
 
-    public void AddHero(int unitTid)
-    {   
-        var heroData = UserData.Instance.AddHeroData(unitTid);
-        SpawnHero(heroData.uid);
-    }
-
     private void SpawnHero(int unitUid)
     {
         var heroData = UserData.Instance.GetHeroData(unitUid);
+        var battleHeroData = UserData.Instance.AddBattleHeroData(heroData);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
-        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(battleHeroData.refData.prefabname);
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
-        heroObj.InitObject(heroData.uid, false, (_attackData) =>
+        heroObj.InitObject(battleHeroData.uid, false, (_attackData) =>
         {
             DoHeroGetDamage(heroObj, _attackData.attackerUID, _attackData.damage);
         });
         heroObj.StartFSM();
-        heroDic.Add(heroData.uid, heroObj);
+        heroDic.Add(battleHeroData.uid, heroObj);
     }
 
     private void SpawnAllHero()
@@ -340,8 +334,11 @@ public class MGameManager : SingletonMono<MGameManager>
             {
                 if (item.Value != -1)
                 {
-                    await UniTask.Delay(300);
-                    SpawnHero(item.Value);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        SpawnHero(item.Value);
+                        await UniTask.Delay(300);
+                    }
                 }
             }
         });
@@ -354,10 +351,10 @@ public class MGameManager : SingletonMono<MGameManager>
         //    return;
         //}
 
-        RemoveAllHero();
-        RemoveAllEnemy();
-        UserData.Instance.CurrStage++;
-        StartStage(UserData.Instance.CurrStage);
+        //RemoveAllHero();
+        //RemoveAllEnemy();
+        //UserData.Instance.CurrStage++;
+        //StartStage(UserData.Instance.CurrStage);
     }
 
     //private void Update()

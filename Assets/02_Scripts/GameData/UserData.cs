@@ -17,6 +17,7 @@ public partial class UserData : Singleton<UserData>
     public LocalData LocalData { get; set; }
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
+    public Dictionary<int, UnitData> battleHeroDataDic;
     private Dictionary<int, int> battlePartyDic;
     public Dictionary<int, int> BattlePartyDic => battlePartyDic;
 
@@ -28,7 +29,7 @@ public partial class UserData : Singleton<UserData>
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
     public int ShopSelectedItem { get; set; }
-    public int GetBattleSlotIndexByUID(int _uid)
+    public int GetPartySlotIndexByUID(int _uid)
     {
         KeyValuePair<int, int> data = battlePartyDic.FirstOrDefault(i => i.Value == _uid);
         if (data.Equals(default(KeyValuePair<int, int>)))
@@ -37,7 +38,7 @@ public partial class UserData : Singleton<UserData>
         }
         return data.Key;
     }
-    public int GetBattlePartyUIDByIndex(int _index)
+    public int GetPartyUIDByIndex(int _index)
     {
         return battlePartyDic[_index];
     }
@@ -46,6 +47,7 @@ public partial class UserData : Singleton<UserData>
         ShopSelectedItem = -1;
         enemyDataDic = new Dictionary<int, UnitData>();
         heroDataDic = new Dictionary<int, UnitData>();
+        battleHeroDataDic = new Dictionary<int, UnitData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
         stageDataDic = new Dictionary<int, StageData>();
         stageClearSet = new HashSet<int>();
@@ -133,7 +135,7 @@ public partial class UserData : Singleton<UserData>
     {
         if (isEnemy)
             return GetEnemyData(_uid);
-        return GetHeroData(_uid);
+        return GetBattleHeroData(_uid);
     }
     public UnitData GetEnemyData(int _uid)
     {
@@ -145,6 +147,12 @@ public partial class UserData : Singleton<UserData>
     {
         if (heroDataDic.ContainsKey(_uid))
             return heroDataDic[_uid];
+        return null;
+    }
+    public UnitData GetBattleHeroData(int _uid)
+    {
+        if (battleHeroDataDic.ContainsKey(_uid))
+            return battleHeroDataDic[_uid];
         return null;
     }
     public InBuildData LoadInBuildData()
@@ -232,12 +240,12 @@ public partial class UserData : Singleton<UserData>
     }
     public bool AttackToHero(int _heroUID, int _damage)
     {
-        if (!heroDataDic.ContainsKey(_heroUID))
+        if (!battleHeroDataDic.ContainsKey(_heroUID))
         {
             Debug.LogError($"already detroyed {_heroUID}");
             return false;
         }
-        var heroData = heroDataDic[_heroUID];
+        var heroData = battleHeroDataDic[_heroUID];
         heroData.hp -= _damage;
         if (heroData.hp <= 0)
         {
@@ -261,6 +269,18 @@ public partial class UserData : Singleton<UserData>
     public void RemoveHero(int _heroUID)
     {
         heroDataDic.Remove(_heroUID);
+    }
+
+    public UnitData AddBattleHeroData(UnitData _heroData)
+    {
+        var data = UnitData.Create(MGameManager.GenerateUID(), _heroData.tid, _heroData.refUnitGradeData.grade, false);
+        battleHeroDataDic.Add(data.uid, data);
+        return data;
+    }
+
+    public void RemoveBattleHero(int _heroUID)
+    {
+        battleHeroDataDic.Remove(_heroUID);
     }
 
 }

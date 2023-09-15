@@ -111,7 +111,6 @@ public class MBaseObj : MonoBehaviour, Damageable
 
             DoAttackEnd();
         });
-        fsm.ChangeState(FSMStates.PrevIdle);
     }
 
     public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
@@ -124,7 +123,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         else
         {
-            unitData = UserData.Instance.GetHeroData(_uid);
+            unitData = UserData.Instance.GetBattleHeroData(_uid);
         }
         hpBar.value = 1f;
         if (swordAttackChecker != null)
@@ -143,6 +142,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public void SetUIMode()
     {
+        fsm.ChangeState(FSMStates.PrevIdle);
         hpBar.SetActive(false);
         transform.SetScale(200f);
         PlayAni("Idle");

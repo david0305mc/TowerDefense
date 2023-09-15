@@ -28,11 +28,11 @@ public class MainUI : MonoBehaviour
     {
         addTankerBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddHero(2001);
+            //MGameManager.Instance.AddHero(2001);
         });
         addArcherBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddHero(2002);
+            //MGameManager.Instance.AddHero(2002);
         });
         WinBtn.onClick.AddListener(() =>
         {
