@@ -15,8 +15,11 @@ public class UIUnitData  : GridItemData
 
 public class UIUnitCell : UIGridCell
 {
-    [SerializeField] private TextMeshProUGUI uidText;
-    [SerializeField] private TextMeshProUGUI tidText;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private GameObject checkerObject;
+    [SerializeField] private Slider progressBar;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI countText;
 
     public override void Initialize()
     {
@@ -32,5 +35,7 @@ public class UIUnitCell : UIGridCell
     {
         Debug.Log($"UpdateContent {itemData.id}");
         var selected = Context.SelectedIndex == Index;
+        var heroData = UserData.Instance.GetHeroData(itemData.id);
+        checkerObject.SetActive(heroData.isInParty);
     }
 }

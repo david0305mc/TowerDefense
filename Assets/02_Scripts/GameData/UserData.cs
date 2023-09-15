@@ -18,7 +18,8 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> heroDataDic;
     private Dictionary<int, int> battlePartyDic;
-    public Dictionary<int, int> BattlePartyDic => battlePartyDic;
+    public Dictionary<int, int> BattlePartyDic => battlePartyDic;       // index, uid
+    public int BattleSlotIndexByUID(int _uid) => battlePartyDic.First(i => i.Value == _uid).Key;
 
     private Dictionary<int, StageData> stageDataDic;
     private HashSet<int> stageClearSet;

@@ -12,8 +12,14 @@ public class UIPanelUnitSelect : MonoBehaviour
     
     public void InitUI()
     {
+        InitUserListScroll();
+        InitBattlePartyUI();
+    }
+
+    private void InitUserListScroll()
+    {
         heroDataList = UserData.Instance.heroDataDic.Values.ToList();
-        var itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(heroDataList[i].uid)).ToArray();
+        UIUnitData[] itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(heroDataList[i].uid)).ToArray();
         gridView.UpdateContents(itemData);
         gridView.OnCellClicked(index =>
         {
@@ -22,18 +28,17 @@ public class UIPanelUnitSelect : MonoBehaviour
             {
                 int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
                 battlePartyList[slotIndex].AddHero(heroData.uid);
-                //heroObj.InitObject(heroData.uid, false, (_attackData) =>
-                //{
-                //    //DoHeroGetDamage(heroObj, _attackData.attackerUID, _attackData.damage);
-                //});
-                //heroObj.StartFSM();
-                //heroDic.Add(heroData.uid, heroObj);
+                InitUserListScroll();
             }
-            //SelectCell(index);
+            else
+            {
+                int slotIndex = UserData.Instance.BattleSlotIndexByUID(heroData.uid);
+                UserData.Instance.RemoveBattleParty(slotIndex);
+                battlePartyList[slotIndex].RemoveHero();
+                InitUserListScroll();
+            }
         });
-        InitBattlePartyUI();
     }
-
     private void InitBattlePartyUI()
     {
         Enumerable.Range(0, battlePartyList.Count).ToList().ForEach(i =>
@@ -43,6 +48,7 @@ public class UIPanelUnitSelect : MonoBehaviour
             {
                 UserData.Instance.RemoveBattleParty(_slotIndex);
                 battlePartyList[i].RemoveHero();
+                InitUserListScroll();
             }); 
         });
     }

@@ -22,5 +22,16 @@ public class ScrollTest : MonoBehaviour
     void Update()
     {
         
+
     }
+    //void SelectCell()
+    //{
+    //    if (scrollView.DataCount == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    TryParseValue(selectIndexInputField, 0, scrollView.DataCount - 1, index =>
+    //        scrollView.ScrollTo(index, 0.3f, Ease.InOutQuint, (Alignment)alignmentDropdown.value));
+    //}
 }
