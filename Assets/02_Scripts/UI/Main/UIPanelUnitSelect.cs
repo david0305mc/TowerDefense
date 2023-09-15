@@ -9,7 +9,6 @@ public class UIPanelUnitSelect : MonoBehaviour
     [SerializeField] private List<UIBattlePartySlot> battlePartyList = default;
 
     private List<UnitData> heroDataList;
-    //private List<MHeroObj> heroObjList = new List<MHeroObj>();
     
     public void InitUI()
     {
@@ -22,9 +21,7 @@ public class UIPanelUnitSelect : MonoBehaviour
             if (!heroData.isInParty)
             {
                 int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
-                battlePartyList[index].AddHero(heroData.uid);
-                Debug.Log($"OnCellClicked {index}");
-
+                battlePartyList[slotIndex].AddHero(heroData.uid);
                 //heroObj.InitObject(heroData.uid, false, (_attackData) =>
                 //{
                 //    //DoHeroGetDamage(heroObj, _attackData.attackerUID, _attackData.damage);
