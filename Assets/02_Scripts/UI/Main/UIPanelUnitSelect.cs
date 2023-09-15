@@ -24,21 +24,23 @@ public class UIPanelUnitSelect : MonoBehaviour
         gridView.OnCellClicked(index =>
         {
             UnitData heroData = heroDataList[index];
-            int battleSlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
-
-            if (battleSlotIndex == -1)
+            var popup = PopupManager.Instance.Show<UnitInfoPopup>();
+            popup.SetData(heroData.uid, () =>
             {
-                int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
-                battlePartyList[slotIndex].AddHero(heroData.uid);
-                InitUserListScroll();
-            }
-            else
-            {
-                int slotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
-                UserData.Instance.RemoveBattleParty(slotIndex);
-                battlePartyList[slotIndex].RemoveHero();
-                InitUserListScroll();
-            }
+                int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
+                if (partySlotIndex == -1)
+                {
+                    int slotIndex = UserData.Instance.AddBattleParty(heroData.uid);
+                    battlePartyList[slotIndex].AddHero(heroData.uid);
+                    InitUserListScroll();
+                }
+                else
+                {
+                    UserData.Instance.RemoveBattleParty(partySlotIndex);
+                    battlePartyList[partySlotIndex].RemoveHero();
+                    InitUserListScroll();
+                }
+            });
         });
     }
     private void InitBattlePartyUI()

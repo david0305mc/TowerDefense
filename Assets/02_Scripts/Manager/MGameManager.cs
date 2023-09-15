@@ -334,6 +334,9 @@ public class MGameManager : SingletonMono<MGameManager>
             {
                 if (item.Value != -1)
                 {
+                    //var heroData = UserData.Instance.GetHeroData(item.Value);
+                    //heroData.refUnitGradeData.
+                    //DataManager.Instance.GetUnitinfoData(1).aggroorder
                     for (int i = 0; i < 5; i++)
                     {
                         SpawnHero(item.Value);

@@ -79,7 +79,7 @@ public partial class UserData : Singleton<UserData>
         UpdateStageStatus();
     }
 
-    private int FindEmptySlot()
+    public int FindEmptySlot()
     {
         for (int i = 0; i < Game.GameConfig.MaxBattlePartyCount; i++)
         {
