@@ -77,7 +77,7 @@ public class UnitTestObj : MonoBehaviour
         }
     }
 
-    protected void PlayAni(string str)
+    public void PlayAni(string str)
     {
         animator.Play(str);
         animator.Update(0);
