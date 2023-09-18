@@ -11,7 +11,7 @@ public class PopupBase : MonoBehaviour
     private System.Action hideAction;
     private System.Action completeOpenAni;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (closeBtn != null)
         {
