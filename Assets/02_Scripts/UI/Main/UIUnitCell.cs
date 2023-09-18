@@ -33,7 +33,6 @@ public class UIUnitCell : UIGridCell
 
     public override void UpdateContent(GridItemData itemData)
     {
-        Debug.Log($"UpdateContent {itemData.id}");
         var selected = Context.SelectedIndex == Index;
         var heroData = UserData.Instance.GetHeroData(itemData.id);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
