@@ -8,10 +8,8 @@ using UnityEngine.UI;
 
 public class UIGacharesultData : GridItemData
 {
-    public int count;
-    public UIGacharesultData(int _index, int _count) : base(_index)
+    public UIGacharesultData(int _index) : base(_index)
     {
-        count = _count;
     }
 }
 
@@ -27,9 +25,8 @@ public class UIGachaResultCell : UIGridCell
 
     public override void UpdateContent(GridItemData itemData)
     {
-        UIGacharesultData data = (UIGacharesultData)itemData;
-
-        countText.SetText(data.count.ToString());
+        var gachaInfo = DataManager.Instance.GetGachaListData(itemData.id);
+        countText.SetText(gachaInfo.count.ToString());
         Debug.Log($"UpdateContent {itemData.id}");
     }
 }

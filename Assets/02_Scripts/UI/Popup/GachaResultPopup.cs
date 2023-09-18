@@ -63,7 +63,8 @@ public class GachaResultPopup : PopupBase
     {
         ClearPool();
         animator.SetTrigger("ShowUpEffect");
-        var unitInfo = DataManager.Instance.GetUnitinfoData(gachaList[index]);
+        var gachaInfo = DataManager.Instance.GetGachaListData(gachaList[index]);
+        var unitInfo = DataManager.Instance.GetUnitinfoData(gachaInfo.unitid);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(unitInfo.prefabname);
         heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, unitPos).GetComponent<MHeroObj>();
@@ -82,7 +83,7 @@ public class GachaResultPopup : PopupBase
 
     private void SpawnScrollItem()
     {
-        UIGacharesultData[] itemData = Enumerable.Range(0, gachaList.Count).Select(i => new UIGacharesultData(gachaList[i], 3)).ToArray();
+        UIGacharesultData[] itemData = Enumerable.Range(0, gachaList.Count).Select(i => new UIGacharesultData(gachaList[i])).ToArray();
         resultScrollView.UpdateContents(itemData);
         resultScrollView.OnCellClicked(index =>
         {

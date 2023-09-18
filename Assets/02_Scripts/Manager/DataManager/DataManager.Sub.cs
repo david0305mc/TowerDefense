@@ -20,17 +20,17 @@ public partial class DataManager
         return null;
     }
 
-    public List<int> GetGachaResultList(int _count)
+    public List<int> GenerateGachaResultList(int _count)
     {
         List<int> gachaList = new List<int>();
         for (int i = 0; i < _count; i++)
         {
-            gachaList.Add(GetGachaResult());
+            gachaList.Add(GenerateGachaResult());
         }
         return gachaList;
     }
 
-    public int GetGachaResult()
+    public int GenerateGachaResult()
     {
         int sum = GachalistArray.Sum(item => item.weight);
         int randNum = Random.Range(0, sum);
@@ -39,11 +39,11 @@ public partial class DataManager
         {
             if (randNum <= 0)
             {
-                return GachalistArray[i].unitid;
+                return GachalistArray[i].id;
             }
             randNum -= GachalistArray[i].weight;
         }
-        return GachalistArray.Last().unitid;
+        return GachalistArray.Last().id;
     }
 
 

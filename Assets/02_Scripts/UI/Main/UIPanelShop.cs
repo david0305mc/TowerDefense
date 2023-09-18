@@ -10,10 +10,11 @@ public class UIPanelShop : MonoBehaviour
     {
         gachaButton.onClick.AddListener(() =>
         {
-            var gachaList = DataManager.Instance.GetGachaResultList(5);
+            var gachaList = DataManager.Instance.GenerateGachaResultList(10);
             foreach (var item in gachaList)
             {
-                UserData.Instance.AddHeroData(item);
+                var gachaInfo = DataManager.Instance.GetGachaListData(item);
+                UserData.Instance.AddHeroData(gachaInfo.unitid);
             }
             var popup = PopupManager.Instance.Show<GachaResultPopup>();
             popup.SetData(gachaList);
