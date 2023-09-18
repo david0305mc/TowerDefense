@@ -33,8 +33,4 @@ public class CommonPopup : PopupBase
         });
     }
 
-    public override void InitPopup(System.Action _hideAction)
-    {
-        base.InitPopup(_hideAction);
-    }
 }

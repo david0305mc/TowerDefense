@@ -16,7 +16,11 @@ namespace Game
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
 
-        public static readonly string OverUISoringLayerName = "OverUI";
+        public static readonly int CanvasMainUILayerOrder = 100;
+        public static readonly int CanvasPopupManagerLayerOrder = 200;
+
+        public static readonly string DefaultLayerName = "Default";
+        public static readonly string UILayerName = "UI";
         public static int UnitLayerMask = LayerMask.GetMask("Unit");
         public static int ItemLayerMask = LayerMask.GetMask("Item");
         public static int GroundLayerMask = LayerMask.GetMask("Ground");

@@ -496,6 +496,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5654903275575241464, guid: f5ab0f37f999c8741b357a94381c32e8, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 228335615}
+    - target: {fileID: 7622788073750899255, guid: f5ab0f37f999c8741b357a94381c32e8, type: 3}
+      propertyPath: cellInterval
+      value: 0.16494845
+      objectReference: {fileID: 0}
+    - target: {fileID: 7622788073750899255, guid: f5ab0f37f999c8741b357a94381c32e8, type: 3}
+      propertyPath: scrollOffset
+      value: 0.16494845
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5ab0f37f999c8741b357a94381c32e8, type: 3}
 --- !u!224 &721591162 stripped
@@ -1037,7 +1049,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1259217269
-  m_SortingOrder: 1
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &705623454632266771
 MonoBehaviour:

@@ -65,7 +65,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Awake()
     {
         sortingGroup = GetComponent<SortingGroup>();
-        sortingGroup.sortingLayerName = Game.GameConfig.OverUISoringLayerName;
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -140,8 +139,10 @@ public class MBaseObj : MonoBehaviour, Damageable
         StartFSM();
     }
 
-    public void SetUIMode()
+    public void SetUIMode(int _sortingOrder)
     {
+        sortingGroup.sortingLayerName = Game.GameConfig.UILayerName;
+        sortingGroup.sortingOrder = _sortingOrder;
         fsm.ChangeState(FSMStates.PrevIdle);
         hpBar.SetActive(false);
         transform.SetScale(200f);
@@ -150,6 +151,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public void SetBattleMode()
     {
+        sortingGroup.sortingLayerName = Game.GameConfig.DefaultLayerName;
+        sortingGroup.sortingOrder = 0;
         hpBar.SetActive(true);
         transform.SetScale(1f);
     }

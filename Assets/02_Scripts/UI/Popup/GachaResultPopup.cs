@@ -14,8 +14,11 @@ public class GachaResultPopup : PopupBase
     [SerializeField] private Button skipToResultBtn;
     [SerializeField] private Animator animator;
     [SerializeField] private TextMeshProUGUI unitNameText;
+    [SerializeField] private Transform unitPos;
 
     [SerializeField] private UIGridView resultScrollView = default;
+
+    private MHeroObj heroObj = default;
 
     private List<int> gachaList;
     private int index;
@@ -45,10 +48,28 @@ public class GachaResultPopup : PopupBase
         });
     }
 
+    private void ClearPool()
+    {
+        if (heroObj != null)
+        {
+            Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
+        }
+    }
+    private void OnDisable()
+    {
+        ClearPool();
+    }
     private void ShowUpEffect()
     {
+        ClearPool();
         animator.SetTrigger("ShowUpEffect");
         var unitInfo = DataManager.Instance.GetUnitinfoData(gachaList[index]);
+
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(unitInfo.prefabname);
+        heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, unitPos).GetComponent<MHeroObj>();
+        heroObj.transform.SetLocalPosition(Vector3.zero);
+        heroObj.SetUIMode(Game.GameConfig.CanvasPopupManagerLayerOrder + index + 1);
+        
         unitNameText.SetText(unitInfo.unitname);
     }
 

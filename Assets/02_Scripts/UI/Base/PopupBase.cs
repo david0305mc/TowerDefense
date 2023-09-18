@@ -28,7 +28,7 @@ public class PopupBase : MonoBehaviour
     public virtual void InitPopup(System.Action _hideAction)
     {
         hideAction = _hideAction;
-
+        
         if (openAnim != null && openAnim.enabled)
         {
             openAnim.Update(0);
