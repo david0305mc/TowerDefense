@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 2300972350790174242}
   - component: {fileID: 8647075478206550248}
   m_Layer: 5
-  m_Name: GachaBtn
+  m_Name: CloseBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 682328754775659475}
   m_Layer: 5
-  m_Name: ResultAnimRoot
+  m_Name: GachaResultList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -806,7 +806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 1376.2}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1457196648833914288
@@ -2161,7 +2161,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -5.999996, y: -6}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2291,7 +2291,8 @@ GameObject:
   - component: {fileID: 8280914144187765360}
   - component: {fileID: 8280914144187765365}
   - component: {fileID: 8280914144187765366}
-  - component: {fileID: 8280914144187765367}
+  - component: {fileID: 4227051882340432906}
+  - component: {fileID: 6727302991924639619}
   m_Layer: 5
   m_Name: GachaResultPopup
   m_TagString: Untagged
@@ -2306,7 +2307,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8280914144187765361}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2360,7 +2361,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8280914144187765367
+--- !u!114 &4227051882340432906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2369,9 +2370,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 8280914144187765361}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aceefb4ad9c09574c9d6e88d5cb5963e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9eb7894561d0f6344b04b1506b95a3eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openAnim: {fileID: 0}
+  closeBtn: {fileID: 8647075478206550248}
+  animator: {fileID: 6727302991924639619}
+  showUpEffectObj: {fileID: 0}
+  resultListObj: {fileID: 0}
+--- !u!95 &6727302991924639619
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8280914144187765361}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 05cede503e9c9fd47a13b0cc3e5b62d8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8280914144202127912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,12 +2449,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8280914144474799708}
   m_Layer: 5
-  m_Name: OneResultAnimRoot
+  m_Name: GachaShowUpEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8280914144474799708
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2697,7 +2723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 43.6033, y: 4.373}
+  m_AnchoredPosition: {x: 43.603302, y: 4.373}
   m_SizeDelta: {x: 82.2065, y: 79.8577}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8280914145034518615
