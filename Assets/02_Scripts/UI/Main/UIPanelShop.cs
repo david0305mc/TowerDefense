@@ -10,6 +10,15 @@ public class UIPanelShop : MonoBehaviour
     {
         gachaButton.onClick.AddListener(() =>
         {
+            //AddHeroData(2001);
+            //AddHeroData(2002);
+            //AddHeroData(2003);
+            //AddHeroData(2004);
+            //AddHeroData(2005);
+
+
+            //UserData.Instance.AddHeroData
+
             var popup = PopupManager.Instance.Show<GachaResultPopup>();
             popup.SetData();
         });

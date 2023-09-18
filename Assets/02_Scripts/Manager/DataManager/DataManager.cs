@@ -21,6 +21,7 @@ public partial class DataManager : Singleton<DataManager>
 			"UnitGradeInfo",
 			"ProjectileInfo",
 			"StageInfo",
+			"GachaList",
 		};
 
 	public async UniTask LoadDataAsync()

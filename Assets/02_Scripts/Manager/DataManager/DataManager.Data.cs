@@ -45,6 +45,7 @@ public partial class DataManager {
 		public int projectileid;
 		public int splashdmg;
 		public int splashrange;
+		public int summoncnt;
 		public string boomeffectprefab;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
@@ -95,6 +96,26 @@ public partial class DataManager {
 	}
 	public StageInfo GetStageInfoData(int _id){
 		if (StageinfoDic.TryGetValue(_id, out StageInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class GachaList {
+		public int id;
+		public int unitid;
+		public int count;
+		public int weight;
+	};
+	public GachaList[] GachalistArray { get; private set; }
+	public Dictionary<int, GachaList> GachalistDic { get; private set; }
+	public void BindGachaListData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(GachalistArray)).SetValue(this, deserializaedData, null);
+		GachalistDic = GachalistArray.ToDictionary(i => i.id);
+	}
+	public GachaList GetGachaListData(int _id){
+		if (GachalistDic.TryGetValue(_id, out GachaList value)){
 			return value;
 		}
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
