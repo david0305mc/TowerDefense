@@ -28,5 +28,7 @@ public class UIGachaResultCell : UIGridCell
         var gachaInfo = DataManager.Instance.GetGachaListData(itemData.id);
         countText.SetText(gachaInfo.count.ToString());
         Debug.Log($"UpdateContent {itemData.id}");
+
+        thumbnail.sprite = MResourceManager.Instance.GetSpriteFromAtlas("barrack");
     }
 }

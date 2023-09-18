@@ -37,7 +37,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
     private async UniTaskVoid LoadAtlas()
     {
-        string key = "SpriteAtlas/Icon1.spriteatlas";
+        string key = "SpriteAtlas/Atlas_Icon.spriteatlas";
         opAtlasHandleDic[key] = Addressables.LoadAssetAsync<SpriteAtlas>(key);
         await opAtlasHandleDic[key];
     }
