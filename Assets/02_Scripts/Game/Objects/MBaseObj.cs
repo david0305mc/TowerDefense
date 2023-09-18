@@ -495,7 +495,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
         UniTask.Create(async () =>
         {
-            await UniTask.Delay(300, cancellationToken: flashCts.Token);
+            await UniTask.Delay(100, cancellationToken: flashCts.Token);
             Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
             {
                 spriteRenderers[i].material = originMaterial;
