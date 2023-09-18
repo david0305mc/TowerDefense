@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Threading;
+using System.Linq;
 
 public class GachaResultPopup : PopupBase
 {
@@ -15,8 +15,9 @@ public class GachaResultPopup : PopupBase
     [SerializeField] private Animator animator;
     [SerializeField] private TextMeshProUGUI unitNameText;
 
+    [SerializeField] private UIGridView resultScrollView = default;
+
     private List<int> gachaList;
-    private CancellationTokenSource cts;
     private int index;
 
     protected override void Awake()
@@ -54,29 +55,25 @@ public class GachaResultPopup : PopupBase
     private void ShowResultList()
     {
         animator.SetTrigger("ShowResultList");
+        SpawnScrollItem();
     }
+
+
+    private void SpawnScrollItem()
+    {
+        UIGacharesultData[] itemData = Enumerable.Range(0, gachaList.Count).Select(i => new UIGacharesultData(gachaList[i], 3)).ToArray();
+        resultScrollView.UpdateContents(itemData);
+        resultScrollView.OnCellClicked(index =>
+        {
+        });
+    }
+
 
     public void SetData(List<int> _gachaList)
     {
         gachaList = _gachaList;
         index = 0;
         ShowUpEffect();
-
-        //if (cts != null)
-        //    cts.Cancel();
-        //cts = new CancellationTokenSource();
-
-        //StartCoroutine(CompleteOpenAnim());
-
-        //UniTask.Create(async () => {
-        //    for (int i = 0; i < gachaList.Count; i++)
-        //    {
-        //        await UniTask.WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f, cancellationToken: cts.Token);
-        //        await UniTask.WaitUntil(() => !animator.IsInTransition(0), cancellationToken:cts.Token);
-        //    }
-        //    animator.SetTrigger("ShowResultList");
-            
-        //});
     }
 
 
