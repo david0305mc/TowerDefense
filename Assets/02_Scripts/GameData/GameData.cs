@@ -29,15 +29,17 @@ public class UnitData
     public int tid;
     public bool IsEnemy;
     public int hp;
+    public int count;
     public DataManager.Unitinfo refData;
     public DataManager.UnitGradeInfo refUnitGradeData;
 
-    public static UnitData Create(int _uid, int _tid, int _grade, bool _isEnemy)
+    public static UnitData Create(int _uid, int _tid, int _grade, int _count, bool _isEnemy)
     {
         UnitData data = new UnitData() {
             uid = _uid,
             tid = _tid,
             IsEnemy = _isEnemy,
+            count = _count,
             refData = DataManager.Instance.GetUnitinfoData(_tid),
             refUnitGradeData = DataManager.Instance.GetUnitGrade(_tid, _grade)
         };
