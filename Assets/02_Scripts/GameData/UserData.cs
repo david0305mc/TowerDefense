@@ -61,11 +61,6 @@ public partial class UserData : Singleton<UserData>
 
     private void InitBeginData()
     {
-        AddHeroData(2001);
-        AddHeroData(2002);
-        AddHeroData(2003);
-        AddHeroData(2004);
-        AddHeroData(2005);
     }
 
     private void InitStage()
