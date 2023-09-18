@@ -69,7 +69,7 @@ public class GachaResultPopup : PopupBase
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(unitInfo.prefabname);
         heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, unitPos).GetComponent<MHeroObj>();
         heroObj.transform.SetLocalPosition(Vector3.zero);
-        heroObj.SetUIMode(Game.GameConfig.CanvasPopupManagerLayerOrder + index + 1);
+        heroObj.SetUIMode(Game.GameConfig.CanvasPopupManagerLayerOrder + index + 2);
         
         unitNameText.SetText(unitInfo.unitname);
     }
