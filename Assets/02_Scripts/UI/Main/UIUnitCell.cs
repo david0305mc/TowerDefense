@@ -36,5 +36,6 @@ public class UIUnitCell : UIGridCell
         var selected = Context.SelectedIndex == Index;
         var heroData = UserData.Instance.GetHeroData(itemData.id);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
+        iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
     }
 }
