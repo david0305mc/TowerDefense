@@ -509,7 +509,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
 
 
-    public virtual void GetAttacked(GameObject sender)
+    public virtual void GetAttacked(Vector3 attackerPos)
     {
         DoFlashEffect();
         UpdateHPBar();
@@ -519,7 +519,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         // Begin
         agent.enabled = false;
         rigidBody2d.velocity = Vector3.zero;
-        Vector2 direction = (transform.position - sender.transform.position).normalized;
+        Vector2 direction = (transform.position - attackerPos).normalized;
         rigidBody2d.AddForce(direction * 8, ForceMode2D.Impulse);
         // End
         UniTask.Create(async () =>

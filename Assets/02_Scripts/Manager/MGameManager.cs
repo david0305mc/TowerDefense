@@ -182,14 +182,21 @@ public class MGameManager : SingletonMono<MGameManager>
         {
             UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
             enemyObj.InitObject(data.uid, true, (_attackData) => {
-                DoEnemyGetDamage(enemyObj, _attackData.attackerUID, _attackData.damage);
+
+                var heroObj = GetHeroObj(_attackData.attackerUID);
+                if (heroObj == null)
+                {
+                    // To Do : 
+                    return;
+                }    
+                DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
             });
             //enemyObj.transform.SetPosition(new Vector3(enemyObj.transform.position.x, enemyObj.transform.position.y, 0));
             enemyDic.Add(data.uid, enemyObj);
         }
     }
 
-    private void DoEnemyGetDamage(MEnemyObj _enemyObj, int _attackerUID, int _damage)
+    private void DoEnemyGetDamage(MEnemyObj _enemyObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
         // GetDamaged
         bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _damage);
@@ -210,12 +217,12 @@ public class MGameManager : SingletonMono<MGameManager>
                 // To Do - missile 
                 return;
             }
-            _enemyObj.GetAttacked(heroObj.gameObject);
+            _enemyObj.GetAttacked(attackerPos);
         }
         UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _damage);
     }
 
-    private void DoHeroGetDamage(MHeroObj _heroObj, int _attackerUID, int _damage)
+    private void DoHeroGetDamage(MHeroObj _heroObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
         bool isDead = UserData.Instance.AttackToHero(_heroObj.UID, _damage);
         if (UserData.Instance.GetEnemyData(_attackerUID) != null)
@@ -234,7 +241,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 // To Do : missile
                 return;
             }
-            _heroObj.GetAttacked(enemyObj.gameObject);
+            _heroObj.GetAttacked(attackerPos);
         }
         UIMain.Instance.ShowDamageText(_heroObj.transform.position, _damage);
     }
@@ -328,7 +335,13 @@ public class MGameManager : SingletonMono<MGameManager>
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
         heroObj.InitObject(battleHeroData.uid, false, (_attackData) =>
         {
-            DoHeroGetDamage(heroObj, _attackData.attackerUID, _attackData.damage);
+            var enemyObj = GetEnemyObj(_attackData.attackerUID);
+            if (enemyObj == null)
+            {
+                // To Do :
+                return;
+            }
+            DoHeroGetDamage(heroObj, enemyObj.transform.position, _attackData.attackerUID, _attackData.damage);
         });
         heroObj.StartFSM();
         heroDic.Add(battleHeroData.uid, heroObj);
@@ -412,7 +425,7 @@ public class MGameManager : SingletonMono<MGameManager>
                     MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
                     if (enemyObj != null)
                     {
-                        DoEnemyGetDamage(enemyObj, _attackData.attackerUID, unitGradeInfo.splashdmg);
+                        DoEnemyGetDamage(enemyObj, _pos, _attackData.attackerUID, unitGradeInfo.splashdmg);
                     }
                 }
                 else
@@ -420,7 +433,7 @@ public class MGameManager : SingletonMono<MGameManager>
                     MHeroObj heroObj = obj.GetComponent<MHeroObj>();
                     if (heroObj != null)
                     {
-                        DoHeroGetDamage(heroObj, _attackData.attackerUID, unitGradeInfo.splashdmg);
+                        DoHeroGetDamage(heroObj, _pos, _attackData.attackerUID, unitGradeInfo.splashdmg);
                     }
                 }
             }
