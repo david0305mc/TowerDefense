@@ -204,7 +204,13 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            _enemyObj.GetAttacked();
+            var heroObj = GetHeroObj(_attackerUID);
+            if (heroObj == null)
+            {
+                // To Do - missile 
+                return;
+            }
+            _enemyObj.GetAttacked(heroObj.gameObject);
         }
         UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _damage);
     }
@@ -222,7 +228,13 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            _heroObj.GetAttacked();
+            var enemyObj = GetEnemyObj(_attackerUID);
+            if (enemyObj == null)
+            {
+                // To Do : missile
+                return;
+            }
+            _heroObj.GetAttacked(enemyObj.gameObject);
         }
         UIMain.Instance.ShowDamageText(_heroObj.transform.position, _damage);
     }

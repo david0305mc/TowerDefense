@@ -95,6 +95,7 @@ public class TestAttacker : MonoBehaviour
         if (timeElapse >= 1f)
         {
             timeElapse = 0f;
+            Debug.Log("Attack_Update");
             PlayAni("Attack");
             target.GetAttacked(gameObject);
         }

@@ -67,7 +67,7 @@ public class MHeroObj : MBaseObj
     protected override void WaypointMove_Enter()
     {
         PlayAni("Walk");
-        agent.isStopped = false;
+        ResumeAgent();
         state = fsm.State.ToString();
         agent.avoidancePriority = 11;
     }
@@ -76,7 +76,7 @@ public class MHeroObj : MBaseObj
     {
         UpdateAgentSpeed();
         DoAgentMove(targetWayPoint.transform.position);
-        FlipRenderers(agent.velocity.x < 0);
+        FlipRenderers(targetWayPoint.transform.position.x < transform.position.x);
  
         var targetLists = FindUnitListByArea(unitData.refData.checkrange, true);
         if (targetLists.Count > 0)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class TestDefeneder : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class TestDefeneder : MonoBehaviour
     public GameObject target;
     private NavMeshAgent agent;
     private Rigidbody2D rigidBody2d;
-
+    private CancellationTokenSource cts;
     private void Awake()
     {
+        cts = new CancellationTokenSource();
         rigidBody2d = GetComponent<Rigidbody2D>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
@@ -49,16 +51,22 @@ public class TestDefeneder : MonoBehaviour
 
     public void GetAttacked(GameObject sender)
     {
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
         // Begin
+        rigidBody2d.velocity = Vector3.zero;
         agent.enabled = false;
         Vector2 direction = (transform.position - sender.transform.position).normalized;
         rigidBody2d.AddForce(direction * 8, ForceMode2D.Impulse);
         // End
         UniTask.Create(async () =>
         {
-            await UniTask.Delay(100);
+            Debug.Log("UniTask.Create");
+            //await UniTask.Delay(System.TimeSpan.FromSeconds(0.5f), cancellationToken: cts.Token);
+            await UniTask.Delay(150, cancellationToken: cts.Token);
             rigidBody2d.velocity = Vector3.zero;
             agent.enabled = true;
+            Debug.Log("UniTask.Create End");
         });
 
     }

@@ -61,9 +61,11 @@ public class MBaseObj : MonoBehaviour, Damageable
     private List<Color> originColorLists;
     private NavMeshPath currNavPath;
     public Vector3 targetoffset;
+    private CancellationTokenSource knockBackCTS;
 
     protected virtual void Awake()
     {
+        knockBackCTS = new CancellationTokenSource();
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         agent.updateRotation = false;
@@ -204,8 +206,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Idle_Enter()
     {
         PlayAni("Idle");
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
+        
+        StopAgent();
+        rigidBody2d.velocity = Vector3.zero;
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
         state = fsm.State.ToString();
@@ -222,13 +225,29 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected virtual void WaypointMove_Update()
     {
-          
+
+    }
+
+    protected void StopAgent()
+    {
+        if (agent.isActiveAndEnabled)
+        {
+            agent.isStopped = true;
+        }
+    }
+
+    protected void ResumeAgent()
+    {
+        if (agent.isActiveAndEnabled)
+        {
+            agent.isStopped = false;
+        }
     }
 
     protected virtual void DashMove_Enter()
     {
         PlayAni("Walk");
-        agent.isStopped = false;
+        ResumeAgent();
         state = fsm.State.ToString();
         commonDelay = 0;
     }
@@ -255,7 +274,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
         if (targetObj != null)
         {
-            FlipRenderers(agent.velocity.x < 0);
+            FlipRenderers(targetObj.transform.position.x < transform.position.x);
             UpdateAgentSpeed();
             DoAgentMove(targetObj.transform.position + targetoffset);
 
@@ -272,8 +291,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual void Attack_Enter()
     {
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
+        StopAgent();
+        rigidBody2d.velocity = Vector3.zero;
         PlayAni("Attack");
         LookTarget();
         state = fsm.State.ToString();
@@ -396,6 +415,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected void DoAgentMove(Vector3 _pos)
     {
+        if (!agent.isActiveAndEnabled)
+            return;
+
         Vector3 fixedPos = GetFixedStuckPos(_pos);
         NavMeshPath path = new NavMeshPath();
         if (agent.CalculatePath(fixedPos, path))
@@ -487,10 +509,32 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
 
 
-    public virtual void GetAttacked()
+    public virtual void GetAttacked(GameObject sender)
     {
         DoFlashEffect();
         UpdateHPBar();
+
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
+        // Begin
+        agent.enabled = false;
+        rigidBody2d.velocity = Vector3.zero;
+        Vector2 direction = (transform.position - sender.transform.position).normalized;
+        rigidBody2d.AddForce(direction * 8, ForceMode2D.Impulse);
+        // End
+        UniTask.Create(async () =>
+        {
+            await UniTask.Delay(30, cancellationToken: cts.Token);
+            agent.enabled = true;
+            rigidBody2d.velocity = Vector3.zero;
+        });
+
+
+    }
+
+    private void DoKnockBack()
+    { 
+        
     }
 
     public void DoFlashEffect()
