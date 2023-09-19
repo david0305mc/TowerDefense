@@ -204,8 +204,7 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            _enemyObj.DoFlashEffect();
-            _enemyObj.UpdateHPBar();
+            _enemyObj.GetAttacked();
         }
         UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _damage);
     }
@@ -223,8 +222,7 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            _heroObj.DoFlashEffect();
-            _heroObj.UpdateHPBar();
+            _heroObj.GetAttacked();
         }
         UIMain.Instance.ShowDamageText(_heroObj.transform.position, _damage);
     }

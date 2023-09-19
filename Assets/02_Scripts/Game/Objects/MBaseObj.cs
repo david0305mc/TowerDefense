@@ -486,6 +486,13 @@ public class MBaseObj : MonoBehaviour, Damageable
         agent.speed = UnitData.refUnitGradeData.walkspeed * 0.1f * speed;
     }
 
+
+    public virtual void GetAttacked()
+    {
+        DoFlashEffect();
+        UpdateHPBar();
+    }
+
     public void DoFlashEffect()
     {
         flashCts?.Cancel();
