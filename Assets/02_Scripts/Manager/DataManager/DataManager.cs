@@ -17,6 +17,7 @@ public partial class DataManager : Singleton<DataManager>
 {
 	public static string[] tableNames =
 		{
+			"Localization",
 			"Unitinfo",
 			"UnitGradeInfo",
 			"ProjectileInfo",

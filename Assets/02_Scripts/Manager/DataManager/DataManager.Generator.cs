@@ -55,10 +55,15 @@ public partial class DataManager
                 }
                 sb.AppendFormat($"\t\tpublic {type} {rows[0][i].ToLower()};\n");
             });
+            var keyType = rows[1][0];
+            if (!(keyType == "int" || keyType == "long" || keyType == "float" || keyType == "string"))
+            {
+                keyType = keyType.ToLower();
+            }
 
             sb.Append("\t};\n");
             sb.Append($"\tpublic {tableName}[] {arrayName} {{ get; private set; }}\n");
-            sb.Append($"\tpublic Dictionary<int, {tableName}> {dicName} {{ get; private set; }}\n");
+            sb.Append($"\tpublic Dictionary<{keyType}, {tableName}> {dicName} {{ get; private set; }}\n");
 
             sb.Append($"\tpublic void Bind{tableName}Data(Type type, string text){{\n");
             sb.Append("\t\tvar deserializaedData = CSVDeserialize(text, type);\n");
@@ -66,7 +71,7 @@ public partial class DataManager
             sb.Append($"\t\t{dicName} = {arrayName}.ToDictionary(i => i.id);\n");
             sb.Append("\t}\n");
 
-            sb.Append($"\tpublic {tableName} Get{tableName}Data(int _id){{\n");
+            sb.Append($"\tpublic {tableName} Get{tableName}Data({keyType} _id){{\n");
             sb.Append($"\t\tif ({dicName}.TryGetValue(_id, out {tableName} value)){{\n");
             sb.Append($"\t\t\treturn value;\n");
             sb.Append($"\t\t}}\n");
