@@ -186,7 +186,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 var heroObj = GetHeroObj(_attackData.attackerUID);
                 if (heroObj == null)
                 {
-                    // To Do : 
+                    // To Do : ??
                     return;
                 }    
                 DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
@@ -217,7 +217,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 // To Do - missile 
                 return;
             }
-            _enemyObj.GetAttacked(attackerPos);
+            _enemyObj.GetAttacked(attackerPos, heroObj.UnitData.refUnitGradeData.knockback);
         }
         UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _damage);
     }
@@ -241,7 +241,7 @@ public class MGameManager : SingletonMono<MGameManager>
                 // To Do : missile
                 return;
             }
-            _heroObj.GetAttacked(attackerPos);
+            _heroObj.GetAttacked(attackerPos, enemyObj.UnitData.refUnitGradeData.knockback);
         }
         UIMain.Instance.ShowDamageText(_heroObj.transform.position, _damage);
     }

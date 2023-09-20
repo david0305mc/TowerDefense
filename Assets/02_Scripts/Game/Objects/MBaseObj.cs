@@ -509,19 +509,17 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
 
 
-    public virtual void GetAttacked(Vector3 attackerPos)
+    public virtual void GetAttacked(Vector3 attackerPos, int knockBack)
     {
         DoFlashEffect();
         UpdateHPBar();
 
         cts?.Cancel();
         cts = new CancellationTokenSource();
-        // Begin
         agent.enabled = false;
         rigidBody2d.velocity = Vector3.zero;
         Vector2 direction = (transform.position - attackerPos).normalized;
-        rigidBody2d.AddForce(direction * 8, ForceMode2D.Impulse);
-        // End
+        rigidBody2d.AddForce(direction * knockBack, ForceMode2D.Impulse);
         UniTask.Create(async () =>
         {
             await UniTask.Delay(30, cancellationToken: cts.Token);

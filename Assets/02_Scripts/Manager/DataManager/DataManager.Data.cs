@@ -45,6 +45,7 @@ public partial class DataManager {
 		public int projectileid;
 		public int splashdmg;
 		public int splashrange;
+		public int knockback;
 		public int summoncnt;
 		public string boomeffectprefab;
 	};
