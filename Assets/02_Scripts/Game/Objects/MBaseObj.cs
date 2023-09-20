@@ -153,7 +153,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public void SetBattleMode()
     {
-        sortingGroup.sortingLayerName = Game.GameConfig.DefaultLayerName;
+        sortingGroup.sortingLayerName = Game.GameConfig.ForegroundLayerName;
         sortingGroup.sortingOrder = 0;
         hpBar.SetActive(true);
         transform.SetScale(1f);
