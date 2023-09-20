@@ -208,7 +208,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         PlayAni("Idle");
         
         StopAgent();
-        rigidBody2d.velocity = Vector3.zero;
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
         state = fsm.State.ToString();
@@ -234,6 +233,8 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             agent.isStopped = true;
         }
+        rigidBody2d.velocity = Vector3.zero;
+        agent.velocity = Vector3.zero;
     }
 
     protected void ResumeAgent()
@@ -292,7 +293,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Attack_Enter()
     {
         StopAgent();
-        rigidBody2d.velocity = Vector3.zero;
         PlayAni("Attack");
         LookTarget();
         state = fsm.State.ToString();
