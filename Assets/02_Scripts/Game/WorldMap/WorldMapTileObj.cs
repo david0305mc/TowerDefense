@@ -13,8 +13,8 @@ public class WorldMapTileObj : MonoBehaviour
 
     public void UpdateData()
     {
-        var stageData = UserData.Instance.GetStageData(StageID);
-        switch (stageData.status)
+        var stageStatus = UserData.Instance.GetStageStatus(StageID);
+        switch (stageStatus)
         {
             case Game.StageStatus.Normal:
                 {

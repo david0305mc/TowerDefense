@@ -20,8 +20,8 @@ public class UIPanelStageInfo : MonoBehaviour
     {
         startBtnAction = _action;
         titleText.SetText(_stageID.ToString());
-        var stageData = UserData.Instance.GetStageData(_stageID);
-        switch (stageData.status)
+        var stageStatus = UserData.Instance.GetStageStatus(_stageID);
+        switch (stageStatus)
         {
             case Game.StageStatus.Lock:
                 startBtn.SetActive(false);

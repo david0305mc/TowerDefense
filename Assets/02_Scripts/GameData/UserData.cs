@@ -14,24 +14,19 @@ public partial class UserData : Singleton<UserData>
     private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
 
     public int CurrStage { get; set; }
-    public LocalData LocalData { get; set; }
-    public Dictionary<int, UnitData> enemyDataDic;
-    public Dictionary<int, UnitData> heroDataDic;
-    public Dictionary<int, UnitData> battleHeroDataDic;
-    private Dictionary<int, int> battlePartyDic;
-    public Dictionary<int, int> BattlePartyDic => battlePartyDic;
 
-    private Dictionary<int, StageData> stageDataDic;
-    private HashSet<int> stageClearSet;
-    public StageData GetStageData(int _stage) => stageDataDic.GetValueOrDefault(_stage);
-    public bool IsClearedStage(int _stage) => stageClearSet.Contains(_stage);
+    public LocalSaveData LocalData { get; set; }
+    public Dictionary<int, UnitData> enemyDataDic;
+    public Dictionary<int, UnitData> battleHeroDataDic;
+
+    public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
     public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
     public int ShopSelectedItem { get; set; }
     public int GetPartySlotIndexByUID(int _uid)
     {
-        KeyValuePair<int, int> data = battlePartyDic.FirstOrDefault(i => i.Value == _uid);
+        KeyValuePair<int, int> data = LocalData.BattlePartyDic.FirstOrDefault(i => i.Value == _uid);
         if (data.Equals(default(KeyValuePair<int, int>)))
         {
             return -1;
@@ -40,45 +35,25 @@ public partial class UserData : Singleton<UserData>
     }
     public int GetPartyUIDByIndex(int _index)
     {
-        return battlePartyDic[_index];
+        return LocalData.BattlePartyDic[_index];
     }
     public void InitData()
     {
         ShopSelectedItem = -1;
         enemyDataDic = new Dictionary<int, UnitData>();
-        heroDataDic = new Dictionary<int, UnitData>();
         battleHeroDataDic = new Dictionary<int, UnitData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
-        stageDataDic = new Dictionary<int, StageData>();
-        stageClearSet = new HashSet<int>();
-
-        battlePartyDic = new Dictionary<int, int>();
-        Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
-        {
-            battlePartyDic[i] = -1;
-        });
     }
 
     private void InitBeginData()
     {
     }
 
-    private void InitStage()
-    {
-        stageClearSet.Add(0);
-        foreach (var item in DataManager.Instance.StageinfoArray)
-        {
-            var data = StageData.Create(item.id, Game.StageStatus.Lock);
-            stageDataDic.Add(data.stageID, data);
-        }
-        UpdateStageStatus();
-    }
-
     public int FindEmptySlot()
     {
         for (int i = 0; i < Game.GameConfig.MaxBattlePartyCount; i++)
         {
-            if (battlePartyDic[i] == -1)
+            if (LocalData.BattlePartyDic[i] == -1)
             {
                 return i;
             }
@@ -88,42 +63,39 @@ public partial class UserData : Singleton<UserData>
     public int AddBattleParty(int _heroUID)
     {
         int emptySlotIndex = FindEmptySlot();
-        battlePartyDic[emptySlotIndex] = _heroUID;
+        LocalData.BattlePartyDic[emptySlotIndex] = _heroUID;
         return emptySlotIndex;
     }
 
     public void RemoveBattleParty(int _slotIndex)
     {
-        int heroUid = battlePartyDic[_slotIndex];
-        battlePartyDic[_slotIndex] = -1;
+        int heroUid = LocalData.BattlePartyDic[_slotIndex];
+        LocalData.BattlePartyDic[_slotIndex] = -1;
     }
 
     public void ClearStage(int _stage)
     {
-        stageClearSet.Add(_stage);
-        UpdateStageStatus();
+        LocalData.StageClearDic.Add(_stage, 1);
     }
 
-    private void UpdateStageStatus()
+    public Game.StageStatus GetStageStatus(int _stageID)
     {
-        foreach (var item in stageDataDic)
+        var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
+        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid))
         {
-            if (stageClearSet.Contains(item.Value.refData.priorstageid))
+            if (LocalData.StageClearDic.ContainsKey(_stageID))
             {
-                if (stageClearSet.Contains(item.Key))
-                {
-                    item.Value.status = Game.StageStatus.Occupation;
-                }
-                else
-                {
-                    item.Value.status = Game.StageStatus.Normal;
-                }
+                return Game.StageStatus.Occupation;
             }
             else
             {
-                item.Value.status = Game.StageStatus.Lock;
+                return Game.StageStatus.Normal;
             }
-        } 
+        }
+        else
+        {
+            return Game.StageStatus.Lock;
+        }
     }
 
     public UnitData GetUnitData(int _uid, bool isEnemy)
@@ -140,8 +112,8 @@ public partial class UserData : Singleton<UserData>
     }
     public UnitData GetHeroData(int _uid)
     {
-        if (heroDataDic.ContainsKey(_uid))
-            return heroDataDic[_uid];
+        if (LocalData.HeroDataDic.ContainsKey(_uid))
+            return LocalData.HeroDataDic[_uid];
         return null;
     }
     public UnitData GetBattleHeroData(int _uid)
@@ -188,16 +160,14 @@ public partial class UserData : Singleton<UserData>
         {
             var localData = Utill.LoadFromFile(LocalFilePath);
             //localData = Utill.EncryptXOR(localData);
-            LocalData = JsonUtility.FromJson<LocalData>(localData);
+            LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
             LocalData.UpdateRefData();
-            InitStage();
             InitBeginData();
         }
         else
         {
             // NewGame
-            LocalData = new LocalData();
-            InitStage();
+            LocalData = new LocalSaveData();
             InitBeginData();
         }
     }
@@ -254,26 +224,6 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic.Remove(_enemyUID);
     }
 
-    public UnitData AddHeroData(int _tid, int _count)
-    {
-        var heroData = heroDataDic.FirstOrDefault(item => item.Value.tid == _tid);
-        if (heroData.Equals(default(KeyValuePair<int, UnitData>)))
-        {
-            var data = UnitData.Create(MGameManager.GenerateUID(), _tid, 1, _count, false);
-            heroDataDic.Add(data.uid, data);
-            return data;
-        }
-        else
-        {
-            heroData.Value.count+= _count;
-            return heroData.Value;
-        }
-    }
-
-    public void RemoveHero(int _heroUID)
-    {
-        heroDataDic.Remove(_heroUID);
-    }
 
     public UnitData AddBattleHeroData(UnitData _heroData)
     {

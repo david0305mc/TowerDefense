@@ -11,6 +11,7 @@ public enum EMessage
 {
     Update_Heart,
     Update_Mission,
+    Update_UserData,
 }
 
 

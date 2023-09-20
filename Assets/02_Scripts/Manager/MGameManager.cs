@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 
-public class MGameManager : SingletonMono<MGameManager>
+public partial class MGameManager : SingletonMono<MGameManager>
 {
     [SerializeField] private MCameraManager cameraManager;
 
@@ -119,17 +119,6 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
-    public void WinStage()
-    {
-        RemoveAllHero();
-        RemoveStage();
-        RemoveAllProjectile();
-
-        cameraManager.SetZoomAndSize(2, 7, -2, 2, -2, 2);
-        UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        worldMap.gameObject.SetActive(true);
-        worldMap.UpdateWorld();
-    }
 
     private void InitGame()
     {
@@ -231,7 +220,7 @@ public class MGameManager : SingletonMono<MGameManager>
         }
         if (isDead)
         {
-            RemoveHero(_heroObj.UID);
+            RemoveBattleHero(_heroObj.UID);
         }
         else
         {
@@ -284,7 +273,7 @@ public class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void RemoveHero(int _uid)
+    private void RemoveBattleHero(int _uid)
     {
         if (_uid == -1)
             return;
@@ -293,11 +282,11 @@ public class MGameManager : SingletonMono<MGameManager>
         heroDic.Remove(_uid);
     }
 
-    private void RemoveAllHero()
+    private void RemoveAllBattleHero()
     {
         for (int i = UserData.Instance.battleHeroDataDic.Count - 1; i >= 0; i--)
         {
-            RemoveHero(UserData.Instance.battleHeroDataDic.ElementAt(i).Key);
+            RemoveBattleHero(UserData.Instance.battleHeroDataDic.ElementAt(i).Key);
         }
     }
 
@@ -353,7 +342,7 @@ public class MGameManager : SingletonMono<MGameManager>
         UniTask.Create(async () =>
         {
             await UniTask.Delay(1000);
-            foreach (var item in UserData.Instance.BattlePartyDic)
+            foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
             {
                 if (item.Value != -1)
                 {

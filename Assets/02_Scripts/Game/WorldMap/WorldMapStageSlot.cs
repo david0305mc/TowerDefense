@@ -12,8 +12,8 @@ public class WorldMapStageSlot : MonoBehaviour
 
     public void UpdateData()
     {
-        var stageData = UserData.Instance.GetStageData(stage);
-        switch (stageData.status)
+        Game.StageStatus stageStatus = UserData.Instance.GetStageStatus(stage);
+        switch (stageStatus)
         {
             case Game.StageStatus.Normal:
                 {

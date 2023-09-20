@@ -15,7 +15,9 @@ public class MainUI : MonoBehaviour
         Event,
     }
 
-    [SerializeField] private TextMeshProUGUI goldText;
+    [SerializeField] private TextMeshProUGUI soulText;
+    [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI staminaText;
     [SerializeField] private Button addTankerBtn;
     [SerializeField] private Button addArcherBtn;
     [SerializeField] private Button WinBtn;
@@ -26,6 +28,21 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
+        UserData.Instance.LocalData.Soul.Subscribe(_value =>
+        {
+            soulText.SetText(_value.ToString());
+        }).AddTo(gameObject);
+
+        UserData.Instance.LocalData.Stamina.Subscribe(_value =>
+        {
+            staminaText.SetText(_value.ToString());
+        }).AddTo(gameObject);
+
+        UserData.Instance.LocalData.Exp.Subscribe(_value =>
+        {
+            expText.SetText(_value.ToString());
+        }).AddTo(gameObject);
+
         addTankerBtn.onClick.AddListener(() =>
         {
             //MGameManager.Instance.AddHero(2001);

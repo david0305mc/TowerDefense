@@ -14,7 +14,7 @@ public class UIPanelShop : MonoBehaviour
             foreach (var item in gachaList)
             {
                 var gachaInfo = DataManager.Instance.GetGachaListData(item);
-                UserData.Instance.AddHeroData(gachaInfo.unitid, gachaInfo.count);
+                MGameManager.Instance.AddHero(gachaInfo.unitid, gachaInfo.count);
             }
             var popup = PopupManager.Instance.Show<GachaResultPopup>();
             popup.SetData(gachaList);

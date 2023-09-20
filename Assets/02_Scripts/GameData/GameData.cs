@@ -3,32 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 using UniRx;
+using System.Linq;
 
 [System.Serializable]
-public class LocalData
+public class LocalSaveData
 {
     public int uidSeed;
-    public ReactiveProperty<long> Gold;
+    public ReactiveProperty<long> Soul;
+    public ReactiveProperty<long> Stamina;
+    public ReactiveProperty<long> Exp;
+    public SerializableDictionary<int, int> StageClearDic;
+    public SerializableDictionary<int, UnitData> HeroDataDic;
+    public SerializableDictionary<int, int> BattlePartyDic;
 
-    public LocalData()
+    public LocalSaveData()
     {
         uidSeed = 0;
-        Gold = new ReactiveProperty<long>(0);
+        StageClearDic = new SerializableDictionary<int, int>() { { 0, 1 } };
+        Soul = new ReactiveProperty<long>(0);
+        Stamina = new ReactiveProperty<long>(0);
+        Exp = new ReactiveProperty<long>(0);
+        HeroDataDic = new SerializableDictionary<int, UnitData>();
+        BattlePartyDic = new SerializableDictionary<int, int>();
+        Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
+        {
+            BattlePartyDic[i] = -1;
+        });
     }
 
     public void UpdateRefData()
     {
-        //foreach (var item in BaseObjDic)
-        //    item.Value.UpdateRefData();
+        foreach (var item in HeroDataDic)
+            item.Value.UpdateRefData();
     }
 }
 
+[System.Serializable]
 public class UnitData
 {
     public int uid;
     public int tid;
     public bool IsEnemy;
     public int hp;
+    public int grade;
     public int count;
     public DataManager.Unitinfo refData;
     public DataManager.UnitGradeInfo refUnitGradeData;
@@ -38,14 +55,19 @@ public class UnitData
         UnitData data = new UnitData() {
             uid = _uid,
             tid = _tid,
+            grade = _grade,
             IsEnemy = _isEnemy,
             count = _count,
-            refData = DataManager.Instance.GetUnitinfoData(_tid),
-            refUnitGradeData = DataManager.Instance.GetUnitGrade(_tid, _grade)
         };
+        data.UpdateRefData();
         data.hp = data.refUnitGradeData.hp;
 
         return data;
+    }
+    public void UpdateRefData()
+    {
+        refData = DataManager.Instance.GetUnitinfoData(tid);
+        refUnitGradeData = DataManager.Instance.GetUnitGrade(tid, grade);
     }
 }
 
@@ -65,19 +87,3 @@ public class AttackData
     }
 }
 
-public class StageData
-{
-    public int stageID;
-    public StageStatus status;
-    public DataManager.StageInfo refData;
-
-    public static StageData Create(int _stageID, StageStatus _status)
-    {
-        StageData data = new StageData()
-        {
-            stageID = _stageID, status = _status,
-            refData = DataManager.Instance.GetStageInfoData(_stageID)
-        };
-        return data;
-    }
-}
