@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
@@ -16,6 +17,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private Transform objRoot;
     [SerializeField] private MainUI mainUI;
     [SerializeField] private WorldMap worldMap;
+    [SerializeField] private List<TileData> tileDatas;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -24,9 +26,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public List<GameObject> WayPoints => currStageObj.wayPointLists;
 
-    [SerializeField] private List<TileData> tileDatas;
     private Dictionary<TileBase, TileData> dataFromTileMap;
     private GameConfig.GameState gameState;
+
+    private CancellationTokenSource cts;
+
 
     protected override void OnSingletonAwake()
     {
@@ -339,9 +343,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void SpawnAllHero()
     {
         heroDic = new Dictionary<int, MHeroObj>();
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
         UniTask.Create(async () =>
         {
-            await UniTask.Delay(1000);
+            await UniTask.Delay(1000, cancellationToken:cts.Token);
             foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
             {
                 if (item.Value != -1)
@@ -350,7 +356,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     for (int i = 0; i < heroData.refUnitGradeData.summoncnt; i++)
                     {
                         SpawnHero(item.Value);
-                        await UniTask.Delay(300);
+                        await UniTask.Delay(300, cancellationToken: cts.Token);
                     }
                 }
             }
