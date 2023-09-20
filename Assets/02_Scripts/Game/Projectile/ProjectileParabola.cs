@@ -16,7 +16,7 @@ public class ProjectileParabola : ProjectileBase
         }
         
         float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * 5f;
+        elapse += Time.deltaTime / dist * speed;
         
         var height = curve.Evaluate(elapse);
 

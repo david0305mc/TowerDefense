@@ -60,7 +60,7 @@ public class ProjectileBezier : ProjectileBase
             CalculateCurvePoints(samplePointCount);
 
         float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * 5f;
+        elapse += Time.deltaTime / dist * speed;
 
         float fLen = (curvePoints.Length - 1) * elapse;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);

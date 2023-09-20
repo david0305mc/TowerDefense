@@ -65,6 +65,7 @@ public partial class DataManager {
 	}
 	public partial class ProjectileInfo {
 		public int id;
+		public int speed;
 		public string prefabname;
 	};
 	public ProjectileInfo[] ProjectileinfoArray { get; private set; }
