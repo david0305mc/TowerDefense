@@ -47,6 +47,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
         AddSoul(10);
-        cts?.Clear();
+        spawnHeroCts?.Cancel();
+        cts?.Cancel();
     }
+
 }

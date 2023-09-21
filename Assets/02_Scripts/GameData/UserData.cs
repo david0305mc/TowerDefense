@@ -69,13 +69,12 @@ public partial class UserData : Singleton<UserData>
 
     public void RemoveBattleParty(int _slotIndex)
     {
-        int heroUid = LocalData.BattlePartyDic[_slotIndex];
         LocalData.BattlePartyDic[_slotIndex] = -1;
     }
 
     public void ClearStage(int _stage)
     {
-        LocalData.StageClearDic.Add(_stage, 1);
+        LocalData.StageClearDic[_stage] = 1;
     }
 
     public Game.StageStatus GetStageStatus(int _stageID)

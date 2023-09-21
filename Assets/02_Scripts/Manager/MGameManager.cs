@@ -30,6 +30,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private GameConfig.GameState gameState;
 
     private CancellationTokenSource cts;
+    private CancellationTokenSource spawnHeroCts;
 
 
     protected override void OnSingletonAwake()
@@ -343,11 +344,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void SpawnAllHero()
     {
         heroDic = new Dictionary<int, MHeroObj>();
-        cts?.Cancel();
-        cts = new CancellationTokenSource();
+        spawnHeroCts?.Cancel();
+        spawnHeroCts = new CancellationTokenSource();
         UniTask.Create(async () =>
         {
-            await UniTask.Delay(1000, cancellationToken:cts.Token);
+            await UniTask.Delay(1000, cancellationToken: spawnHeroCts.Token);
             foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
             {
                 if (item.Value != -1)
@@ -356,7 +357,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     for (int i = 0; i < heroData.refUnitGradeData.summoncnt; i++)
                     {
                         SpawnHero(item.Value);
-                        await UniTask.Delay(300, cancellationToken: cts.Token);
+                        await UniTask.Delay(300, cancellationToken: spawnHeroCts.Token);
                     }
                 }
             }
@@ -445,4 +446,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
         });
     }
 
+    private void OnDestroy()
+    {
+        spawnHeroCts?.Cancel();
+        spawnHeroCts?.Dispose();
+        cts?.Cancel();
+        cts?.Dispose();
+    }
 }
