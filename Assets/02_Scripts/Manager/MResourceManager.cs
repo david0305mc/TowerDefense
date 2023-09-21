@@ -18,6 +18,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
     public Material FlashMaterial;
     public Color FlashColor;
+    public AnimationCurve KnockBackCurve;
 
     private Dictionary<string, ProjectileBase> projectileDic;
     public Dictionary<string, ProjectileBase> ProjectileDic => projectileDic;

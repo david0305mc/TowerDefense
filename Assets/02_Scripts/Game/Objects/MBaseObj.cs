@@ -513,26 +513,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         DoFlashEffect();
         UpdateHPBar();
-
-        cts?.Cancel();
-        cts = new CancellationTokenSource();
-        agent.enabled = false;
-        rigidBody2d.velocity = Vector3.zero;
-        Vector2 direction = (transform.position - attackerPos).normalized;
-        rigidBody2d.AddForce(direction * knockBack, ForceMode2D.Impulse);
-        UniTask.Create(async () =>
-        {
-            await UniTask.Delay(30, cancellationToken: cts.Token);
-            agent.enabled = true;
-            rigidBody2d.velocity = Vector3.zero;
-        });
-
-
-    }
-
-    private void DoKnockBack()
-    { 
-        
+        KnockBack2(attackerPos, knockBack);
+        //MoveTo()
     }
 
     public void DoFlashEffect()
@@ -555,6 +537,47 @@ public class MBaseObj : MonoBehaviour, Damageable
             });
         });
     }
+
+    private void KnockBack2(Vector3 attackerPos, int knockBack)
+    {
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
+        agent.enabled = false;
+        rigidBody2d.velocity = Vector3.zero;
+        Vector3 direction = (transform.position - attackerPos).normalized;
+        Vector3 target = transform.position + direction * knockBack * 0.1f;
+        Vector3 srcPos = transform.position;
+        UniTask.Create(async () =>
+        {
+            float elapse = 0f;
+            while (Vector3.Distance(transform.position, target) > 0.1f)
+            {
+                elapse += Time.deltaTime * 2f;
+                float curveValue = MResourceManager.Instance.KnockBackCurve.Evaluate(elapse);
+                await UniTask.Yield(cancellationToken: cts.Token);
+                transform.SetPosition(Vector3.Lerp(srcPos, target, curveValue));
+            }
+            transform.SetPosition(target);
+            agent.enabled = true;
+            rigidBody2d.velocity = Vector3.zero;
+        });
+    }
+    private void KnockBack(Vector3 attackerPos, int knockBack)
+    {
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
+        agent.enabled = false;
+        rigidBody2d.velocity = Vector3.zero;
+        Vector2 direction = (transform.position - attackerPos).normalized;
+        rigidBody2d.AddForce(direction * knockBack, ForceMode2D.Impulse);
+        UniTask.Create(async () =>
+        {
+            await UniTask.Delay(30, cancellationToken: cts.Token);
+            agent.enabled = true;
+            rigidBody2d.velocity = Vector3.zero;
+        });
+    }
+
     protected void LookTarget()
     {
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
