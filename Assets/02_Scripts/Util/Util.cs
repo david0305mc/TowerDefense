@@ -120,6 +120,10 @@ public partial class Utill
     {
         return (T)Enum.Parse(typeof(T), _str);
     }
+    public static T IntToEnum<T>(int e)
+    {
+        return (T)(object)e;
+    }
 }
 
 
