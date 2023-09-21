@@ -19,7 +19,12 @@ public class LocalizeManager : Singleton<LocalizeManager>
     public string GetLocalString(string _key)
     {
         var localInfo = DataManager.Instance.GetLocalizationData(_key);
-        
+
+        if (localInfo == null)
+        {
+            return string.Empty;
+        }
+
         switch (language)
         {
             case LANGUAGE_TYPE.KO:
