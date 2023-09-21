@@ -115,6 +115,11 @@ public partial class Utill
 
         return null;
     }
+
+    public static T StirngToEnum<T>(string _str)
+    {
+        return (T)Enum.Parse(typeof(T), _str);
+    }
 }
 
 

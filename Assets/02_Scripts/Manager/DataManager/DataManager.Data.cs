@@ -6,7 +6,7 @@ using System.Linq;
 public partial class DataManager {
 	public partial class Localization {
 		public string id;
-		public string kr;
+		public string ko;
 		public string en;
 		public string jp;
 	};

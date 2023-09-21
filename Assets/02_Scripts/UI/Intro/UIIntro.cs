@@ -27,6 +27,7 @@ public class UIIntro : MonoBehaviour
 
     private async UniTaskVoid StartGame()
     {
+        LocalizeManager.Instance.Initialize();
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
         await DataManager.Instance.LoadConfigTable();

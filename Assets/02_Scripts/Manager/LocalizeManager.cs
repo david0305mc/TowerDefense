@@ -4,65 +4,79 @@ using UnityEngine;
 
 public class LocalizeManager : Singleton<LocalizeManager>
 {
-
-    //private static bool _isLoaded;
-    //private static string filePath => ZString.Format("{0}/{1}/{2}", PathInfo.DataPath, ServerSetting.serverName, "Localization.csv");
-
-    //public static string language
-    //{
-    //    get => Localization.language;
-    //    set
-    //    {
-    //        Debug.LogFormat("[Localization/SetLanguage] {0}", value);
-    //        Localization.language = value;
-    //    }
-    //}
-
-    public static void Initialize()
+    private LANGUAGE_TYPE language;
+    public LANGUAGE_TYPE Language
     {
-        if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Language")))
-            return;
+        get => language;
+        set
+        {
+            Debug.LogWarningFormat("[Localization/SetLanguage] {0}", value);
+            language = value;
+            PlayerPrefs.SetString("Language", language.ToString());
+        }
+    }
 
-        string language = "en";
+    public string GetLocalString(string _key)
+    {
+        var localInfo = DataManager.Instance.GetLocalizationData(_key);
+        
+        switch (language)
+        {
+            case LANGUAGE_TYPE.KO:
+                return localInfo.ko;
+            case LANGUAGE_TYPE.EN:
+                return localInfo.en;
+            case LANGUAGE_TYPE.JP:
+                return localInfo.jp;
+            default:
+                return localInfo.en;
+        }
+    }
+         
+
+    public void Initialize()
+    {
+        string lang = PlayerPrefs.GetString("Language");
+        if (!string.IsNullOrEmpty(lang))
+        {
+            language = Utill.StirngToEnum<LANGUAGE_TYPE>(lang); 
+            return;
+        }
+        
         switch (Application.systemLanguage)
         {
             case SystemLanguage.Korean:
-                language = "ko";
+                language = LANGUAGE_TYPE.KO;
                 break;
             case SystemLanguage.English:
-                language = "en";
+                language = LANGUAGE_TYPE.EN;
                 break;
-            //case SystemLanguage.Japanese:
-            //    language = "ja";
-            //    break;
-            //case SystemLanguage.Chinese:
-            //case SystemLanguage.ChineseSimplified: //간체(중국)
-            //    language = "zh-Hans";
-            //    break;
-            //case SystemLanguage.ChineseTraditional: //번체(대만)
-            //    language = "zh-Hant";
-            //    break;
+            case SystemLanguage.Japanese:
+                language = LANGUAGE_TYPE.JP;
+                break;
+            case SystemLanguage.Chinese:
+            case SystemLanguage.ChineseSimplified: //간체(중국)
+                language = LANGUAGE_TYPE.CN;
+                break;
+            case SystemLanguage.ChineseTraditional: //번체(대만)
+                language = LANGUAGE_TYPE.TW;
+                break;
             //case SystemLanguage.Portuguese:
             //    language = "pt-BR";
             //    break;
             //case SystemLanguage.Spanish:
             //    language = "es";
             //    break;
-            //case SystemLanguage.Russian:
-            //    language = "ru";
-            //    break;
-            case SystemLanguage.Indonesian:
-                language = "id";
+            case SystemLanguage.Russian:
+                language = LANGUAGE_TYPE.RU;
                 break;
-                //case SystemLanguage.German:
-                //    language = "de";
-                //    break;
-                //case SystemLanguage.French:
-                //    language = "fr";
-                //    break;
+            case SystemLanguage.German:
+                language = LANGUAGE_TYPE.DE;
+                break;
+            case SystemLanguage.French:
+                language = LANGUAGE_TYPE.FR;
+                break;
         }
-
-        PlayerPrefs.SetString("Language", language);
     }
 
 
@@ -87,21 +101,4 @@ public class LocalizeManager : Singleton<LocalizeManager>
 //        _isLoaded = true;
 //        Debug.Log("[Localization/SetData] OnLoaded");
 //    }
-
-    public static string GetLanguageISO()
-    {
-        //string lang = Localization.language;
-        //if (lang == "ko") return "KO";
-        //else if (lang == "en") return "EN";
-        //else if (lang == "ja") return "JP";
-        //else if (lang == "zh-Hans") return "CN";
-        //else if (lang == "zh-Hant") return "TW";
-        //else if (lang == "pt-BR") return "PT";
-        //else if (lang == "es") return "ES";
-        //else if (lang == "ru") return "RU";
-        //else if (lang == "id") return "ID";
-        //else if (lang == "de") return "DE";
-        //else if (lang == "fr") return "FR";
-        return "EN";
-    }
 }

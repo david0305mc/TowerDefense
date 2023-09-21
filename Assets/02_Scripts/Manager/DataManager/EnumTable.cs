@@ -23,3 +23,15 @@ public enum ITEM_TYPE
 { 
 	SOUL                         = 0,        	// 영혼 아이템 (재화)
 }
+public enum LANGUAGE_TYPE 
+{ 
+	KO                           = 0,        	// ios_3166-1 언어코드
+	EN                           = 1,        	// 
+	JP                           = 2,        	// 
+	CN                           = 3,        	// 
+	TW                           = 4,        	// 
+	PT                           = 5,        	// 
+	FR                           = 6,        	// 
+	DE                           = 7,        	// 
+	RU                           = 8,        	// 
+}
