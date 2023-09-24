@@ -22,10 +22,20 @@ public class SceneChangeEditor : Editor
     }
 
     [MenuItem("SceneMove/Scene_UnitTest &3")]
-    private static void ThrowingBallScene()
+    private static void UnitTestScene()
     {
         EditorSceneManager.OpenScene("Assets/01_Scenes/UnitTest.unity");
         Debug.Log("Move Unit Test");
+    }    
+    
+    [MenuItem("SceneMove/Scene_WorldMapTest &4")]
+    private static void WorldMapTestScene()
+    {
+        EditorSceneManager.OpenScene("Assets/01_Scenes/WorldMapTest.unity");
+        Debug.Log("Move WorldMapTest Test");
     }
+
+
+
 }
 #endif
