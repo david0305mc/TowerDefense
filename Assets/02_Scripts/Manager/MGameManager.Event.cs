@@ -42,7 +42,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         RemoveStage();
         RemoveAllProjectile();
 
-        cameraManager.SetZoomAndSize(2, 7, -2, 2, -2, 2);
+        cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
