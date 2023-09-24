@@ -90,6 +90,7 @@ Transform:
   - {fileID: 4154660739358518469}
   - {fileID: 6815779535041234326}
   - {fileID: 1126254404967615847}
+  - {fileID: 293856474388445976}
   m_Father: {fileID: 6232049773150554515}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -187,6 +188,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6894850769103173889}
     m_Modifications:
+    - target: {fileID: 2194204873038981456, guid: 93958c9db244c0d4883a630799c57b1a, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3514197155496784705, guid: 93958c9db244c0d4883a630799c57b1a, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_5
@@ -241,6 +246,100 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7015310340007792441, guid: 93958c9db244c0d4883a630799c57b1a, type: 3}
   m_PrefabInstance: {fileID: 318340041679650130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1856826055429804313
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6894850769103173889}
+    m_Modifications:
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212545960484135797, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883716191702258064, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2995932796275088798, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_Name
+      value: WorldMapStageSlot_Indian
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331013345559242067, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4253356425959145836, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318510613575558743, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4381522182118452945, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6756853794183078068, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081957108926992525, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+--- !u!4 &293856474388445976 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2150250696539793921, guid: 78ef58e541bc3d44ba3c30821a78e975, type: 3}
+  m_PrefabInstance: {fileID: 1856826055429804313}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2621844638413613430
 PrefabInstance:
@@ -297,6 +396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plains_Default_Road_6
       objectReference: {fileID: 0}
+    - target: {fileID: 8738649730232419894, guid: 22a8be8c2d75604458f205de87fb32e4, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22a8be8c2d75604458f205de87fb32e4, type: 3}
 --- !u!4 &2454251029506001193 stripped
@@ -314,6 +417,10 @@ PrefabInstance:
     - target: {fileID: 1099382483818363635, guid: 08cd9fe27b976bd45958c1fef3d09f7a, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Mountain
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447218824563269858, guid: 08cd9fe27b976bd45958c1fef3d09f7a, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6835979002182583947, guid: 08cd9fe27b976bd45958c1fef3d09f7a, type: 3}
       propertyPath: m_RootOrder
@@ -417,6 +524,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5188141045422261982, guid: 74e1b7280ab30884dbd62d2afc1a6368, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7586442007816248527, guid: 74e1b7280ab30884dbd62d2afc1a6368, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_2
@@ -479,6 +590,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5053037838702031813, guid: fffbfeb0b218bd1428512be51d6eff2c, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7541401963209468372, guid: fffbfeb0b218bd1428512be51d6eff2c, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_1-1
@@ -500,6 +615,10 @@ PrefabInstance:
     - target: {fileID: 1528999231417819611, guid: 0cc119bd603211a4e80395fcebd0dfad, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291814680272878538, guid: 0cc119bd603211a4e80395fcebd0dfad, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4947086093894409635, guid: 0cc119bd603211a4e80395fcebd0dfad, type: 3}
       propertyPath: m_RootOrder
@@ -559,6 +678,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6894850769103173889}
     m_Modifications:
+    - target: {fileID: 128677678013625778, guid: 6962462439314a14eb8ef87b7e4211f2, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3422359339581550499, guid: 6962462439314a14eb8ef87b7e4211f2, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Stone
@@ -669,6 +792,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plains_Default_Road_2-1
       objectReference: {fileID: 0}
+    - target: {fileID: 8702475821234266777, guid: d85fd038ca69b9e4f87e62386b725e69, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d85fd038ca69b9e4f87e62386b725e69, type: 3}
 --- !u!4 &5618076888152314157 stripped
@@ -730,6 +857,10 @@ PrefabInstance:
     - target: {fileID: 5847853490322647808, guid: 2811b1724a0a0f348915df790f2c7461, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Mountain_Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 9191901546152734993, guid: 2811b1724a0a0f348915df790f2c7461, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2811b1724a0a0f348915df790f2c7461, type: 3}
@@ -793,6 +924,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plains_Default_Road_3
       objectReference: {fileID: 0}
+    - target: {fileID: 8295576540453446746, guid: 9eb54f4d3cd16a748a9021ae2020b36e, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9eb54f4d3cd16a748a9021ae2020b36e, type: 3}
 --- !u!4 &6815779535041234326 stripped
@@ -855,6 +990,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plains_Default_Water
       objectReference: {fileID: 0}
+    - target: {fileID: 7274744407078225772, guid: eb877621fa908ca44a7b7fa175ccdbb9, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb877621fa908ca44a7b7fa175ccdbb9, type: 3}
 --- !u!4 &5517414656611051239 stripped
@@ -872,6 +1011,10 @@ PrefabInstance:
     - target: {fileID: 1267059667008101130, guid: 9cd17412a9ee2f64bbca49d9e49cba90, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4549214003549143323, guid: 9cd17412a9ee2f64bbca49d9e49cba90, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4614514140850349938, guid: 9cd17412a9ee2f64bbca49d9e49cba90, type: 3}
       propertyPath: m_RootOrder
@@ -975,6 +1118,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4735748817172713346, guid: 2183c05404387d6438df6913a3431b4b, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8002699106931168659, guid: 2183c05404387d6438df6913a3431b4b, type: 3}
       propertyPath: m_Name
       value: Plains_Default_Road_7
@@ -993,6 +1140,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6894850769103173889}
     m_Modifications:
+    - target: {fileID: 1559443814672162044, guid: a73f476754c8da1478e35ecec12a49ea, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4256974661110154989, guid: a73f476754c8da1478e35ecec12a49ea, type: 3}
       propertyPath: m_Name
       value: Plains_Default
@@ -1103,6 +1254,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plains_Default_Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 7022382207721174713, guid: db60e301dc17f694bb90c28dc1cf0e81, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db60e301dc17f694bb90c28dc1cf0e81, type: 3}
 --- !u!4 &8199519500876975308 stripped
@@ -1110,7 +1265,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2187765666988101840, guid: db60e301dc17f694bb90c28dc1cf0e81, type: 3}
   m_PrefabInstance: {fileID: 8040626018999213084}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3816239977514273103
+--- !u!114 &6718628547939666509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
