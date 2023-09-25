@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
+    
 
 public class CameraMangerTest : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI minText;
+    [SerializeField] private TextMeshProUGUI maxText;
     private Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
 
     public class CameraEvent
@@ -29,8 +33,8 @@ public class CameraMangerTest : MonoBehaviour
     private float screenRatio = Screen.width / Screen.height;
     private Vector2 _defaultTouchPos = new Vector2(9999, 9999);
     private float _minimumMoveDistanceForItemMove = 0.2f;
-    private float _maxZoomFactor = 30;
-    private float _minZoomFactor = 3;
+    private float _maxZoomFactor = 10;
+    private float _minZoomFactor = 5;
     private float _clampZoomOffset = 2.0f;
 
     private Vector3 _tapItemStartPos;
@@ -88,6 +92,8 @@ public class CameraMangerTest : MonoBehaviour
         this.UpdateGroundTap();
         this.UpdateScenePan();
         this.UpdateSceneZoom();
+
+        Debug.Log($"Main Camera {mainCamera.transform.position}");
     }
 
     public bool IsUsingUI()
@@ -309,11 +315,16 @@ public class CameraMangerTest : MonoBehaviour
             }
         }
 
+        if (screenRatio <= 0)
+        {
+            Debug.LogError("screenRatio <= 0");
+        }
         if (this._isZoomingStarted)
         {
             float _currentPinchDistance = (_touchPoint2 - _touchPoint1).magnitude;
             float delta = this._previousPinchDistance - _currentPinchDistance;
-            newZoom = this.MainCamera.orthographicSize + (delta / (2 * screenRatio));
+            
+            newZoom = this.MainCamera.orthographicSize + (delta / 2);
         }
 
         //clamp zoom
@@ -330,6 +341,7 @@ public class CameraMangerTest : MonoBehaviour
 
         if (this._oldZoom != newZoom)
         {
+            Debug.Log($"newZoom {newZoom}");
             this.MainCamera.orthographicSize = newZoom;
             this.ClampCamera();
             this._oldZoom = newZoom;
@@ -557,5 +569,17 @@ public class CameraMangerTest : MonoBehaviour
         //    Vector3 delta = new Vector3(deltaFactor, 0, deltaFactor);
         //    this.MainCamera.transform.localPosition += delta;
         //}
+    }
+
+    public void OnClickBtnTest()
+    {
+        this.MainCamera.orthographicSize = 5f;
+        
+    }
+    public void OnClickBtnTest2()
+    {
+        _minZoomFactor = int.Parse(minText.text);
+        _maxZoomFactor = int.Parse(maxText.text);
+
     }
 }
