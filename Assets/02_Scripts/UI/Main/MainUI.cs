@@ -24,7 +24,8 @@ public class MainUI : MonoBehaviour
     
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
-
+    [SerializeField] private GameObject worldUI;
+    [SerializeField] private GameObject ingameUI;
 
     private MHeroObj heroObjTest;
     private void Awake()
@@ -85,6 +86,17 @@ public class MainUI : MonoBehaviour
             });
         });
         HideStageInfo();
+    }
+
+    public void SetWorldUI()
+    {
+        worldUI.SetActive(true);
+        ingameUI.SetActive(false);
+    }
+    public void SetIngameUI()
+    {
+        worldUI.SetActive(false);
+        ingameUI.SetActive(true);
     }
 
     public void ShowStageInfo(int _stageID, System.Action _startAction)

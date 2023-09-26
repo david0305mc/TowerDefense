@@ -98,6 +98,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void StartStage(int stageID)
     {
+        mainUI.SetIngameUI();
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
@@ -118,6 +119,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void BackToHome()
     {
+        mainUI.SetWorldUI();
         cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
@@ -188,6 +190,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         });
         worldMap.InitWorld();
+        mainUI.SetWorldUI();
     }
 
     private void Start()
