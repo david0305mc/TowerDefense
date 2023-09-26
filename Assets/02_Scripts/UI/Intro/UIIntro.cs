@@ -31,10 +31,10 @@ public class UIIntro : MonoBehaviour
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
         await DataManager.Instance.LoadConfigTable();
+        await MResourceManager.Instance.LoadResources();
         DataManager.Instance.MakeClientDT();
         UserData.Instance.InitData();
         UserData.Instance.LoadLocalData();
-        MResourceManager.Instance.LoadResources();
 
         var mainSceneAsync = SceneManager.LoadSceneAsync("Main");
         await mainSceneAsync;

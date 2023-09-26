@@ -9,7 +9,7 @@ public class UIBattlePartySlot : MonoBehaviour
     [SerializeField] private Transform characterViewTr;
     [SerializeField] private Button button;
 
-    private MHeroObj heroObj = default;
+    public MHeroObj heroObj = default;
 
     private System.Action<int> touchAction;
     private int slotIndex;
@@ -28,42 +28,51 @@ public class UIBattlePartySlot : MonoBehaviour
 
     public void SetData(int _slotIndex, int _unitUID, System.Action<int> _touchAction)
     {
-        unitUID = _unitUID;
         slotIndex = _slotIndex;
         touchAction = _touchAction;
+
+        if (heroObj != null)
+        {
+            Lean.Pool.LeanPool.Despawn(heroObj);
+            heroObj = null;
+        }
+
         if (_unitUID != -1)
         {
-            AddHero(_unitUID);
+            emptySlot.SetActive(false);
+            var heroData = UserData.Instance.GetHeroData(_unitUID);
+            GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
+            heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, characterViewTr).GetComponent<MHeroObj>();
+            heroObj.transform.SetLocalPosition(Vector3.zero);
+            heroObj.SetUIMode(Game.GameConfig.CanvasMainUILayerOrder + slotIndex + 2);
         }
+        else
+        {
+            emptySlot.SetActive(true);
+        }
+        unitUID = _unitUID;
     }
 
     public void RemoveHero()
     {
         unitUID = -1;
-        Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
+        //Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
         emptySlot.SetActive(true);
     }
 
-    public void AddHero(int _unitUID)
+    public void SetHeroObj(int _unitUID)
     {
-        unitUID = _unitUID;
-        emptySlot.SetActive(false);
-        var heroData = UserData.Instance.GetHeroData(_unitUID);
-        if (heroData != null)
-        {
-            GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
-            heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<MHeroObj>();
-            heroObj.transform.SetLocalPosition(Vector3.zero);
-            heroObj.SetUIMode(Game.GameConfig.CanvasMainUILayerOrder + slotIndex + 2);
-        }
+        
     }
 
     public void ClearPool()
     {
-        if (heroObj != null)
-        {
-            heroObj.SetBattleMode();
-            Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
-        }
+        //if (heroObj != null)
+        //{
+        //    unitUID = -1;
+        //    heroObj.SetBattleMode();
+        //    Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
+        //    emptySlot.SetActive(true);
+        //}
     }
 }

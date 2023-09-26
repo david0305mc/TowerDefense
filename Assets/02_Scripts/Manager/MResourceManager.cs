@@ -26,17 +26,17 @@ public class MResourceManager : SingletonMono<MResourceManager>
     private Dictionary<string, GameObject> prefabDic = new Dictionary<string, GameObject>();
     private Dictionary<string, AsyncOperationHandle<SpriteAtlas>> opAtlasHandleDic = new Dictionary<string, AsyncOperationHandle<SpriteAtlas>>();
 
-    public void LoadResources()
+    public async UniTask LoadResources()
     {
-        //ProjectileBase[] arrayData = Resources.LoadAll<ProjectileBase>("Prefabs/Projectile");
-        //projectileDic = arrayData.ToDictionary(item => item.name, item => item);
-        LoadProjectile().Forget();
-        LoadUnits().Forget();
-        LoadBoomEffect().Forget();
-        LoadAtlas().Forget();
+        List<UniTask> taskLists = new List<UniTask>();
+        taskLists.Add(LoadProjectile());
+        taskLists.Add(LoadUnits());
+        taskLists.Add(LoadBoomEffect());
+        taskLists.Add(LoadAtlas());
+        await UniTask.WhenAll(taskLists);
     }
 
-    private async UniTaskVoid LoadAtlas()
+    private async UniTask LoadAtlas()
     {
         string key = "SpriteAtlas/Atlas_Icon.spriteatlas";
         opAtlasHandleDic[key] = Addressables.LoadAssetAsync<SpriteAtlas>(key);
@@ -47,21 +47,21 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
     }
 
-    private async UniTaskVoid LoadProjectile()
+    private async UniTask LoadProjectile()
     {
         foreach (var item in DataManager.Instance.ProjectileinfoDic)
         {
             prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
         }
     }
-    private async UniTaskVoid LoadUnits()
+    private async UniTask LoadUnits()
     {
         foreach (var item in DataManager.Instance.UnitinfoDic)
         {
             prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
         }
     }
-    private async UniTaskVoid LoadBoomEffect()
+    private async UniTask LoadBoomEffect()
     {
         foreach (var item in DataManager.Instance.UnitgradeinfoArray)
         {

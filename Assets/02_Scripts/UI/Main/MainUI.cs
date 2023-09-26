@@ -18,7 +18,7 @@ public class MainUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI soulText;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private TextMeshProUGUI staminaText;
-    [SerializeField] private Button addTankerBtn;
+    [SerializeField] private Button test01Btn;
     [SerializeField] private Button addArcherBtn;
     [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
@@ -26,6 +26,8 @@ public class MainUI : MonoBehaviour
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
 
+
+    private MHeroObj heroObjTest;
     private void Awake()
     {
         UserData.Instance.LocalData.Soul.Subscribe(_value =>
@@ -43,10 +45,10 @@ public class MainUI : MonoBehaviour
             expText.SetText(_value.ToString());
         }).AddTo(gameObject);
 
-        addTankerBtn.onClick.AddListener(() =>
+        test01Btn.onClick.AddListener(() =>
         {
-            //MGameManager.Instance.AddHero(2001);
         });
+
         addArcherBtn.onClick.AddListener(() =>
         {
             //MGameManager.Instance.AddHero(2002);

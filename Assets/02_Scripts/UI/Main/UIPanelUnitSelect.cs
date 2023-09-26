@@ -19,7 +19,6 @@ public class UIPanelUnitSelect : MonoBehaviour
     }
     public void InitUI()
     {
-        ClearPool();
         InitUserListScroll();
         InitBattlePartyUI();
     }

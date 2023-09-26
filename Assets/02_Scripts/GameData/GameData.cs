@@ -18,7 +18,7 @@ public class LocalSaveData
 
     public LocalSaveData()
     {
-        uidSeed = 0;
+        uidSeed = 1000;
         StageClearDic = new SerializableDictionary<int, int>() { { 0, 1 } };
         Soul = new ReactiveProperty<long>(0);
         Stamina = new ReactiveProperty<long>(0);
