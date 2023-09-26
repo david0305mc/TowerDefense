@@ -438,12 +438,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void ShowBoomEffect(AttackData _attackData, Vector2 _pos, string name = default)
     {
         var unitGradeInfo = DataManager.Instance.GetUnitGrade(_attackData.attackerTID, 1);
-            
-        ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetPrefab(unitGradeInfo.boomeffectprefab), _pos, Quaternion.identity, objRoot).GetComponent<ExplosionEffect>();
-        effect.SetData(_attackData, () =>
+
+        if (!string.IsNullOrEmpty(unitGradeInfo.boomeffectprefab))
         {
-            Lean.Pool.LeanPool.Despawn(effect);
-        });
+            ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetPrefab(unitGradeInfo.boomeffectprefab), _pos, Quaternion.identity, objRoot).GetComponent<ExplosionEffect>();
+            effect.SetData(_attackData, () =>
+            {
+                Lean.Pool.LeanPool.Despawn(effect);
+            });
+        }
     }
 
     private void OnDestroy()
