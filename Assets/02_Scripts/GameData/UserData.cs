@@ -21,7 +21,7 @@ public partial class UserData : Singleton<UserData>
 
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
-    public  ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
+    public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
     public int ShopSelectedItem { get; set; }
     public int GetPartySlotIndexByUID(int _uid)
@@ -105,7 +105,7 @@ public partial class UserData : Singleton<UserData>
     }
     public UnitData GetEnemyData(int _uid)
     {
-        if(enemyDataDic.ContainsKey(_uid))
+        if (enemyDataDic.ContainsKey(_uid))
             return enemyDataDic[_uid];
         return null;
     }
@@ -124,7 +124,7 @@ public partial class UserData : Singleton<UserData>
     public InBuildData LoadInBuildData()
     {
         var textAsset = Resources.Load("textData") as TextAsset;
-        
+
         if (textAsset != null)
         {
             return JsonUtility.FromJson<InBuildData>(textAsset.ToString());
@@ -144,10 +144,10 @@ public partial class UserData : Singleton<UserData>
         //    if (item.Value.IsEnemy)
         //    {
         //        EnemyData.BaseObjDic.Add(item.Key, item.Value);
-                
+
         //    }
         //}
-        
+
         //var saveData = JsonUtility.ToJson(EnemyData);
         ////saveData = Utill.EncryptXOR(saveData);
         //Utill.SaveFile(InBuildDataExportPath, saveData);
@@ -234,6 +234,14 @@ public partial class UserData : Singleton<UserData>
     public void RemoveBattleHero(int _heroUID)
     {
         battleHeroDataDic.Remove(_heroUID);
+    }
+
+    public void UpgradeHero(int _heroUID)
+    {
+        var heroData = GetHeroData(_heroUID);
+        heroData.grade++;
+        heroData.count -= heroData.refUnitGradeData.upgradepiececnt;
+        LocalData.Soul.Value -= heroData.refUnitGradeData.upgradecostcnt;
     }
 
 }

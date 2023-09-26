@@ -20,6 +20,7 @@ public class UIUnitCell : UIGridCell
     [SerializeField] private Slider progressBar;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI countText;
+    [SerializeField] private UnitGradeInfo unitGradeInfo;
 
     public override void Initialize()
     {
@@ -37,5 +38,6 @@ public class UIUnitCell : UIGridCell
         var heroData = UserData.Instance.GetHeroData(itemData.id);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
         iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
+        unitGradeInfo.SetData(heroData.grade, heroData.IsMaxGrade, heroData.count, heroData.refUnitGradeData.upgradepiececnt);
     }
 }

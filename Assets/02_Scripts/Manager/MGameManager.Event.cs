@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public partial class MGameManager : SingletonMono<MGameManager>
 {
@@ -27,12 +28,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         int slotIndex = UserData.Instance.AddBattleParty(_heroUID);
         UserData.Instance.SaveLocalData();
+        MessageDispather.Publish(EMessage.Update_UserData);
         return slotIndex;
     }
 
     public void RemoveBattleParty(int _slotIndex)
     {
         UserData.Instance.RemoveBattleParty(_slotIndex);
+        MessageDispather.Publish(EMessage.Update_UserData);
         UserData.Instance.SaveLocalData();
     }
 
@@ -49,6 +52,26 @@ public partial class MGameManager : SingletonMono<MGameManager>
         AddSoul(10);
         spawnHeroCts?.Cancel();
         cts?.Cancel();
+    }
+
+    public void UpgradeUnit(int _uid)
+    {
+        var heroData = UserData.Instance.GetHeroData(_uid);
+        if (heroData.IsMaxGrade)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Max Grade", "OK");
+            return;
+        }
+
+        if (heroData.refUnitGradeData.upgradepiececnt > UserData.Instance.LocalData.Soul.Value)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Soul is not enough", "OK");
+            return;    
+        }
+
+        UserData.Instance.UpgradeHero(_uid);
+        UserData.Instance.SaveLocalData();
+        MessageDispather.Publish(EMessage.Update_UserData);
     }
 
 }

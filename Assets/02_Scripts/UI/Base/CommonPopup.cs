@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CommonPopup : PopupBase
 {
-    [SerializeField] private Text messageText;
-    [SerializeField] private Text okBtnText;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private TextMeshProUGUI okBtnText;
     [SerializeField] private Button okBtn;
     [SerializeField] private Button cancelBtn;
 

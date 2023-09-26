@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UniRx;
 
 public class UnitInfoPopup : PopupBase
 {
 
     [SerializeField] private Button dimmBtn;
     [SerializeField] private Button euipToggleBtn;
+    [SerializeField] private Button upgradeBtn;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
+
+    [SerializeField] private TextMeshProUGUI upgradeCostText;
 
     private System.Action equipAction;
     private UnitData unitData;
@@ -28,6 +32,11 @@ public class UnitInfoPopup : PopupBase
             equipAction?.Invoke();
             UpdateUI();
             Hide();
+        });
+        upgradeBtn.onClick.AddListener(() =>
+        {
+            MGameManager.Instance.UpgradeUnit(unitData.uid);
+            UpdateUI();
         });
     }
 
@@ -53,6 +62,7 @@ public class UnitInfoPopup : PopupBase
         }
 
         unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
+        upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
     }
 
 }

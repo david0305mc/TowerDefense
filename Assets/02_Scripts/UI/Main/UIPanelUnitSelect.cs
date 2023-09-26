@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UniRx;
 
 public class UIPanelUnitSelect : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class UIPanelUnitSelect : MonoBehaviour
     [SerializeField] private List<UIBattlePartySlot> battlePartyList = default;
 
     private List<UnitData> heroDataList;
-    
+
+    private void Awake()
+    {
+        MessageDispather.Receive(EMessage.Update_UserData).Subscribe(_ => {
+            InitUI(); 
+        });
+    }
     public void InitUI()
     {
+        ClearPool();
         InitUserListScroll();
         InitBattlePartyUI();
     }
@@ -31,14 +39,14 @@ public class UIPanelUnitSelect : MonoBehaviour
                 if (partySlotIndex == -1)
                 {
                     int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
-                    battlePartyList[slotIndex].AddHero(heroData.uid);
-                    InitUserListScroll();
+                    //battlePartyList[slotIndex].AddHero(heroData.uid);
+                    //InitUserListScroll();
                 }
                 else
                 {
                     MGameManager.Instance.RemoveBattleParty(partySlotIndex);
-                    battlePartyList[partySlotIndex].RemoveHero();
-                    InitUserListScroll();
+                    //battlePartyList[partySlotIndex].RemoveHero();
+                    //InitUserListScroll();
                 }
             });
         });
@@ -50,19 +58,24 @@ public class UIPanelUnitSelect : MonoBehaviour
             int unitUID = UserData.Instance.GetPartyUIDByIndex(i);
             battlePartyList[i].SetData(i, unitUID, (_slotIndex) =>
             {
-                UserData.Instance.RemoveBattleParty(_slotIndex);
-                battlePartyList[i].RemoveHero();
-                InitUserListScroll();
+                MGameManager.Instance.RemoveBattleParty(_slotIndex);
+                //UserData.Instance.RemoveBattleParty(_slotIndex);
+                //battlePartyList[i].RemoveHero();
+                //InitUserListScroll();
             }); 
         });
     }
 
-    private void OnDisable()
+    private void ClearPool()
     {
         foreach (var item in battlePartyList)
         {
             item.ClearPool();
         }
+    }
+    private void OnDisable()
+    {
+        ClearPool();
     }
 
 }

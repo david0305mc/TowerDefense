@@ -97,6 +97,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
         {
             return obj;
         }
+        Debug.LogError($"Faild To GetPrefab {_name}");
         return null;
     }
 
