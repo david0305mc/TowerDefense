@@ -3695,7 +3695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 116.6761, y: 0}
+  m_AnchoredPosition: {x: 116.67612, y: 0}
   m_SizeDelta: {x: 233.3522, y: 67.5139}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8142796650390085067
@@ -5217,7 +5217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 43.6033, y: 4.373}
+  m_AnchoredPosition: {x: 43.603294, y: 4.373}
   m_SizeDelta: {x: 82.2065, y: 79.8577}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8142796650649502704
@@ -5998,6 +5998,7 @@ MonoBehaviour:
   euipToggleBtn: {fileID: 6963223909996732657}
   euipToggleText: {fileID: 8142796650199956481}
   heroNameText: {fileID: 8142796650787720647}
+  unitGradeInfo: {fileID: 447081022991417366}
 --- !u!1 &8142796651110519749
 GameObject:
   m_ObjectHideFlags: 0
@@ -6296,6 +6297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8142796651159888242}
+  - component: {fileID: 447081022991417366}
   m_Layer: 5
   m_Name: GradeInfo
   m_TagString: Untagged
@@ -6325,6 +6327,21 @@ RectTransform:
   m_AnchoredPosition: {x: 453, y: -71}
   m_SizeDelta: {x: 254.01, y: 79.399994}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &447081022991417366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8142796651159888243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f54ca1503d082d47b828c02e847788b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelText: {fileID: 8142796650217650502}
+  pieceCountText: {fileID: 8142796650614040143}
+  pieceCountProgress: {fileID: 8142796650376987835}
 --- !u!1 &8142796651199960086
 GameObject:
   m_ObjectHideFlags: 0

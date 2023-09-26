@@ -11,9 +11,10 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private Button euipToggleBtn;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
+    [SerializeField] private UnitGradeInfo unitGradeInfo;
 
-    private int heroUID;
     private System.Action equipAction;
+    private UnitData unitData;
 
     protected override void Awake()
     {
@@ -32,17 +33,16 @@ public class UnitInfoPopup : PopupBase
 
     public void SetData(int _heroUID, System.Action _equipAction)
     {
-        var heroData = UserData.Instance.GetHeroData(_heroUID);
+        unitData = UserData.Instance.GetHeroData(_heroUID);
         equipAction = _equipAction;
-        heroUID = _heroUID;
-        heroNameText.SetText(heroData.refData.unitname);
+        heroNameText.SetText(unitData.refData.unitname);
         UpdateUI();    
     }
 
     private void UpdateUI()
     {
         //UserData.Instance.FindEmptySlot();
-        int slotIndex = UserData.Instance.GetPartySlotIndexByUID(heroUID);
+        int slotIndex = UserData.Instance.GetPartySlotIndexByUID(unitData.uid);
         if (slotIndex == -1)
         {
             euipToggleText.SetText("Equip");
@@ -51,6 +51,8 @@ public class UnitInfoPopup : PopupBase
         {
             euipToggleText.SetText("UnEquip");
         }
+
+        unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
     }
 
 }

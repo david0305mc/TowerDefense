@@ -54,6 +54,7 @@ public partial class DataManager {
 		public int id;
 		public int unitid;
 		public int grade;
+		public int combatpower;
 		public int hp;
 		public int walkspeed;
 		public int attackdmg;
@@ -68,6 +69,9 @@ public partial class DataManager {
 		public int knockback;
 		public int summoncnt;
 		public string boomeffectprefab;
+		public int upgradepiececnt;
+		public int upgradecostcnt;
+		public int dropgoldcnt;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
 	public Dictionary<int, UnitGradeInfo> UnitgradeinfoDic { get; private set; }
@@ -108,6 +112,7 @@ public partial class DataManager {
 		public int needcombatpower;
 		public int priorstageid;
 		public string prefabname;
+		public int stagecleartime;
 	};
 	public StageInfo[] StageinfoArray { get; private set; }
 	public Dictionary<int, StageInfo> StageinfoDic { get; private set; }

@@ -49,6 +49,7 @@ public class UnitData
     public int count;
     public DataManager.Unitinfo refData;
     public DataManager.UnitGradeInfo refUnitGradeData;
+    public bool IsMaxGrade => grade >= refData.maxgrade;
 
     public static UnitData Create(int _uid, int _tid, int _grade, int _count, bool _isEnemy)
     {
