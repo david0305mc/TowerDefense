@@ -19,7 +19,6 @@ public class MainUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private TextMeshProUGUI staminaText;
     [SerializeField] private Button test01Btn;
-    [SerializeField] private Button addArcherBtn;
     [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
     
@@ -47,21 +46,8 @@ public class MainUI : MonoBehaviour
 
         test01Btn.onClick.AddListener(() =>
         {
-        });
-
-        addArcherBtn.onClick.AddListener(() =>
-        {
-            //MGameManager.Instance.AddHero(2002);
-        });
-        WinBtn.onClick.AddListener(() =>
-        {
-            //var popup = PopupManager.Instance.Show<UnitInfoPopup>(()=> { 
-            //    // Hide
-
-            //});
-            MGameManager.Instance.WinStage();
             var popup = PopupManager.Instance.Show<GameResultPopup>();
-            popup.SetData(() =>
+            popup.SetData(false, () =>
             {
                 MGameManager.Instance.RemoveStage();
                 MGameManager.Instance.BackToHome();
@@ -74,30 +60,30 @@ public class MainUI : MonoBehaviour
                 MGameManager.Instance.RemoveStage();
                 MGameManager.Instance.NextStage();
             });
-            //StartStage(stageSlot.stage);
-
-            //UserData.Instance.CurrStage
         });
-        //testBtn.onClick.AddListener(() =>
-        //{
-        //    UserData.Instance.SaveEnemyData();
-        //});
 
-        //loadEnemyBtn.onClick.AddListener(() =>
-        //{
+        WinBtn.onClick.AddListener(() =>
+        {
+            //var popup = PopupManager.Instance.Show<UnitInfoPopup>(()=> { 
+            //    // Hide
 
-        //});
-        //UserData.Instance.LocalData.Gold.Subscribe(v =>
-        //{
-        //    goldText.SetText(v.ToString());
-        //}).AddTo(gameObject);
-
-        //shopBtn.onClick.AddListener(() =>
-        //{
-        //    UserData.Instance.LocalData.Gold.Value++;
-        //    UserData.Instance.SaveLocalData();
-        //    PopupManager.Instance.Show<ShopPopup>();
-        //});
+            //});
+            MGameManager.Instance.WinStage();
+            var popup = PopupManager.Instance.Show<GameResultPopup>();
+            popup.SetData(true, () =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.BackToHome();
+            }, () =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.RetryStage();
+            }, () =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.NextStage();
+            });
+        });
         HideStageInfo();
     }
 
