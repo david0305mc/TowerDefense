@@ -35,6 +35,7 @@ public class UIIntro : MonoBehaviour
         DataManager.Instance.MakeClientDT();
         UserData.Instance.InitData();
         UserData.Instance.LoadLocalData();
+        GameTime.InitLocalBase();
 
         var mainSceneAsync = SceneManager.LoadSceneAsync("Main");
         await mainSceneAsync;

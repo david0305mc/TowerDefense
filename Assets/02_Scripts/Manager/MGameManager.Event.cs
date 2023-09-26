@@ -43,6 +43,38 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
         AddSoul(10);
+        var popup = PopupManager.Instance.Show<GameResultPopup>();
+        popup.SetData(true, () =>
+        {
+            RemoveStage();
+            BackToHome();
+        }, () =>
+        {
+            RemoveStage();
+            RetryStage();
+        }, () =>
+        {
+            RemoveStage();
+            NextStage();
+        });
+    }
+
+    public void LoseStage()
+    {
+        var popup = PopupManager.Instance.Show<GameResultPopup>();
+        popup.SetData(false, () =>
+        {
+            RemoveStage();
+            BackToHome();
+        }, () =>
+        {
+            RemoveStage();
+            RetryStage();
+        }, () =>
+        {
+            RemoveStage();
+            NextStage();
+        });
     }
 
     public void UpgradeUnit(int _uid)

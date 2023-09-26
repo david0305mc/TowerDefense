@@ -114,6 +114,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             UserData.Instance.CurrStage = stageID;
             InitEnemies();
             SpawnAllHero();
+            mainUI.SetStageUI();
         });
     }
 

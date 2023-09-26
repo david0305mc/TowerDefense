@@ -8,6 +8,11 @@ public class GameTime
     private static long initGameTime = 0;
     private static float initClientStartupTime = 0;
 
+    public static void InitLocalBase()
+    {
+        Init((DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds);
+    }
+
     public static void Init(double _gameTime)
     {
         initGameTime = Convert.ToInt64(_gameTime);

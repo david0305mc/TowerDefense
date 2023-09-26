@@ -7,7 +7,7 @@ using UniRx;
 public class MainUI : MonoBehaviour
 {
     enum BottomTab
-    { 
+    {
         Shop,
         Arrangement,
         Worldmap,
@@ -21,11 +21,12 @@ public class MainUI : MonoBehaviour
     [SerializeField] private Button test01Btn;
     [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
-    
+
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
     [SerializeField] private GameObject worldUI;
     [SerializeField] private GameObject ingameUI;
+    [SerializeField] private UIStage uiStage;
 
     private MHeroObj heroObjTest;
     private void Awake()
@@ -47,43 +48,12 @@ public class MainUI : MonoBehaviour
 
         test01Btn.onClick.AddListener(() =>
         {
-            var popup = PopupManager.Instance.Show<GameResultPopup>();
-            popup.SetData(false, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.BackToHome();
-            }, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.RetryStage();
-            }, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.NextStage();
-            });
+            MGameManager.Instance.LoseStage();
         });
 
         WinBtn.onClick.AddListener(() =>
         {
-            //var popup = PopupManager.Instance.Show<UnitInfoPopup>(()=> { 
-            //    // Hide
-
-            //});
             MGameManager.Instance.WinStage();
-            var popup = PopupManager.Instance.Show<GameResultPopup>();
-            popup.SetData(true, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.BackToHome();
-            }, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.RetryStage();
-            }, () =>
-            {
-                MGameManager.Instance.RemoveStage();
-                MGameManager.Instance.NextStage();
-            });
         });
         HideStageInfo();
     }
@@ -97,6 +67,12 @@ public class MainUI : MonoBehaviour
     {
         worldUI.SetActive(false);
         ingameUI.SetActive(true);
+    }
+
+    public void SetStageUI()
+    {
+        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
+        uiStage.SetData(GameTime.Get() + stageInfo.stagecleartime);
     }
 
     public void ShowStageInfo(int _stageID, System.Action _startAction)
