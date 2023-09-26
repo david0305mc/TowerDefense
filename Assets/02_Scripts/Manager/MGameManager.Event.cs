@@ -41,17 +41,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void WinStage()
     {
-        RemoveAllBattleHero();
-        RemoveStage();
-        RemoveAllProjectile();
-
-        cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        worldMap.gameObject.SetActive(true);
-        worldMap.UpdateWorld();
         AddSoul(10);
-        spawnHeroCts?.Cancel();
-        cts?.Cancel();
     }
 
     public void UpgradeUnit(int _uid)

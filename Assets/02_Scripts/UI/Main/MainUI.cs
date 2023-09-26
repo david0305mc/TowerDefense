@@ -60,7 +60,23 @@ public class MainUI : MonoBehaviour
 
             //});
             MGameManager.Instance.WinStage();
+            var popup = PopupManager.Instance.Show<GameResultPopup>();
+            popup.SetData(() =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.BackToHome();
+            }, () =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.RetryStage();
+            }, () =>
+            {
+                MGameManager.Instance.RemoveStage();
+                MGameManager.Instance.NextStage();
+            });
+            //StartStage(stageSlot.stage);
 
+            //UserData.Instance.CurrStage
         });
         //testBtn.onClick.AddListener(() =>
         //{

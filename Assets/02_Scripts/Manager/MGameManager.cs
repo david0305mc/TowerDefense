@@ -96,7 +96,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    private void StartStage(int stageID)
+    public void StartStage(int stageID)
     {
         if (currStageObj != null)
         {
@@ -116,12 +116,39 @@ public partial class MGameManager : SingletonMono<MGameManager>
         });
     }
 
-    private void RemoveStage()
+    public void BackToHome()
+    {
+        cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
+        worldMap.gameObject.SetActive(true);
+        worldMap.UpdateWorld();
+    }
+    public void RetryStage()
+    {
+        StartStage(UserData.Instance.CurrStage);
+    }
+
+    public void NextStage()
+    {
+        int nextStage = UserData.Instance.CurrStage + 1;
+        var stageInfo = DataManager.Instance.GetStageInfoData(nextStage);
+        if (stageInfo == null)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("There is no Stage", "OK");
+            return;
+        }
+        StartStage(UserData.Instance.CurrStage + 1);
+    }
+
+    public void RemoveStage()
     {
         if (!Addressables.ReleaseInstance(currStageOpHandler))
         {
             Destroy(currStageOpHandler.Result.gameObject);
         }
+        RemoveAllBattleHero();
+        RemoveAllProjectile();
+        spawnHeroCts?.Cancel();
+        cts?.Cancel();
         //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
 
@@ -364,18 +391,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         });
     }
 
-    public void NextStage()
-    {
-        //if (stageprefLists.Count <= UserData.Instance.CurrStage + 1)
-        //{
-        //    return;
-        //}
-
-        //RemoveAllHero();
-        //RemoveAllEnemy();
-        //UserData.Instance.CurrStage++;
-        //StartStage(UserData.Instance.CurrStage);
-    }
 
     //private void Update()
     //{
