@@ -6,6 +6,8 @@ using TMPro;
 
 public class UnitInfoPopup : PopupBase
 {
+
+    [SerializeField] private Button dimmBtn;
     [SerializeField] private Button euipToggleBtn;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
@@ -13,8 +15,13 @@ public class UnitInfoPopup : PopupBase
     private int heroUID;
     private System.Action equipAction;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        dimmBtn.onClick.AddListener(() =>
+        {
+            OnClickCloseBtn();
+        });
         euipToggleBtn.onClick.AddListener(() =>
         {
             equipAction?.Invoke();
@@ -22,6 +29,7 @@ public class UnitInfoPopup : PopupBase
             Hide();
         });
     }
+
     public void SetData(int _heroUID, System.Action _equipAction)
     {
         var heroData = UserData.Instance.GetHeroData(_heroUID);
