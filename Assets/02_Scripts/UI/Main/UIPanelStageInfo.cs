@@ -7,18 +7,25 @@ using TMPro;
 public class UIPanelStageInfo : MonoBehaviour
 {
     [SerializeField] private Button startBtn;
+    [SerializeField] private Button closeBtn;
     [SerializeField] private TextMeshProUGUI titleText;
     private System.Action startBtnAction;
+    private System.Action closeBtnAction;
     private void Awake()
     {
         startBtn.onClick.AddListener(() => {
             startBtnAction?.Invoke();
         });
+        closeBtn.onClick.AddListener(() =>
+        {
+            closeBtnAction?.Invoke();
+        });
     }
 
-    public void SetData(int _stageID, System.Action _action)
+    public void SetData(int _stageID, System.Action _startAction, System.Action _closeAction)
     {
-        startBtnAction = _action;
+        startBtnAction = _startAction;
+        closeBtnAction = _closeAction;
         titleText.SetText(_stageID.ToString());
         var stageStatus = UserData.Instance.GetStageStatus(_stageID);
         switch (stageStatus)

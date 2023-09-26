@@ -88,6 +88,8 @@ public class MainUI : MonoBehaviour
         stageInfoPanel.gameObject.SetActive(true);
         stageInfoPanel.SetData(_stageID, () => {
             _startAction?.Invoke();
+        }, ()=> {
+            stageInfoPanel.gameObject.SetActive(false);
         });
     }
 
