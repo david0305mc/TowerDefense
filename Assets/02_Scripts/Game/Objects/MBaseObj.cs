@@ -167,12 +167,13 @@ public class MBaseObj : MonoBehaviour, Damageable
         attackLongDelayCount--;
         if (attackLongDelayCount <= 0)
         {
-            commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.1f;
+            //1000 = 1ÃÊ
+            commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.001f;
             attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         }
         else
         {
-            commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.1f;
+            commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.001f;
         }
 
         var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
