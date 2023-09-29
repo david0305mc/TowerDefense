@@ -15,7 +15,7 @@ public class MEnemyObj : MBaseObj
     {
         Gizmos.color = new Color(1.0f, 0, 0, 0.3f);
         Gizmos.matrix = transform.localToWorldMatrix;
-        //Gizmos.DrawSphere(Vector3.zero, rangeCheckForEditor);
+        Gizmos.DrawSphere(Vector3.zero, rangeCheckForEditor);
 
     }
 
