@@ -548,20 +548,25 @@ public class MBaseObj : MonoBehaviour, Damageable
         Vector3 direction = (transform.position - attackerPos).normalized;
         Vector3 target = transform.position + direction * knockBack * 0.1f;
         Vector3 srcPos = transform.position;
-        UniTask.Create(async () =>
+
+        //넉백 0이어도 발생합니다 ㅠ
+        if (knockBack != 0)
         {
-            float elapse = 0f;
-            while (Vector3.Distance(transform.position, target) > 0.1f)
+            UniTask.Create(async () =>
             {
-                elapse += Time.deltaTime * 2f;
-                float curveValue = MResourceManager.Instance.KnockBackCurve.Evaluate(elapse);
-                await UniTask.Yield(cancellationToken: cts.Token);
-                transform.SetPosition(Vector3.Lerp(srcPos, target, curveValue));
-            }
-            transform.SetPosition(target);
-            agent.enabled = true;
-            rigidBody2d.velocity = Vector3.zero;
-        });
+                float elapse = 0f;
+                while (Vector3.Distance(transform.position, target) > 0.1f)
+                {
+                    elapse += Time.deltaTime * 2f;
+                    float curveValue = MResourceManager.Instance.KnockBackCurve.Evaluate(elapse);
+                    await UniTask.Yield(cancellationToken: cts.Token);
+                    transform.SetPosition(Vector3.Lerp(srcPos, target, curveValue));
+                }
+                transform.SetPosition(target);
+                agent.enabled = true;
+                rigidBody2d.velocity = Vector3.zero;
+            });
+        }
     }
     private void KnockBack(Vector3 attackerPos, int knockBack)
     {
