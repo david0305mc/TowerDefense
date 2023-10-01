@@ -43,9 +43,9 @@ GameObject:
   - component: {fileID: 4329297135594395351}
   - component: {fileID: 8807486515338086067}
   - component: {fileID: 5751104977396312245}
-  - component: {fileID: 3352953681293469957}
+  - component: {fileID: 7744979540542811943}
   m_Layer: 0
-  m_Name: 04_Skeleton_Archer_Bullet
+  m_Name: 1016_Indian_Egg_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.008639336, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -114,7 +114,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.52, y: 0.3}
+  m_Size: {x: 0.26081988, y: 0.3}
   m_EdgeRadius: 0
 --- !u!96 &5751104977396312245
 TrailRenderer:
@@ -224,7 +224,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &3352953681293469957
+--- !u!114 &7744979540542811943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,7 +238,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.144731
+      outSlope: 3.144731
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1685373
+    - serializedVersion: 3
+      time: 1.0166626
+      value: -0.036758423
+      inSlope: 0.025407303
+      outSlope: 0.025407303
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -266,14 +284,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3459112828877582342}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.048, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7833206931387827376}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4213883315403320240
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -315,7 +333,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: -1474495519, guid: 9f70ab1afa3b3384292ae604f2f9eefc, type: 3}
+  m_Sprite: {fileID: -664954553, guid: 89aefeeb8d44c974ba6765334f57c947, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0

@@ -42,10 +42,10 @@ GameObject:
   - component: {fileID: 7833206931387827376}
   - component: {fileID: 4329297135594395351}
   - component: {fileID: 8807486515338086067}
-  - component: {fileID: 4045234268696805764}
   - component: {fileID: 5751104977396312245}
+  - component: {fileID: 3352953681293469957}
   m_Layer: 0
-  m_Name: 02_Slime_Archer_Bullet
+  m_Name: 2004_Skeleton_Archer_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,22 +116,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.52, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &4045234268696805764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2422460180569466054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc7014ecb20dac645bbd5f82e0f3fac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gizmoRadius: 0.179
-  samplePointCount: 100
-  startTR: {fileID: 0}
-  secondTR: {fileID: 0}
 --- !u!96 &5751104977396312245
 TrailRenderer:
   serializedVersion: 2
@@ -240,6 +224,24 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &3352953681293469957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2422460180569466054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43672f0a7e978b848bf97dbb0638fd6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3459112828877582342
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,14 +266,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3459112828877582342}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.048, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7833206931387827376}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &4213883315403320240
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -313,7 +315,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 1638734756, guid: 35b50c9b44abbd847bfa4de72eb358c5, type: 3}
+  m_Sprite: {fileID: -1474495519, guid: 9f70ab1afa3b3384292ae604f2f9eefc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
