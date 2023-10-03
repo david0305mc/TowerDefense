@@ -168,7 +168,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         if (Input.GetMouseButtonUp(0))
         {
             Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-            if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.1f)
+            if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.01f)
             {
                 touchAction?.Invoke();
             }
