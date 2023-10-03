@@ -42,7 +42,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void WinStage()
     {
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        AddSoul(10);
+        AddSoul(UserData.Instance.AcquireGold.Value);
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, () =>
         {

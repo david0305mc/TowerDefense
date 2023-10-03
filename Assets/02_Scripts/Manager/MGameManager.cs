@@ -19,6 +19,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private GoldReewardObj goldRewardPrefab;
+    [SerializeField] private GameObject enemydieEffectPrefab;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -369,6 +370,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     WinStage();
                 }
             });
+            Lean.Pool.LeanPool.Spawn(enemydieEffectPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
             Destroy(enemyObj.gameObject);
             enemyDic.Remove(_uid);
         }
