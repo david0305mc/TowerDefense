@@ -17,10 +17,12 @@ public class UIStage : MonoBehaviour
        .TakeWhile(s => s > 0)
        .Subscribe(timeLeft =>
        {
-           tileLeftText.SetText(timeLeft.ToString());
+           var timeSpan = TimeSpan.FromSeconds(timeLeft);
+           tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
        },
        () =>
        {
+           tileLeftText.SetText("00:00");
            MGameManager.Instance.LoseStage();
             // To Do : Result
        }).AddTo(gameObject);
