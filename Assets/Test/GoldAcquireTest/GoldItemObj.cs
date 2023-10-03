@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public class ProjectileBezier : ProjectileBase
+public class GoldItemObj : MonoBehaviour
 {
+    protected Rigidbody2D rigidBody2d;
+    protected Vector3 srcPos;
+    protected Vector3 dstPos;
+
+    private float elapse;
+    private float speed = 3f;
+
     [Range(0.01f, 1f)]
     public float gizmoRadius = 0.3f;
 
@@ -25,55 +31,91 @@ public class ProjectileBezier : ProjectileBase
     private Vector3[] curvePoints;
     private TrailRenderer trainRenderer;
 
+    protected Vector3 prevPos;
 
-    protected override void Awake()
+
+    protected virtual void Awake()
     {
-        base.Awake();
-        trainRenderer = GetComponent<TrailRenderer>();
-        startTR = transform.Find("StartTR");
-        secondTR = transform.Find("SecondTR");
+        rigidBody2d = GetComponent<Rigidbody2D>();
     }
-    public override void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
+
+    //public void SetData(GameObject _target)
+    //{
+    //    prevPos = _target.transform.position;
+    //    elapse = 0f;
+    //    srcPos = transform.position;
+    //    dstPos = _target.transform.position;
+    //}
+
+    private void LateUpdate()
     {
-        base.Shoot(_attackData, _targetObj, _speed);
+        float dist = Vector2.Distance(srcPos, dstPos);
+        elapse += Time.deltaTime / dist * speed;
+
+        if (elapse >= 1f)
+        {
+            Lean.Pool.LeanPool.Despawn(gameObject);
+            return;
+        }
+
+        UpdateMissile();
+    }
+    //private void Update()
+    //{
+    //    var pos = Vector2.Lerp(srcPos, dstPos, elapse);
+    //    transform.SetPosition(pos);
+    //}
+
+    public void Shoot(GameObject _targetObj, float _speed)
+    {
         if (trainRenderer != null)
         {
             trainRenderer.Clear();
         }
-        
+        elapse = 0f;
+        prevPos = _targetObj.transform.position;
+        elapse = 0f;
+        srcPos = transform.position;
+        dstPos = _targetObj.transform.position;
+
         startTR.position = transform.position;
         startTR.rotation = GameUtil.LookAt2D(startTR.position, _targetObj.transform.position, GameUtil.FacingDirection.DOWN);
         //startTR.SetPositionAndRotation(transform.position, );
-        
-        secondTR.position = startTR.TransformPoint(new Vector2(Random.Range(0, 2) == 0 ? -3 : 3, -2));
-        points = new Vector3[] { transform.position, secondTR.position, targetObj.transform.position };
+
+        secondTR.position = startTR.TransformPoint(new Vector2(Random.Range(0, 2) == 0 ? -5 : 5, -5));
+        points = new Vector3[] { transform.position, secondTR.position, _targetObj.transform.position };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();
         UpdateMissile();
     }
 
-    protected override bool UpdateMissile()
+
+    protected  bool UpdateMissile()
     {
-        if (!base.UpdateMissile())
-        {
-            return false;
-        }
+        //if (!base.UpdateMissile())
+        //{
+        //    return false;
+        //}
         points[points.Length - 1] = dstPos;
-        
+
         if (PointsChanged())
             CalculateCurvePoints(samplePointCount);
-
-        float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * speed;
 
         float fLen = (curvePoints.Length - 1) * elapse;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);
         var pos = curvePoints[(int)fLen];
 
+        //rigidBody2d.MovePosition(pos);
         if (prevPos != pos)
         {
-            rigidBody2d.MovePosition(pos);
-            rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
+            if (rigidBody2d != null)
+            {
+                rigidBody2d.MovePosition(pos);
+            }
+            else
+            {
+                transform.SetPosition(pos);
+            }
         }
         prevPos = pos;
 
