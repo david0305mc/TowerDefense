@@ -566,9 +566,9 @@ public class MBaseObj : MonoBehaviour, Damageable
                     elapse += Time.deltaTime * 2f;
                     float curveValue = MResourceManager.Instance.KnockBackCurve.Evaluate(elapse);
                     await UniTask.Yield(cancellationToken: cts.Token);
-                    transform.SetPosition(Vector3.Lerp(srcPos, target, curveValue));
+                    rigidBody2d.MovePosition(Vector3.Lerp(srcPos, target, curveValue));
                 }
-                transform.SetPosition(target);
+                rigidBody2d.MovePosition(target);
                 agent.enabled = true;
                 rigidBody2d.velocity = Vector3.zero;
             });
