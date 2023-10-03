@@ -243,7 +243,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         
         if (isDead)
         {
-            RemoveEnemy(_enemyObj.UID);
+            KillEnemy(_enemyObj.UID);
         }
         else
         {
@@ -267,7 +267,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         if (isDead)
         {
-            RemoveBattleHero(_heroObj.UID);
+            KillBattleHero(_heroObj.UID);
         }
         else
         {
@@ -320,6 +320,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
+    private void KillBattleHero(int _uid)
+    {
+        RemoveBattleHero(_uid);
+        if (UserData.Instance.isEmptyBattleHero())
+        {
+            LoseStage();
+        }
+    }
     private void RemoveBattleHero(int _uid)
     {
         if (_uid == -1)
@@ -337,15 +345,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
+    private void KillEnemy(int _uid)
+    {
+        RemoveEnemy(_uid);
+        if (_uid == enemyBossUID)
+        {
+            WinStage();
+        }
+    }
+
     private void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
         Destroy(enemyDic[_uid].gameObject);
         enemyDic.Remove(_uid);
-        if (_uid == enemyBossUID)
-        {
-            WinStage();
-        }
     }
     private void RemoveAllEnemy()
     {

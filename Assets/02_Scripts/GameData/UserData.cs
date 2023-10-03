@@ -19,6 +19,7 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitData> enemyDataDic;
     public Dictionary<int, UnitData> battleHeroDataDic;
 
+    public bool isEmptyBattleHero() => battleHeroDataDic.Count == 0;
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
     public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
