@@ -8,6 +8,10 @@ public class SwordAttackChecker : MonoBehaviour
     private int attackCount;
     private System.Action<Collider2D> attackAction;
     private bool isEnemy;
+    private bool isUIMode;
+
+    public bool IsUIMode { get { return isUIMode; } set { isUIMode = value; } }
+
     public void SetAttackAction(bool _isEnemy, int _maxMultiAttackCount, System.Action<Collider2D> _attackAction)
     {
         maxMultiAttackCount = _maxMultiAttackCount;
@@ -20,7 +24,10 @@ public class SwordAttackChecker : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {   
+    {
+        if (isUIMode)
+            return;
+
         var damagable = collision.GetComponent<Damageable>();
         if (damagable != null)
         {

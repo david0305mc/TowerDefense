@@ -16,10 +16,10 @@ public partial class UserData : Singleton<UserData>
     public int CurrStage { get; set; }
 
     public LocalSaveData LocalData { get; set; }
-    public Dictionary<int, UnitData> enemyDataDic;
-    public Dictionary<int, UnitData> battleHeroDataDic;
+    public Dictionary<int, UnitBattleData> enemyDataDic;
+    public Dictionary<int, UnitBattleData> battleHeroDataDic;
 
-    public bool isEmptyBattleHero() => battleHeroDataDic.Count == 0;
+    public bool isEmptyBattleHero() => battleHeroDataDic.Where(i=>i.Value.isDead).Count() == 0;
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
     public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
@@ -34,15 +34,15 @@ public partial class UserData : Singleton<UserData>
         }
         return data.Key;
     }
-    public int GetPartyUIDByIndex(int _index)
+    public int GetBattlePartyUIDByIndex(int _index)
     {
         return LocalData.BattlePartyDic[_index];
     }
     public void InitData()
     {
         ShopSelectedItem = -1;
-        enemyDataDic = new Dictionary<int, UnitData>();
-        battleHeroDataDic = new Dictionary<int, UnitData>();
+        enemyDataDic = new Dictionary<int, UnitBattleData>();
+        battleHeroDataDic = new Dictionary<int, UnitBattleData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
     }
 
@@ -98,25 +98,44 @@ public partial class UserData : Singleton<UserData>
         }
     }
 
+    public bool isUnitDead(int _uid, bool isEnemy)
+    {
+        if (isEnemy)
+            return IsEnemyDead(_uid);
+        return isBattleHeroDead(_uid);
+    }
     public UnitData GetUnitData(int _uid, bool isEnemy)
     {
         if (isEnemy)
             return GetEnemyData(_uid);
         return GetBattleHeroData(_uid);
     }
+
+    public bool IsEnemyDead(int _uid)
+    {
+        return enemyDataDic[_uid].isDead;
+    }
+
     public UnitData GetEnemyData(int _uid)
     {
         if (enemyDataDic.ContainsKey(_uid))
             return enemyDataDic[_uid];
         return null;
     }
+
     public UnitData GetHeroData(int _uid)
     {
         if (LocalData.HeroDataDic.ContainsKey(_uid))
             return LocalData.HeroDataDic[_uid];
         return null;
     }
-    public UnitData GetBattleHeroData(int _uid)
+
+    public bool isBattleHeroDead(int _uid)
+    {
+        return battleHeroDataDic[_uid].isDead;
+    }
+
+    public UnitBattleData GetBattleHeroData(int _uid)
     {
         if (battleHeroDataDic.ContainsKey(_uid))
             return battleHeroDataDic[_uid];
@@ -183,16 +202,16 @@ public partial class UserData : Singleton<UserData>
 
     public UnitData AddEnemyData(int _tid)
     {
-        var data = UnitData.Create(MGameManager.GenerateUID(), _tid, 1, 1, true);
+        var data = UnitBattleData.Create(MGameManager.GenerateUID(), _tid, 1, 1, true);
         enemyDataDic.Add(data.uid, data);
         return data;
     }
 
     public bool AttackToEnmey(int _enemyUID, int _damage)
     {
-        if (!enemyDataDic.ContainsKey(_enemyUID))
+        if (enemyDataDic[_enemyUID].isDead)
         {
-            Debug.LogError($"already detroyed {_enemyUID}");
+            Debug.LogError($"already detroyed enemy {_enemyUID}");
             return false;
         }
         var enemyData = enemyDataDic[_enemyUID];
@@ -205,9 +224,9 @@ public partial class UserData : Singleton<UserData>
     }
     public bool AttackToHero(int _heroUID, int _damage)
     {
-        if (!battleHeroDataDic.ContainsKey(_heroUID))
+        if (battleHeroDataDic[_heroUID].isDead)
         {
-            Debug.LogError($"already detroyed {_heroUID}");
+            Debug.LogError($"already detroyed hero {_heroUID}");
             return false;
         }
         var heroData = battleHeroDataDic[_heroUID];
@@ -224,14 +243,25 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic.Remove(_enemyUID);
     }
 
-
-    public UnitData AddBattleHeroData(UnitData _heroData)
+    public UnitBattleData AddBattleHeroData(UnitData _heroData)
     {
-        var data = UnitData.Create(MGameManager.GenerateUID(), _heroData.tid, _heroData.refUnitGradeData.grade, _heroData.count, false);
+        var data = UnitBattleData.Create(_heroData.uid, _heroData.tid, _heroData.refUnitGradeData.grade, _heroData.count, false);
         battleHeroDataDic.Add(data.uid, data);
         return data;
     }
 
+    public void KillEnemy(int _heroUID, int _enemyUID)
+    {
+        enemyDataDic[_enemyUID].isDead = true;
+        battleHeroDataDic[_heroUID].killCount++;
+    }
+
+    public void KillBattleHero(int _enemyUID, int _heroUID)
+    {
+        battleHeroDataDic[_heroUID].isDead = true;
+        enemyDataDic[_enemyUID].killCount++;
+
+    }
     public void RemoveBattleHero(int _heroUID)
     {
         battleHeroDataDic.Remove(_heroUID);

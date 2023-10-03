@@ -38,6 +38,28 @@ public class LocalSaveData
     }
 }
 
+public class UnitBattleData : UnitData
+{
+    public int killCount;
+    public bool isDead;
+    public static new UnitBattleData Create(int _uid, int _tid, int _grade, int _count, bool _isEnemy)
+    {
+        UnitBattleData data = new UnitBattleData()
+        {
+            uid = _uid,
+            tid = _tid,
+            grade = _grade,
+            IsEnemy = _isEnemy,
+            count = _count,
+            killCount = 0,
+            isDead = false
+    };
+        data.UpdateRefData();
+        data.hp = data.refUnitGradeData.hp;
+        return data;
+    }
+}
+
 [System.Serializable]
 public class UnitData
 {

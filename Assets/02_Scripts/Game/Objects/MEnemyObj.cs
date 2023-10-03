@@ -62,8 +62,7 @@ public class MEnemyObj : MBaseObj
                 MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                 damagable.GetDamaged(attackData);
 
-                var unitData = UserData.Instance.GetBattleHeroData(targetObjUID);
-                if (unitData == null)
+                if (UserData.Instance.isBattleHeroDead(targetObjUID))
                 {
                     fsm.ChangeState(FSMStates.Idle);
                 }

@@ -54,13 +54,10 @@ public class UIPanelUnitSelect : MonoBehaviour
     {
         Enumerable.Range(0, battlePartyList.Count).ToList().ForEach(i =>
         {
-            int unitUID = UserData.Instance.GetPartyUIDByIndex(i);
+            int unitUID = UserData.Instance.GetBattlePartyUIDByIndex(i);
             battlePartyList[i].SetData(i, unitUID, (_slotIndex) =>
             {
                 MGameManager.Instance.RemoveBattleParty(_slotIndex);
-                //UserData.Instance.RemoveBattleParty(_slotIndex);
-                //battlePartyList[i].RemoveHero();
-                //InitUserListScroll();
             }); 
         });
     }

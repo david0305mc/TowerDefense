@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GameResultPopup : PopupBase
 {
@@ -10,14 +11,38 @@ public class GameResultPopup : PopupBase
     [SerializeField] private Button nextStageBtn;
     [SerializeField] private GameObject winObject;
     [SerializeField] private GameObject loseObject;
-
+    [SerializeField] private List<UICell_UnitKill> uiUnitKillLists;
     protected override void Awake()
     {
         base.Awake();
     }
 
+
+    private void InitBattleParty()
+    {
+        Enumerable.Range(0, uiUnitKillLists.Count).ToList().ForEach(i =>
+        {
+            int unitUID = UserData.Instance.GetBattlePartyUIDByIndex(i);
+            if (unitUID != -1)
+            {
+                uiUnitKillLists[i].SetActive(true);
+                uiUnitKillLists[i].SetData(i, unitUID, (_slotIndex) =>
+                {
+
+                });
+            }
+            else
+            {
+                uiUnitKillLists[i].SetActive(false);
+            }
+            
+        });
+    }
+
     public void SetData(bool isWin, System.Action _homeAction, System.Action _retryAction, System.Action _nextStageAction)
     {
+        InitBattleParty();
+
         if (isWin)
         {
             winObject.SetActive(true);

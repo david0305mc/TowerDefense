@@ -36,8 +36,7 @@ public class MHeroObj : MBaseObj
                 MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                 damagable.GetDamaged(attackData);
 
-                var unitData = UserData.Instance.GetEnemyData(targetObjUID);
-                if (unitData == null)
+                if (UserData.Instance.IsEnemyDead(targetObjUID))
                 {
                     fsm.ChangeState(FSMStates.Idle);
                 }

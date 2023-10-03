@@ -93,10 +93,9 @@ public class MBaseObj : MonoBehaviour, Damageable
                 return;
             }
             // Fire Only For Projectile
-            var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
-            if (opponentUnitData != null)
+            if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
             {
-                if (this.unitData.refData.unit_type == UNIT_TYPE.ARCHER)
+                if (!UserData.Instance.isUnitDead(targetObjUID, !UnitData.IsEnemy))
                 {
                     MGameManager.Instance.LauchProjectile(this, targetObjUID);
                 }
@@ -143,6 +142,10 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public void SetUIMode(int _sortingOrder)
     {
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.IsUIMode = true;
+        }
         sortingGroup.sortingLayerName = Game.GameConfig.UILayerName;
         sortingGroup.sortingOrder = _sortingOrder;
         fsm.ChangeState(FSMStates.PrevIdle);
@@ -153,6 +156,10 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public void SetBattleMode()
     {
+        if (swordAttackChecker != null)
+        {
+            swordAttackChecker.IsUIMode = false;
+        }
         sortingGroup.sortingLayerName = Game.GameConfig.ForegroundLayerName;
         sortingGroup.sortingOrder = 0;
         hpBar.SetActive(true);
@@ -176,8 +183,11 @@ public class MBaseObj : MonoBehaviour, Damageable
             commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.001f;
         }
 
-        var opponentUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
-        if (opponentUnitData != null)
+        if (UserData.Instance.isUnitDead(targetObjUID, !UnitData.IsEnemy))
+        {
+            fsm.ChangeState(FSMStates.Idle);
+        }
+        else
         {
             MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
             if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
@@ -188,10 +198,6 @@ public class MBaseObj : MonoBehaviour, Damageable
             {
                 fsm.ChangeState(FSMStates.AttackDelay);
             }
-        }
-        else
-        {
-            fsm.ChangeState(FSMStates.Idle);
         }
     }
 
@@ -325,13 +331,13 @@ public class MBaseObj : MonoBehaviour, Damageable
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0f)
         {
-            if (UserData.Instance.GetUnitData(targetObjUID, !IsEnemy()) != null)
+            if (UserData.Instance.isUnitDead(targetObjUID, !IsEnemy()))
             {
-                fsm.ChangeState(FSMStates.Attack);
+                fsm.ChangeState(FSMStates.Idle);
             }
             else
             {
-                fsm.ChangeState(FSMStates.Idle);
+                fsm.ChangeState(FSMStates.Attack);
             }
         }
     }
@@ -543,7 +549,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         cts?.Cancel();
         cts = new CancellationTokenSource();
-        agent.enabled = false;
         rigidBody2d.velocity = Vector3.zero;
         Vector3 direction = (transform.position - attackerPos).normalized;
         Vector3 target = transform.position + direction * knockBack * 0.1f;
@@ -554,6 +559,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             UniTask.Create(async () =>
             {
+                agent.enabled = false;
                 float elapse = 0f;
                 while (Vector3.Distance(transform.position, target) > 0.1f)
                 {

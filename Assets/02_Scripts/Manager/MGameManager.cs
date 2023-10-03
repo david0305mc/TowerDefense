@@ -236,14 +236,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         // GetDamaged
         bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _damage);
-        if (UserData.Instance.GetBattleHeroData(_attackerUID) != null)
+        if (!UserData.Instance.isBattleHeroDead(_attackerUID))
         {
             DoAggroToHero(_enemyObj, _attackerUID);
         }
         
         if (isDead)
         {
-            KillEnemy(_enemyObj.UID);
+            KillEnemy(_attackerUID, _enemyObj.UID);
         }
         else
         {
@@ -261,13 +261,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void DoHeroGetDamage(MHeroObj _heroObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
         bool isDead = UserData.Instance.AttackToHero(_heroObj.UID, _damage);
-        if (UserData.Instance.GetEnemyData(_attackerUID) != null)
+        if (!UserData.Instance.IsEnemyDead(_attackerUID))
         {
             DoAggroToEnemy(_heroObj, _attackerUID);
         }
         if (isDead)
         {
-            KillBattleHero(_heroObj.UID);
+            KillBattleHero(_attackerUID, _heroObj.UID);
         }
         else
         {
@@ -320,12 +320,17 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void KillBattleHero(int _uid)
+    private void KillBattleHero(int _attackerUID, int _uid)
     {
-        RemoveBattleHero(_uid);
+        UserData.Instance.KillBattleHero(_attackerUID, _uid);
         if (UserData.Instance.isEmptyBattleHero())
         {
             LoseStage();
+        }
+        if (heroDic.ContainsKey(_uid))
+        {
+            Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
+            heroDic.Remove(_uid);
         }
     }
     private void RemoveBattleHero(int _uid)
@@ -333,8 +338,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
         if (_uid == -1)
             return;
         UserData.Instance.RemoveBattleHero(_uid);
-        Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
-        heroDic.Remove(_uid);
+        if (heroDic.ContainsKey(_uid))
+        {
+            Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
+            heroDic.Remove(_uid);
+        }
     }
 
     private void RemoveAllBattleHero()
@@ -345,20 +353,29 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void KillEnemy(int _uid)
+    private void KillEnemy(int attackerUID, int _uid)
     {
-        RemoveEnemy(_uid);
+        UserData.Instance.KillEnemy(attackerUID, _uid);
         if (_uid == enemyBossUID)
         {
             WinStage();
+        }
+
+        if (enemyDic.ContainsKey(_uid))
+        {
+            Destroy(enemyDic[_uid].gameObject);
+            enemyDic.Remove(_uid);
         }
     }
 
     private void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
-        Destroy(enemyDic[_uid].gameObject);
-        enemyDic.Remove(_uid);
+        if (enemyDic.ContainsKey(_uid))
+        {
+            Destroy(enemyDic[_uid].gameObject);
+            enemyDic.Remove(_uid);
+        }
     }
     private void RemoveAllEnemy()
     {
