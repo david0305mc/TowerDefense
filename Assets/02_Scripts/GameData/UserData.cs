@@ -19,6 +19,8 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitBattleData> enemyDataDic;
     public Dictionary<int, UnitBattleData> battleHeroDataDic;
 
+    public ReactiveProperty<int> AcquireGold;
+
     public bool isEmptyBattleHero() => battleHeroDataDic.Where(i=>i.Value.isDead).Count() == 0;
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
@@ -44,6 +46,7 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic = new Dictionary<int, UnitBattleData>();
         battleHeroDataDic = new Dictionary<int, UnitBattleData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
+        AcquireGold = new ReactiveProperty<int>(0);
     }
 
     private void InitBeginData()

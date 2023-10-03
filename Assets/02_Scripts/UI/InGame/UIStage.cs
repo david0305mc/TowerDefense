@@ -7,7 +7,10 @@ using System;
 
 public class UIStage : MonoBehaviour
 {
+    [SerializeField] private Transform goldTargetTR;
+    public Transform GoldTarget => goldTargetTR;
     [SerializeField] private TextMeshProUGUI tileLeftText;
+    [SerializeField] private TextMeshProUGUI acquireGoldText;
     private CompositeDisposable disposable = new CompositeDisposable();
     public void SetData(long endUnixTime)
     {
@@ -25,9 +28,12 @@ public class UIStage : MonoBehaviour
            tileLeftText.SetText("00:00");
            MGameManager.Instance.LoseStage();
             // To Do : Result
-       }).AddTo(gameObject);
-        //UniRx.Observable.Timer()
+       }).AddTo(disposable);
 
+        UserData.Instance.AcquireGold.Subscribe(_gold =>
+        {
+            acquireGoldText.SetText(_gold.ToString());
+        }).AddTo(disposable);
     }
     private void OnDisable()
     {

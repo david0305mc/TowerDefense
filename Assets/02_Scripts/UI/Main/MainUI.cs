@@ -28,6 +28,8 @@ public class MainUI : MonoBehaviour
     [SerializeField] private GameObject ingameUI;
     [SerializeField] private UIStage uiStage;
 
+    public UIStage GetUIStage => uiStage;
+
     private MHeroObj heroObjTest;
     private void Awake()
     {

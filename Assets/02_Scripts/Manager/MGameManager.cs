@@ -18,6 +18,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private MainUI mainUI;
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
+    [SerializeField] private GoldReewardObj goldRewardPrefab;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -100,6 +101,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void StartStage(int stageID)
     {
+        UserData.Instance.AcquireGold.Value = 0;
         mainUI.SetIngameUI();
         if (currStageObj != null)
         {
@@ -356,14 +358,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void KillEnemy(int attackerUID, int _uid)
     {
         UserData.Instance.KillEnemy(attackerUID, _uid);
-        if (_uid == enemyBossUID)
-        {
-            WinStage();
-        }
-
         if (enemyDic.ContainsKey(_uid))
         {
-            Destroy(enemyDic[_uid].gameObject);
+            var enemyObj = enemyDic[_uid];
+            var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+            goldObj.Shoot(mainUI.GetUIStage.GoldTarget, ()=> {
+                UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
+                if (_uid == enemyBossUID)
+                {
+                    WinStage();
+                }
+            });
+            Destroy(enemyObj.gameObject);
             enemyDic.Remove(_uid);
         }
     }
