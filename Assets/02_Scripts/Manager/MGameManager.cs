@@ -32,6 +32,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private CancellationTokenSource cts;
     private CancellationTokenSource spawnHeroCts;
 
+    private int enemyBossUID;
+
 
     protected override void OnSingletonAwake()
     {
@@ -201,6 +203,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void InitEnemies()
     {
+        enemyBossUID = 0;
         enemyDic = new Dictionary<int, MEnemyObj>();
         var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
@@ -216,8 +219,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 }    
                 DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
             });
-            //enemyObj.transform.SetPosition(new Vector3(enemyObj.transform.position.x, enemyObj.transform.position.y, 0));
+            if (enemyObj.IsEnemyBoss)
+            {
+                enemyBossUID = enemyObj.UID;
+            }
             enemyDic.Add(data.uid, enemyObj);
+        }
+        if (enemyBossUID == 0)
+        {
+            Debug.LogError("There is No Enemy Boss");
+            enemyBossUID = enemyDic.First().Value.UID;
         }
     }
 
@@ -331,6 +342,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.RemoveEnmey(_uid);
         Destroy(enemyDic[_uid].gameObject);
         enemyDic.Remove(_uid);
+        if (_uid == enemyBossUID)
+        {
+            WinStage();
+        }
     }
     private void RemoveAllEnemy()
     {
