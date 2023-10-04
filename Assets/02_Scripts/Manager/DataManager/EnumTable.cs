@@ -21,7 +21,9 @@ public enum UNIT_TYPE
 }
 public enum ITEM_TYPE 
 { 
-	SOUL                         = 0,        	// 영혼 아이템 (재화)
+	UNIT                         = 0,        	// 조각
+	SOUL                         = 1,        	// 영혼 아이템 (재화)
+	EXP                          = 2,        	// 경험치
 }
 public enum LANGUAGE_TYPE 
 { 

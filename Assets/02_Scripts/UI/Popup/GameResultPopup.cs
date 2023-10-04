@@ -10,6 +10,7 @@ public class GameResultPopup : PopupBase
     [SerializeField] private Button retryBtn;
     [SerializeField] private Button nextStageBtn;
     [SerializeField] private GameObject winObject;
+    [SerializeField] private GameObject killViewObject;
     [SerializeField] private GameObject loseObject;
     [SerializeField] private List<UICell_UnitKill> uiUnitKillLists;
     [SerializeField] private UIGridView gridView = default;
@@ -40,18 +41,37 @@ public class GameResultPopup : PopupBase
         });
     }
 
-    public void SetData(bool isWin, System.Action _homeAction, System.Action _retryAction, System.Action _nextStageAction)
+    public void SetData(bool isWin, List<DataManager.StageRewardInfo> rewards, System.Action _homeAction, System.Action _retryAction, System.Action _nextStageAction)
     {
         InitBattleParty();
 
         if (isWin)
         {
+            killViewObject.SetActive(true);
             winObject.SetActive(true);
             loseObject.SetActive(false);
+
+            List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
+            rewardLists.Add(new UIRewardCellData(0));
+
+            foreach (var rewardInfo in rewards)
+            {
+                rewardLists.Add(new UIRewardCellData(rewardInfo.id));
+            }
+
+            //var itemData = Enumerable.Range(0, 10).Select(i => new UIRewardCellData(i)).ToArray();
+            gridView.UpdateContents(rewardLists.ToArray());
+
+            gridView.OnCellClicked(index =>
+            {
+                //SelectCell(index);
+            });
+
         }
         else
         {
             winObject.SetActive(false);
+            killViewObject.SetActive(false);
             loseObject.SetActive(true);
         }
 
@@ -71,14 +91,6 @@ public class GameResultPopup : PopupBase
         nextStageBtn.onClick.AddListener(() => {
             Hide();
             _nextStageAction?.Invoke();
-        });
-
-        var itemData = Enumerable.Range(0, 10).Select(i => new UIRewardCellData(i)).ToArray();
-        gridView.UpdateContents(itemData);
-
-        gridView.OnCellClicked(index =>
-        {
-            //SelectCell(index);
         });
     }
 }

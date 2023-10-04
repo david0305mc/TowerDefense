@@ -26,6 +26,8 @@ public partial class DataManager {
 	}
 	public partial class Unitinfo {
 		public int id;
+		public string memo;
+		public string memo2;
 		public UNIT_TYPE unit_type;
 		public int checkrange;
 		public int aggroorder;
@@ -53,6 +55,7 @@ public partial class DataManager {
 	public partial class UnitGradeInfo {
 		public int id;
 		public int unitid;
+		public string memo;
 		public int grade;
 		public int combatpower;
 		public int hp;
@@ -66,6 +69,7 @@ public partial class DataManager {
 		public int projectileid;
 		public int splashdmg;
 		public int splashrange;
+		public string splasheffectprefab;
 		public int knockback;
 		public int summoncnt;
 		public string boomeffectprefab;
@@ -123,6 +127,28 @@ public partial class DataManager {
 	}
 	public StageInfo GetStageInfoData(int _id){
 		if (StageinfoDic.TryGetValue(_id, out StageInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class StageRewardInfo {
+		public int id;
+		public int stageid;
+		public int order;
+		public ITEM_TYPE rewardtype;
+		public int rewardid;
+		public int rewardcount;
+	};
+	public StageRewardInfo[] StagerewardinfoArray { get; private set; }
+	public Dictionary<int, StageRewardInfo> StagerewardinfoDic { get; private set; }
+	public void BindStageRewardInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(StagerewardinfoArray)).SetValue(this, deserializaedData, null);
+		StagerewardinfoDic = StagerewardinfoArray.ToDictionary(i => i.id);
+	}
+	public StageRewardInfo GetStageRewardInfoData(int _id){
+		if (StagerewardinfoDic.TryGetValue(_id, out StageRewardInfo value)){
 			return value;
 		}
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");

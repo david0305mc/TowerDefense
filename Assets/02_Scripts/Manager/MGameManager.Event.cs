@@ -13,6 +13,30 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
+    public void AddStageRewards(int _soul, List<DataManager.StageRewardInfo> rewards)
+    {
+        UserData.Instance.LocalData.Soul.Value += _soul;
+
+        foreach (var item in rewards)
+        {
+            switch ((ITEM_TYPE)item.rewardtype)
+            {
+                case ITEM_TYPE.EXP:
+                    UserData.Instance.LocalData.Exp.Value += item.rewardcount;
+                    break;
+                case ITEM_TYPE.SOUL:
+                    UserData.Instance.LocalData.Soul.Value += item.rewardcount;
+                    break;
+                case ITEM_TYPE.UNIT:
+                    UserData.Instance.AddHeroData(item.rewardid, item.rewardcount);
+                    break;
+                default:
+                    break;
+            }
+        }
+        UserData.Instance.SaveLocalData();
+    }
+
     public void AddHero(int _tid, int _count)
     {
         UserData.Instance.AddHeroData(_tid, _count);
@@ -41,10 +65,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void WinStage()
     {
+        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
+        var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.CurrStage);
+
+        AddStageRewards(UserData.Instance.AcquireGold.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        AddSoul(UserData.Instance.AcquireGold.Value);
+
         var popup = PopupManager.Instance.Show<GameResultPopup>();
-        popup.SetData(true, () =>
+        popup.SetData(true, stageRewards, () =>
         {
             RemoveStage();
             BackToHome();
@@ -62,7 +90,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void LoseStage()
     {
         var popup = PopupManager.Instance.Show<GameResultPopup>();
-        popup.SetData(false, () =>
+        popup.SetData(false, null, () =>
         {
             RemoveStage();
             BackToHome();

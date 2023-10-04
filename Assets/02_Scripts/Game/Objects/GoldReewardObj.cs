@@ -32,6 +32,7 @@ public class GoldReewardObj : MonoBehaviour
     private Vector3[] curvePoints;
     private TrailRenderer trainRenderer;
 
+    private Transform targetObj;
     protected Vector3 prevPos;
     private System.Action endAction;
 
@@ -50,6 +51,7 @@ public class GoldReewardObj : MonoBehaviour
 
     private void Update()
     {
+        dstPos = targetObj.position;
         float dist = Vector2.Distance(srcPos, dstPos);
         elapse += Time.deltaTime / dist * speed;
 
@@ -70,16 +72,17 @@ public class GoldReewardObj : MonoBehaviour
 
     public void Shoot(Transform _targetObj, System.Action _endAction)
     {
+        targetObj = _targetObj;
         endAction = _endAction;
         if (trainRenderer != null)
         {
             trainRenderer.Clear();
         }
         elapse = 0f;
-        prevPos = _targetObj.position;
+        prevPos = targetObj.position;
         elapse = 0f;
         srcPos = transform.position;
-        dstPos = _targetObj.position;
+        dstPos = targetObj.position;
 
         startTR.position = transform.position;
         startTR.rotation = GameUtil.LookAt2D(startTR.position, _targetObj.position, GameUtil.FacingDirection.DOWN);

@@ -46,5 +46,10 @@ public partial class DataManager
         return GachalistArray.Last().id;
     }
 
+    public List<StageRewardInfo> GetStageRewards(int _stageID)
+    {
+        return StagerewardinfoDic.Values.Where(item => item.stageid == _stageID).ToList();
+    }
+
 
 }

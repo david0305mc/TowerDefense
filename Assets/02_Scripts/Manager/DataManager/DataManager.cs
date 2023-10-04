@@ -22,6 +22,7 @@ public partial class DataManager : Singleton<DataManager>
 			"UnitGradeInfo",
 			"ProjectileInfo",
 			"StageInfo",
+			"StageRewardInfo",
 			"GachaList",
 		};
 
