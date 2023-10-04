@@ -12,6 +12,7 @@ public class GameResultPopup : PopupBase
     [SerializeField] private GameObject winObject;
     [SerializeField] private GameObject loseObject;
     [SerializeField] private List<UICell_UnitKill> uiUnitKillLists;
+    [SerializeField] private UIGridView gridView = default;
     protected override void Awake()
     {
         base.Awake();
@@ -70,6 +71,14 @@ public class GameResultPopup : PopupBase
         nextStageBtn.onClick.AddListener(() => {
             Hide();
             _nextStageAction?.Invoke();
+        });
+
+        var itemData = Enumerable.Range(0, 10).Select(i => new UIRewardCellData(i)).ToArray();
+        gridView.UpdateContents(itemData);
+
+        gridView.OnCellClicked(index =>
+        {
+            //SelectCell(index);
         });
     }
 }
