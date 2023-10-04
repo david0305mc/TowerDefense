@@ -32,7 +32,7 @@ public class UIPanelStageInfo : MonoBehaviour
         var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         startBtnAction = _startAction;
         closeBtnAction = _closeAction;
-        titleText.SetText(_stageID.ToString());
+        titleText.SetText(LocalizeManager.Instance.GetLocalString(stageInfo.stagename));
         battlePowerText.SetText(UserData.Instance.BattlePower.ToString());
         requrePowerText.SetText(stageInfo.needcombatpower.ToString());
 

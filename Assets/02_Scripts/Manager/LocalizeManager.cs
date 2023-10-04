@@ -22,7 +22,7 @@ public class LocalizeManager : Singleton<LocalizeManager>
 
         if (localInfo == null)
         {
-            return string.Empty;
+            return _key;
         }
 
         switch (language)
