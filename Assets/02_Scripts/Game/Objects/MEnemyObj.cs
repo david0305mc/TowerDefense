@@ -33,7 +33,6 @@ public class MEnemyObj : MBaseObj
     protected override void Idle_Enter()
     {
         base.Idle_Enter();
-        agent.avoidancePriority = 1;
     }
     protected override void Idle_Update()
     {
@@ -91,7 +90,6 @@ public class MEnemyObj : MBaseObj
     protected override void DashMove_Enter()
     {
         base.DashMove_Enter();
-        agent.avoidancePriority = 1;
     }
 
     protected override void DashMove_Update()
@@ -102,7 +100,6 @@ public class MEnemyObj : MBaseObj
     protected override void Attack_Enter()
     {
         base.Attack_Enter();
-        agent.avoidancePriority = 1;
     }
     protected override void Attack_Update()
     {
@@ -112,7 +109,6 @@ public class MEnemyObj : MBaseObj
     protected override void AttackDelay_Enter()
     {
         base.AttackDelay_Enter();
-        agent.avoidancePriority = 1;
     }
 
     protected override void AttackDelay_Update()

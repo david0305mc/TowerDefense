@@ -47,7 +47,6 @@ public class MHeroObj : MBaseObj
     protected override void Idle_Enter()
     {
         base.Idle_Enter();
-        agent.avoidancePriority = 11;
     }
     protected override void Idle_Update()
     {
@@ -68,7 +67,6 @@ public class MHeroObj : MBaseObj
         PlayAni("Walk");
         ResumeAgent();
         state = fsm.State.ToString();
-        agent.avoidancePriority = 11;
     }
 
     protected override void WaypointMove_Update()
@@ -109,7 +107,6 @@ public class MHeroObj : MBaseObj
     protected override void DashMove_Enter()
     {
         base.DashMove_Enter();
-        agent.avoidancePriority = 11;
     }
 
     protected override void DashMove_Update()
@@ -120,7 +117,6 @@ public class MHeroObj : MBaseObj
     protected override void Attack_Enter()
     {
         base.Attack_Enter();
-        agent.avoidancePriority = 11;
     }
 
     protected override void Attack_Update()
@@ -130,7 +126,6 @@ public class MHeroObj : MBaseObj
     protected override void AttackDelay_Enter()
     {
         base.AttackDelay_Enter();
-        agent.avoidancePriority = 11;
     }
 
     protected override void AttackDelay_Update()

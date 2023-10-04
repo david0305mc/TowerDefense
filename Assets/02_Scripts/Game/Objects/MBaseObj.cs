@@ -57,11 +57,14 @@ public class MBaseObj : MonoBehaviour, Damageable
     private SortingGroup sortingGroup;
     protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
+    private CircleCollider2D circleCollider;
     private Material originMaterial;
     private List<Color> originColorLists;
     private NavMeshPath currNavPath;
     public Vector3 targetoffset;
     private CancellationTokenSource knockBackCTS;
+
+    public float ColliderRadius => circleCollider.radius;
 
     protected virtual void Awake()
     {
@@ -73,6 +76,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         animator = GetComponentInChildren<Animator>();
         animationLink = animator.GetComponent<AnimationLink>();
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
+        circleCollider = GetComponent<CircleCollider2D>();
         originMaterial = spriteRenderers[0].material;
         originColorLists = new List<Color>();
 
@@ -190,7 +194,12 @@ public class MBaseObj : MonoBehaviour, Damageable
         else
         {
             MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
-            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            float attackRange = unitData.refUnitGradeData.attackrange * 0.1f;
+            if (attackRange < opponentUnitObj.ColliderRadius + this.ColliderRadius)
+            {
+                attackRange = opponentUnitObj.ColliderRadius + this.ColliderRadius;
+            }
+            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > attackRange + 0.01f)
             {
                 fsm.ChangeState(FSMStates.DashMove);
             }
@@ -204,6 +213,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void PrevIdle_Enter()
     {
         state = fsm.State.ToString();
+        agent.avoidancePriority = 1;
     }
 
     protected virtual void PrevIdle_Update()
@@ -220,6 +230,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         state = fsm.State.ToString();
         isFixedTarget = false;
         targetoffset = Vector2.zero;
+        agent.avoidancePriority = 1;
     }
     protected virtual void Idle_Update()
     {
@@ -227,7 +238,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual void WaypointMove_Enter()
     {
-
+        agent.avoidancePriority = 99;
     }
     protected virtual void WaypointMove_Update()
     {
@@ -258,6 +269,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         ResumeAgent();
         state = fsm.State.ToString();
         commonDelay = 0;
+        agent.avoidancePriority = 99;
     }
     protected virtual void DashMove_Update()
     {
@@ -285,8 +297,12 @@ public class MBaseObj : MonoBehaviour, Damageable
             FlipRenderers(targetObj.transform.position.x < transform.position.x);
             UpdateAgentSpeed();
             DoAgentMove(targetObj.transform.position + targetoffset);
-
-            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < unitData.refUnitGradeData.attackrange * 0.1f + 0.01f)
+            float attackRange = unitData.refUnitGradeData.attackrange * 0.1f;
+            if (attackRange < targetObj.ColliderRadius + this.ColliderRadius)
+            {
+                attackRange = targetObj.ColliderRadius + this.ColliderRadius;
+            }
+            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < attackRange + 0.2f)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
@@ -305,6 +321,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         state = fsm.State.ToString();
         commonDelay = 0f;
         isFixedTarget = true;
+        agent.avoidancePriority = 1;
     }
     protected virtual void Attack_Update()
     {
@@ -323,6 +340,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         PlayAni("AttackIdle");
         state = fsm.State.ToString();
+        agent.avoidancePriority = 1;
     }
 
     protected virtual void AttackDelay_Update()
@@ -569,8 +587,8 @@ public class MBaseObj : MonoBehaviour, Damageable
                     rigidBody2d.MovePosition(Vector3.Lerp(srcPos, target, curveValue));
                 }
                 rigidBody2d.MovePosition(target);
-                agent.enabled = true;
                 rigidBody2d.velocity = Vector3.zero;
+                agent.enabled = true;
             });
         }
     }
