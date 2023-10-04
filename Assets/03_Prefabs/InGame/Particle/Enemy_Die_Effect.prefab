@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2897743222133561181}
   - component: {fileID: 2897743222119361055}
   - component: {fileID: 2897743222118204629}
+  - component: {fileID: -399524139427165289}
   m_Layer: 0
   m_Name: Enemy_Die_Effect
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
 --- !u!198 &2897743222119361055
 ParticleSystem:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2897743222119361055, guid: 6026798cb255b88439bd3cad3ba028cf, type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2897743222133844333}
@@ -4652,8 +4653,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 193813133
-  m_SortingLayer: 1
+  m_SortingLayerID: -829908647
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4685,6 +4686,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-399524139427165289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897743222133844333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d3b64aa15a1c040aa42474522165e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2961016919709160038
 GameObject:
   m_ObjectHideFlags: 0

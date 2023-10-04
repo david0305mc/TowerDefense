@@ -19,7 +19,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private GoldReewardObj goldRewardPrefab;
-    [SerializeField] private GameObject enemydieEffectPrefab;
+    [SerializeField] private EffectPeedback enemydieEffectPrefab;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -31,7 +31,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private Dictionary<TileBase, TileData> dataFromTileMap;
     private GameConfig.GameState gameState;
 
-    private CancellationTokenSource cts;
+    private CancellationTokenSource stageCts;
     private CancellationTokenSource spawnHeroCts;
 
     private int enemyBossUID;
@@ -102,6 +102,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void StartStage(int stageID)
     {
+        stageCts = new CancellationTokenSource();
         UserData.Instance.AcquireGold.Value = 0;
         mainUI.SetIngameUI();
         if (currStageObj != null)
@@ -156,7 +157,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         RemoveAllBattleHero();
         RemoveAllProjectile();
         spawnHeroCts?.Cancel();
-        cts?.Cancel();
+        stageCts?.Cancel();
         //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
 
@@ -362,17 +363,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
         if (enemyDic.ContainsKey(_uid))
         {
             var enemyObj = enemyDic[_uid];
-            var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-            goldObj.Shoot(mainUI.GetUIStage.GoldTarget, ()=> {
-                UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
-                if (_uid == enemyBossUID)
-                {
-                    WinStage();
-                }
-            });
-            Lean.Pool.LeanPool.Spawn(enemydieEffectPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-            Destroy(enemyObj.gameObject);
-            enemyDic.Remove(_uid);
+            var effectPeedback = Lean.Pool.LeanPool.Spawn(enemydieEffectPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+            effectPeedback.SetData(() =>
+            {
+                Lean.Pool.LeanPool.Despawn(effectPeedback);
+                var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+                goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
+                    UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
+                    if (_uid == enemyBossUID)
+                    {
+                        WinStage();
+                    }
+                });
+            }, stageCts);
+            enemyObj.gameObject.SetActive(false);
         }
     }
 
@@ -525,7 +529,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         spawnHeroCts?.Cancel();
         spawnHeroCts?.Dispose();
-        cts?.Cancel();
-        cts?.Dispose();
+        stageCts?.Cancel();
+        stageCts?.Dispose();
     }
 }
