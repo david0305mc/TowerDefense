@@ -12,6 +12,8 @@ public class UIPanelStageInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI battlePowerText;
     [SerializeField] private TextMeshProUGUI requrePowerText;
     [SerializeField] private TextMeshProUGUI requreEnegyText;
+    [SerializeField] private UIGridView gridView = default;
+
     private System.Action startBtnAction;
     private System.Action closeBtnAction;
     private void Awake()
@@ -47,5 +49,16 @@ public class UIPanelStageInfo : MonoBehaviour
                 startBtn.SetActive(true);
                 break;
         }
+
+        List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
+        List<DataManager.StageRewardInfo> rewards = DataManager.Instance.GetStageRewards(_stageID);
+        foreach (var rewardInfo in rewards)
+        {
+            rewardLists.Add(new UIRewardCellData(rewardInfo.id));
+        }
+        gridView.UpdateContents(rewardLists.ToArray());
+        gridView.OnCellClicked(index =>
+        {
+        });
     }
 }
