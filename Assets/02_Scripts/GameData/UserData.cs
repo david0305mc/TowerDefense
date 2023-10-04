@@ -14,6 +14,7 @@ public partial class UserData : Singleton<UserData>
     private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
 
     public int CurrStage { get; set; }
+    public int BattlePower { get; private set; }
 
     public LocalSaveData LocalData { get; set; }
     public Dictionary<int, UnitBattleData> enemyDataDic;
@@ -51,6 +52,7 @@ public partial class UserData : Singleton<UserData>
 
     private void InitBeginData()
     {
+        CalcBattlePower();
     }
 
     public int FindEmptySlot()
@@ -68,12 +70,27 @@ public partial class UserData : Singleton<UserData>
     {
         int emptySlotIndex = FindEmptySlot();
         LocalData.BattlePartyDic[emptySlotIndex] = _heroUID;
+        CalcBattlePower();
         return emptySlotIndex;
     }
 
     public void RemoveBattleParty(int _slotIndex)
     {
         LocalData.BattlePartyDic[_slotIndex] = -1;
+        CalcBattlePower();
+    }
+
+    private void CalcBattlePower()
+    {
+        BattlePower = 0;
+        foreach (var item in LocalData.BattlePartyDic)
+        {
+            if (item.Value != -1)
+            {
+                var heroData = GetHeroData(item.Value);
+                BattlePower += heroData.refUnitGradeData.combatpower;
+            }
+        }
     }
 
     public void ClearStage(int _stage)

@@ -9,6 +9,9 @@ public class UIPanelStageInfo : MonoBehaviour
     [SerializeField] private Button startBtn;
     [SerializeField] private Button closeBtn;
     [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private TextMeshProUGUI battlePowerText;
+    [SerializeField] private TextMeshProUGUI requrePowerText;
+    [SerializeField] private TextMeshProUGUI requreEnegyText;
     private System.Action startBtnAction;
     private System.Action closeBtnAction;
     private void Awake()
@@ -24,9 +27,13 @@ public class UIPanelStageInfo : MonoBehaviour
 
     public void SetData(int _stageID, System.Action _startAction, System.Action _closeAction)
     {
+        var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         startBtnAction = _startAction;
         closeBtnAction = _closeAction;
         titleText.SetText(_stageID.ToString());
+        battlePowerText.SetText(UserData.Instance.BattlePower.ToString());
+        requrePowerText.SetText(stageInfo.needcombatpower.ToString());
+
         var stageStatus = UserData.Instance.GetStageStatus(_stageID);
         switch (stageStatus)
         {
