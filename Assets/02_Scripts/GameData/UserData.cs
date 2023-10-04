@@ -101,7 +101,7 @@ public partial class UserData : Singleton<UserData>
     public Game.StageStatus GetStageStatus(int _stageID)
     {
         var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
-        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid))
+        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid) && BattlePower >= stageInfo.needcombatpower)
         {
             if (LocalData.StageClearDic.ContainsKey(_stageID))
             {

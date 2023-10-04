@@ -13,6 +13,8 @@ public class UIPanelStageInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI requrePowerText;
     [SerializeField] private TextMeshProUGUI requreEnegyText;
     [SerializeField] private UIGridView gridView = default;
+    [SerializeField] private Color disableColor;
+    [SerializeField] private Color enableColor;
 
     private System.Action startBtnAction;
     private System.Action closeBtnAction;
@@ -41,12 +43,15 @@ public class UIPanelStageInfo : MonoBehaviour
         {
             case Game.StageStatus.Lock:
                 startBtn.SetActive(false);
+                requrePowerText.color = disableColor;
                 break;
             case Game.StageStatus.Normal:
                 startBtn.SetActive(true);
+                requrePowerText.color = enableColor;
                 break;
             case Game.StageStatus.Occupation:
                 startBtn.SetActive(true);
+                requrePowerText.color = enableColor;
                 break;
         }
 
