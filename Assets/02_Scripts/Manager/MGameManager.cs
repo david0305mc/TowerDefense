@@ -327,7 +327,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void KillBattleHero(int _attackerUID, int _uid)
     {
         UserData.Instance.KillBattleHero(_attackerUID, _uid);
-        if (UserData.Instance.isEmptyBattleHero())
+        if (UserData.Instance.isAllHeroDead())
         {
             LoseStage();
         }

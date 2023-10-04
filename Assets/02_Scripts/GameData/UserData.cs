@@ -22,7 +22,12 @@ public partial class UserData : Singleton<UserData>
 
     public ReactiveProperty<int> AcquireGold;
 
-    public bool isEmptyBattleHero() => battleHeroDataDic.Where(i=>i.Value.isDead).Count() == 0;
+    public bool isAllHeroDead()
+    {
+        var aliveHeroes = battleHeroDataDic.Where(i => i.Key != -1 && !i.Value.isDead);
+        return aliveHeroes.Count() == 0;
+    }
+    
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 
     public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
