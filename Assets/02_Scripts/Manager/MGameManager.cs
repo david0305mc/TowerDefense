@@ -181,13 +181,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
                             // startBtn
                             StartStage(stageSlot.stage);
                             mainUI.HideStageInfo();
+                            worldMap.SelectStage(-1);
                         });
+                        worldMap.SelectStage(stageSlot.stage);
                     });
                 }
                 else
                 {
                     cameraManager.CancelFollowTarget();
                     mainUI.HideStageInfo();
+                    worldMap.SelectStage(-1);
                 }
             }
         }, 

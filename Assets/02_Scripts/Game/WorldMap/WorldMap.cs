@@ -34,4 +34,12 @@ public class WorldMap : MonoBehaviour
             item.Value.UpdateData();
         }
     }
+
+    public void SelectStage(int _stage)
+    {
+        foreach (var item in stageDic)
+        {
+            item.Value.SetSelected(item.Key == _stage);
+        }
+    }
 }
