@@ -104,6 +104,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         stageCts = new CancellationTokenSource();
         UserData.Instance.AcquireGold.Value = 0;
+        //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
         mainUI.SetIngameUI();
         if (currStageObj != null)
         {

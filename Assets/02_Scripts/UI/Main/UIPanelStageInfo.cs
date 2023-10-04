@@ -22,6 +22,14 @@ public class UIPanelStageInfo : MonoBehaviour
     {
         startBtn.onClick.AddListener(() => {
             startBtnAction?.Invoke();
+            //if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+            //{
+            //    startBtnAction?.Invoke();
+            //}
+            //else
+            //{
+            //    PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Stamina", "OK");
+            //}
         });
         closeBtn.onClick.AddListener(() =>
         {
@@ -37,7 +45,17 @@ public class UIPanelStageInfo : MonoBehaviour
         titleText.SetText(LocalizeManager.Instance.GetLocalString(stageInfo.stagename));
         battlePowerText.SetText(UserData.Instance.BattlePower.ToString());
         requrePowerText.SetText(stageInfo.needcombatpower.ToString());
+        requreEnegyText.SetText(ConfigTable.Instance.StageStartCost.ToString());
 
+        if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+        {
+            requreEnegyText.color = enableColor;
+        }
+        else
+        {
+            requreEnegyText.color = disableColor;
+        }
+        
         var stageStatus = UserData.Instance.GetStageStatus(_stageID);
         switch (stageStatus)
         {

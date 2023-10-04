@@ -7,7 +7,7 @@ public class ConfigTable : Singleton<ConfigTable>{
 	public int maxItemCount;
 	public string test01;
 	public int maxGold;
-	public int StageStartCost ;
+	public int StageStartCost;
 	public void LoadConfig(Dictionary<string, Dictionary<string, object>> rowList)
 	{
 		foreach (var rowItem in rowList)
