@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.U2D;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -16,12 +17,16 @@ public class MResourceManager : SingletonMono<MResourceManager>
         public AssetReferenceAtlas(string guid) : base(guid) { }
     }
 
+    [SerializeField] private SpriteAtlas commonAtlas;
+    [SerializeField] private SpriteAtlas iconAtlas;
+
     public Material FlashMaterial;
     public Color FlashColor;
     public Color RarityColorCommon;
     public Color RarityColorRare;
     public Color RarityColorEpic;
     public Color RarityColorLegendary;
+    public List<Image> RarityBG;
     public AnimationCurve KnockBackCurve;
     public Sprite SoulSprite;
     public Sprite ExpSprite;
@@ -76,6 +81,21 @@ public class MResourceManager : SingletonMono<MResourceManager>
                 prefabDic[item.boomeffectprefab] = await Addressables.LoadAssetAsync<GameObject>(item.boomeffectprefab);
             }
         }
+    }
+
+    public Sprite GetBuildAtlas(string _name) 
+    {
+        var sprite = commonAtlas.GetSprite(_name);
+        if (sprite != null)
+        {
+            return sprite;
+        }
+        sprite = iconAtlas.GetSprite(_name);
+        if (sprite != null)
+        {
+            return sprite;
+        }
+        return null;
     }
     public Sprite GetSpriteFromAtlas(string _str)
     {

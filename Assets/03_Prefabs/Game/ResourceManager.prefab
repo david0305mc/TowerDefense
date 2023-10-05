@@ -45,12 +45,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DontDestroyOnLoad: 1
+  commonAtlas: {fileID: 4343727234628468602, guid: ec6da97c4438dbd47b4e204af3958a37, type: 2}
+  iconAtlas: {fileID: 4343727234628468602, guid: 1a508d92778513843aea204db8ec47d3, type: 2}
   FlashMaterial: {fileID: 2100000, guid: 2d87117a2ce2a484482c1a73e749649c, type: 2}
   FlashColor: {r: 1, g: 1, b: 1, a: 0.5686275}
   RarityColorCommon: {r: 0.3679245, g: 0.33147916, b: 0.33147916, a: 1}
   RarityColorRare: {r: 0, g: 0.008504391, b: 1, a: 1}
   RarityColorEpic: {r: 1, g: 0.49450058, b: 0, a: 1}
   RarityColorLegendary: {r: 1, g: 0, b: 0, a: 1}
+  RarityBG:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   KnockBackCurve:
     serializedVersion: 2
     m_Curve:

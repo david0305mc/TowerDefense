@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IconAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 50
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: iPhone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 50
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 54d04987426db7640bf5d65403217c21, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 7bb3ab1078531b4458123cda77d347de, type: 3}
+  - {fileID: 21300000, guid: 92ecfe509af67f849a2747bfe17d8844, type: 3}
+  - {fileID: 21300000, guid: 550501a056844da4e879a79c3f9c6f22, type: 3}
+  - {fileID: 21300000, guid: de2f635208c3551418f7a39a4aa521dd, type: 3}
+  - {fileID: 21300000, guid: 08160e72f2e782a408e0fbb2e2fdea5c, type: 3}
+  - {fileID: 21300000, guid: 351754a2ec2e6574a969411b67c59303, type: 3}
+  - {fileID: 21300000, guid: 286d17149bd923f43a045aade525b952, type: 3}
+  - {fileID: 21300000, guid: 7b8645ab927327c47b80c1b46dbe5c23, type: 3}
+  - {fileID: 21300000, guid: d2761fbe21ad60148b8c94c51002c837, type: 3}
+  - {fileID: 21300000, guid: 3f20ef9f2a11a1e40bba63da71fe9d34, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Icon_Level
+  - Icon_Kill_Count
+  - Icon_Pause
+  - Icon_Soul
+  - Icon_Exp
+  - Icon_GameSpeed_Bg
+  - Icon_Stamina
+  - Icon_Add
+  - Image_Stage1
+  - Icon_Timer
+  m_RenderDataMap: {}
+  m_Tag: IconAtlas
+  m_IsVariant: 0

@@ -11,9 +11,16 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private Button dimmBtn;
     [SerializeField] private Button euipToggleBtn;
     [SerializeField] private Button upgradeBtn;
+    [SerializeField] private Image rarityBG;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
     [SerializeField] private TextMeshProUGUI unitrarityText;
+    [SerializeField] private TextMeshProUGUI combatPowerText;
+    [SerializeField] private TextMeshProUGUI nextCombatPowerText;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private TextMeshProUGUI damageText;
+    [SerializeField] private TextMeshProUGUI countText;
+
     [SerializeField] private Image unitRarityImage;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
 
@@ -67,6 +74,7 @@ public class UnitInfoPopup : PopupBase
         upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
         unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
         unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
+        rarityBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
     }
 
 }
