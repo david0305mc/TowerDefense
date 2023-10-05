@@ -11,6 +11,7 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private Button dimmBtn;
     [SerializeField] private Button euipToggleBtn;
     [SerializeField] private Button upgradeBtn;
+    [SerializeField] private Button maxUpgradeBtn;
     [SerializeField] private Image rarityBG;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
@@ -71,10 +72,29 @@ public class UnitInfoPopup : PopupBase
         }
 
         unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
-        upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
         unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
         unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
         rarityBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
+        combatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
+     
+        hpText.SetText(unitData.refUnitGradeData.hp.ToString());
+        damageText.SetText(unitData.refUnitGradeData.attackdmg.ToString());
+        countText.SetText(unitData.count.ToString());
+
+        if (unitData.IsMaxGrade)
+        {
+            nextCombatPowerText.SetText(LocalizeManager.Instance.GetLocalString("MaxGradeText"));
+            upgradeBtn.SetActive(false);
+            maxUpgradeBtn.SetActive(true);
+        }
+        else
+        {
+            upgradeBtn.SetActive(true);
+            maxUpgradeBtn.SetActive(false);
+            upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
+            int nextPower = DataManager.Instance.GetUnitGrade(unitData.uid, unitData.grade + 1).combatpower;
+            nextCombatPowerText.SetText(nextPower.ToString());
+        }
     }
 
 }
