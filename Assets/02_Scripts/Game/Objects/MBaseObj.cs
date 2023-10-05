@@ -19,6 +19,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         DashMove,
         Attack,
         AttackDelay,
+        End,
     }
 
     [SerializeField] private Slider hpBar;
@@ -215,12 +216,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    protected virtual void PrevIdle_Enter()
-    {
-        state = fsm.State.ToString();
-    
-    }
-
     private void SetAvoidancePriority(int _value)
     {
         if (agent != null)
@@ -237,6 +232,11 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
+    protected virtual void PrevIdle_Enter()
+    {
+        state = fsm.State.ToString();
+    }
+
     protected virtual void PrevIdle_Update()
     {
     }
@@ -244,7 +244,6 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Idle_Enter()
     {
         PlayAni("Idle");
-        
         StopAgent();
         attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         commonDelay = 0f;
@@ -383,7 +382,22 @@ public class MBaseObj : MonoBehaviour, Damageable
             }
         }
     }
+    public void SetEndState()
+    {
+        fsm.ChangeState(FSMStates.End);
+    }
 
+    protected virtual void End_Enter()
+    {
+        PlayAni("Idle");
+        StopAgent();
+        commonDelay = 0f;
+        state = fsm.State.ToString();
+    }
+
+    protected virtual void End_Update()
+    {
+    }
 
     protected virtual void Update()
     {

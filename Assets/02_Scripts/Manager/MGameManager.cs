@@ -135,6 +135,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
     }
+
+    private void SetAllObjectEndState()
+    {
+        foreach (var item in heroDic)
+        {
+            item.Value.SetEndState();
+        }
+
+        foreach (var item in enemyDic)
+        {
+            item.Value.SetEndState();
+        }
+    }
+
     public void RetryStage()
     {
         StartStage(UserData.Instance.CurrStage);
@@ -458,7 +472,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         });
     }
-
 
     //private void Update()
     //{
