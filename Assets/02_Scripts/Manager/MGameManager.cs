@@ -219,8 +219,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
-            UnitData data = UserData.Instance.AddEnemyData(enemyObj.TID);
-            enemyObj.InitObject(data.uid, true, (_attackData) => {
+            UnitBattleData data = UserData.Instance.AddEnemyData(enemyObj.TID);
+            enemyObj.InitObject(data.battleUID, true, (_attackData) => {
 
                 var heroObj = GetHeroObj(_attackData.attackerUID);
                 if (heroObj == null)
@@ -234,7 +234,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             {
                 enemyBossUID = enemyObj.UID;
             }
-            enemyDic.Add(data.uid, enemyObj);
+            enemyDic.Add(data.battleUID, enemyObj);
         }
         if (enemyBossUID == 0)
         {
@@ -414,15 +414,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
-    private void SpawnBattleHero(int unitUid)
+    private void SpawnBattleHero(int _uid)
     {
-        var heroData = UserData.Instance.GetHeroData(unitUid);
+        var heroData = UserData.Instance.GetHeroData(_uid);
         var battleHeroData = UserData.Instance.AddBattleHeroData(heroData);
         Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(battleHeroData.refData.prefabname);
         MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
-        heroObj.InitObject(battleHeroData.uid, false, (_attackData) =>
+        heroObj.InitObject(battleHeroData.battleUID, false, (_attackData) =>
         {
             var enemyObj = GetEnemyObj(_attackData.attackerUID);
             if (enemyObj == null)
@@ -433,7 +433,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             DoHeroGetDamage(heroObj, enemyObj.transform.position, _attackData.attackerUID, _attackData.damage);
         });
         heroObj.StartFSM();
-        heroDic.Add(battleHeroData.uid, heroObj);
+        heroDic.Add(battleHeroData.battleUID, heroObj);
     }
 
     private void SpawnAllHero()

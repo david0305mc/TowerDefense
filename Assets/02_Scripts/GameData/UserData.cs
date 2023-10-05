@@ -141,7 +141,7 @@ public partial class UserData : Singleton<UserData>
         return enemyDataDic[_uid].isDead;
     }
 
-    public UnitData GetEnemyData(int _uid)
+    public UnitBattleData GetEnemyData(int _uid)
     {
         if (enemyDataDic.ContainsKey(_uid))
             return enemyDataDic[_uid];
@@ -155,15 +155,27 @@ public partial class UserData : Singleton<UserData>
         return null;
     }
 
-    public bool isBattleHeroDead(int _uid)
+    public bool isBattleHeroDead(int _battleUID)
     {
-        return battleHeroDataDic[_uid].isDead;
+        try
+        {
+            return battleHeroDataDic[_battleUID].isDead;
+        }
+        catch
+        {
+            Debug.LogError($"Error {_battleUID}");
+        }
+        return false;
     }
 
-    public UnitBattleData GetBattleHeroData(int _uid)
+    public int GetBattleKillCount(int _uid)
     {
-        if (battleHeroDataDic.ContainsKey(_uid))
-            return battleHeroDataDic[_uid];
+        return battleHeroDataDic.Where(item => item.Value.uid == _uid).Sum(item2 => item2.Value.killCount);
+    }
+    public UnitBattleData GetBattleHeroData(int _battleUID)
+    {
+        if (battleHeroDataDic.ContainsKey(_battleUID))
+            return battleHeroDataDic[_battleUID];
         return null;
     }
     public InBuildData LoadInBuildData()
@@ -225,10 +237,10 @@ public partial class UserData : Singleton<UserData>
 
     /// New Game
 
-    public UnitData AddEnemyData(int _tid)
+    public UnitBattleData AddEnemyData(int _tid)
     {
-        var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), _tid, 1, 1, true);
-        enemyDataDic.Add(data.uid, data);
+        var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), -1, _tid, 1, 1, true);
+        enemyDataDic.Add(data.battleUID, data);
         return data;
     }
 
@@ -270,8 +282,8 @@ public partial class UserData : Singleton<UserData>
 
     public UnitBattleData AddBattleHeroData(UnitData _heroData)
     {
-        var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), _heroData.tid, _heroData.refUnitGradeData.grade, _heroData.count, false);
-        battleHeroDataDic.Add(data.uid, data);
+        var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), _heroData.uid, _heroData.tid, _heroData.refUnitGradeData.grade, _heroData.count, false);
+        battleHeroDataDic.Add(data.battleUID, data);
         return data;
     }
 

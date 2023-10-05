@@ -27,8 +27,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
     [SerializeField] protected string state;
-    protected UnitData unitData;
-    public UnitData UnitData => unitData;
+    protected UnitBattleData unitData;
+    public UnitBattleData UnitData => unitData;
 
     protected System.Action<AttackData> getDamageAction;
     protected CancellationTokenSource cts;
@@ -40,9 +40,9 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public GameObject targetObj_Test;
 
-    protected int uid;
+    protected int battleUID;
     public int TID { get { return tid; } }
-    public int UID { get { return uid; } }
+    public int UID { get { return battleUID; } }
 
     protected float attackLongDelayCount;
     protected float attackDelay;
@@ -122,17 +122,17 @@ public class MBaseObj : MonoBehaviour, Damageable
         });
     }
 
-    public void InitObject(int _uid, bool _isEnemy, System.Action<AttackData> _getDamageAction)
+    public void InitObject(int _battleUID, bool _isEnemy, System.Action<AttackData> _getDamageAction)
     {
-        uid = _uid;
+        battleUID = _battleUID;
         getDamageAction = _getDamageAction;
         if (_isEnemy)
         {
-            unitData = UserData.Instance.GetEnemyData(_uid);
+            unitData = UserData.Instance.GetEnemyData(_battleUID);
         }
         else
         {
-            unitData = UserData.Instance.GetBattleHeroData(_uid);
+            unitData = UserData.Instance.GetBattleHeroData(_battleUID);
         }
         hpBar.value = 1f;
         if (swordAttackChecker != null)

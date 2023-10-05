@@ -10,12 +10,21 @@ public class UICell_UnitKill : MonoBehaviour
     [SerializeField] private TextMeshProUGUI killCountText;
     private int slotIndex;
     private System.Action<int> touchAction;
-    public void SetData(int _slotIndex, int _unitUID, System.Action<int> _touchAction)
+    public void SetData(int _slotIndex, int _uid, System.Action<int> _touchAction)
     {
-        slotIndex = _slotIndex;
-        touchAction = _touchAction;
-        var heroBattleData = UserData.Instance.GetBattleHeroData(_unitUID);
-        heroThumbnail.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroBattleData.refData.thumbnailpath);
-        killCountText.SetText(heroBattleData.killCount.ToString());
+        try
+        {
+            slotIndex = _slotIndex;
+            touchAction = _touchAction;
+            var heroData = UserData.Instance.GetHeroData(_uid);
+            int killCount = UserData.Instance.GetBattleKillCount(_uid);
+            heroThumbnail.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
+            killCountText.SetText(killCount.ToString());
+        }
+        catch
+        {
+            Debug.LogError("error");
+        }
+        
     }
 }

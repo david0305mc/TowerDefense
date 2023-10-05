@@ -42,10 +42,12 @@ public class UnitBattleData : UnitData
 {
     public int killCount;
     public bool isDead;
-    public static new UnitBattleData Create(int _uid, int _tid, int _grade, int _count, bool _isEnemy)
+    public int battleUID;
+    public static UnitBattleData Create(int _battleUID, int _uid, int _tid, int _grade, int _count, bool _isEnemy)
     {
         UnitBattleData data = new UnitBattleData()
         {
+            battleUID = _battleUID,
             uid = _uid,
             tid = _tid,
             grade = _grade,
