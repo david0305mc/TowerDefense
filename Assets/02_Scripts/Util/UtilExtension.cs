@@ -79,4 +79,16 @@ public static class UtilExtension
                 animator.ResetTrigger(p.name);
         animator.SetTrigger(triggerName);
     }
+
+    public static void ResetTrigger(this Animator animator)
+    {
+        foreach (var p in animator.parameters)
+        {
+            if (p.type == AnimatorControllerParameterType.Trigger)
+            {
+                animator.ResetTrigger(p.name);
+            }
+        }
+    }
+
 }

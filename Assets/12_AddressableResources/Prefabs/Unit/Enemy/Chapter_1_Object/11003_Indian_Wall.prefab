@@ -193,8 +193,8 @@ GameObject:
   - component: {fileID: 6994962672477025602}
   - component: {fileID: 6994962672477025600}
   - component: {fileID: 6994962672477025614}
-  - component: {fileID: 8457698664762049647}
   - component: {fileID: 8457698664762049644}
+  - component: {fileID: 4735808319411806057}
   m_Layer: 8
   m_Name: 11003_Indian_Wall
   m_TagString: Untagged
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 6795072700901448551}
-  agent: {fileID: 8457698664762049647}
+  agent: {fileID: 0}
   rigidBody2d: {fileID: 6994962672477025600}
   firePos: {fileID: 0}
   tid: 11003
@@ -273,28 +273,6 @@ SortingGroup:
   m_SortingLayerID: 193813133
   m_SortingLayer: 1
   m_SortingOrder: 1
---- !u!195 &8457698664762049647
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6994962672477025615}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.22
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.4
-  m_BaseOffset: 0.4
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!58 &8457698664762049644
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -311,6 +289,22 @@ CircleCollider2D:
   m_Offset: {x: -0.027932823, y: 0}
   serializedVersion: 2
   m_Radius: 0.21642795
+--- !u!208 &4735808319411806057
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994962672477025615}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6994962672637320601
 GameObject:
   m_ObjectHideFlags: 0

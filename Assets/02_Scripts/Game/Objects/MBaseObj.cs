@@ -45,6 +45,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     public int UID { get { return uid; } }
 
     protected float attackLongDelayCount;
+    protected float attackDelay;
     protected float commonDelay;
     protected int targetObjUID;
     protected bool isFixedTarget;
@@ -68,11 +69,15 @@ public class MBaseObj : MonoBehaviour, Damageable
     private readonly float attackDistMarge = 0.2f;
     protected virtual void Awake()
     {
+        if (agent != null)
+        {
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+        }
+        
         knockBackCTS = new CancellationTokenSource();
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
         animator = GetComponentInChildren<Animator>();
         animationLink = animator.GetComponent<AnimationLink>();
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
@@ -213,7 +218,23 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void PrevIdle_Enter()
     {
         state = fsm.State.ToString();
-        agent.avoidancePriority = 1;
+    
+    }
+
+    private void SetAvoidancePriority(int _value)
+    {
+        if (agent != null)
+        {
+            agent.avoidancePriority = 1;
+        }
+    }
+
+    private void EnableAgent(bool _value)
+    {
+        if (agent != null)
+        {
+            agent.enabled = _value;
+        }
     }
 
     protected virtual void PrevIdle_Update()
@@ -230,7 +251,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         state = fsm.State.ToString();
         isFixedTarget = false;
         targetoffset = Vector2.zero;
-        agent.avoidancePriority = 1;
+        SetAvoidancePriority(1);
     }
     protected virtual void Idle_Update()
     {
@@ -238,7 +259,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual void WaypointMove_Enter()
     {
-        agent.avoidancePriority = 99;
+        SetAvoidancePriority(99);
     }
     protected virtual void WaypointMove_Update()
     {
@@ -247,6 +268,9 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected void StopAgent()
     {
+        if (agent == null)
+            return;
+
         if (agent.isActiveAndEnabled)
         {
             agent.isStopped = true;
@@ -257,7 +281,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected void ResumeAgent()
     {
-        if (agent.isActiveAndEnabled)
+        if (agent != null && agent.isActiveAndEnabled)
         {
             agent.isStopped = false;
         }
@@ -269,7 +293,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         ResumeAgent();
         state = fsm.State.ToString();
         commonDelay = 0;
-        agent.avoidancePriority = 99;
+        SetAvoidancePriority(99);
     }
     protected virtual void DashMove_Update()
     {
@@ -321,7 +345,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         state = fsm.State.ToString();
         commonDelay = 0f;
         isFixedTarget = true;
-        agent.avoidancePriority = 1;
+        SetAvoidancePriority(1);
     }
     protected virtual void Attack_Update()
     {
@@ -340,7 +364,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         PlayAni("AttackIdle");
         state = fsm.State.ToString();
-        agent.avoidancePriority = 1;
+        SetAvoidancePriority(1);
     }
 
     protected virtual void AttackDelay_Update()
@@ -440,6 +464,9 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected void DoAgentMove(Vector3 _pos)
     {
+        if (agent == null)
+            return;
+
         if (!agent.isActiveAndEnabled)
             return;
 
@@ -529,6 +556,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     protected void UpdateAgentSpeed()
     {
+        if (agent == null)
+            return;
         var speed = MGameManager.Instance.GetTileWalkingSpeed(transform.position);
         agent.speed = UnitData.refUnitGradeData.walkspeed * 0.1f * speed;
     }
@@ -577,7 +606,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         {
             UniTask.Create(async () =>
             {
-                agent.enabled = false;
+                EnableAgent(false);
                 float elapse = 0f;
                 while (Vector3.Distance(transform.position, target) > 0.1f)
                 {
@@ -588,7 +617,7 @@ public class MBaseObj : MonoBehaviour, Damageable
                 }
                 rigidBody2d.MovePosition(target);
                 rigidBody2d.velocity = Vector3.zero;
-                agent.enabled = true;
+                EnableAgent(true);
             });
         }
     }
@@ -596,14 +625,14 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         cts?.Cancel();
         cts = new CancellationTokenSource();
-        agent.enabled = false;
+        EnableAgent(false);
         rigidBody2d.velocity = Vector3.zero;
         Vector2 direction = (transform.position - attackerPos).normalized;
         rigidBody2d.AddForce(direction * knockBack, ForceMode2D.Impulse);
         UniTask.Create(async () =>
         {
             await UniTask.Delay(30, cancellationToken: cts.Token);
-            agent.enabled = true;
+            EnableAgent(true);
             rigidBody2d.velocity = Vector3.zero;
         });
     }
@@ -702,16 +731,5 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
 
         return Game.GameConfig.PositiveInfinityVector;
-    }
-
-    private void ResetTrigger()
-    {
-        foreach (var p in animator.parameters)
-        {
-            if (p.type == AnimatorControllerParameterType.Trigger)
-            {
-                animator.ResetTrigger(p.name);
-            }
-        }
     }
 }
