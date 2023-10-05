@@ -89,23 +89,34 @@ public class GameResultPopup : PopupBase
             _retryAction?.Invoke();
         });
 
-        int nextStage = UserData.Instance.CurrStage + 1;
-        var nextStageStatus =  UserData.Instance.GetStageStatus(nextStage);
         nextStageBtn.onClick.RemoveAllListeners();
-        if (nextStageStatus == Game.StageStatus.Lock)
+        int nextStage = UserData.Instance.CurrStage + 1;
+        if (DataManager.Instance.GetStageInfoData(nextStage) == null)
         {
+            // there is no nextStage
             nextStageBtn.image.color = disableNextStageColor;
             nextStageBtn.onClick.AddListener(() => {
-                PopupManager.Instance.ShowSystemOneBtnPopup("Lock Stage", "OK");
+                PopupManager.Instance.ShowSystemOneBtnPopup("There is no Stage", "OK");
             });
         }
         else
         {
-            nextStageBtn.image.color = enableNextStageColor;
-            nextStageBtn.onClick.AddListener(() => {
-                Hide();
-                _nextStageAction?.Invoke();
-            });
+            var nextStageStatus = UserData.Instance.GetStageStatus(nextStage);
+            if (nextStageStatus == Game.StageStatus.Lock)
+            {
+                nextStageBtn.image.color = disableNextStageColor;
+                nextStageBtn.onClick.AddListener(() => {
+                    PopupManager.Instance.ShowSystemOneBtnPopup("Lock Stage", "OK");
+                });
+            }
+            else
+            {
+                nextStageBtn.image.color = enableNextStageColor;
+                nextStageBtn.onClick.AddListener(() => {
+                    Hide();
+                    _nextStageAction?.Invoke();
+                });
+            }
         }
     }
 }

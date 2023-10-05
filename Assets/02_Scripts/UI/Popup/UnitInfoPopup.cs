@@ -78,8 +78,9 @@ public class UnitInfoPopup : PopupBase
         combatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
      
         hpText.SetText(unitData.refUnitGradeData.hp.ToString());
-        damageText.SetText(unitData.refUnitGradeData.attackdmg.ToString());
-        countText.SetText(unitData.count.ToString());
+        int damage = unitData.refUnitGradeData.attackdmg * unitData.refUnitGradeData.attackcount + unitData.refUnitGradeData.splashdmg;
+        damageText.SetText(damage.ToString());
+        countText.SetText(unitData.refUnitGradeData.summoncnt.ToString());
 
         if (unitData.IsMaxGrade)
         {
