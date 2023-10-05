@@ -85,6 +85,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         circleCollider = GetComponent<CircleCollider2D>();
         originMaterial = spriteRenderers[0].material;
         originColorLists = new List<Color>();
+        hpBar.SetActive(false);
 
         Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i => {
             originColorLists.Add(spriteRenderers[i].color);
@@ -172,7 +173,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         sortingGroup.sortingLayerName = Game.GameConfig.ForegroundLayerName;
         sortingGroup.sortingOrder = 0;
-        hpBar.SetActive(true);
+        hpBar.SetActive(false);
         transform.SetScale(1f);
     }
 
@@ -579,6 +580,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public virtual void GetAttacked(Vector3 attackerPos, int knockBack)
     {
+        if (!hpBar.IsActive())
+            hpBar.SetActive(true);
         DoFlashEffect();
         UpdateHPBar();
         KnockBack2(attackerPos, knockBack);
