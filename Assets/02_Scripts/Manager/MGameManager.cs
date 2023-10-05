@@ -19,7 +19,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private GoldReewardObj goldRewardPrefab;
-    [SerializeField] private EffectPeedback enemydieEffectPrefab;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -388,7 +387,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         if (enemyDic.ContainsKey(_uid))
         {
             var enemyObj = enemyDic[_uid];
-            var effectPeedback = Lean.Pool.LeanPool.Spawn(enemydieEffectPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+            var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectPeedback>();
+            var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             effectPeedback.SetData(() =>
             {
                 Lean.Pool.LeanPool.Despawn(effectPeedback);

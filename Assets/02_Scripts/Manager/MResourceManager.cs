@@ -26,7 +26,6 @@ public class MResourceManager : SingletonMono<MResourceManager>
     public Color RarityColorRare;
     public Color RarityColorEpic;
     public Color RarityColorLegendary;
-    public List<Image> RarityBG;
     public AnimationCurve KnockBackCurve;
     public Sprite SoulSprite;
     public Sprite ExpSprite;
@@ -36,6 +35,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
     private Dictionary<string, GameObject> prefabDic = new Dictionary<string, GameObject>();
     private Dictionary<string, AsyncOperationHandle<SpriteAtlas>> opAtlasHandleDic = new Dictionary<string, AsyncOperationHandle<SpriteAtlas>>();
+    private Dictionary<string, GameObject> buildResouirceDic = new Dictionary<string, GameObject>();
 
     public async UniTask LoadResources()
     {
@@ -44,9 +44,30 @@ public class MResourceManager : SingletonMono<MResourceManager>
         taskLists.Add(LoadUnits());
         taskLists.Add(LoadBoomEffect());
         taskLists.Add(LoadAtlas());
+        taskLists.Add(LoadBuildResources());
         await UniTask.WhenAll(taskLists);
     }
 
+    private async UniTask LoadBuildResources()
+    {
+        HashSet<string> particleSet = new HashSet<string>();
+
+        foreach (var item in DataManager.Instance.UnitinfoArray)
+        { 
+            if(!particleSet.Contains(item.deatheffect))
+            {
+                particleSet.Add(item.deatheffect);
+            }
+        }
+
+        foreach (var item in particleSet)
+        {
+            var obj = Resources.LoadAsync<GameObject>(item);
+            await obj;
+            buildResouirceDic.Add(item, obj.asset as GameObject);
+        }
+    }
+    
     private async UniTask LoadAtlas()
     {
         string key = "SpriteAtlas/Atlas_Icon.spriteatlas";
@@ -81,6 +102,10 @@ public class MResourceManager : SingletonMono<MResourceManager>
                 prefabDic[item.boomeffectprefab] = await Addressables.LoadAssetAsync<GameObject>(item.boomeffectprefab);
             }
         }
+    }
+    public GameObject GetBuildResource(string _path)
+    {
+        return buildResouirceDic[_path];
     }
 
     public Sprite GetBuildAtlas(string _name) 

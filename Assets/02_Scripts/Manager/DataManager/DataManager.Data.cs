@@ -37,6 +37,7 @@ public partial class DataManager {
 		public string unitname;
 		public string thumbnailpath;
 		public string prefabname;
+		public string deatheffect;
 	};
 	public Unitinfo[] UnitinfoArray { get; private set; }
 	public Dictionary<int, Unitinfo> UnitinfoDic { get; private set; }
