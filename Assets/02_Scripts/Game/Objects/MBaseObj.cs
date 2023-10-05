@@ -35,6 +35,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected CancellationTokenSource cts;
     protected CancellationTokenSource flashCts;
 
+    private Transform renderRoot;
     protected Animator animator;
     protected AnimationLink animationLink;
     public Vector3 FirePos => firePos.position;
@@ -80,6 +81,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
+        renderRoot = animator.transform;
         animationLink = animator.GetComponent<AnimationLink>();
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
@@ -514,11 +516,11 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         if (value)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            renderRoot.localScale = new Vector3(-1, 1, 1);
         }
         else
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            renderRoot.localScale = new Vector3(1, 1, 1);
         }
     }
 
