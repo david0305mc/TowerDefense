@@ -36,11 +36,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private int enemyBossUID;
 
+    public static int flashUidSeed = 1000;
 
     protected override void OnSingletonAwake()
     {
         base.OnSingletonAwake();
-
         dataFromTileMap = new Dictionary<TileBase, TileData>();
         foreach (var tileData in tileDatas)
         {
@@ -54,6 +54,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public static int GenerateUID()
     {
         return UserData.Instance.LocalData.uidSeed++;
+    }
+    public static int GenerateFlashUID()
+    {
+        return flashUidSeed++;
     }
 
     public MBaseObj GetUnitObj(int _uid, bool isEnemy)
@@ -87,7 +91,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             if (_blackList.Contains(item.Key))
                 continue;
-
             float dist = Vector3.Distance(srcPos, item.Value.transform.position);
 
             if (dist < shortDist)
@@ -411,7 +414,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
-    private void SpawnHero(int unitUid)
+    private void SpawnBattleHero(int unitUid)
     {
         var heroData = UserData.Instance.GetHeroData(unitUid);
         var battleHeroData = UserData.Instance.AddBattleHeroData(heroData);
@@ -448,7 +451,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     var heroData = UserData.Instance.GetHeroData(item.Value);
                     for (int i = 0; i < heroData.refUnitGradeData.summoncnt; i++)
                     {
-                        SpawnHero(item.Value);
+                        SpawnBattleHero(item.Value);
                         await UniTask.Delay(300, cancellationToken: spawnHeroCts.Token);
                     }
                 }
