@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UniRx;
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class UIStage : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class UIStage : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tileLeftText;
     [SerializeField] private TextMeshProUGUI acquireGoldText;
     private CompositeDisposable disposable = new CompositeDisposable();
-    public void SetData(long endUnixTime)
+    public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
         disposable.Clear();
         Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
@@ -28,7 +30,7 @@ public class UIStage : MonoBehaviour
            tileLeftText.SetText("00:00");
            MGameManager.Instance.LoseStage();
             // To Do : Result
-       }).AddTo(disposable);
+       }).AddTo(_cts.Token);
 
         UserData.Instance.AcquireGold.Subscribe(_gold =>
         {

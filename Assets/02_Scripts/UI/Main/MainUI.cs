@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
+using System.Threading;
+
 public class MainUI : MonoBehaviour
 {
     enum BottomTab
@@ -71,10 +73,10 @@ public class MainUI : MonoBehaviour
         ingameUI.SetActive(true);
     }
 
-    public void SetStageUI()
+    public void SetStageUI(CancellationTokenSource _cts)
     {
         var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
-        uiStage.SetData(GameTime.Get() + stageInfo.stagecleartime);
+        uiStage.SetData(GameTime.Get() + stageInfo.stagecleartime, _cts);
     }
 
     public void ShowStageInfo(int _stageID, System.Action _startAction)

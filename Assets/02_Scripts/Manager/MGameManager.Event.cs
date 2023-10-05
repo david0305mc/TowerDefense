@@ -70,7 +70,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         AddStageRewards(UserData.Instance.AcquireGold.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        SetAllObjectEndState();
+        StopAllObject();
 
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, stageRewards, () =>
@@ -89,7 +89,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     }
     public void LoseStage()
     {
-        SetAllObjectEndState();
+        StopAllObject();
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(false, null, () =>
         {

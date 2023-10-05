@@ -124,7 +124,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             UserData.Instance.CurrStage = stageID;
             InitEnemies();
             SpawnAllHero();
-            mainUI.SetStageUI();
+            mainUI.SetStageUI(stageCts);
         });
     }
 
@@ -136,7 +136,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.UpdateWorld();
     }
 
-    private void SetAllObjectEndState()
+    private void DisposeCTS()
+    {
+        spawnHeroCts?.Cancel();
+        stageCts?.Cancel();
+    }
+    private void StopAllObject()
     {
         foreach (var item in heroDic)
         {
@@ -147,6 +152,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             item.Value.SetEndState();
         }
+        DisposeCTS();
     }
 
     public void RetryStage()
@@ -174,8 +180,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         RemoveAllBattleHero();
         RemoveAllProjectile();
-        spawnHeroCts?.Cancel();
-        stageCts?.Cancel();
         //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
 
