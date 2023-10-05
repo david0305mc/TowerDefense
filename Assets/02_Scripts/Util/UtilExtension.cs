@@ -56,4 +56,27 @@ public static class UtilExtension
         cts.Cancel();
         cts.Dispose();
     }
+
+    public static string GetCommaString(this int source)
+    {
+        return Utill.IntConvertCommaString(source);
+    }
+
+    public static List<int> ConvertStringToIntArray(this string source)
+    {
+        List<int> retList = new List<int>();
+        var items = source.Split('|');
+
+        for (int i = 0; i < items.Length; i++)
+            retList.Add(int.Parse(items[i]));
+        return retList;
+    }
+
+    public static void AnimTrigger(this Animator animator, string triggerName)
+    {
+        foreach (AnimatorControllerParameter p in animator.parameters)
+            if (p.type == AnimatorControllerParameterType.Trigger)
+                animator.ResetTrigger(p.name);
+        animator.SetTrigger(triggerName);
+    }
 }

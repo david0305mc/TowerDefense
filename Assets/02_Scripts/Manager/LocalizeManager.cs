@@ -107,3 +107,12 @@ public class LocalizeManager : Singleton<LocalizeManager>
 //        Debug.Log("[Localization/SetData] OnLoaded");
 //    }
 }
+
+public static class LocalStringExtension
+{
+    public static string GetEnumLocalization<T>(this T _enum)
+    {
+        string titleStrKey = $"{_enum.GetType().Name.ToLower()}_{_enum.ToString().ToLower()}";
+        return LocalizeManager.Instance.GetLocalString(titleStrKey);
+    }
+}

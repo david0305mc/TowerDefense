@@ -33,7 +33,7 @@ public partial class DataManager {
 		public int aggroorder;
 		public int defaultgrade;
 		public int maxgrade;
-		public int unitrarity;
+		public RARITY_TYPE unitrarity;
 		public string unitname;
 		public string thumbnailpath;
 		public string prefabname;

@@ -25,6 +25,13 @@ public enum ITEM_TYPE
 	SOUL                         = 1,        	// 영혼 아이템 (재화)
 	EXP                          = 2,        	// 경험치
 }
+public enum RARITY_TYPE 
+{ 
+	COMMON                       = 0,        	// 
+	RARE                         = 1,        	// 
+	EPIC                         = 2,        	// 
+	LEGENDARY                    = 3,        	// 
+}
 public enum LANGUAGE_TYPE 
 { 
 	KO                           = 0,        	// ios_3166-1 언어코드

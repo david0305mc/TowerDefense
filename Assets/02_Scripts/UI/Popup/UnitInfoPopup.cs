@@ -13,6 +13,8 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private Button upgradeBtn;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
+    [SerializeField] private TextMeshProUGUI unitrarityText;
+    [SerializeField] private Image unitRarityImage;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
 
     [SerializeField] private TextMeshProUGUI upgradeCostText;
@@ -63,6 +65,8 @@ public class UnitInfoPopup : PopupBase
 
         unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
         upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
+        unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
+        unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
     }
 
 }

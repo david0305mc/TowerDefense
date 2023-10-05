@@ -18,6 +18,10 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
     public Material FlashMaterial;
     public Color FlashColor;
+    public Color RarityColorCommon;
+    public Color RarityColorRare;
+    public Color RarityColorEpic;
+    public Color RarityColorLegendary;
     public AnimationCurve KnockBackCurve;
     public Sprite SoulSprite;
     public Sprite ExpSprite;
@@ -101,6 +105,22 @@ public class MResourceManager : SingletonMono<MResourceManager>
         }
         Debug.LogError($"Faild To GetPrefab {_name}");
         return null;
+    }
+
+    public Color GetRarityColor(RARITY_TYPE _rarityType)
+    {
+        switch (_rarityType)
+        {
+            case RARITY_TYPE.COMMON:
+                return RarityColorCommon;
+            case RARITY_TYPE.RARE:
+                return RarityColorRare;
+            case RARITY_TYPE.EPIC:
+                return RarityColorEpic;
+            case RARITY_TYPE.LEGENDARY:
+                return RarityColorLegendary;
+        }
+        return RarityColorCommon;
     }
 
     //public ProjectileBase GetProjectile(string _name)
