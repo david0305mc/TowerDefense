@@ -65,7 +65,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     private CancellationTokenSource knockBackCTS;
 
     public float ColliderRadius => circleCollider.radius;
-
+    private readonly float attackDistMarge = 0.2f;
     protected virtual void Awake()
     {
         knockBackCTS = new CancellationTokenSource();
@@ -199,7 +199,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             {
                 attackRange = opponentUnitObj.ColliderRadius + this.ColliderRadius;
             }
-            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > attackRange + 0.01f)
+            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > attackRange + attackDistMarge)
             {
                 fsm.ChangeState(FSMStates.DashMove);
             }
@@ -302,7 +302,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             {
                 attackRange = targetObj.ColliderRadius + this.ColliderRadius;
             }
-            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < attackRange + 0.2f)
+            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < attackRange + attackDistMarge)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
