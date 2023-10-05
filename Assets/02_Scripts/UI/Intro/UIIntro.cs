@@ -7,7 +7,10 @@ using Cysharp.Threading.Tasks;
 
 public class UIIntro : MonoBehaviour
 {
-   [SerializeField] private Button startBtn;
+   
+    [SerializeField] private Button startBtn;
+    [SerializeField] private List<GameObject> preloadingObjLists;
+    [SerializeField] private List<GameObject> loadingObjectLists;
 
     private void Awake()
     {
@@ -15,18 +18,30 @@ public class UIIntro : MonoBehaviour
         
         startBtn.onClick.AddListener(() =>
         {
-            startBtn.enabled = false;
+            foreach (var item in preloadingObjLists)
+            {
+                item.SetActive(false);
+            }
+            foreach (var item in loadingObjectLists)
+            {
+                item.SetActive(true);
+            }
             StartGame().Forget();
         });
-    }
-    private void OnEnable()
-    {
-        startBtn.enabled = true;
-
+        foreach (var item in preloadingObjLists)
+        {
+            item.SetActive(true);
+        }
+        foreach (var item in loadingObjectLists)
+        {
+            item.SetActive(false);
+        }
     }
 
     private async UniTaskVoid StartGame()
     {
+        await UniTask.Yield();
+        await UniTask.Yield();
         LocalizeManager.Instance.Initialize();
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
