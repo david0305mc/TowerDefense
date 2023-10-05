@@ -18,9 +18,12 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private TextMeshProUGUI unitrarityText;
     [SerializeField] private TextMeshProUGUI combatPowerText;
     [SerializeField] private TextMeshProUGUI nextCombatPowerText;
+    [SerializeField] private TextMeshProUGUI maxCombatPowerText;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI damageText;
     [SerializeField] private TextMeshProUGUI countText;
+    [SerializeField] private GameObject combatDefaltObj;
+    [SerializeField] private GameObject combatMaxObj;
 
     [SerializeField] private Image unitRarityImage;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
@@ -75,7 +78,6 @@ public class UnitInfoPopup : PopupBase
         unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
         unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
         rarityBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
-        combatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
      
         hpText.SetText(unitData.refUnitGradeData.hp.ToString());
         int damage = unitData.refUnitGradeData.attackdmg * unitData.refUnitGradeData.attackcount + unitData.refUnitGradeData.splashdmg;
@@ -84,16 +86,22 @@ public class UnitInfoPopup : PopupBase
 
         if (unitData.IsMaxGrade)
         {
-            nextCombatPowerText.SetText(LocalizeManager.Instance.GetLocalString("MaxGradeText"));
+            combatDefaltObj.SetActive(false);
+            combatMaxObj.SetActive(true);
+            maxCombatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
             upgradeBtn.SetActive(false);
             maxUpgradeBtn.SetActive(true);
         }
         else
         {
+            combatDefaltObj.SetActive(true);
+            combatMaxObj.SetActive(false);
             upgradeBtn.SetActive(true);
             maxUpgradeBtn.SetActive(false);
             upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
+            
             int nextPower = DataManager.Instance.GetUnitGrade(unitData.uid, unitData.grade + 1).combatpower;
+            combatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
             nextCombatPowerText.SetText(nextPower.ToString());
         }
     }
