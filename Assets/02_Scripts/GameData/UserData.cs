@@ -55,9 +55,14 @@ public partial class UserData : Singleton<UserData>
         AcquireGold = new ReactiveProperty<int>(0);
     }
 
-    private void InitBeginData()
+    public void UpdateData()
     {
         CalcBattlePower();
+    }
+
+    private void InitNewGameData()
+    {
+
     }
 
     public int FindEmptySlot()
@@ -106,7 +111,7 @@ public partial class UserData : Singleton<UserData>
     public Game.StageStatus GetStageStatus(int _stageID)
     {
         var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
-        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid) && BattlePower >= stageInfo.needcombatpower)
+        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid))
         {
             if (LocalData.StageClearDic.ContainsKey(_stageID))
             {
@@ -218,13 +223,12 @@ public partial class UserData : Singleton<UserData>
             //localData = Utill.EncryptXOR(localData);
             LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
             LocalData.UpdateRefData();
-            InitBeginData();
         }
         else
         {
             // NewGame
             LocalData = new LocalSaveData();
-            InitBeginData();
+            InitNewGameData();
         }
     }
 

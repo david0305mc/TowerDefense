@@ -18,9 +18,17 @@ public class UIPanelStageInfo : MonoBehaviour
 
     private System.Action startBtnAction;
     private System.Action closeBtnAction;
+    private DataManager.StageInfo stageInfo;
     private void Awake()
     {
         startBtn.onClick.AddListener(() => {
+            //&& BattlePower >= stageInfo.needcombatpower
+
+            //if (UserData.Instance.BattlePower < stageInfo.needcombatpower)
+            //{
+            //    PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Power", "OK");
+            //    return;
+            //}
             startBtnAction?.Invoke();
             //if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
             //{
@@ -39,7 +47,7 @@ public class UIPanelStageInfo : MonoBehaviour
 
     public void SetData(int _stageID, System.Action _startAction, System.Action _closeAction)
     {
-        var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
+        stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         startBtnAction = _startAction;
         closeBtnAction = _closeAction;
         titleText.SetText(LocalizeManager.Instance.GetLocalString(stageInfo.stagename));
