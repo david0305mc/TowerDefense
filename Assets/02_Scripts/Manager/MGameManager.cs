@@ -124,7 +124,17 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitEnemies();
             SpawnAllHero();
             mainUI.SetStageUI(stageCts);
+            InitInGameSpeed();
         });
+    }
+    private void InitInGameSpeed()
+    {
+        Time.timeScale = UserData.Instance.GameSpeed;
+    }
+
+    private void InitWorldGameSpeed()
+    {
+        Time.timeScale = 1f;
     }
 
     public void BackToHome()
@@ -133,6 +143,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
+        InitWorldGameSpeed();
     }
 
     private void DisposeCTS()

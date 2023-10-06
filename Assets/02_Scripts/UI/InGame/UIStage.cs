@@ -6,6 +6,7 @@ using UniRx;
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 
 public class UIStage : MonoBehaviour
 {
@@ -13,7 +14,22 @@ public class UIStage : MonoBehaviour
     public Transform GoldTarget => goldTargetTR;
     [SerializeField] private TextMeshProUGUI tileLeftText;
     [SerializeField] private TextMeshProUGUI acquireGoldText;
+    [SerializeField] private GameObject speedIconX1;
+    [SerializeField] private GameObject speedIconX2;
+    [SerializeField] private GameObject speedIconX4;
+    [SerializeField] private Button pauseBtn;
+    [SerializeField] private Button speedBtn;
+
     private CompositeDisposable disposable = new CompositeDisposable();
+
+    private void Awake()
+    {
+        speedBtn.onClick.AddListener(() =>
+        {
+            Time.timeScale = UserData.Instance.NextGameSpeed();
+            UpdateUI();
+        });
+    }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
         disposable.Clear();
@@ -36,7 +52,16 @@ public class UIStage : MonoBehaviour
         {
             acquireGoldText.SetText(_gold.ToString());
         }).AddTo(disposable);
+        UpdateUI();
     }
+
+    public void UpdateUI()
+    {
+        speedIconX1.SetActive(UserData.Instance.GameSpeed == 1);
+        speedIconX2.SetActive(UserData.Instance.GameSpeed == 2);
+        speedIconX4.SetActive(UserData.Instance.GameSpeed == 4);
+    }
+
     private void OnDisable()
     {
         disposable.Clear();

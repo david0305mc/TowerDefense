@@ -15,6 +15,7 @@ public partial class UserData : Singleton<UserData>
 
     public int CurrStage { get; set; }
     public int BattlePower { get; private set; }
+    public int GameSpeed { get; private set; }
 
     public LocalSaveData LocalData { get; set; }
     public Dictionary<int, UnitBattleData> enemyDataDic;
@@ -48,6 +49,7 @@ public partial class UserData : Singleton<UserData>
     }
     public void InitData()
     {
+        GameSpeed = 1;
         ShopSelectedItem = -1;
         enemyDataDic = new Dictionary<int, UnitBattleData>();
         battleHeroDataDic = new Dictionary<int, UnitBattleData>();
@@ -58,6 +60,23 @@ public partial class UserData : Singleton<UserData>
     public void UpdateData()
     {
         CalcBattlePower();
+    }
+
+    public int NextGameSpeed() 
+    {
+        if (GameSpeed == 1)
+        {
+            GameSpeed = 2;
+        }
+        else if (GameSpeed == 2)
+        {
+            GameSpeed = 4;
+        }
+        else 
+        {
+            GameSpeed = 1;
+        }
+        return GameSpeed;
     }
 
     private void InitNewGameData()
