@@ -247,7 +247,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         enemyBossUID = 0;
         enemyDic = new Dictionary<int, MEnemyObj>();
-        var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>(true);
+        var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
             UnitBattleData data = UserData.Instance.AddEnemyData(enemyObj.TID);
