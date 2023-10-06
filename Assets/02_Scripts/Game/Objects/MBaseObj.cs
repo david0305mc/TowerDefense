@@ -69,6 +69,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public float ColliderRadius => circleCollider.radius;
     private readonly float attackDistMarge = 0.2f;
+    private float defaultDirection;
     protected virtual void Awake()
     {
         if (agent != null)
@@ -76,12 +77,12 @@ public class MBaseObj : MonoBehaviour, Damageable
             agent.updateRotation = false;
             agent.updateUpAxis = false;
         }
-        
         knockBackCTS = new CancellationTokenSource();
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         renderRoot = animator.transform;
+        defaultDirection = renderRoot.localScale.x;
         animationLink = animator.GetComponent<AnimationLink>();
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
@@ -516,11 +517,11 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         if (value)
         {
-            renderRoot.localScale = new Vector3(-1, 1, 1);
+            renderRoot.localScale = new Vector3(defaultDirection * -1, 1, 1);
         }
         else
         {
-            renderRoot.localScale = new Vector3(1, 1, 1);
+            renderRoot.localScale = new Vector3(defaultDirection, 1, 1);
         }
     }
 
