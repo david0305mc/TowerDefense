@@ -204,11 +204,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5262435009620302545}
-  - component: {fileID: 5262435009620302544}
   - component: {fileID: 5262435009620302543}
   - component: {fileID: 5262435009620302542}
   - component: {fileID: 5262435009620302540}
   - component: {fileID: 5262435009620302538}
+  - component: {fileID: -2714089274078437677}
   m_Layer: 8
   m_Name: 11001_Indian_Wagon
   m_TagString: Untagged
@@ -233,28 +233,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5262435009620302544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5262435009620302539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbaf8e2dac658945837b8d0225aa0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBar: {fileID: 3729317444175024893}
-  agent: {fileID: 5262435009620302543}
-  rigidBody2d: {fileID: 5262435009620302542}
-  firePos: {fileID: 0}
-  tid: 11001
-  state: 
-  targetObj_Test: {fileID: 0}
-  targetoffset: {x: 0, y: 0, z: 0}
-  isEnemyBoss: 0
-  rangeCheckForEditor: 0
 --- !u!195 &5262435009620302543
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -264,7 +242,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5262435009620302539}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.32
+  m_Radius: 0.1
   m_Speed: 3.31
   m_Acceleration: 8
   avoidancePriority: 1
@@ -273,8 +251,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.93
-  m_BaseOffset: 0.47
+  m_Height: 0.1
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
 --- !u!50 &5262435009620302542
@@ -285,7 +263,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5262435009620302539}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -325,6 +303,28 @@ CircleCollider2D:
   m_Offset: {x: 0.20146334, y: 0.16922916}
   serializedVersion: 2
   m_Radius: 0.6289365
+--- !u!114 &-2714089274078437677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5262435009620302539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c546fc5b4bb69a04d8a6c69de0687ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 3729317444175024893}
+  agent: {fileID: 5262435009620302543}
+  rigidBody2d: {fileID: 5262435009620302542}
+  firePos: {fileID: 0}
+  tid: 11001
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
+  isEnemyBoss: 0
+  rangeCheckForEditor: 3
 --- !u!1 &5262435009718204465
 GameObject:
   m_ObjectHideFlags: 0

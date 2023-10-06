@@ -205,11 +205,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 190643480565066638}
-  - component: {fileID: 190643480565066639}
   - component: {fileID: 190643480565066640}
   - component: {fileID: 190643480565066641}
   - component: {fileID: 190643480565066643}
   - component: {fileID: 190643480565066637}
+  - component: {fileID: 8494739196349636047}
   m_Layer: 8
   m_Name: 11002_Indian_Catapult
   m_TagString: Untagged
@@ -234,28 +234,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &190643480565066639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 190643480565066644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbaf8e2dac658945837b8d0225aa0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBar: {fileID: 8674939531827618722}
-  agent: {fileID: 190643480565066640}
-  rigidBody2d: {fileID: 190643480565066641}
-  firePos: {fileID: 0}
-  tid: 11002
-  state: 
-  targetObj_Test: {fileID: 0}
-  targetoffset: {x: 0, y: 0, z: 0}
-  isEnemyBoss: 0
-  rangeCheckForEditor: 0
 --- !u!195 &190643480565066640
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -286,7 +264,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190643480565066644}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -326,6 +304,28 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.17191541}
   serializedVersion: 2
   m_Radius: 0.75804317
+--- !u!114 &8494739196349636047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190643480565066644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c546fc5b4bb69a04d8a6c69de0687ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 8674939531827618722}
+  agent: {fileID: 190643480565066640}
+  rigidBody2d: {fileID: 190643480565066641}
+  firePos: {fileID: 0}
+  tid: 11002
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
+  isEnemyBoss: 0
+  rangeCheckForEditor: 3
 --- !u!1 &190643480668227950
 GameObject:
   m_ObjectHideFlags: 0

@@ -208,11 +208,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1291417232332586458}
-  - component: {fileID: 1291417232332586457}
-  - component: {fileID: 1291417232332586456}
   - component: {fileID: 1291417232332586455}
   - component: {fileID: 1291417232332586453}
   - component: {fileID: 1291417232332586443}
+  - component: {fileID: -4133623824739190711}
   m_Layer: 8
   m_Name: 11004_Indian_Watchtower
   m_TagString: Untagged
@@ -237,50 +236,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1291417232332586457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291417232332586452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbaf8e2dac658945837b8d0225aa0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBar: {fileID: 3365282672483774276}
-  agent: {fileID: 1291417232332586456}
-  rigidBody2d: {fileID: 1291417232332586455}
-  firePos: {fileID: 0}
-  tid: 11004
-  state: 
-  targetObj_Test: {fileID: 0}
-  targetoffset: {x: 0, y: 0, z: 0}
-  isEnemyBoss: 0
-  rangeCheckForEditor: 0
---- !u!195 &1291417232332586456
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291417232332586452}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.1
-  m_Speed: 3.31
-  m_Acceleration: 8
-  avoidancePriority: 1
-  m_AngularSpeed: 117.78
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.32
-  m_BaseOffset: 0.4
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
 --- !u!50 &1291417232332586455
 Rigidbody2D:
   serializedVersion: 4
@@ -329,6 +284,28 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.7402226}
   serializedVersion: 2
   m_Radius: 0.74441314
+--- !u!114 &-4133623824739190711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291417232332586452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c546fc5b4bb69a04d8a6c69de0687ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 3365282672483774276}
+  agent: {fileID: 0}
+  rigidBody2d: {fileID: 1291417232332586455}
+  firePos: {fileID: 5770758142782587748}
+  tid: 11004
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
+  isEnemyBoss: 0
+  rangeCheckForEditor: 3
 --- !u!1 &2167803202459921781
 GameObject:
   m_ObjectHideFlags: 0

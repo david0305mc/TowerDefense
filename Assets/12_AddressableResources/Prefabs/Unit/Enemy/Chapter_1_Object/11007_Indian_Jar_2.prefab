@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1743272617264269915}
   - component: {fileID: 1743272617264269914}
-  - component: {fileID: 1743272617264269913}
   - component: {fileID: 1743272617264269911}
-  - component: {fileID: 1743272617264269909}
   - component: {fileID: 1743272617264269908}
+  - component: {fileID: 5041632823087626270}
+  - component: {fileID: 6244677018493346377}
   m_Layer: 8
   m_Name: 11007_Indian_Jar_2
   m_TagString: Untagged
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpBar: {fileID: 2841405047884300013}
   agent: {fileID: 0}
-  rigidBody2d: {fileID: 1743272617264269913}
+  rigidBody2d: {fileID: 6244677018493346377}
   firePos: {fileID: 0}
   tid: 11007
   state: 
@@ -60,27 +60,6 @@ MonoBehaviour:
   targetoffset: {x: 0, y: 0, z: 0}
   isEnemyBoss: 0
   rangeCheckForEditor: 0
---- !u!50 &1743272617264269913
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743272617264269910}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!210 &1743272617264269911
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -92,28 +71,6 @@ SortingGroup:
   m_SortingLayerID: 193813133
   m_SortingLayer: 1
   m_SortingOrder: 1
---- !u!195 &1743272617264269909
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743272617264269910}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!58 &1743272617264269908
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -130,6 +87,49 @@ CircleCollider2D:
   m_Offset: {x: -0.04807329, y: 0.1327737}
   serializedVersion: 2
   m_Radius: 0.319153
+--- !u!114 &5041632823087626270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743272617264269910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c546fc5b4bb69a04d8a6c69de0687ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 0}
+  agent: {fileID: 0}
+  rigidBody2d: {fileID: 0}
+  firePos: {fileID: 0}
+  tid: 11007
+  state: 
+  targetObj_Test: {fileID: 0}
+  targetoffset: {x: 0, y: 0, z: 0}
+  isEnemyBoss: 0
+  rangeCheckForEditor: 3
+--- !u!50 &6244677018493346377
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743272617264269910}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1743272617486270738
 GameObject:
   m_ObjectHideFlags: 0
