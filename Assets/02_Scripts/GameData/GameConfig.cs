@@ -10,6 +10,7 @@ namespace Game
         public enum GameState
         { 
             MainUI,
+            InGame_SpawningHero,
             InGame,
         }
 

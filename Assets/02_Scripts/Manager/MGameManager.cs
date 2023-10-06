@@ -104,6 +104,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void StartStage(int stageID)
     {
+        gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         UserData.Instance.AcquireGold.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
@@ -122,9 +123,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.CurrStage = stageID;
             InitEnemies();
-            SpawnAllHero();
             mainUI.SetStageUI(stageCts);
             InitInGameSpeed();
+            await SpawnAllHero();
+            gameState = GameConfig.GameState.InGame;
         });
     }
     private void InitInGameSpeed()
@@ -139,6 +141,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void BackToHome()
     {
+        gameState = GameConfig.GameState.MainUI;
         mainUI.SetWorldUI();
         cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
@@ -362,10 +365,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void KillBattleHero(int _attackerUID, int _uid)
     {
         UserData.Instance.KillBattleHero(_attackerUID, _uid);
-        if (UserData.Instance.isAllHeroDead())
+        if (gameState == GameConfig.GameState.InGame && UserData.Instance.isAllHeroDead())
         {
             LoseStage();
         }
+
         if (heroDic.ContainsKey(_uid))
         {
             Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
@@ -465,27 +469,24 @@ public partial class MGameManager : SingletonMono<MGameManager>
         heroDic.Add(battleHeroData.battleUID, heroObj);
     }
 
-    private void SpawnAllHero()
+    private async UniTask SpawnAllHero()
     {
         heroDic = new Dictionary<int, MHeroObj>();
         spawnHeroCts?.Cancel();
         spawnHeroCts = new CancellationTokenSource();
-        UniTask.Create(async () =>
+        await UniTask.Delay(1000, cancellationToken: spawnHeroCts.Token);
+        foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
         {
-            await UniTask.Delay(1000, cancellationToken: spawnHeroCts.Token);
-            foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
+            if (item.Value != -1)
             {
-                if (item.Value != -1)
+                var heroData = UserData.Instance.GetHeroData(item.Value);
+                for (int i = 0; i < heroData.refUnitGradeData.summoncnt; i++)
                 {
-                    var heroData = UserData.Instance.GetHeroData(item.Value);
-                    for (int i = 0; i < heroData.refUnitGradeData.summoncnt; i++)
-                    {
-                        SpawnBattleHero(item.Value);
-                        await UniTask.Delay(300, cancellationToken: spawnHeroCts.Token);
-                    }
+                    SpawnBattleHero(item.Value);
+                    await UniTask.Delay(300, cancellationToken: spawnHeroCts.Token);
                 }
             }
-        });
+        }
     }
 
     //private void Update()
