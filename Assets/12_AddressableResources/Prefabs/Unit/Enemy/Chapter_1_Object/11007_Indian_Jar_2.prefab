@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1743272617264269908}
   - component: {fileID: 5041632823087626270}
   - component: {fileID: 6244677018493346377}
+  - component: {fileID: -6451361267491745612}
   m_Layer: 8
   m_Name: 11007_Indian_Jar_2
   m_TagString: Untagged
@@ -108,7 +109,7 @@ MonoBehaviour:
   targetObj_Test: {fileID: 0}
   targetoffset: {x: 0, y: 0, z: 0}
   isEnemyBoss: 0
-  rangeCheckForEditor: 3
+  rangeCheckForEditor: 0
 --- !u!50 &6244677018493346377
 Rigidbody2D:
   serializedVersion: 4
@@ -130,6 +131,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!208 &-6451361267491745612
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743272617264269910}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1743272617486270738
 GameObject:
   m_ObjectHideFlags: 0

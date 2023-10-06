@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 5262435009620302540}
   - component: {fileID: 5262435009620302538}
   - component: {fileID: -2714089274078437677}
+  - component: {fileID: -6138115953858670559}
   m_Layer: 8
   m_Name: 11001_Indian_Wagon
   m_TagString: Untagged
@@ -324,7 +325,23 @@ MonoBehaviour:
   targetObj_Test: {fileID: 0}
   targetoffset: {x: 0, y: 0, z: 0}
   isEnemyBoss: 0
-  rangeCheckForEditor: 3
+  rangeCheckForEditor: 0
+--- !u!208 &-6138115953858670559
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5262435009620302539}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &5262435009718204465
 GameObject:
   m_ObjectHideFlags: 0
