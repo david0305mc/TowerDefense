@@ -76474,6 +76474,9 @@ Transform:
   - {fileID: 4783698510417632911}
   - {fileID: 4783698511080973747}
   - {fileID: 1570308041067628500}
+  - {fileID: 6365385052832341718}
+  - {fileID: 5580801979811398160}
+  - {fileID: 6345801634847057397}
   m_Father: {fileID: 3704652387733351635}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -82215,6 +82218,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8689766048059107472, guid: cdd3bc0b9c38f2746b05b20f9492c0db, type: 3}
   m_PrefabInstance: {fileID: 2622560882998420953}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7355469496119752104
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3704652387468888596}
+    m_Modifications:
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_Name
+      value: 1010_Indian_Horse_Sword (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_RootOrder
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+--- !u!4 &5580801979811398160 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+  m_PrefabInstance: {fileID: 7355469496119752104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7370837594914422676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82511,7 +82588,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5425928821105675831, guid: 7dbf41131d36e3440ab502e5798aee0c, type: 3}
   m_PrefabInstance: {fileID: 7547871785324183425}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &9129388439224680490
+--- !u!1001 &8302243692943763822
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -82520,23 +82597,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_Name
-      value: 1010_Indian_Horse_Sword
+      value: 1010_Indian_Horse_Sword (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.93
       objectReference: {fileID: 0}
     - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.24
       objectReference: {fileID: 0}
     - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_LocalPosition.z
@@ -82572,11 +82649,159 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+--- !u!4 &6365385052832341718 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+  m_PrefabInstance: {fileID: 8302243692943763822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8318656121525113421
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3704652387468888596}
+    m_Modifications:
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_Name
+      value: 1010_Indian_Horse_Sword (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_RootOrder
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+--- !u!4 &6345801634847057397 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+  m_PrefabInstance: {fileID: 8318656121525113421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9129388439224680490
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3704652387468888596}
+    m_Modifications:
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_Name
+      value: 1010_Indian_Horse_Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125811898285881272, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617804813821713053, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
