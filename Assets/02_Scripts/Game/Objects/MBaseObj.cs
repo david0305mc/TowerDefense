@@ -151,6 +151,8 @@ public class MBaseObj : MonoBehaviour, Damageable
                 DoSwordAttack(collision);
             });
         }
+
+        SetBattleMode();
         StartFSM();
     }
 
@@ -176,6 +178,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         sortingGroup.sortingLayerName = Game.GameConfig.ForegroundLayerName;
         sortingGroup.sortingOrder = 0;
+        attackDelay = 0f;
         hpBar.SetActive(false);
         transform.SetScale(1f);
     }
@@ -189,12 +192,12 @@ public class MBaseObj : MonoBehaviour, Damageable
         if (attackLongDelayCount <= 0)
         {
             //1000 = 1ÃÊ
-            commonDelay = unitData.refUnitGradeData.attacklongdelay * 0.001f;
+            attackDelay = unitData.refUnitGradeData.attacklongdelay * 0.001f;
             attackLongDelayCount = unitData.refUnitGradeData.attackcount;
         }
         else
         {
-            commonDelay = unitData.refUnitGradeData.attackshortdelay * 0.001f;
+            attackDelay = unitData.refUnitGradeData.attackshortdelay * 0.001f;
         }
 
         if (UserData.Instance.isUnitDead(targetObjUID, !UnitData.IsEnemy))
@@ -343,11 +346,15 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void Attack_Enter()
     {
         StopAgent();
+        state = fsm.State.ToString();
+        isFixedTarget = true;
+        if (attackDelay > 0)
+        {
+            fsm.ChangeState(FSMStates.AttackDelay);
+            return;
+        }
         PlayAni("Attack");
         LookTarget();
-        state = fsm.State.ToString();
-        commonDelay = 0f;
-        isFixedTarget = true;
         SetAvoidancePriority(1);
     }
     protected virtual void Attack_Update()
@@ -373,8 +380,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected virtual void AttackDelay_Update()
     {
         LookTarget();
-        commonDelay -= Time.deltaTime;
-        if (commonDelay <= 0f)
+        attackDelay -= Time.deltaTime;
+        if (attackDelay <= 0f)
         {
             if (UserData.Instance.isUnitDead(targetObjUID, !IsEnemy()))
             {
@@ -588,7 +595,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         DoFlashEffect();
         UpdateHPBar();
         KnockBack2(attackerPos, knockBack);
-        //MoveTo()
     }
 
     public void DoFlashEffect()
