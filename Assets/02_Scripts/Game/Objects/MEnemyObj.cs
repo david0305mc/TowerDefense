@@ -12,14 +12,13 @@ public class MEnemyObj : MBaseObj
     public bool IsEnemyBoss => isEnemyBoss;
 
     [SerializeField] private float rangeCheckForEditor = 3f;
-    
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(1.0f, 0, 0, 0.3f);
-        Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawSphere(Vector3.zero, rangeCheckForEditor);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = new Color(1.0f, 0, 0, 0.3f);
+    //    Gizmos.matrix = transform.localToWorldMatrix;
+    //    Gizmos.DrawSphere(Vector3.zero, rangeCheckForEditor);
+    //}
 
     protected override void Awake()
     {
