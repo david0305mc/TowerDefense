@@ -224,6 +224,12 @@ public class MCameraManager : SingletonMono<MCameraManager>
         }
     }
 
+    public void SetPosition(Vector3 _pos)
+    {
+        newPos = _pos;
+        oldPos = newPos;
+    }
+
     public void SetZoomAndSize(float _zoomMin, float _zoomMax, int _sizeMinX, int _sizeMaxX, int _sizeMinY, int _sizeMaxY)
     {
         minZoomFactor = _zoomMin;

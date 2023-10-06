@@ -32,6 +32,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     public UnitBattleData UnitData => unitData;
 
     protected System.Action<AttackData> getDamageAction;
+    protected System.Action deadAction;
+    private Event deadEvent;
     protected CancellationTokenSource cts;
     protected CancellationTokenSource flashCts;
 
@@ -93,7 +95,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i => {
             originColorLists.Add(spriteRenderers[i].color);
         });
-        
+
         if (firePos == default)
         {
             firePos = transform;
@@ -127,10 +129,15 @@ public class MBaseObj : MonoBehaviour, Damageable
         });
     }
 
+    public void SetDeadAction(System.Action _deadAction)
+    {
+        deadAction = _deadAction;
+    }
     public void InitObject(int _battleUID, bool _isEnemy, System.Action<AttackData> _getDamageAction)
     {
         battleUID = _battleUID;
         getDamageAction = _getDamageAction;
+        
         if (_isEnemy)
         {
             unitData = UserData.Instance.GetEnemyData(_battleUID);
@@ -595,6 +602,11 @@ public class MBaseObj : MonoBehaviour, Damageable
         DoFlashEffect();
         UpdateHPBar();
         KnockBack2(attackerPos, knockBack);
+    }
+
+    public virtual void GetKilled()
+    {
+        deadAction?.Invoke();
     }
 
     public void DoFlashEffect()

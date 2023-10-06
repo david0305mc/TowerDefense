@@ -22,6 +22,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
+    private List<int> heroUIDOrder;
     private StageObject currStageObj;
     private AsyncOperationHandle<GameObject> currStageOpHandler; 
 
@@ -36,6 +37,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private int enemyBossUID;
 
     public static int flashUidSeed = 1000;
+    private float cameraFollowTime;
 
     protected override void OnSingletonAwake()
     {
@@ -115,19 +117,59 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         var stageInfo = DataManager.Instance.GetStageInfoData(stageID);
         worldMap.gameObject.SetActive(false);
-        cameraManager.SetZoomAndSize(2, 20, -10, 25, -10, 25);
         UniTask.Create(async () =>
         {
             currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.CurrStage = stageID;
-            InitEnemies();
             mainUI.SetStageUI(stageCts);
+            InitEnemies();
             InitInGameSpeed();
+            InitCamera().Forget();
             await SpawnAllHero();
             gameState = GameConfig.GameState.InGame;
         });
+    }
+
+    private async UniTaskVoid InitCamera()
+    {
+        cameraManager.SetPosition(currStageObj.heroSpawnPos.position);
+        cameraManager.SetZoomAndSize(2, 20, -10, 25, -10, 25);
+        await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: stageCts.Token);
+        cameraFollowTime = 2f;
+        while (true)
+        {
+            if (cameraFollowTime >= 2f)
+            {
+                MHeroObj targetHero = GetFirstCameraTarget();
+                if (targetHero != null)
+                {
+                    cameraManager.SetFollowObject(targetHero.gameObject, () =>
+                    {
+
+                    });
+                    targetHero.SetDeadAction(() =>
+                    {
+                        cameraManager.CancelFollowTarget();
+                    });
+                }
+                cameraFollowTime = 0f;
+            }
+            await UniTask.Yield();
+            cameraFollowTime += Time.deltaTime;
+        }
+    }
+    private MHeroObj GetFirstCameraTarget()
+    {
+        foreach (var item in heroUIDOrder)
+        {
+            if (!UserData.Instance.isBattleHeroDead(item))
+            {
+                return GetHeroObj(item);
+            }
+        }
+        return null;
     }
     private void InitInGameSpeed()
     {
@@ -227,11 +269,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     worldMap.SelectStage(-1);
                 }
             }
+            else
+            {
+                cameraFollowTime = 0f;
+            }
         }, 
         ()=> {
             if (gameState == GameConfig.GameState.MainUI)
             {
                 mainUI.HideStageInfo();
+            }
+            else
+            {
+                cameraFollowTime = 0f;
             }
         });
         worldMap.InitWorld();
@@ -372,7 +422,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         if (heroDic.ContainsKey(_uid))
         {
-            Lean.Pool.LeanPool.Despawn(heroDic[_uid].gameObject);
+            MHeroObj heroObj = heroDic[_uid];
+            heroObj.GetKilled();
+            Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
             heroDic.Remove(_uid);
         }
     }
@@ -416,6 +468,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     }
                 });
             }, stageCts);
+            enemyObj.GetKilled();
             enemyObj.gameObject.SetActive(false);
         }
     }
@@ -467,10 +520,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
         });
         heroObj.StartFSM();
         heroDic.Add(battleHeroData.battleUID, heroObj);
+        heroUIDOrder.Add(battleHeroData.battleUID);
     }
 
     private async UniTask SpawnAllHero()
     {
+        heroUIDOrder = new List<int>();
         heroDic = new Dictionary<int, MHeroObj>();
         spawnHeroCts?.Cancel();
         spawnHeroCts = new CancellationTokenSource();
