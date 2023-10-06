@@ -126,13 +126,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
             mainUI.SetStageUI(stageCts);
             InitEnemies();
             InitInGameSpeed();
-            InitCamera().Forget();
+            InitFollowCamera().Forget();
             await SpawnAllHero();
             gameState = GameConfig.GameState.InGame;
         });
     }
 
-    private async UniTaskVoid InitCamera()
+    private async UniTaskVoid InitFollowCamera()
     {
         cameraManager.SetPosition(currStageObj.heroSpawnPos.position);
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 20, -10, 25, -10, 25);
@@ -156,7 +156,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 }
                 cameraFollowTime = 0f;
             }
-            await UniTask.Yield();
+            await UniTask.Yield(cancellationToken: stageCts.Token);
             cameraFollowTime += Time.deltaTime;
         }
     }
@@ -456,6 +456,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var enemyObj = enemyDic[_uid];
             var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectPeedback>();
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
+            if (_uid == enemyBossUID)
+            {
+                var boxxEffect = MResourceManager.Instance.GetBuildResource("Prefabs/Particle/StrongEffect").GetComponent<EffectPeedback>();
+                Lean.Pool.LeanPool.Spawn(boxxEffect, enemyObj.transform.position, Quaternion.identity, objRoot);
+            }
+            
             effectPeedback.SetData(() =>
             {
                 Lean.Pool.LeanPool.Despawn(effectPeedback);
@@ -464,7 +470,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
                     if (_uid == enemyBossUID)
                     {
-                        WinStage();
+                        UniTask.Create(async () =>
+                        {
+                            Time.timeScale = 0.1f;
+                            await UniTask.WaitForSeconds(1f, true);
+                            Time.timeScale = 1f;
+                            WinStage();
+                        });
                     }
                 });
             }, stageCts);
