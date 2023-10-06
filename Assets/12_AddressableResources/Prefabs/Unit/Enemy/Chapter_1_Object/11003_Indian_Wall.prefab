@@ -190,7 +190,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6994962672477025605}
-  - component: {fileID: 6994962672477025602}
+  - component: {fileID: 5904893085664081336}
   - component: {fileID: 6994962672477025600}
   - component: {fileID: 6994962672477025614}
   - component: {fileID: 8457698664762049644}
@@ -209,7 +209,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6994962672477025615}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2.849, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -219,7 +219,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6994962672477025602
+--- !u!114 &5904893085664081336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6994962672477025615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbaf8e2dac658945837b8d0225aa0fa, type: 3}
+  m_Script: {fileID: 11500000, guid: c546fc5b4bb69a04d8a6c69de0687ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 6795072700901448551}
@@ -240,7 +240,7 @@ MonoBehaviour:
   targetObj_Test: {fileID: 0}
   targetoffset: {x: 0, y: 0, z: 0}
   isEnemyBoss: 0
-  rangeCheckForEditor: 0
+  rangeCheckForEditor: 3
 --- !u!50 &6994962672477025600
 Rigidbody2D:
   serializedVersion: 4

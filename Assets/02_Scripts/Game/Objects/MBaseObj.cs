@@ -513,7 +513,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     {
         hpBar.value = UnitData.hp / (float)UnitData.refUnitGradeData.hp;
     }
-    protected void FlipRenderers(bool value)
+    protected virtual void FlipRenderers(bool value)
     {
         if (value)
         {
