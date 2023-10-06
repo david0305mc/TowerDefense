@@ -135,7 +135,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private async UniTaskVoid InitCamera()
     {
         cameraManager.SetPosition(currStageObj.heroSpawnPos.position);
-        cameraManager.SetZoomAndSize(2, 20, -10, 25, -10, 25);
+        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 20, -10, 25, -10, 25);
         await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: stageCts.Token);
         cameraFollowTime = 2f;
         while (true)
@@ -185,7 +185,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = GameConfig.GameState.MainUI;
         mainUI.SetWorldUI();
-        cameraManager.SetZoomAndSize(2, 7, -2, 9, -2, 6);
+        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
         InitWorldGameSpeed();

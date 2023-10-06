@@ -230,8 +230,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
         oldPos = newPos;
     }
 
-    public void SetZoomAndSize(float _zoomMin, float _zoomMax, int _sizeMinX, int _sizeMaxX, int _sizeMinY, int _sizeMaxY)
-    {
+    public void SetZoomAndSize(float _zoomSize, float _zoomMin, float _zoomMax, int _sizeMinX, int _sizeMaxX, int _sizeMinY, int _sizeMaxY)
+    { 
         minZoomFactor = _zoomMin;
         maxZoomFactor = _zoomMax;
 
@@ -247,7 +247,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             oldPos = transform.position;
         }
 
-        newZoom = Mathf.Clamp(newZoom, minZoomFactor, maxZoomFactor);
+        newZoom = Mathf.Clamp(_zoomSize, minZoomFactor, maxZoomFactor);
         if (!newZoom.Equals(oldZoom))
         {
             mainCamera.orthographicSize = newZoom;

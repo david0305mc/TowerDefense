@@ -123,7 +123,7 @@ public class MainUI : MonoBehaviour
         {
             case BottomTab.Worldmap:
                 {
-                    MCameraManager.Instance.SetZoomAndSize(2, 7, -2, 9, -2, 6);
+                    MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
                 }
                 break;
 

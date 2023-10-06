@@ -14,6 +14,7 @@ namespace Game
             InGame,
         }
 
+        public static readonly int DefaultZoomSize = 4;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
 
