@@ -458,7 +458,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
-                var boxxEffect = MResourceManager.Instance.GetBuildResource("Prefabs/Particle/StrongEffect").GetComponent<EffectPeedback>();
+                var boxxEffect = MResourceManager.Instance.GetBuildResource("Prefabs/Particle/Flag_Change_Effect_01").GetComponent<EffectPeedback>();
                 Lean.Pool.LeanPool.Spawn(boxxEffect, enemyObj.transform.position, Quaternion.identity, objRoot);
             }
             
