@@ -458,6 +458,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
+                cameraManager.SetFollowObject(enemyObj.gameObject, () =>
+                {
+
+                });
+                cameraFollowTime = -5f; //보스 죽이면 카메라가 7초 동안 고정되어서 못쫓아가게 하고싶습니다
                 var boxxEffect = MResourceManager.Instance.GetBuildResource("Prefabs/Particle/Flag_Change_Effect_01").GetComponent<EffectPeedback>();
                 Lean.Pool.LeanPool.Spawn(boxxEffect, enemyObj.transform.position, Quaternion.identity, objRoot);
             }
@@ -472,9 +477,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     {
                         UniTask.Create(async () =>
                         {
+                            await UniTask.WaitForSeconds(1f, true);
                             Time.timeScale = 0.1f;
                             await UniTask.WaitForSeconds(1f, true);
                             Time.timeScale = 1f;
+                            await UniTask.WaitForSeconds(2f, true);
                             WinStage();
                         });
                     }
