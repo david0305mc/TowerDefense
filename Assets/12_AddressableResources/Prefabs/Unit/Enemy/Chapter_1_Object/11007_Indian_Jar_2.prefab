@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1743272617264269915}
-  - component: {fileID: 1743272617264269914}
   - component: {fileID: 1743272617264269911}
   - component: {fileID: 1743272617264269908}
   - component: {fileID: 5041632823087626270}
@@ -39,28 +38,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1743272617264269914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743272617264269910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbaf8e2dac658945837b8d0225aa0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBar: {fileID: 2841405047884300013}
-  agent: {fileID: 0}
-  rigidBody2d: {fileID: 6244677018493346377}
-  firePos: {fileID: 0}
-  tid: 11007
-  state: 
-  targetObj_Test: {fileID: 0}
-  targetoffset: {x: 0, y: 0, z: 0}
-  isEnemyBoss: 0
-  rangeCheckForEditor: 0
 --- !u!210 &1743272617264269911
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -85,9 +62,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.04807329, y: 0.1327737}
+  m_Offset: {x: -0.0041170716, y: 0.0490475}
   serializedVersion: 2
-  m_Radius: 0.319153
+  m_Radius: 0.42590392
 --- !u!114 &5041632823087626270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +118,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.34, y: 0.33, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -173,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743272617486270738}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.046000004, y: 0.09499931, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -548,17 +525,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33749dffd8cf70645b16fec436a55fa5, type: 3}
---- !u!114 &2841405047884300013 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4566627910256913786, guid: 33749dffd8cf70645b16fec436a55fa5, type: 3}
-  m_PrefabInstance: {fileID: 1743272617119994775}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4866338247320468918 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6609575542628068897, guid: 33749dffd8cf70645b16fec436a55fa5, type: 3}
