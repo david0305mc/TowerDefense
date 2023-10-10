@@ -39,6 +39,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private System.Action dragStartAction;
     private GameObject followTarget;
     private System.Action followTargetAction;
+    private bool keepFollow;
 
     protected override void OnSingletonAwake()
     {
@@ -76,6 +77,11 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
     private void FixedUpdate()
     {
+        if (followTarget != null)
+        {
+            newPos = followTarget.transform.position;
+        }
+
         newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
         if (!newPos.Equals(oldPos))
         {
@@ -92,11 +98,14 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
         if (followTarget != null)
         {
-            if (Vector2.Distance(transform.position, followTarget.transform.position) <= 0.1f)
+            if (!keepFollow)
             {
-                followTargetAction?.Invoke();
-                followTarget = null;
-                followTargetAction = null;
+                if (Vector2.Distance(transform.position, followTarget.transform.position) <= 0.1f)
+                {
+                    followTargetAction?.Invoke();
+                    followTarget = null;
+                    followTargetAction = null;
+                }
             }
         }
     }
@@ -261,8 +270,9 @@ public class MCameraManager : SingletonMono<MCameraManager>
         dragStartAction = _dragStartAction;
     }
 
-    public void SetFollowObject(GameObject _target, System.Action _targetAction)
+    public void SetFollowObject(GameObject _target, bool _keepFollow, System.Action _targetAction)
     {
+        keepFollow = _keepFollow;
         followTarget = _target;
         followTargetAction = _targetAction;
         newPos = _target.transform.position;

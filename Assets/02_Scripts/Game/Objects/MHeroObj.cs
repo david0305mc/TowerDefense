@@ -114,6 +114,34 @@ public class MHeroObj : MBaseObj
         }
         return base.FindUnitListByArea(_range, isTargetEnemy);
     }
+
+    public Vector3 GetCameraTargetPosition()
+    {
+        switch (fsm.State)
+        {
+            case FSMStates.Attack:
+            case FSMStates.AttackDelay:
+            case FSMStates.DashMove:
+                {
+                 return MGameManager.Instance.GetEnemyObj(targetObjUID).transform.position;
+                }
+            case FSMStates.PrevIdle:
+            case FSMStates.Idle:
+            case FSMStates.WaypointMove:
+                {
+                    if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
+                    {
+                        return MGameManager.Instance.WayPoints[wayPointIndex].transform.position;
+                    }
+                    else
+                    {
+                        return MGameManager.Instance.WayPoints[MGameManager.Instance.WayPoints.Count - 1].transform.position;
+                    }
+                }
+        }
+        return transform.position;
+    }
+
     protected override void DashMove_Enter()
     {
         base.DashMove_Enter();

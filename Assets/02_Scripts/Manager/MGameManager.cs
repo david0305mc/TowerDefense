@@ -19,6 +19,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private GoldReewardObj goldRewardPrefab;
+    [SerializeField] private GameObject cameraFollowObject;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -146,7 +147,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj targetHero = GetFirstCameraTarget();
                 if (targetHero != null)
                 {
-                    cameraManager.SetFollowObject(targetHero.gameObject, () =>
+                    cameraManager.SetFollowObject(targetHero.gameObject, true, () =>
                     {
 
                     });
@@ -186,6 +187,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = GameConfig.GameState.MainUI;
         mainUI.SetWorldUI();
+        cameraManager.CancelFollowTarget();
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
@@ -250,7 +252,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
                 if (obj != null)
                 {
-                    cameraManager.SetFollowObject(obj, () =>
+                    cameraManager.SetFollowObject(obj, false, () =>
                     {
                         WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                         mainUI.ShowStageInfo(stageSlot.stage, () =>
@@ -272,6 +274,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             else
             {
+                cameraManager.CancelFollowTarget();
                 cameraFollowTime = 0f;
             }
         }, 
@@ -282,6 +285,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             else
             {
+                cameraManager.CancelFollowTarget();
                 cameraFollowTime = 0f;
             }
         });
@@ -459,7 +463,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
-                cameraManager.SetFollowObject(enemyObj.gameObject, () =>
+                cameraManager.SetFollowObject(enemyObj.gameObject, true, () =>
                 {
 
                 });
