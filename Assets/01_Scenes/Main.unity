@@ -427,6 +427,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1365572199746676199, guid: 9cf0262cca71de04d8e13ad3b5095370, type: 3}
   m_PrefabInstance: {fileID: 273100694}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &273593312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 273593313}
+  m_Layer: 0
+  m_Name: CameraFollowObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &273593313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273593312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 684310350}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &334748629
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,6 +594,7 @@ Transform:
   - {fileID: 1560306969}
   - {fileID: 7815749886598380119}
   - {fileID: 273100695}
+  - {fileID: 273593313}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -793,6 +825,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a0f022d2273d494186435541049e709, type: 2}
   - {fileID: 11400000, guid: 2806d7ba5a48e3e40a54d1a0d584ed61, type: 2}
   goldRewardPrefab: {fileID: 1509980190730887431, guid: 377810056bd1daf478f7cc32798bf655, type: 3}
+  cameraFollowObject: {fileID: 273593312}
 --- !u!1001 &1243510927
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private Dictionary<TileBase, TileData> dataFromTileMap;
     private GameConfig.GameState gameState;
 
+    private CancellationTokenSource followCameraCts;
     private CancellationTokenSource stageCts;
     private CancellationTokenSource spawnHeroCts;
 
@@ -136,9 +137,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private async UniTaskVoid InitFollowCamera()
     {
+        followCameraCts = new CancellationTokenSource();
         cameraManager.SetPosition(currStageObj.heroSpawnPos.position);
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 20, -10, 25, -10, 25);
-        await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: stageCts.Token);
+        await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
         while (true)
         {
@@ -158,7 +160,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 }
                 cameraFollowTime = 0f;
             }
-            await UniTask.Yield(cancellationToken: stageCts.Token);
+            await UniTask.Yield(cancellationToken: followCameraCts.Token);
             cameraFollowTime += Time.deltaTime;
         }
     }
@@ -199,7 +201,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         spawnHeroCts?.Cancel();
         stageCts?.Cancel();
     }
-    private void StopAllObject()
+    private void SetAllUnitEndState()
     {
         foreach (var item in heroDic)
         {
@@ -210,7 +212,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             item.Value.SetEndState();
         }
-        DisposeCTS();
     }
 
     public void RetryStage()
@@ -463,35 +464,31 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
-                cameraManager.SetFollowObject(enemyObj.gameObject, true, () =>
+                Time.timeScale = 0.3f;
+                cameraManager.EnableCameraControl = false;
+                followCameraCts?.Cancel();
+                cameraManager.SetFollowObject(enemyObj.gameObject, false, null);
+                SetAllUnitEndState();
+                effectPeedback.SetData(() =>
                 {
-
-                });
-                cameraFollowTime = -5f; //보스 죽이면 카메라가 7초 동안 고정되어서 못쫓아가게 하고싶습니다
-                var boxxEffect = MResourceManager.Instance.GetBuildResource("Prefabs/Particle/Flag_Change_Effect_01").GetComponent<EffectPeedback>();
-                Lean.Pool.LeanPool.Spawn(boxxEffect, enemyObj.transform.position, Quaternion.identity, objRoot);
+                    cameraManager.EnableCameraControl = true;
+                    Lean.Pool.LeanPool.Despawn(effectPeedback);
+                    Time.timeScale = 1f;
+                    WinStage();
+                }, stageCts);
+            }
+            else
+            {
+                effectPeedback.SetData(() =>
+                {
+                    Lean.Pool.LeanPool.Despawn(effectPeedback);
+                    var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+                    goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
+                        UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
+                    });
+                }, stageCts);
             }
             
-            effectPeedback.SetData(() =>
-            {
-                Lean.Pool.LeanPool.Despawn(effectPeedback);
-                var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-                goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
-                    UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
-                    if (_uid == enemyBossUID)
-                    {
-                        UniTask.Create(async () =>
-                        {
-                            await UniTask.WaitForSeconds(1f, true);
-                            Time.timeScale = 0.1f;
-                            await UniTask.WaitForSeconds(1f, true);
-                            Time.timeScale = 1f;
-                            await UniTask.WaitForSeconds(2f, true);
-                            WinStage();
-                        });
-                    }
-                });
-            }, stageCts);
             enemyObj.GetKilled();
             enemyObj.gameObject.SetActive(false);
         }
@@ -646,5 +643,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         spawnHeroCts?.Dispose();
         stageCts?.Cancel();
         stageCts?.Dispose();
+        followCameraCts?.Cancel();
+        followCameraCts?.Dispose();
     }
 }

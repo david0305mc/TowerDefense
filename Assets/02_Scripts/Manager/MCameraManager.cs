@@ -23,6 +23,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private Camera mainCamera;
 
+    public bool EnableCameraControl;
+
     private Vector3 newPos;
     private Vector3 oldPos;
 
@@ -51,6 +53,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         oldZoom = newZoom;
         followTarget = null;
         followTargetAction = null;
+        EnableCameraControl = true;
     }
     void Start()
     {
@@ -61,6 +64,11 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private void Update()
     {
         if (IsUsingUI())
+        {
+            return;
+        }
+
+        if (!EnableCameraControl)
         {
             return;
         }

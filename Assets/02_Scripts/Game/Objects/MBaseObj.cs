@@ -403,6 +403,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     public void SetEndState()
     {
         fsm.ChangeState(FSMStates.End);
+        hpBar.SetActive(false);
     }
 
     protected virtual void End_Enter()
