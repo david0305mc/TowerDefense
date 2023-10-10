@@ -33,6 +33,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private GameConfig.GameState gameState;
 
     private CancellationTokenSource followCameraCts;
+    private CancellationTokenSource timerCts;
     private CancellationTokenSource stageCts;
     private CancellationTokenSource spawnHeroCts;
 
@@ -111,6 +112,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
+        timerCts = new CancellationTokenSource();
         UserData.Instance.AcquireGold.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
         mainUI.SetIngameUI();
@@ -126,7 +128,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.CurrStage = stageID;
-            mainUI.SetStageUI(stageCts);
+            mainUI.SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
             InitFollowCamera().Forget();
@@ -200,6 +202,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         spawnHeroCts?.Cancel();
         stageCts?.Cancel();
+        timerCts?.Cancel();
+        followCameraCts?.Cancel();
     }
     private void SetAllUnitEndState()
     {
@@ -420,6 +424,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void KillBattleHero(int _attackerUID, int _uid)
     {
+        if (gameState == GameConfig.GameState.BossDefeatEffect || gameState == GameConfig.GameState.GameEnd)
+            return;
+
         UserData.Instance.KillBattleHero(_attackerUID, _uid);
         if (gameState == GameConfig.GameState.InGame && UserData.Instance.isAllHeroDead())
         {
@@ -456,6 +463,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void KillEnemy(int attackerUID, int _uid)
     {
+        if (gameState == GameConfig.GameState.BossDefeatEffect || gameState == GameConfig.GameState.GameEnd)
+            return;
+
         UserData.Instance.KillEnemy(attackerUID, _uid);
         if (enemyDic.ContainsKey(_uid))
         {
@@ -464,9 +474,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
+                gameState = GameConfig.GameState.BossDefeatEffect;
+                DisposeCTS();
                 Time.timeScale = 0.3f;
                 cameraManager.EnableCameraControl = false;
-                followCameraCts?.Cancel();
                 cameraManager.SetFollowObject(enemyObj.gameObject, false, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
@@ -645,5 +656,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         stageCts?.Dispose();
         followCameraCts?.Cancel();
         followCameraCts?.Dispose();
+        timerCts?.Cancel();
+        timerCts?.Dispose();
     }
 }

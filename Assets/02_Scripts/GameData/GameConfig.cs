@@ -12,6 +12,8 @@ namespace Game
             MainUI,
             InGame_SpawningHero,
             InGame,
+            BossDefeatEffect,
+            GameEnd,
         }
 
         public static readonly int DefaultZoomSize = 10;

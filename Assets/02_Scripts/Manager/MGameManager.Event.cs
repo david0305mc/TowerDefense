@@ -65,12 +65,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void WinStage()
     {
+        gameState = Game.GameConfig.GameState.GameEnd;
         var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.CurrStage);
 
         AddStageRewards(UserData.Instance.AcquireGold.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.CurrStage);
-        DisposeCTS();
 
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, stageRewards, () =>
@@ -89,6 +89,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     }
     public void LoseStage()
     {
+        gameState = Game.GameConfig.GameState.GameEnd;
         DisposeCTS();
         SetAllUnitEndState();
         var popup = PopupManager.Instance.Show<GameResultPopup>();
