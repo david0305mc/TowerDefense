@@ -104,8 +104,8 @@ public class GoldReewardObj : MonoBehaviour
         //}
         points[points.Length - 1] = dstPos;
 
-        if (PointsChanged())
-            CalculateCurvePoints(samplePointCount);
+        //if (PointsChanged())    
+        CalculateCurvePoints(samplePointCount);
 
         float fLen = (curvePoints.Length - 1) * elapse;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);
