@@ -493,6 +493,15 @@ public class MBaseObj : MonoBehaviour, Damageable
             SetTargetObject(_attackerUID);
             fsm.ChangeState(FSMStates.DashMove);
         }
+        else
+        {
+            var targetUnitData = UserData.Instance.GetUnitData(targetObjUID, !UnitData.IsEnemy);
+            if (targetUnitData.refData.aggroorder == -1)
+            {
+                SetTargetObject(_attackerUID);
+                fsm.ChangeState(FSMStates.DashMove);
+            }
+        }
     }
     protected void DoAgentMove(Vector3 _pos)
     {
