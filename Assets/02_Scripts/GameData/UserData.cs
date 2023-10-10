@@ -28,6 +28,21 @@ public partial class UserData : Singleton<UserData>
         var aliveHeroes = battleHeroDataDic.Where(i => i.Key != -1 && !i.Value.isDead);
         return aliveHeroes.Count() == 0;
     }
+    public List<UnitBattleData> GetAliveEnemyLists()
+    {
+        return enemyDataDic.Values.Where(enemyUnit =>
+        {
+            if (enemyUnit.battleUID == -1)
+                return false;
+            if (enemyUnit.isDead)
+                return false;
+            if (enemyUnit.tid < Game.GameConfig.StartBuildingID) // Except BuildingUnit
+                return false;
+            if (enemyUnit.uid == MGameManager.Instance.EnemyBossUID)
+                return true;
+            return false;
+        }).ToList();
+    }
     
     public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
 

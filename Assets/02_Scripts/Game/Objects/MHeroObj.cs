@@ -104,6 +104,16 @@ public class MHeroObj : MBaseObj
         }
     }
 
+    protected override List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
+    {
+        var aliveEnemyLists = UserData.Instance.GetAliveEnemyLists();
+        if (aliveEnemyLists.Count() == 1)
+        {
+            MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, true);
+            return new List<MBaseObj>() { targetObj };
+        }
+        return base.FindUnitListByArea(_range, isTargetEnemy);
+    }
     protected override void DashMove_Enter()
     {
         base.DashMove_Enter();

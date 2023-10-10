@@ -14,12 +14,13 @@ namespace Game
             InGame,
         }
 
-        public static readonly int DefaultZoomSize = 4;
+        public static readonly int DefaultZoomSize = 10;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
 
         public static readonly int CanvasMainUILayerOrder = 100;
         public static readonly int CanvasPopupManagerLayerOrder = 200;
+        public static readonly int StartBuildingID = 10000;
 
         public static readonly string DefaultLayerName = "Default";
         public static readonly string ForegroundLayerName = "Foreground";

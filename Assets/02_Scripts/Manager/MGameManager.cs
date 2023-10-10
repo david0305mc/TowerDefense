@@ -35,6 +35,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private CancellationTokenSource spawnHeroCts;
 
     private int enemyBossUID;
+    public int EnemyBossUID => enemyBossUID;
 
     public static int flashUidSeed = 1000;
     private float cameraFollowTime;

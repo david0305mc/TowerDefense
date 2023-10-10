@@ -86,6 +86,7 @@ public class MEnemyObj : MBaseObj
             }
         }
     }
+
     protected override void DashMove_Enter()
     {
         base.DashMove_Enter();

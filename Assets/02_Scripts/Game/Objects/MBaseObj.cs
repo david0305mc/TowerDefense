@@ -548,7 +548,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
-    protected List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
+    protected virtual List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
     {
         var detectedObjs = Physics2D.OverlapCircleAll(transform.position, _range * 0.1f, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
