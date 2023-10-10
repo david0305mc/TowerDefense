@@ -37,6 +37,7 @@ public class GoldItemObj : MonoBehaviour
     protected virtual void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
+        trainRenderer = GetComponent<TrailRenderer>();
     }
 
     //public void SetData(GameObject _target)

@@ -7,7 +7,6 @@ public class ProjectileParabola : ProjectileBase
     
     [SerializeField] private AnimationCurve curve;
     
-    
     protected override  bool UpdateMissile()
     {
         if (!base.UpdateMissile())

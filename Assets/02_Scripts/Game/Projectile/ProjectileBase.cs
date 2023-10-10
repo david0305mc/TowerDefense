@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ProjectileBase : MonoBehaviour
 {
+
+    private TrailRenderer trailRenderer;
     protected Rigidbody2D rigidBody2d;
 
     protected float elapse;
@@ -19,6 +21,7 @@ public class ProjectileBase : MonoBehaviour
     protected virtual void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     public virtual void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
@@ -31,6 +34,10 @@ public class ProjectileBase : MonoBehaviour
         speed = _speed;
         prevPos = srcPos;
         isDisposed = false;
+        if (trailRenderer != null)
+        {
+            trailRenderer.Clear();
+        }
     }
     private void Update()
     {

@@ -23,23 +23,17 @@ public class ProjectileBezier : ProjectileBase
 
     // curve
     private Vector3[] curvePoints;
-    private TrailRenderer trainRenderer;
 
 
     protected override void Awake()
     {
         base.Awake();
-        trainRenderer = GetComponent<TrailRenderer>();
         startTR = transform.Find("StartTR");
         secondTR = transform.Find("SecondTR");
     }
     public override void Shoot(AttackData _attackData, MBaseObj _targetObj, float _speed)
     {
         base.Shoot(_attackData, _targetObj, _speed);
-        if (trainRenderer != null)
-        {
-            trainRenderer.Clear();
-        }
         
         startTR.position = transform.position;
         startTR.rotation = GameUtil.LookAt2D(startTR.position, _targetObj.transform.position, GameUtil.FacingDirection.DOWN);
