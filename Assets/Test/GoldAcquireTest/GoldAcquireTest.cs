@@ -24,7 +24,7 @@ public class GoldAcquireTest : MonoBehaviour
                 EffectPeedback itemObj = Lean.Pool.LeanPool.Spawn(effectPrefab, randVec2, Quaternion.identity, transform);
                 itemObj.SetData(() => {
                     Lean.Pool.LeanPool.Despawn(itemObj);
-                }, cts);
+                });
 
                 //for (int i = 0; i < 1; i++)
                 //{

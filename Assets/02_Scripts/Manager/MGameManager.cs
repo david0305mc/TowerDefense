@@ -140,7 +140,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private async UniTaskVoid InitFollowCamera()
     {
         followCameraCts = new CancellationTokenSource();
-        cameraManager.SetPosition(currStageObj.heroSpawnPos.position);
+        Vector3 followOffset = new Vector3(2, 3);
+        cameraManager.SetPosition(currStageObj.heroSpawnPos.position + followOffset);
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 20, -10, 25, -10, 25);
         await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
@@ -151,10 +152,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj targetHero = GetFirstCameraTarget();
                 if (targetHero != null)
                 {
-                    cameraManager.SetFollowObject(targetHero.gameObject, true, () =>
-                    {
-
-                    });
+                    cameraManager.SetFollowObject(targetHero.gameObject, true, followOffset, null);
                     targetHero.SetDeadAction(() =>
                     {
                         cameraManager.CancelFollowTarget();
@@ -201,9 +199,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void FollowToCurrStage()
     {
-        cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), false, () => {
-
-        });
+        cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), false, Vector2.zero, null);
     }
 
     private void DisposeCTS()
@@ -264,7 +260,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
                 if (obj != null)
                 {
-                    cameraManager.SetFollowObject(obj, false, () =>
+                    cameraManager.SetFollowObject(obj, false, Vector2.zero, () =>
                     {
                         WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                         mainUI.ShowStageInfo(stageSlot.stage, () =>
@@ -486,7 +482,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 DisposeCTS();
                 Time.timeScale = 0.3f;
                 cameraManager.EnableCameraControl = false;
-                cameraManager.SetFollowObject(enemyObj.gameObject, false, null);
+                cameraManager.SetFollowObject(enemyObj.gameObject, false, Vector2.zero, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
                 { 
