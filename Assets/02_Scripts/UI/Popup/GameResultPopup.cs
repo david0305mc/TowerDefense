@@ -90,7 +90,7 @@ public class GameResultPopup : PopupBase
         });
 
         nextStageBtn.onClick.RemoveAllListeners();
-        int nextStage = UserData.Instance.CurrStage + 1;
+        int nextStage = UserData.Instance.PlayingStage + 1;
         if (DataManager.Instance.GetStageInfoData(nextStage) == null)
         {
             // there is no nextStage

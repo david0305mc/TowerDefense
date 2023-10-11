@@ -67,17 +67,17 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = Game.GameConfig.GameState.GameEnd;
         cameraManager.EnableCameraControl = true;
-        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
-        var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.CurrStage);
+        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
+        var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
 
         AddStageRewards(UserData.Instance.AcquireGold.Value, stageRewards);
-        UserData.Instance.ClearStage(UserData.Instance.CurrStage);
+        UserData.Instance.ClearStage(UserData.Instance.PlayingStage);
 
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, stageRewards, () =>
         {
             RemoveStage();
-            BackToHome();
+            BackToWorld();
         }, () =>
         {
             RemoveStage();
@@ -97,7 +97,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         popup.SetData(false, null, () =>
         {
             RemoveStage();
-            BackToHome();
+            BackToWorld();
         }, () =>
         {
             RemoveStage();

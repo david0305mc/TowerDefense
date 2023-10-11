@@ -13,7 +13,7 @@ public partial class UserData : Singleton<UserData>
     private static readonly string InBuildDataImportPath = "InBuildData";
     private static readonly string InBuildDataExportPath = Path.Combine(Application.persistentDataPath, "InBuildData");
 
-    public int CurrStage { get; set; }
+    public int PlayingStage { get; set; }
     public int BattlePower { get; private set; }
     public int GameSpeed { get; private set; }
 
@@ -140,6 +140,11 @@ public partial class UserData : Singleton<UserData>
     public void ClearStage(int _stage)
     {
         LocalData.StageClearDic[_stage] = 1;
+    }
+
+    public int GetLatestStage()
+    {
+         return LocalData.StageClearDic.Max(i => i.Key);
     }
 
     public Game.StageStatus GetStageStatus(int _stageID)

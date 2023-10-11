@@ -32,7 +32,6 @@ public class MainUI : MonoBehaviour
 
     public UIStage GetUIStage => uiStage;
 
-    private MHeroObj heroObjTest;
     private void Awake()
     {
         UserData.Instance.LocalData.Soul.Subscribe(_value =>
@@ -75,7 +74,7 @@ public class MainUI : MonoBehaviour
 
     public void SetStageUI(CancellationTokenSource _cts)
     {
-        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
+        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
         uiStage.SetData(GameTime.Get() + stageInfo.stagecleartime, _cts);
     }
 
@@ -124,6 +123,7 @@ public class MainUI : MonoBehaviour
             case BottomTab.Worldmap:
                 {
                     MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
+                    MGameManager.Instance.FollowToCurrStage();
                 }
                 break;
 

@@ -15,7 +15,7 @@ public class EffectPeedback : MonoBehaviour
         animationLink = GetComponentInChildren<AnimationLink>();
     }
 
-    public void SetData(System.Action _endAction, CancellationTokenSource _cts)
+    public void SetData(System.Action _endAction)
     {
         if (animationLink != null)
         {
@@ -28,7 +28,7 @@ public class EffectPeedback : MonoBehaviour
         {
             UniTask.Create(async () =>
             {
-                await UniTask.Delay(System.TimeSpan.FromSeconds(particle.main.duration), cancellationToken: _cts.Token);
+                await UniTask.Delay(System.TimeSpan.FromSeconds(particle.main.duration));
                 _endAction?.Invoke();
             });
         }

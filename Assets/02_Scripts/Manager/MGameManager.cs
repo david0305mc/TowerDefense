@@ -127,7 +127,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
-            UserData.Instance.CurrStage = stageID;
+            UserData.Instance.PlayingStage = stageID;
             mainUI.SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
@@ -187,15 +187,23 @@ public partial class MGameManager : SingletonMono<MGameManager>
         Time.timeScale = 1f;
     }
 
-    public void BackToHome()
+    public void BackToWorld()
     {
         gameState = GameConfig.GameState.MainUI;
         mainUI.SetWorldUI();
         cameraManager.CancelFollowTarget();
-        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
+        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
+        FollowToCurrStage();
         InitWorldGameSpeed();
+    }
+
+    public void FollowToCurrStage()
+    {
+        cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), false, () => {
+
+        });
     }
 
     private void DisposeCTS()
@@ -220,19 +228,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void RetryStage()
     {
-        StartStage(UserData.Instance.CurrStage);
+        StartStage(UserData.Instance.PlayingStage);
     }
 
     public void NextStage()
     {
-        int nextStage = UserData.Instance.CurrStage + 1;
+        int nextStage = UserData.Instance.PlayingStage + 1;
         var stageInfo = DataManager.Instance.GetStageInfoData(nextStage);
         if (stageInfo == null)
         {
             PopupManager.Instance.ShowSystemOneBtnPopup("There is no Stage", "OK");
             return;
         }
-        StartStage(UserData.Instance.CurrStage + 1);
+        StartStage(UserData.Instance.PlayingStage + 1);
     }
 
     public void RemoveStage()
@@ -249,7 +257,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void InitGame()
     {
         gameState = GameConfig.GameState.MainUI;
-        mainUI.InitTabGroup();
         cameraManager.SetTouchAction(() =>
         {
             if (gameState == GameConfig.GameState.MainUI)
@@ -295,6 +302,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         });
         worldMap.InitWorld();
+        mainUI.InitTabGroup();
         mainUI.SetWorldUI();
     }
 
@@ -485,14 +493,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                     Time.timeScale = 1f;
                     WinStage();
-                }, stageCts);
+                });
             }
             else
             {
                 effectPeedback.SetData(() =>
                 {
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
-                }, stageCts);
+                });
 
                 var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
                 goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {

@@ -42,4 +42,9 @@ public class WorldMap : MonoBehaviour
             item.Value.SetSelected(item.Key == _stage);
         }
     }
+
+    public GameObject GetCurrStageObj()
+    {
+        return stageDic[UserData.Instance.GetLatestStage()].gameObject;
+    }
 }
