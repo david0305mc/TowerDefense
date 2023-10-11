@@ -612,6 +612,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         DoFlashEffect();
         UpdateHPBar();
         KnockBack2(attackerPos, knockBack);
+        SoundManager.Instance.Play("Sfx/Sfx_001");
     }
 
     public virtual void GetKilled()

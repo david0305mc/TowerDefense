@@ -185,7 +185,6 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
         if (Input.GetMouseButtonUp(0))
         {
-            SoundManager.Instance.Play("Sfx/Sfx_001");
             Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
             if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.01f)
             {
