@@ -66,6 +66,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void WinStage()
     {
         gameState = Game.GameConfig.GameState.GameEnd;
+        cameraManager.EnableCameraControl = true;
         var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.CurrStage);
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.CurrStage);
 

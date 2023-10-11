@@ -481,8 +481,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 cameraManager.SetFollowObject(enemyObj.gameObject, false, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
-                {
-                    cameraManager.EnableCameraControl = true;
+                { 
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                     Time.timeScale = 1f;
                     WinStage();
@@ -493,11 +492,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 effectPeedback.SetData(() =>
                 {
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
-                    var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-                    goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
-                        UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
-                    });
                 }, stageCts);
+
+                var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+                goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
+                    UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
+                });
             }
             
             enemyObj.GetKilled();
