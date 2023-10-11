@@ -398,7 +398,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj heroObj = obj.GetComponent<MHeroObj>();
                 if (heroObj != null)
                 {
-                    if (heroObj.State == MHeroObj.FSMStates.Idle || heroObj.State == MHeroObj.FSMStates.WaypointMove || heroObj.State == MHeroObj.FSMStates.DashMove)
+                    //if (heroObj.State == MHeroObj.FSMStates.Idle || heroObj.State == MHeroObj.FSMStates.WaypointMove || heroObj.State == MHeroObj.FSMStates.DashMove)
                     {
                         heroObj.DoAggro(_attackerUID);
                     }
