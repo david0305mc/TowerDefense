@@ -28,4 +28,17 @@ public class UIMain : SingletonMono<UIMain>
         UIDamageText damageText = Lean.Pool.LeanPool.Spawn(uiDamageTextPref, _pos, Quaternion.identity, worldCanvas.transform);
         damageText.SetData(_damage);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1.0f, 0, 0, 1f);
+        Gizmos.matrix = transform.worldToLocalMatrix;
+        //Gizmos.DrawSphere(Vector3.zero, 3f);
+
+        var boundaries = MCameraManager.Instance.GetBoundary();
+        Gizmos.DrawLine(boundaries.Item1, boundaries.Item2);
+        Gizmos.DrawLine(boundaries.Item2, boundaries.Item3);
+        Gizmos.DrawLine(boundaries.Item3, boundaries.Item4);
+        Gizmos.DrawLine(boundaries.Item4, boundaries.Item1);
+    }
 }

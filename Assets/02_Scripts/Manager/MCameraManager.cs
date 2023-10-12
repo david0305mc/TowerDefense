@@ -384,4 +384,13 @@ public class MCameraManager : SingletonMono<MCameraManager>
         }
         return null;
     }
+
+    public (Vector3, Vector3, Vector3, Vector3) GetBoundary()
+    {
+        Vector3 topLeft = new Vector3(mapSizeMinX, mapSizeMaxY);
+        Vector3 topRight = new Vector3(mapSizeMaxX, mapSizeMaxY);
+        Vector3 botRight = new Vector3(mapSizeMaxX, mapSizeMinY);
+        Vector3 botLeft = new Vector3(mapSizeMinX, mapSizeMinY);
+        return (topLeft, topRight, botRight, botLeft);
+    }
 }
