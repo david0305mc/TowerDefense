@@ -4,7 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-public class EffectPeedback : MonoBehaviour
+public class EffectFeedback : MonoBehaviour
 {
     private ParticleSystem particle;
     private AnimationLink animationLink;
@@ -15,6 +15,10 @@ public class EffectPeedback : MonoBehaviour
         animationLink = GetComponentInChildren<AnimationLink>();
     }
 
+    public void SetTimeScaleAction(System.Action<float> _action)
+    {
+        animationLink?.SetTimeScaleAction(_action);
+    }
     public void SetData(System.Action _endAction)
     {
         if (animationLink != null)

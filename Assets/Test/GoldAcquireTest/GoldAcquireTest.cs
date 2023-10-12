@@ -10,7 +10,7 @@ public class GoldAcquireTest : MonoBehaviour
 {
     [SerializeField] private GameObject target;
     [SerializeField] private GoldItemObj goldItemObjPrefab;
-    [SerializeField] private EffectPeedback effectPrefab;
+    [SerializeField] private EffectFeedback effectPrefab;
 
     private CancellationTokenSource cts;
     // Start is called before the first frame update
@@ -21,7 +21,7 @@ public class GoldAcquireTest : MonoBehaviour
             .Subscribe(_ =>
             {   
                 var randVec2 = new Vector2(UnityEngine.Random.Range(-3.0f, 3.0f), UnityEngine.Random.Range(-3.0f, 3.0f));
-                EffectPeedback itemObj = Lean.Pool.LeanPool.Spawn(effectPrefab, randVec2, Quaternion.identity, transform);
+                EffectFeedback itemObj = Lean.Pool.LeanPool.Spawn(effectPrefab, randVec2, Quaternion.identity, transform);
                 itemObj.SetData(() => {
                     Lean.Pool.LeanPool.Despawn(itemObj);
                 });

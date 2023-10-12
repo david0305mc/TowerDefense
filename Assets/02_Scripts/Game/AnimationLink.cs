@@ -7,20 +7,9 @@ public class AnimationLink : MonoBehaviour
 {
     System.Action fireAction;
     System.Action aniEndAction;
+    System.Action<float> timeScaleAction;
     private Animator animator;
-    public void SetEvent(System.Action _fireAction, System.Action _aniEndAction)
-    {
-        fireAction = _fireAction;
-        aniEndAction = _aniEndAction;
-    }
-    public void Fire()
-    {
-        fireAction?.Invoke();
-    }
-    public void AniEnd()
-    {
-        aniEndAction?.Invoke();
-    }
+ 
 
     private void Awake()
     {
@@ -37,5 +26,28 @@ public class AnimationLink : MonoBehaviour
                 clip.AddEvent(animationEndEvent);
             }
         }
+    }
+    public void SetEvent(System.Action _fireAction, System.Action _aniEndAction)
+    {
+        fireAction = _fireAction;
+        aniEndAction = _aniEndAction;
+    }
+    public void Fire()
+    {
+        fireAction?.Invoke();
+    }
+    public void AniEnd()
+    {
+        aniEndAction?.Invoke();
+    }
+
+    public void SetTimeScaleAction(System.Action<float> _actoin)
+    {
+        timeScaleAction = _actoin;
+    }
+
+    public void TimeScale(float _scale)
+    {
+        timeScaleAction?.Invoke(_scale);
     }
 }

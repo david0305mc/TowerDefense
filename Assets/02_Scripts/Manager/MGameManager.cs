@@ -474,7 +474,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         if (enemyDic.ContainsKey(_uid))
         {
             var enemyObj = enemyDic[_uid];
-            var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectPeedback>();
+            var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectFeedback>();
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
             if (_uid == enemyBossUID)
             {
@@ -489,6 +489,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                     Time.timeScale = 1f;
                     WinStage();
+                });
+                effectPeedback.SetTimeScaleAction(_scale =>
+                {
+                    Time.timeScale = _scale;
                 });
             }
             else
