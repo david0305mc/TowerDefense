@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoldReewardObj : MonoBehaviour
+public class SoulRewardObj : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private Transform startTR;

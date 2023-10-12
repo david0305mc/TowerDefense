@@ -18,7 +18,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private MainUI mainUI;
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
-    [SerializeField] private GoldReewardObj goldRewardPrefab;
+    [SerializeField] private SoulRewardObj soulRewardPrefab;
     [SerializeField] private GameObject cameraFollowObject;
 
     private Dictionary<int, MEnemyObj> enemyDic;
@@ -498,7 +498,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                 });
 
-                var goldObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+                var goldObj = Lean.Pool.LeanPool.Spawn(soulRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
                 goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
                     UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
                 });
