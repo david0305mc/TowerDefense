@@ -10,10 +10,10 @@ using UnityEngine.UI;
 
 public class UIStage : MonoBehaviour
 {
-    [SerializeField] private Transform goldTargetTR;
-    public Transform GoldTarget => goldTargetTR;
+    [SerializeField] private Transform soulTargetTR;
+    public Transform SoulTarget => soulTargetTR;
     [SerializeField] private TextMeshProUGUI tileLeftText;
-    [SerializeField] private TextMeshProUGUI acquireGoldText;
+    [SerializeField] private TextMeshProUGUI acquireSoulText;
     [SerializeField] private GameObject speedIconX1;
     [SerializeField] private GameObject speedIconX2;
     [SerializeField] private GameObject speedIconX4;
@@ -69,9 +69,9 @@ public class UIStage : MonoBehaviour
        //     // To Do : Result
        //}).AddTo(_cts.Token);
 
-        UserData.Instance.AcquireGold.Subscribe(_gold =>
+        UserData.Instance.AcquireSoul.Subscribe(_soul=>
         {
-            acquireGoldText.SetText(_gold.ToString());
+            acquireSoulText.SetText(_soul.ToString());
         }).AddTo(disposable);
         UpdateUI();
     }

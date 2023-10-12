@@ -76,7 +76,7 @@ public partial class DataManager {
 		public string boomeffectprefab;
 		public int upgradepiececnt;
 		public int upgradecostcnt;
-		public int dropgoldcnt;
+		public int dropsoulcnt;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
 	public Dictionary<int, UnitGradeInfo> UnitgradeinfoDic { get; private set; }

@@ -27,7 +27,7 @@ public class UICell_Reward : UIGridCell
         {
             // index 0 : Soul
             thumbnail.sprite = MResourceManager.Instance.SoulSprite;
-            countText.SetText(UserData.Instance.AcquireGold.Value.ToString());
+            countText.SetText(UserData.Instance.AcquireSoul.Value.ToString());
         }
         else
         {

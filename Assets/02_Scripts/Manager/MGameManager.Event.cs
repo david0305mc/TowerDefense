@@ -70,7 +70,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
 
-        AddStageRewards(UserData.Instance.AcquireGold.Value, stageRewards);
+        AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.PlayingStage);
 
         var popup = PopupManager.Instance.Show<GameResultPopup>();

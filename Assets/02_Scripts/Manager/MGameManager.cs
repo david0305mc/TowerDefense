@@ -113,7 +113,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
-        UserData.Instance.AcquireGold.Value = 0;
+        UserData.Instance.AcquireSoul.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
         mainUI.SetIngameUI();
         if (currStageObj != null)
@@ -498,9 +498,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                 });
 
-                var goldObj = Lean.Pool.LeanPool.Spawn(soulRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-                goldObj.Shoot(mainUI.GetUIStage.GoldTarget, () => {
-                    UserData.Instance.AcquireGold.Value += enemyObj.UnitData.refUnitGradeData.dropgoldcnt;
+                var soulObj = Lean.Pool.LeanPool.Spawn(soulRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
+                soulObj.Shoot(mainUI.GetUIStage.SoulTarget, () => {
+                    UserData.Instance.AcquireSoul.Value += enemyObj.UnitData.refUnitGradeData.dropsoulcnt;
                 });
             }
             

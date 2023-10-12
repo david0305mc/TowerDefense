@@ -21,7 +21,7 @@ public partial class UserData : Singleton<UserData>
     public Dictionary<int, UnitBattleData> enemyDataDic;
     public Dictionary<int, UnitBattleData> battleHeroDataDic;
 
-    public ReactiveProperty<int> AcquireGold;
+    public ReactiveProperty<int> AcquireSoul;
 
     public bool isAllHeroDead()
     {
@@ -69,7 +69,7 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic = new Dictionary<int, UnitBattleData>();
         battleHeroDataDic = new Dictionary<int, UnitBattleData>();
         IsEnemyItemSelected = new ReactiveProperty<bool>(false);
-        AcquireGold = new ReactiveProperty<int>(0);
+        AcquireSoul = new ReactiveProperty<int>(0);
     }
 
     public void UpdateData()
