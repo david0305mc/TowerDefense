@@ -37,7 +37,7 @@ public class WorldMapStageSlot : MonoBehaviour
                 {
                     defaultObject.SetActive(false);
                     lockObject.SetActive(false);
-                    battleObject.SetActive(true);
+                    battleObject.SetActive(false);
                     occupationObject.SetActive(true);
                 }
                 break;

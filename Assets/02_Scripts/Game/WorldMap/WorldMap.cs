@@ -45,6 +45,15 @@ public class WorldMap : MonoBehaviour
 
     public GameObject GetCurrStageObj()
     {
-        return stageDic[UserData.Instance.GetLatestStage()].gameObject;
+        int latestStageID = UserData.Instance.GetLatestStage();
+        var nextStageInfo = DataManager.Instance.GetStageInfoData(latestStageID + 1);
+        if (nextStageInfo == null)
+        {
+            return stageDic[latestStageID].gameObject;
+        }
+        else
+        {
+            return stageDic[latestStageID + 1].gameObject;
+        }
     }
 }
