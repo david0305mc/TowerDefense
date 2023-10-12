@@ -16,6 +16,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     [SerializeField] private Transform objRoot;
     [SerializeField] private MainUI mainUI;
+    [SerializeField] private InGameUI ingameUI;
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private SoulRewardObj soulRewardPrefab;
@@ -115,7 +116,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         timerCts = new CancellationTokenSource();
         UserData.Instance.AcquireSoul.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
-        mainUI.SetIngameUI();
+        SetIngameUI();
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
@@ -128,7 +129,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.PlayingStage = stageID;
-            mainUI.SetStageUI(timerCts);
+            SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
             InitFollowCamera().Forget();
@@ -187,7 +188,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void BackToWorld()
     {
         gameState = GameConfig.GameState.MainUI;
-        mainUI.SetWorldUI();
+        SetWorldUI();
         cameraManager.CancelFollowTarget();
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
@@ -196,6 +197,21 @@ public partial class MGameManager : SingletonMono<MGameManager>
         InitWorldGameSpeed();
     }
 
+    public void SetWorldUI()
+    {
+        mainUI.SetActive(true);
+        ingameUI.SetActive(false);
+    }
+    public void SetIngameUI()
+    {
+        mainUI.SetActive(false);
+        ingameUI.SetActive(true);
+    }
+    public void SetStageUI(CancellationTokenSource _cts)
+    {
+        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
+        ingameUI.SetData(GameTime.Get() + stageInfo.stagecleartime, _cts);
+    }
     public void FollowToCurrStage()
     {
         cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), false, Vector2.zero, null);
@@ -298,7 +314,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         });
         worldMap.InitWorld();
         mainUI.InitTabGroup();
-        mainUI.SetWorldUI();
+        SetWorldUI();
     }
 
     private void Start()
@@ -502,7 +518,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 });
 
                 var soulObj = Lean.Pool.LeanPool.Spawn(soulRewardPrefab, enemyObj.transform.position, Quaternion.identity, objRoot);
-                soulObj.Shoot(mainUI.GetUIStage.SoulTarget, () => {
+                soulObj.Shoot(ingameUI.SoulTarget, () => {
                     UserData.Instance.AcquireSoul.Value += enemyObj.UnitData.refUnitGradeData.dropsoulcnt;
                 });
             }

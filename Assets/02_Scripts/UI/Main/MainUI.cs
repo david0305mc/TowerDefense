@@ -26,11 +26,6 @@ public class MainUI : MonoBehaviour
 
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
-    [SerializeField] private GameObject worldUI;
-    [SerializeField] private GameObject ingameUI;
-    [SerializeField] private UIStage uiStage;
-
-    public UIStage GetUIStage => uiStage;
 
     private void Awake()
     {
@@ -59,23 +54,6 @@ public class MainUI : MonoBehaviour
             MGameManager.Instance.WinStage();
         });
         HideStageInfo();
-    }
-
-    public void SetWorldUI()
-    {
-        worldUI.SetActive(true);
-        ingameUI.SetActive(false);
-    }
-    public void SetIngameUI()
-    {
-        worldUI.SetActive(false);
-        ingameUI.SetActive(true);
-    }
-
-    public void SetStageUI(CancellationTokenSource _cts)
-    {
-        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
-        uiStage.SetData(GameTime.Get() + stageInfo.stagecleartime, _cts);
     }
 
     public void ShowStageInfo(int _stageID, System.Action _startAction)

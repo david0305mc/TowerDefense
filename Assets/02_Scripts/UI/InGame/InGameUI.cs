@@ -1,14 +1,14 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Threading;
 using TMPro;
 using UniRx;
-using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class UIStage : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
     [SerializeField] private Transform soulTargetTR;
     public Transform SoulTarget => soulTargetTR;
@@ -39,7 +39,7 @@ public class UIStage : MonoBehaviour
             while (timeLeft > 0)
             {
                 timeLeft -= Time.deltaTime;
-                await UniTask.Yield(cancellationToken:_cts.Token);
+                await UniTask.Yield(cancellationToken: _cts.Token);
             }
             tileLeftText.SetText("00:00");
             MGameManager.Instance.LoseStage();
@@ -54,22 +54,22 @@ public class UIStage : MonoBehaviour
             }
         });
         disposable.Clear();
-       // Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
-       //.Select(x => timeLeft -= Time.deltaTime)
-       //.TakeWhile(s => s > 0)
-       //.Subscribe(timeLeft =>
-       //{
-       //    var timeSpan = TimeSpan.FromSeconds(timeLeft);
-       //    tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
-       //},
-       //() =>
-       //{
-       //    tileLeftText.SetText("00:00");
-       //    MGameManager.Instance.LoseStage();
-       //     // To Do : Result
-       //}).AddTo(_cts.Token);
+        // Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
+        //.Select(x => timeLeft -= Time.deltaTime)
+        //.TakeWhile(s => s > 0)
+        //.Subscribe(timeLeft =>
+        //{
+        //    var timeSpan = TimeSpan.FromSeconds(timeLeft);
+        //    tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
+        //},
+        //() =>
+        //{
+        //    tileLeftText.SetText("00:00");
+        //    MGameManager.Instance.LoseStage();
+        //     // To Do : Result
+        //}).AddTo(_cts.Token);
 
-        UserData.Instance.AcquireSoul.Subscribe(_soul=>
+        UserData.Instance.AcquireSoul.Subscribe(_soul =>
         {
             acquireSoulText.SetText(_soul.ToString());
         }).AddTo(disposable);
