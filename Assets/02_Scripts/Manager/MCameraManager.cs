@@ -37,6 +37,9 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private Vector3 dragStartPos = Vector3.zero;
     private bool groundDragStarted = false;
 
+    private Vector3 panVelocity = Vector3.zero;
+    private Vector3 previousPanPoint = Vector3.zero;
+
     private System.Action touchAction;
     private System.Action dragStartAction;
     private GameObject followTarget;
@@ -89,6 +92,19 @@ public class MCameraManager : SingletonMono<MCameraManager>
         if (followTarget != null)
         {
             newPos = followTarget.transform.position + followOffeset;
+        }
+
+        if (!groundDragStarted)
+        {
+            if (panVelocity.magnitude < 0.01f)
+            {
+                panVelocity = Vector3.zero;
+            }
+            if (panVelocity != Vector3.zero)
+            {
+                panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, Time.deltaTime * 10);
+                newPos -= panVelocity;
+            }
         }
 
         newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
@@ -167,6 +183,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             {
                 dragStartPos = groudHitPoint;
                 groundDragStarted = true;
+                previousPanPoint = groudHitPoint;
                 dragStartAction?.Invoke();
             }
         }
@@ -179,6 +196,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
                 if (!hitPoint.Equals(PositiveInfinityVector))
                 {
                     newPos = transform.position + dragStartPos - hitPoint;
+                    panVelocity = previousPanPoint - newPos;
+                    previousPanPoint = newPos;
                 }
             }
         }

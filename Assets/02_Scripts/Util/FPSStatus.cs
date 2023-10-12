@@ -1,26 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class FPSStatus : MonoBehaviour
 {
-    [Range(10, 150)]
-    public int fontSize = 30;
-    public Color color = new Color(.0f, .0f, .0f, 1.0f);
-    public float width, height;
-    void OnGUI()
-    {
-        Rect position = new Rect(width, height, Screen.width, Screen.height);
+	/* obejct refs */
+	[SerializeField]  private TextMeshProUGUI fpsText;
 
-        float fps = 1.0f / Time.deltaTime;
-        float ms = Time.deltaTime * 1000.0f;
-        string text = string.Format("{0:N1} FPS ({1:N1}ms)", fps, ms);
-
-        GUIStyle style = new GUIStyle();
-
-        style.fontSize = fontSize;
-        style.normal.textColor = color;
-
-        GUI.Label(position, text, style);
-    }
+	/* Public Variables */
+	[SerializeField] float frequency = 1f;
+	private int framesPerSec;
+	private void Start()
+	{
+        fpsText.text = "120 FPS";
+        UniTask.Create(async () =>
+        {
+            while (true)
+            {
+                int lastFrameCount = Time.frameCount;
+                float lastTime = Time.realtimeSinceStartup;
+                await UniTask.WaitForSeconds(frequency, cancellationToken: this.GetCancellationTokenOnDestroy());
+                float timeSpan = Time.realtimeSinceStartup - lastTime;
+                int frameCount = Time.frameCount - lastFrameCount;
+                framesPerSec = Mathf.RoundToInt(frameCount / timeSpan);
+                fpsText.text = $"{framesPerSec} FPS";
+            }
+        });
+	}
 }

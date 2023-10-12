@@ -315,10 +315,10 @@ public class CameraMangerTest : MonoBehaviour
             }
         }
 
-        if (screenRatio <= 0)
-        {
-            Debug.LogError("screenRatio <= 0");
-        }
+        //if (screenRatio <= 0)
+        //{
+        //    Debug.LogError("screenRatio <= 0");
+        //}
         if (this._isZoomingStarted)
         {
             float _currentPinchDistance = (_touchPoint2 - _touchPoint1).magnitude;
@@ -506,7 +506,7 @@ public class CameraMangerTest : MonoBehaviour
 
     public void UpdatePanInertia()
     {
-        if (this._panVelocity.magnitude < 0.05f)
+        if (this._panVelocity.magnitude < 0.01f)
         {
             this._panVelocity = Vector3.zero;
         }
