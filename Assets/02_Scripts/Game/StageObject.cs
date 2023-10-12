@@ -11,7 +11,15 @@ public class StageObject : MonoBehaviour
     public Tilemap obstacleTileMap;
     public Tilemap treeTileMap;
     public List<GameObject> wayPointLists;
-    
+
+    public Vector3 FollowOffset = new Vector3(2, 3, 0);
+    public float DefaultZoomSize = 5;
+    public float ZoomMin = 2;
+    public float ZoomMax = 20;
+    public int SizeMinX = -10;
+    public int SizeMaxX = 25;
+    public int SizeMinY = -10;
+    public int SizeMaxY = 25;
 
     private void OnDrawGizmos()
     {

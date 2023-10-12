@@ -140,9 +140,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private async UniTaskVoid InitFollowCamera()
     {
         followCameraCts = new CancellationTokenSource();
-        Vector3 followOffset = new Vector3(2, 3);
-        cameraManager.SetPosition(currStageObj.heroSpawnPos.position + followOffset);
-        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 20, -10, 25, -10, 25);
+        cameraManager.SetPosition(currStageObj.heroSpawnPos.position + currStageObj.FollowOffset);
+        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
         await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
         while (true)
@@ -152,7 +151,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj targetHero = GetFirstCameraTarget();
                 if (targetHero != null)
                 {
-                    cameraManager.SetFollowObject(targetHero.gameObject, true, followOffset, null);
+                    cameraManager.SetFollowObject(targetHero.gameObject, true, currStageObj.FollowOffset, null);
                     targetHero.SetDeadAction(() =>
                     {
                         cameraManager.CancelFollowTarget();
