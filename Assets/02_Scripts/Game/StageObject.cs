@@ -32,6 +32,22 @@ public class StageObject : MonoBehaviour
                 continue;
             Gizmos.DrawLine(wayPointLists[i].transform.position, wayPointLists[i + 1].transform.position);
         }
+
+        {
+            Gizmos.color = new Color(1.0f, 0, 0, 1f);
+            Gizmos.matrix = transform.worldToLocalMatrix;
+
+            Vector3 topLeft = new Vector3(SizeMinX, SizeMaxY);
+            Vector3 topRight = new Vector3(SizeMaxX, SizeMaxY);
+            Vector3 botRight = new Vector3(SizeMaxX, SizeMinY);
+            Vector3 botLeft = new Vector3(SizeMinX, SizeMinY);
+
+            Gizmos.DrawLine(topLeft, topRight);
+            Gizmos.DrawLine(topRight, botRight);
+            Gizmos.DrawLine(botRight, botLeft);
+            Gizmos.DrawLine(botLeft, topLeft);
+        }
+
     }
 }
 
