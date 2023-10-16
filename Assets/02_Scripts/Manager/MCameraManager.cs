@@ -47,6 +47,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private System.Action followTargetAction;
     private bool keepFollow;
 
+    public float ZoomSize => newZoom;
+
     protected override void OnSingletonAwake()
     {
         base.OnSingletonAwake();

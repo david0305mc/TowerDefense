@@ -19,6 +19,7 @@ namespace Game
         public static readonly int DefaultZoomSize = 10;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
+        public static readonly float projectileRewardSizeFactor = 10f;
 
         public static readonly int CanvasMainUILayerOrder = 100;
         public static readonly int CanvasPopupManagerLayerOrder = 200;

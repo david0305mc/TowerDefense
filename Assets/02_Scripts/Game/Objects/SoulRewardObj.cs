@@ -36,10 +36,15 @@ public class SoulRewardObj : MonoBehaviour
     protected Vector3 prevPos;
     private System.Action endAction;
 
+    private float orgSpeed;
+    private Vector3 orgScale;
+
     protected virtual void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
         trainRenderer = GetComponent<TrailRenderer>();
+        orgSpeed = speed;
+        orgScale = transform.localScale;
     }
 
     //public void SetData(GameObject _target)
@@ -52,6 +57,11 @@ public class SoulRewardObj : MonoBehaviour
 
     private void Update()
     {
+        float cameraScale = MCameraManager.Instance.ZoomSize / Game.GameConfig.projectileRewardSizeFactor;
+        speed = orgSpeed * cameraScale;
+        transform.localScale = orgScale * cameraScale;
+        trainRenderer.SetScale(cameraScale);
+
         dstPos = targetObj.position;
         float dist = Vector2.Distance(srcPos, dstPos);
         elapse += Time.deltaTime / dist * speed;
@@ -88,8 +98,8 @@ public class SoulRewardObj : MonoBehaviour
         startTR.position = transform.position;
         startTR.rotation = GameUtil.LookAt2D(startTR.position, _targetObj.position, GameUtil.FacingDirection.DOWN);
         //startTR.SetPositionAndRotation(transform.position, );
-
-        secondTR.position = startTR.TransformPoint(new Vector2(Random.Range(0, 2) == 0 ? -5 : 5, -5));
+        float cameraScale = MCameraManager.Instance.ZoomSize / Game.GameConfig.projectileRewardSizeFactor;
+        secondTR.position = startTR.TransformPoint(new Vector2(Random.Range(0, 2) == 0 ? -5 * cameraScale : 5 * cameraScale, -5 * cameraScale));
         points = new Vector3[] { transform.position, secondTR.position, _targetObj.position };
         CalculateCurvePoints(samplePointCount);
         SavePrevious();
