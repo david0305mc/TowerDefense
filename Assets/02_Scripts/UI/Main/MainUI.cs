@@ -20,6 +20,7 @@ public class MainUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI soulText;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private TextMeshProUGUI staminaText;
+    [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private Button test01Btn;
     [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
@@ -42,6 +43,11 @@ public class MainUI : MonoBehaviour
         UserData.Instance.LocalData.Exp.Subscribe(_value =>
         {
             expText.SetText(_value.ToString());
+        }).AddTo(gameObject);
+        
+        UserData.Instance.LocalData.Gold.Subscribe(_value =>
+        {
+            goldText.SetText(_value.ToString());
         }).AddTo(gameObject);
 
         test01Btn.onClick.AddListener(() =>

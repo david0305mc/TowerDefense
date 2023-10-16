@@ -45,6 +45,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         if (stageData.goldharvestTime.Value <= GameTime.Get())
         {
+            UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;    
             stageData.GenerateharvestTime();
             UserData.Instance.SaveLocalData();
         }
