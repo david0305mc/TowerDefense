@@ -37,18 +37,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
-    public void CheckStageGold(int _stageID)
+    public void AddStageGold(int _stageID)
     {
         var stageData = UserData.Instance.GetStageData(_stageID);
-        if (UserData.Instance.GetStageStatus(_stageID) != Game.StageStatus.Occupation)
-            return;
 
-        if (stageData.goldharvestTime.Value <= GameTime.Get())
-        {
-            UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;    
-            stageData.GenerateharvestTime();
-            UserData.Instance.SaveLocalData();
-        }
+        UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;
+        stageData.GenerateharvestTime();
+        UserData.Instance.SaveLocalData();
     }
 
     public void AddHero(int _tid, int _count)

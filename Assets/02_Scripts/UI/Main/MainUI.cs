@@ -17,6 +17,9 @@ public class MainUI : MonoBehaviour
         Event,
     }
 
+    [SerializeField] private Transform goldTargetTR;
+    public Transform GoldTarget => goldTargetTR;
+
     [SerializeField] private TextMeshProUGUI soulText;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private TextMeshProUGUI staminaText;

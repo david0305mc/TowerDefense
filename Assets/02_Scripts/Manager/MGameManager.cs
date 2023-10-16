@@ -20,6 +20,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private List<TileData> tileDatas;
     [SerializeField] private SoulRewardObj soulRewardPrefab;
+    [SerializeField] private GoldRewardObj goldRewardPrefab;
     [SerializeField] private GameObject cameraFollowObject;
 
     private Dictionary<int, MEnemyObj> enemyDic;
@@ -286,7 +287,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
                             worldMap.SelectStage(-1);
                         });
                         worldMap.SelectStage(stageSlot.stage);
-                        CheckStageGold(stageSlot.stage);
+
+                        var stageData = UserData.Instance.GetStageData(stageSlot.stage);
+                        if (UserData.Instance.GetStageStatus(stageSlot.stage) == Game.StageStatus.Occupation)
+                        {
+                            if (stageData.goldharvestTime.Value <= GameTime.Get())
+                            {
+                                var soulObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, new Vector3(stageSlot.transform.position.x, stageSlot.transform.position
+                                    .y, 0) , Quaternion.identity, objRoot);
+                                soulObj.Shoot(mainUI.GoldTarget, () => {
+                                    AddStageGold(stageSlot.stage);
+                                });
+                            }
+                        }
                     });
                 }
                 else
