@@ -5,13 +5,16 @@ using System.Linq;
 
 public class WorldMap : MonoBehaviour
 {
-    private List<WorldMapTileObj> tileList;
+    private List<WorldMapTileObj> tileLists;
+    private List<WorldMapStageObj> stageObjLists;
     private Dictionary<int, WorldMapStageSlot> stageDic;
 
     private void Awake()
     {
-        tileList = new List<WorldMapTileObj>();
-        GetComponentsInChildren(tileList);
+        tileLists = new List<WorldMapTileObj>();
+        stageObjLists = new List<WorldMapStageObj>();
+        GetComponentsInChildren(tileLists);
+        GetComponentsInChildren(true, stageObjLists);
         List<WorldMapStageSlot> stageSlotsList = new List<WorldMapStageSlot>();
         GetComponentsInChildren(stageSlotsList);
         stageDic = stageSlotsList.ToDictionary(item => item.stage);
@@ -24,7 +27,7 @@ public class WorldMap : MonoBehaviour
 
     public void UpdateWorld()
     {
-        foreach (var item in tileList)
+        foreach (var item in tileLists)
         {
             item.UpdateData();
         }
@@ -32,6 +35,11 @@ public class WorldMap : MonoBehaviour
         foreach (var item in stageDic)
         {
             item.Value.UpdateData();
+        }
+
+        foreach (var item in stageObjLists)
+        {
+            item.UpdateData();
         }
     }
 
