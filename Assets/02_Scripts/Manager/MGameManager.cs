@@ -135,6 +135,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitInGameSpeed();
             InitFollowCamera().Forget();
             await SpawnAllHero();
+            StartEnemyWave();
             gameState = GameConfig.GameState.InGame;
         });
     }
@@ -262,6 +263,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             Destroy(currStageOpHandler.Result.gameObject);
         }
         RemoveAllBattleHero();
+        RemoveAllEnemy();
         RemoveAllProjectile();
         //ResourceManagerTest.Instance.UnloadUnusedAssetsImmediate().Forget();
     }
@@ -536,7 +538,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.RemoveEnmey(_uid);
         if (enemyDic.ContainsKey(_uid))
         {
-            Destroy(enemyDic[_uid].gameObject);
+            //Destroy(enemyDic[_uid].gameObject);
             enemyDic.Remove(_uid);
         }
     }
@@ -558,6 +560,26 @@ public partial class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
+    private void SpawnBattleEnemy()
+    {
+        UnitBattleData data = UserData.Instance.AddEnemyData(1001);
+        Vector3 spawnPos = currStageObj.enemySpawnPosTest.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
+
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(data.refData.prefabname);
+        MEnemyObj enemyObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MEnemyObj>();
+
+        enemyObj.InitObject(data.battleUID, true, (_attackData) =>
+        {
+            var heroObj = GetHeroObj(_attackData.attackerUID);
+            if (heroObj == null)
+            {
+                // To Do : ??
+                return;
+            }
+            DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
+        });
+        enemyDic.Add(data.battleUID, enemyObj);
+    }
     private void SpawnBattleHero(int _uid)
     {
         var heroData = UserData.Instance.GetHeroData(_uid);
@@ -600,6 +622,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 }
             }
         }
+    }
+
+    private async UniTask StartEnemyWave()
+    {
+        if (currStageObj.enemySpawnPosTest != null)
+        {
+            while (true)
+            {
+                await UniTask.WaitForSeconds(0.5f);
+                SpawnBattleEnemy();
+            }
+        }    
     }
 
     //private void Update()

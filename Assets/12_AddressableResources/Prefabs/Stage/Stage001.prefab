@@ -39,6 +39,37 @@ Transform:
   m_Father: {fileID: 3704652387468888596}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3145748205877202375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4408642222833985322}
+  m_Layer: 0
+  m_Name: EnemySpawnTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4408642222833985322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3145748205877202375}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.48, y: 25.68, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3704652387733351635}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3704652385885612598
 GameObject:
   m_ObjectHideFlags: 0
@@ -107929,6 +107960,7 @@ Transform:
   - {fileID: 3704652387097274418}
   - {fileID: 3704652387760255082}
   - {fileID: 3704652386775542504}
+  - {fileID: 4408642222833985322}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107946,6 +107978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyObjRoot: {fileID: 3704652387468888596}
   heroSpawnPos: {fileID: 3704652387760255082}
+  enemySpawnPosTest: {fileID: 4408642222833985322}
   tileMap: {fileID: 3704652386656768082}
   obstacleTileMap: {fileID: 3704652386602419948}
   treeTileMap: {fileID: 0}
