@@ -118,6 +118,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.AcquireSoul.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
         SetIngameUI();
+        ingameUI.StartLoadingUI();
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
@@ -130,6 +131,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await currStageOpHandler;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.PlayingStage = stageID;
+            ingameUI.EndLoadingUI();
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();

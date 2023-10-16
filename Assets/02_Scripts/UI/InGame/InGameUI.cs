@@ -17,12 +17,23 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private GameObject speedIconX1;
     [SerializeField] private GameObject speedIconX2;
     [SerializeField] private GameObject speedIconX4;
+    [SerializeField] private GameObject loadingUI;
     [SerializeField] private Button pauseBtn;
     [SerializeField] private Button speedBtn;
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private float timeLeft;
 
+    public void StartLoadingUI()
+    {
+        loadingUI.SetActive(true);
+    
+    }
+    public void EndLoadingUI()
+    {
+        loadingUI.SetActive(false);
+
+    }
     private void Awake()
     {
         speedBtn.onClick.AddListener(() =>
