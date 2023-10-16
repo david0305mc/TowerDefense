@@ -288,18 +288,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                         });
                         worldMap.SelectStage(stageSlot.stage);
 
-                        var stageData = UserData.Instance.GetStageData(stageSlot.stage);
-                        if (UserData.Instance.GetStageStatus(stageSlot.stage) == Game.StageStatus.Occupation)
-                        {
-                            if (stageData.goldharvestTime.Value <= GameTime.Get())
-                            {
-                                var soulObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, new Vector3(stageSlot.transform.position.x, stageSlot.transform.position
-                                    .y, 0) , Quaternion.identity, objRoot);
-                                soulObj.Shoot(mainUI.GoldTarget, () => {
-                                    AddStageGold(stageSlot.stage);
-                                });
-                            }
-                        }
+                        CheckStageGold(stageSlot.stage, stageSlot.transform.position);
                     });
                 }
                 else

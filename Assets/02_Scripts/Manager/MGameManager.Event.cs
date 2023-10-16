@@ -37,12 +37,26 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
+    public void CheckStageGold(int _stageID, Vector3 _targetPos)
+    {
+        var stageData = UserData.Instance.GetStageData(_stageID);
+        if (UserData.Instance.GetStageStatus(_stageID) == Game.StageStatus.Occupation)
+        {
+            if (stageData.goldharvestTime.Value <= GameTime.Get())
+            {
+                stageData.GenerateharvestTime();
+                var soulObj = Lean.Pool.LeanPool.Spawn(goldRewardPrefab, _targetPos, Quaternion.identity, objRoot);
+                soulObj.Shoot(mainUI.GoldTarget, () => {
+                    AddStageGold(_stageID);
+                });
+            }
+        }
+    }
     public void AddStageGold(int _stageID)
     {
         var stageData = UserData.Instance.GetStageData(_stageID);
 
         UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;
-        stageData.GenerateharvestTime();
         UserData.Instance.SaveLocalData();
     }
 
