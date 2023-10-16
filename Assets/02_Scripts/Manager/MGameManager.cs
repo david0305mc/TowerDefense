@@ -117,8 +117,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         timerCts = new CancellationTokenSource();
         UserData.Instance.AcquireSoul.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
-        SetIngameUI();
-        ingameUI.StartLoadingUI();
+         SetIngameUI();
+        var waitTask = ingameUI.StartLoadingUI(); 
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
@@ -129,6 +129,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
             await currStageOpHandler;
+            await waitTask;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
             UserData.Instance.PlayingStage = stageID;
             ingameUI.EndLoadingUI();

@@ -127,6 +127,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
             DoAttackEnd();
         });
+        fsm.ChangeState(FSMStates.PrevIdle);
     }
 
     public void SetDeadAction(System.Action _deadAction)
