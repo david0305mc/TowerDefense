@@ -118,6 +118,8 @@ public partial class DataManager {
 		public int priorstageid;
 		public string prefabname;
 		public int stagecleartime;
+		public int goldproductamount;
+		public int goldproductterm;
 	};
 	public StageInfo[] StageinfoArray { get; private set; }
 	public Dictionary<int, StageInfo> StageinfoDic { get; private set; }

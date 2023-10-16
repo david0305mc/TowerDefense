@@ -43,9 +43,6 @@ public partial class UserData : Singleton<UserData>
             return false;
         }).ToList();
     }
-    
-    public bool IsClearedStage(int _stage) => LocalData.StageClearDic.ContainsKey(_stage);
-
     public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
 
     public int ShopSelectedItem { get; set; }
@@ -139,18 +136,35 @@ public partial class UserData : Singleton<UserData>
 
     public void ClearStage(int _stage)
     {
-        LocalData.StageClearDic[_stage] = 1;
+        LocalData.StageClearDic[_stage] = StageData.Create(_stage);
+        return;
+        if (!LocalData.StageClearDic.ContainsKey(_stage))
+        {
+            LocalData.StageClearDic[_stage] = StageData.Create(_stage);
+        }
     }
 
     public int GetLatestStage()
     {
-         return LocalData.StageClearDic.Max(i => i.Key);
+        if (LocalData.StageClearDic.Count == 0)
+        {
+            return 1;
+        } 
+        return LocalData.StageClearDic.Max(i => i.Key);
     }
 
+    public StageData GetStageData(int _stageID)
+    {
+        if (LocalData.StageClearDic.TryGetValue(_stageID, out StageData _value))
+        {
+            return _value;
+        }
+        return null;
+    }
     public Game.StageStatus GetStageStatus(int _stageID)
     {
         var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
-        if (LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid))
+        if (stageInfo.priorstageid == 0 || LocalData.StageClearDic.ContainsKey(stageInfo.priorstageid))
         {
             if (LocalData.StageClearDic.ContainsKey(_stageID))
             {

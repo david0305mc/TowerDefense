@@ -12,14 +12,14 @@ public class LocalSaveData
     public ReactiveProperty<long> Soul;
     public ReactiveProperty<long> Stamina;
     public ReactiveProperty<long> Exp;
-    public SerializableDictionary<int, int> StageClearDic;
+    public SerializableDictionary<int, StageData> StageClearDic;
     public SerializableDictionary<int, UnitData> HeroDataDic;
     public SerializableDictionary<int, int> BattlePartyDic;
 
     public LocalSaveData()
     {
         uidSeed = 1000;
-        StageClearDic = new SerializableDictionary<int, int>() { { 0, 1 } };
+        StageClearDic = new SerializableDictionary<int, StageData>();
         Soul = new ReactiveProperty<long>(0);
         Stamina = new ReactiveProperty<long>(0);
         Exp = new ReactiveProperty<long>(0);
@@ -34,6 +34,9 @@ public class LocalSaveData
     public void UpdateRefData()
     {
         foreach (var item in HeroDataDic)
+            item.Value.UpdateRefData();
+
+        foreach (var item in StageClearDic)
             item.Value.UpdateRefData();
     }
 }
@@ -64,9 +67,32 @@ public class UnitBattleData : UnitData
 [System.Serializable]
 public class StageData
 {
+    public static StageData Create(int _stageID)
+    {
+        StageData data = new StageData()
+        {
+            stageID = _stageID,
+            goldharvestTime = new ReactiveProperty<long>()
+        };
+        data.UpdateRefData();
+        data.GenerateharvestTime();
+        return data;
+    }
+
+    public DataManager.StageInfo refData;
     public int stageID;
-    public bool isClear;
-    public long goldharvestTime;
+    public bool clear;
+    public ReactiveProperty<long> goldharvestTime;
+
+    public void UpdateRefData()
+    {
+        refData = DataManager.Instance.GetStageInfoData(stageID);
+    }
+
+    public void GenerateharvestTime()
+    {
+        goldharvestTime.Value = GameTime.Get() + refData.goldproductterm;
+    }
 }
 
 [System.Serializable]

@@ -286,6 +286,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                             worldMap.SelectStage(-1);
                         });
                         worldMap.SelectStage(stageSlot.stage);
+                        CheckStageGold(stageSlot.stage);
                     });
                 }
                 else

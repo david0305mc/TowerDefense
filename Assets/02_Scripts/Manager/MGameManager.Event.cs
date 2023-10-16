@@ -37,6 +37,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
+    public void CheckStageGold(int _stageID)
+    {
+        var stageData = UserData.Instance.GetStageData(_stageID);
+        if (UserData.Instance.GetStageStatus(_stageID) != Game.StageStatus.Occupation)
+            return;
+
+        if (stageData.goldharvestTime.Value <= GameTime.Get())
+        {
+            stageData.GenerateharvestTime();
+            UserData.Instance.SaveLocalData();
+        }
+    }
+
     public void AddHero(int _tid, int _count)
     {
         UserData.Instance.AddHeroData(_tid, _count);
@@ -72,7 +85,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.PlayingStage);
-
+        
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, stageRewards, () =>
         {
