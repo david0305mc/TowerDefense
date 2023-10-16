@@ -61,6 +61,13 @@ public class UnitBattleData : UnitData
         return data;
     }
 }
+[System.Serializable]
+public class StageData
+{
+    public int stageID;
+    public bool isClear;
+    public long goldharvestTime;
+}
 
 [System.Serializable]
 public class UnitData

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class WorldMapStageSlot : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class WorldMapStageSlot : MonoBehaviour
     [SerializeField] private GameObject battleObject;
     [SerializeField] private GameObject occupationObject;
     [SerializeField] private GameObject selectedMark;
+
+    [SerializeField] private Slider goldProgressBar;
+    [SerializeField] private Button harvestButton;
+    [SerializeField] private TextMeshProUGUI harvestGoldText;
 
     public int stage;
 
@@ -31,6 +37,8 @@ public class WorldMapStageSlot : MonoBehaviour
                     lockObject.SetActive(false);
                     battleObject.SetActive(true);
                     occupationObject.SetActive(false);
+                    goldProgressBar.SetActive(false);
+                    harvestButton.SetActive(false);
                 }
                 break;
             case Game.StageStatus.Occupation:
@@ -39,6 +47,8 @@ public class WorldMapStageSlot : MonoBehaviour
                     lockObject.SetActive(false);
                     battleObject.SetActive(false);
                     occupationObject.SetActive(true);
+                    goldProgressBar.SetActive(true);
+                    harvestButton.SetActive(false);
                 }
                 break;
             case Game.StageStatus.Lock:
@@ -47,6 +57,8 @@ public class WorldMapStageSlot : MonoBehaviour
                     lockObject.SetActive(true);
                     battleObject.SetActive(false);
                     occupationObject.SetActive(false);
+                    goldProgressBar.SetActive(false);
+                    harvestButton.SetActive(false);
                 }
                 break;
         }
