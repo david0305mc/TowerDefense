@@ -48,7 +48,8 @@ public class UnitBattleData : UnitData
     public int killCount;
     public bool isDead;
     public int battleUID;
-    public static UnitBattleData Create(int _battleUID, int _uid, int _tid, int _grade, int _count, bool _isEnemy)
+    public int attackDamage;
+    public static UnitBattleData Create(int _battleUID, int _uid, int _tid, int _grade, int _count, bool _isEnemy, int powerRate)
     {
         UnitBattleData data = new UnitBattleData()
         {
@@ -62,7 +63,8 @@ public class UnitBattleData : UnitData
             isDead = false
     };
         data.UpdateRefData();
-        data.hp = data.refUnitGradeData.hp;
+        data.hp = (int)(data.refUnitGradeData.hp * powerRate * 0.01f);
+        data.attackDamage = (int)(data.refUnitGradeData.attackdmg * powerRate * 0.01f);
         return data;
     }
 }

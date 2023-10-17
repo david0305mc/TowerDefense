@@ -56,7 +56,7 @@ public class MEnemyObj : MBaseObj
         {
             if (!damagable.IsEnemy())
             {
-                var attackData = new AttackData(this.unitData.battleUID, this.unitData.tid, this.unitData.refUnitGradeData.attackdmg, !UnitData.IsEnemy);
+                var attackData = new AttackData(this.unitData.battleUID, this.unitData.tid, this.unitData.attackDamage, !UnitData.IsEnemy);
                 MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                 damagable.GetDamaged(attackData);
 

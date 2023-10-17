@@ -368,7 +368,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         var enemies = currStageObj.enemyObjRoot.GetComponentsInChildren<MEnemyObj>();
         foreach (MEnemyObj enemyObj in enemies)
         {
-            UnitBattleData data = UserData.Instance.AddEnemyData(enemyObj.TID);
+            UnitBattleData data = UserData.Instance.AddEnemyData(enemyObj.TID, 100);
             enemyObj.InitObject(data.battleUID, true, (_attackData) => {
 
                 var heroObj = GetHeroObj(_attackData.attackerUID);
@@ -591,7 +591,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(attackerObj.UnitData.refUnitGradeData.projectileid);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), attackerObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
+        bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.attackDamage, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
     private void SpawnWaveEnemy(DataManager.WaveStage _waveStageInfo)
@@ -600,7 +600,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             var randNum = Random.Range(0, currStageObj.enemySpawnPos.Count);
 
-            UnitBattleData data = UserData.Instance.AddEnemyData(_waveStageInfo.unitid);
+            UnitBattleData data = UserData.Instance.AddEnemyData(_waveStageInfo.unitid, _waveStageInfo.unitpowerrate);
             Vector3 spawnPos = currStageObj.enemySpawnPos[randNum].position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
             GameObject unitPrefab = MResourceManager.Instance.GetPrefab(data.refData.prefabname);
