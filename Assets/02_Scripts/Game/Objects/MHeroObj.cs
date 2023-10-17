@@ -54,6 +54,20 @@ public class MHeroObj : MBaseObj
         commonDelay -= Time.deltaTime;
         if (commonDelay <= 0)
         {
+            var targetLists = FindUnitListByArea(unitData.refData.checkrange, true);
+            if (targetLists.Count > 0)
+            {
+                var enemyObj = FindNearestTargetByAggroOrder(targetLists);
+                if (enemyObj != null)
+                {
+                    if (SetTargetObject(enemyObj.UID))
+                    {
+                        fsm.ChangeState(FSMStates.DashMove);
+                        return;
+                    }
+                }
+            }
+
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
                 targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;

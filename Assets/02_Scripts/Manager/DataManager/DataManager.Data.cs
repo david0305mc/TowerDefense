@@ -177,4 +177,25 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class WaveStage {
+		public int id;
+		public int time;
+		public int unitid;
+		public int unitcnt;
+		public int unitpowerrate;
+	};
+	public WaveStage[] WavestageArray { get; private set; }
+	public Dictionary<int, WaveStage> WavestageDic { get; private set; }
+	public void BindWaveStageData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(WavestageArray)).SetValue(this, deserializaedData, null);
+		WavestageDic = WavestageArray.ToDictionary(i => i.id);
+	}
+	public WaveStage GetWaveStageData(int _id){
+		if (WavestageDic.TryGetValue(_id, out WaveStage value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

@@ -24,6 +24,7 @@ public partial class DataManager : Singleton<DataManager>
 			"StageInfo",
 			"StageRewardInfo",
 			"GachaList",
+			"WaveStage",
 		};
 
 	public async UniTask LoadDataAsync()

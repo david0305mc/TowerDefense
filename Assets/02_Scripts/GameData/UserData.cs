@@ -17,6 +17,8 @@ public partial class UserData : Singleton<UserData>
     public int BattlePower { get; private set; }
     public int GameSpeed { get; private set; }
 
+    public bool IsWaveStage => PlayingStage == Game.GameConfig.waveStage;
+
     public LocalSaveData LocalData { get; set; }
     public Dictionary<int, UnitBattleData> enemyDataDic;
     public Dictionary<int, UnitBattleData> battleHeroDataDic;

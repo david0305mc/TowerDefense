@@ -138,7 +138,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitInGameSpeed();
             InitFollowCamera().Forget();
             await SpawnAllHero();
-            StartEnemyWave();
+            StartEnemyWave().Forget();
             gameState = GameConfig.GameState.InGame;
         });
     }
@@ -530,7 +530,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var enemyObj = enemyDic[_uid];
             var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectFeedback>();
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
-            if (_uid == enemyBossUID)
+            if (!UserData.Instance.IsWaveStage && _uid == enemyBossUID)
             {
                 gameState = GameConfig.GameState.BossDefeatEffect;
                 DisposeCTS();
@@ -594,27 +594,31 @@ public partial class MGameManager : SingletonMono<MGameManager>
         bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.refUnitGradeData.attackdmg, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
-    private void SpawnBattleEnemy()
+    private void SpawnWaveEnemy(DataManager.WaveStage _waveStageInfo)
     {
-        var randNum = Random.Range(0, currStageObj.enemySpawnPos.Count);
-        
-        UnitBattleData data = UserData.Instance.AddEnemyData(1001);
-        Vector3 spawnPos = currStageObj.enemySpawnPos[randNum].position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
-
-        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(data.refData.prefabname);
-        MEnemyObj enemyObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MEnemyObj>();
-
-        enemyObj.InitObject(data.battleUID, true, (_attackData) =>
+        Enumerable.Range(0, _waveStageInfo.unitcnt).ToList().ForEach(i =>
         {
-            var heroObj = GetHeroObj(_attackData.attackerUID);
-            if (heroObj == null)
+            var randNum = Random.Range(0, currStageObj.enemySpawnPos.Count);
+
+            UnitBattleData data = UserData.Instance.AddEnemyData(_waveStageInfo.unitid);
+            Vector3 spawnPos = currStageObj.enemySpawnPos[randNum].position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
+
+            GameObject unitPrefab = MResourceManager.Instance.GetPrefab(data.refData.prefabname);
+            MEnemyObj enemyObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MEnemyObj>();
+
+            enemyObj.InitObject(data.battleUID, true, (_attackData) =>
             {
-                // To Do : ??
-                return;
-            }
-            DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
+                var heroObj = GetHeroObj(_attackData.attackerUID);
+                if (heroObj == null)
+                {
+                    // To Do : ??
+                    return;
+                }
+                DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
+            });
+            enemyDic.Add(data.battleUID, enemyObj);
         });
-        enemyDic.Add(data.battleUID, enemyObj);
+
     }
     private void SpawnBattleHero(int _uid)
     {
@@ -662,14 +666,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private async UniTask StartEnemyWave()
     {
-        if (currStageObj.enemySpawnPos.Count > 0)
+        if (currStageObj.enemySpawnPos.Count == 0)
         {
-            while (true)
-            {
-                await UniTask.WaitForSeconds(0.5f);
-                SpawnBattleEnemy();
-            }
-        }    
+            Debug.LogError("currStageObj.enemySpawnPos.Count == 0");
+            return;
+        }
+        int waveID = 1;
+        
+        while (true)
+        {
+            var waveInfo = DataManager.Instance.GetWaveStageData(waveID);
+            await UniTask.WaitForSeconds(waveInfo.time);
+            SpawnWaveEnemy(waveInfo);
+            waveID++;
+        }
     }
 
     //private void Update()
