@@ -111,14 +111,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
     }
 
     public void StartWaveStage()
-    { 
-         gameState = GameConfig.GameState.InGame_SpawningHero;
+    {
+        gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
         UserData.Instance.AcquireSoul.Value = 0;
         //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
-         SetIngameUI();
-        var waitTask = ingameUI.StartLoadingUI(); 
+        SetIngameUI();
+        var waitTask = ingameUI.StartLoadingUI();
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);

@@ -44,7 +44,7 @@ public class InGameUI : MonoBehaviour
     }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
-        timeLeft = 120;
+        timeLeft = endUnixTime;
         UniTask.Create(async () =>
         {
             while (timeLeft > 0)
