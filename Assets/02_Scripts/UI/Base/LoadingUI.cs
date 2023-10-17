@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 public class LoadingUI : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    public async UniTask WaitLoadingUI()
+    public async UniTask PlayLoadingUIAsync()
     {
         await UniTask.WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
     }

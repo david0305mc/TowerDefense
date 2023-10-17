@@ -10,7 +10,7 @@ public class UIIntro : MonoBehaviour
    
     [SerializeField] private Button startBtn;
     [SerializeField] private List<GameObject> preloadingObjLists;
-    [SerializeField] private List<GameObject> loadingObjectLists;
+    [SerializeField] private LoadingUI loadingUI;
 
     private void Awake()
     {
@@ -22,24 +22,19 @@ public class UIIntro : MonoBehaviour
             {
                 item.SetActive(false);
             }
-            foreach (var item in loadingObjectLists)
-            {
-                item.SetActive(true);
-            }
             StartGame().Forget();
         });
         foreach (var item in preloadingObjLists)
         {
             item.SetActive(true);
         }
-        foreach (var item in loadingObjectLists)
-        {
-            item.SetActive(false);
-        }
+        loadingUI.SetActive(false);
     }
 
     private async UniTaskVoid StartGame()
     {
+        loadingUI.SetActive(true); 
+        var playLoadingUI = loadingUI.PlayLoadingUIAsync();
         await UniTask.Yield();
         await UniTask.Yield();
         LocalizeManager.Instance.Initialize();
@@ -47,6 +42,7 @@ public class UIIntro : MonoBehaviour
         await DataManager.Instance.LoadDataAsync();
         await DataManager.Instance.LoadConfigTable();
         await MResourceManager.Instance.LoadResources();
+        await playLoadingUI;
         SoundManager.Instance.Play("Bgm/Bgm_01", SoundType.Bgm);
         DataManager.Instance.MakeClientDT();
         UserData.Instance.InitData();

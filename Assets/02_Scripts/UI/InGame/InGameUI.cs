@@ -27,7 +27,7 @@ public class InGameUI : MonoBehaviour
     public async UniTask StartLoadingUI()
     {
         loadingUI.SetActive(true);
-        await loadingUI.WaitLoadingUI();
+        await loadingUI.PlayLoadingUIAsync();
     }
     public void EndLoadingUI()
     {
