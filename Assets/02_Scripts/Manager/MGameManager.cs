@@ -110,6 +110,38 @@ public partial class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
+    public void StartWaveStage()
+    { 
+         gameState = GameConfig.GameState.InGame_SpawningHero;
+        stageCts = new CancellationTokenSource();
+        timerCts = new CancellationTokenSource();
+        UserData.Instance.AcquireSoul.Value = 0;
+        //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
+         SetIngameUI();
+        var waitTask = ingameUI.StartLoadingUI(); 
+        if (currStageObj != null)
+        {
+            Destroy(currStageObj.gameObject);
+        }
+        var stageInfo = DataManager.Instance.GetStageInfoData(Game.GameConfig.waveStage);
+        worldMap.gameObject.SetActive(false);
+        UniTask.Create(async () =>
+        {
+            currStageOpHandler = Addressables.InstantiateAsync(stageInfo.prefabname, Vector3.zero, Quaternion.identity, objRoot);
+            await currStageOpHandler;
+            await waitTask;
+            currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
+            UserData.Instance.PlayingStage = Game.GameConfig.waveStage;
+            ingameUI.EndLoadingUI();
+            SetStageUI(timerCts);
+            InitEnemies();
+            InitInGameSpeed();
+            InitFollowCamera().Forget();
+            await SpawnAllHero();
+            StartEnemyWave();
+            gameState = GameConfig.GameState.InGame;
+        });
+    }
     public void StartStage(int stageID)
     {
         gameState = GameConfig.GameState.InGame_SpawningHero;
@@ -138,7 +170,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitInGameSpeed();
             InitFollowCamera().Forget();
             await SpawnAllHero();
-            StartEnemyWave();
             gameState = GameConfig.GameState.InGame;
         });
     }
@@ -210,7 +241,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void SetIngameUI()
     {
         mainUI.SetActive(false);
+        mainUI.HideStageInfo();
         ingameUI.SetActive(true);
+        worldMap.SelectStage(-1);
     }
     public void SetStageUI(CancellationTokenSource _cts)
     {
@@ -288,8 +321,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
                         {
                             // startBtn
                             StartStage(stageSlot.stage);
-                            mainUI.HideStageInfo();
-                            worldMap.SelectStage(-1);
                         });
                         worldMap.SelectStage(stageSlot.stage);
 
@@ -565,8 +596,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void SpawnBattleEnemy()
     {
+        var randNum = Random.Range(0, currStageObj.enemySpawnPos.Count);
+        
         UnitBattleData data = UserData.Instance.AddEnemyData(1001);
-        Vector3 spawnPos = currStageObj.enemySpawnPosTest.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
+        Vector3 spawnPos = currStageObj.enemySpawnPos[randNum].position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
 
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(data.refData.prefabname);
         MEnemyObj enemyObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MEnemyObj>();
@@ -629,7 +662,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private async UniTask StartEnemyWave()
     {
-        if (currStageObj.enemySpawnPosTest != null)
+        if (currStageObj.enemySpawnPos.Count > 0)
         {
             while (true)
             {

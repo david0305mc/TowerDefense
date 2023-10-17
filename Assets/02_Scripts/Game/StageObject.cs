@@ -7,7 +7,7 @@ public class StageObject : MonoBehaviour
 {
     public Transform enemyObjRoot;
     public Transform heroSpawnPos;
-    public Transform enemySpawnPosTest;
+    public List<Transform> enemySpawnPos;
     public Tilemap tileMap;
     public Tilemap obstacleTileMap;
     public Tilemap treeTileMap;

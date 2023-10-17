@@ -125,7 +125,7 @@ public class MainUI : MonoBehaviour
                 break;
             case BottomTab.Pvp:
                 {
-                    
+                    MGameManager.Instance.StartWaveStage();
                 }
                 break;
         }
