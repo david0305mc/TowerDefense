@@ -188,7 +188,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj targetHero = GetFirstCameraTarget();
                 if (targetHero != null)
                 {
-                    cameraManager.SetFollowObject(targetHero.gameObject, true, currStageObj.FollowOffset, null);
+                    cameraManager.SetFollowObject(targetHero.gameObject, GameConfig.unitTargetDragSpeed, true, currStageObj.FollowOffset, null);
                     targetHero.SetDeadAction(() =>
                     {
                         cameraManager.CancelFollowTarget();
@@ -252,7 +252,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     }
     public void FollowToCurrStage()
     {
-        cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), false, Vector2.zero, null);
+        cameraManager.SetFollowObject(worldMap.GetCurrStageObj(), GameConfig.normalTargetDragSpeed, false, Vector2.zero, null);
     }
 
     private void DisposeCTS()
@@ -314,7 +314,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
                 if (obj != null)
                 {
-                    cameraManager.SetFollowObject(obj, false, Vector2.zero, () =>
+                    cameraManager.SetFollowObject(obj, GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
                     {
                         WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                         mainUI.ShowStageInfo(stageSlot.stage, () =>
@@ -339,8 +339,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 cameraManager.CancelFollowTarget();
                 cameraFollowTime = 0f;
             }
-        }, 
-        ()=> {
+        }, ()=> {
             if (gameState == GameConfig.GameState.MainUI)
             {
                 mainUI.HideStageInfo();
@@ -536,7 +535,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 DisposeCTS();
                 Time.timeScale = 0.3f;
                 cameraManager.EnableCameraControl = false;
-                cameraManager.SetFollowObject(enemyObj.gameObject, false, Vector2.zero, null);
+                cameraManager.SetFollowObject(enemyObj.gameObject, GameConfig.unitTargetDragSpeed, false, Vector2.zero, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
                 { 

@@ -35,6 +35,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     float oldPinchDist = 0f;
 
     private Vector3 dragStartPos = Vector3.zero;
+    private Vector3 dragStartInputPos = Vector3.zero;
     private bool groundDragStarted = false;
 
     private Vector3 panVelocity = Vector3.zero;
@@ -46,6 +47,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private Vector3 followOffeset;
     private System.Action followTargetAction;
     private bool keepFollow;
+    private float dragSpeedFactor;
 
     public float ZoomSize => newZoom;
 
@@ -60,6 +62,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTarget = null;
         followTargetAction = null;
         EnableCameraControl = true;
+        dragSpeedFactor = 1f;
     }
     void Start()
     {
@@ -112,7 +115,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
         if (!newPos.Equals(oldPos))
         {
-            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed);
+            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed * dragSpeedFactor);
             oldPos = transform.position;
         }
 
@@ -129,6 +132,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             {
                 if (Vector2.Distance(transform.position, followTarget.transform.position + followOffeset) <= 0.1f)
                 {
+                    dragSpeedFactor = 1f;
                     followTargetAction?.Invoke();
                     followTarget = null;
                     followTargetAction = null;
@@ -184,6 +188,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             if (!groudHitPoint.Equals(PositiveInfinityVector))
             {
                 dragStartPos = groudHitPoint;
+                dragStartInputPos = Input.mousePosition;
                 groundDragStarted = true;
                 previousPanPoint = groudHitPoint;
                 dragStartAction?.Invoke();
@@ -200,14 +205,18 @@ public class MCameraManager : SingletonMono<MCameraManager>
                     newPos = transform.position + dragStartPos - hitPoint;
                     panVelocity = previousPanPoint - newPos;
                     previousPanPoint = newPos;
+                    if (!newPos.Equals(oldPos))
+                    {
+                        transform.position = newPos;
+                        oldPos = transform.position;
+                    }
                 }
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            Vector3 groudHitPoint = TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
-            if (Vector3.Distance(dragStartPos, groudHitPoint) <= 0.01f)
+            if (Vector3.Distance(dragStartInputPos, Input.mousePosition) <= 0.3f)
             {
                 touchAction?.Invoke();
             }
@@ -300,13 +309,14 @@ public class MCameraManager : SingletonMono<MCameraManager>
         dragStartAction = _dragStartAction;
     }
 
-    public void SetFollowObject(GameObject _target, bool _keepFollow, Vector3 _offset, System.Action _targetAction)
+    public void SetFollowObject(GameObject _target, float _dragSpeedFactor,  bool _keepFollow, Vector3 _offset, System.Action _targetAction)
     {
         followOffeset = _offset;
         keepFollow = _keepFollow;
         followTarget = _target;
         followTargetAction = _targetAction;
         newPos = followTarget.transform.position + _offset;
+        dragSpeedFactor = _dragSpeedFactor;
     }
 
     public void CancelFollowTarget()
@@ -314,6 +324,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTarget = null;
         followTargetAction = null;
         newPos = transform.position;
+        dragSpeedFactor = 1f;
     }
     //private void ZoomCamera()
     //{

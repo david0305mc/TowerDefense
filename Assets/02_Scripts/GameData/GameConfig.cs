@@ -21,6 +21,8 @@ namespace Game
         public static readonly int ItemSelectedLayerOrder = 10;
         public static readonly int waveStage = 999;
         public static readonly float projectileRewardSizeFactor = 10f;
+        public static readonly float unitTargetDragSpeed = 0.3f;
+        public static readonly float normalTargetDragSpeed = 1f;
 
         public static readonly int CanvasMainUILayerOrder = 100;
         public static readonly int CanvasPopupManagerLayerOrder = 200;
