@@ -708,8 +708,8 @@ public class MBaseObj : MonoBehaviour, Damageable
             return false;
         }
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_uid, !IsEnemy());
-        float randX = Random.Range(0.5f, 1f);
-        float randY = Random.Range(-0.3f, 0.3f);
+        float randX = Random.Range(0f, 0.31f);
+        float randY = Random.Range(-0.1f, 0.1f);
 
         Vector3 pos01 = new Vector3(randX, randY, 0);
         //pos01 = Vector3.zero;

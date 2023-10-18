@@ -14,6 +14,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     [SerializeField] private int mapSizeMaxY = 30;
 
     [SerializeField] private float dragSpeed = 3f;
+    [SerializeField] private float panInertiafactor = 3f;
 
     [SerializeField] private float maxZoomFactor = 50;
     [SerializeField] private float minZoomFactor = 3;
@@ -203,7 +204,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
                 if (!hitPoint.Equals(PositiveInfinityVector))
                 {
                     newPos = transform.position + dragStartPos - hitPoint;
-                    panVelocity = previousPanPoint - newPos;
+                    panVelocity = (previousPanPoint - newPos) * panInertiafactor;
                     previousPanPoint = newPos;
                     if (!newPos.Equals(oldPos))
                     {
@@ -216,7 +217,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (Vector3.Distance(dragStartInputPos, Input.mousePosition) <= 0.3f)
+            if (Vector3.Distance(dragStartInputPos, Input.mousePosition) <= 10f)
             {
                 touchAction?.Invoke();
             }
