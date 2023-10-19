@@ -13,8 +13,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
     [SerializeField] private int mapSizeMinY = -10;
     [SerializeField] private int mapSizeMaxY = 30;
 
-    [SerializeField] private float dragSpeed = 3f;
-    [SerializeField] private float panInertiafactor = 3f;
+    [SerializeField] private float followSpeed = 7f;
+    [SerializeField] private float panInertiafactor = 5f;
 
     [SerializeField] private float maxZoomFactor = 50;
     [SerializeField] private float minZoomFactor = 3;
@@ -48,7 +48,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private Vector3 followOffeset;
     private System.Action followTargetAction;
     private bool keepFollow;
-    private float dragSpeedFactor;
+    private float followSpeedFactor;
 
     public float ZoomSize => newZoom;
 
@@ -63,7 +63,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTarget = null;
         followTargetAction = null;
         EnableCameraControl = true;
-        dragSpeedFactor = 1f;
+        followSpeedFactor = 1f;
     }
     void Start()
     {
@@ -108,7 +108,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             }
             if (panVelocity != Vector3.zero)
             {
-                panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, Time.deltaTime * 10);
+                panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, Time.deltaTime * 20);
                 newPos -= panVelocity;
             }
         }
@@ -116,7 +116,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
         if (!newPos.Equals(oldPos))
         {
-            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * dragSpeed * dragSpeedFactor);
+            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * followSpeed * followSpeedFactor);
             oldPos = transform.position;
         }
 
@@ -133,7 +133,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             {
                 if (Vector2.Distance(transform.position, followTarget.transform.position + followOffeset) <= 0.1f)
                 {
-                    dragSpeedFactor = 1f;
+                    followSpeedFactor = 1f;
                     followTargetAction?.Invoke();
                     followTarget = null;
                     followTargetAction = null;
@@ -317,7 +317,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTarget = _target;
         followTargetAction = _targetAction;
         newPos = followTarget.transform.position + _offset;
-        dragSpeedFactor = _dragSpeedFactor;
+        followSpeedFactor = _dragSpeedFactor;
     }
 
     public void CancelFollowTarget()
@@ -325,7 +325,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTarget = null;
         followTargetAction = null;
         newPos = transform.position;
-        dragSpeedFactor = 1f;
+        followSpeedFactor = 1f;
     }
     //private void ZoomCamera()
     //{
