@@ -109,7 +109,7 @@ public class MainUI : MonoBehaviour
         {
             case BottomTab.Worldmap:
                 {
-                    MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
+                    MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 5, -2, 9, -2, 6);
                     MGameManager.Instance.FollowToCurrStage();
                 }
                 break;
@@ -125,7 +125,8 @@ public class MainUI : MonoBehaviour
                 break;
             case BottomTab.Pvp:
                 {
-                    MGameManager.Instance.StartWaveStage();
+                    //UI 에서 시작 버튼 눌러야 시작되게끔 수정 필요
+                    //MGameManager.Instance.StartWaveStage();
                 }
                 break;
         }

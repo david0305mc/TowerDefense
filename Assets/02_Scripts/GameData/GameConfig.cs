@@ -16,7 +16,7 @@ namespace Game
             GameEnd,
         }
 
-        public static readonly int DefaultZoomSize = 10;
+        public static readonly int DefaultZoomSize = 3;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
         public static readonly int waveStage = 999;
