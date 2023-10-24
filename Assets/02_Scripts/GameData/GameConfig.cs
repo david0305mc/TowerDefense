@@ -28,6 +28,9 @@ namespace Game
         public static readonly int CanvasPopupManagerLayerOrder = 200;
         public static readonly int StartBuildingID = 10000;
 
+        public static readonly int WaveStageID_01 = 999;
+        public static readonly int WaveStageID_02 = 1000;
+
         public static readonly string DefaultLayerName = "Default";
         public static readonly string ForegroundLayerName = "Foreground";
         public static readonly string UILayerName = "UI";

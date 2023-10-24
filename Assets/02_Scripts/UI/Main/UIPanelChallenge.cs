@@ -14,11 +14,21 @@ public class UIPanelChallenge : MonoBehaviour
     private void OnEnable()
     {
         challengeCellList = new List<UIChallengeCell>();
-        Enumerable.Range(0, 5).ToList().ForEach(i =>
         {
-            var itemObj = Lean.Pool.LeanPool.Spawn(cellPrefab, scrollRect.content);
+            UIChallengeCell itemObj = Lean.Pool.LeanPool.Spawn(cellPrefab, scrollRect.content);
+            itemObj.SetData(Game.GameConfig.WaveStageID_01, ()=> {
+                MGameManager.Instance.StartWaveStage();
+            });
             challengeCellList.Add(itemObj);
-        });
+        }
+
+        {
+            UIChallengeCell itemObj = Lean.Pool.LeanPool.Spawn(cellPrefab, scrollRect.content);
+            itemObj.SetData(Game.GameConfig.WaveStageID_02, ()=> {
+                MGameManager.Instance.StartWaveStage();
+            });
+            challengeCellList.Add(itemObj);
+        }
         scrollRect.verticalNormalizedPosition = 1f;
     }
 

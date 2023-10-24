@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIChallengeCell : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Button startButton;
+         
+    public void SetData(int _stageID, System.Action _startAction)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        startButton.onClick.RemoveAllListeners();
+        startButton.onClick.AddListener(() =>
+        {
+            _startAction?.Invoke();
+        });
     }
 }
