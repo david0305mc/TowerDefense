@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3648060132917323225}
   - component: {fileID: 3821793547855489738}
   - component: {fileID: 2216517501890439936}
-  m_Layer: 8
+  - component: {fileID: 6312241672545105503}
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +99,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToFollow: {fileID: 0}
+--- !u!114 &6312241672545105503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21311905420927595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 983
 --- !u!1 &33128207328183083
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +127,7 @@ GameObject:
   - component: {fileID: 1586110794962242939}
   - component: {fileID: 1323181873806122486}
   - component: {fileID: 3144142280310807758}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Progressbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +319,7 @@ GameObject:
   - component: {fileID: 367289758607972837}
   - component: {fileID: 875067517825617150}
   - component: {fileID: 2927561824566236599}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: IconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +396,7 @@ GameObject:
   - component: {fileID: 4075404191922475407}
   - component: {fileID: 3529278242247028581}
   - component: {fileID: 8662988956005949829}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: GoldProductBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +505,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3529278242247028581}
   m_FillRect: {fileID: 1586110794962242939}
   m_HandleRect: {fileID: 0}
@@ -551,7 +569,7 @@ MonoBehaviour:
   occupationObject: {fileID: 431426554671124282}
   selectedMark: {fileID: 4318510613575558743}
   goldProgressBar: {fileID: 8662988956005949829}
-  harvestButton: {fileID: 3141329747281359013}
+  harvestButton: {fileID: 4321209762106988760}
   harvestGoldText: {fileID: 4912875574720062493}
   stage: 0
 --- !u!61 &-3029063911579528850
@@ -591,7 +609,8 @@ GameObject:
   - component: {fileID: 6129963422426190787}
   - component: {fileID: 6763726954037416274}
   - component: {fileID: 8106346007203218617}
-  m_Layer: 8
+  - component: {fileID: 4321209762106988760}
+  m_Layer: 5
   m_Name: Btn_Harvest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -657,6 +676,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 110
+--- !u!114 &4321209762106988760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141329747281359013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 8106346007203218617}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3331013345559242067
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,7 +1038,7 @@ GameObject:
   - component: {fileID: 4451953103002506262}
   - component: {fileID: 2050906668862634285}
   - component: {fileID: 3469501644324900459}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Icon_Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1051,7 +1114,7 @@ GameObject:
   - component: {fileID: 6759896615998691944}
   - component: {fileID: 4646543821172175862}
   - component: {fileID: 596003138139390717}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1127,7 +1190,7 @@ GameObject:
   - component: {fileID: 730424628909908382}
   - component: {fileID: 7381986137641129986}
   - component: {fileID: 4837031842575486206}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1238,7 +1301,7 @@ GameObject:
   - component: {fileID: 2277679862885967211}
   - component: {fileID: 2729872271299301060}
   - component: {fileID: 4912875574720062493}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

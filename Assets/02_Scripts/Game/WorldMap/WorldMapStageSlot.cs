@@ -16,7 +16,7 @@ public class WorldMapStageSlot : MonoBehaviour
     [SerializeField] private GameObject selectedMark;
 
     [SerializeField] private Slider goldProgressBar;
-    [SerializeField] private GameObject harvestButton;
+    [SerializeField] private Button harvestButton;
     [SerializeField] private TextMeshProUGUI harvestGoldText;
 
     private CancellationTokenSource goldHarvestCTS;
@@ -25,6 +25,10 @@ public class WorldMapStageSlot : MonoBehaviour
     private void Awake()
     {
         selectedMark.SetActive(false);
+        harvestButton.onClick.AddListener(() =>
+        {
+          MGameManager.Instance.CheckStageGold(stage, transform.position);
+        });
     }
     public void SetSelected(bool _value)
     {
