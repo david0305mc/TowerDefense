@@ -517,6 +517,37 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &2902771988604902661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7229216205196592646}
+  m_Layer: 9
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7229216205196592646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902771988604902661}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945328151190096307}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2995932796275088798
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +602,7 @@ MonoBehaviour:
   goldProgressBar: {fileID: 8662988956005949829}
   harvestButton: {fileID: 4321209762106988760}
   harvestGoldText: {fileID: 4912875574720062493}
+  CameraPivot: {fileID: 2902771988604902661}
   stage: 0
 --- !u!61 &-3029063911579528850
 BoxCollider2D:
@@ -1287,6 +1319,7 @@ Transform:
   - {fileID: 4020513997394789047}
   - {fileID: 5086970491904181312}
   - {fileID: 3357934609320790666}
+  - {fileID: 7229216205196592646}
   m_Father: {fileID: 2150250696539793921}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

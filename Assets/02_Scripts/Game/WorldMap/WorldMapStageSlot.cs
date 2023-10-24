@@ -19,6 +19,8 @@ public class WorldMapStageSlot : MonoBehaviour
     [SerializeField] private Button harvestButton;
     [SerializeField] private TextMeshProUGUI harvestGoldText;
 
+    public GameObject CameraPivot;
+
     private CancellationTokenSource goldHarvestCTS;
     public int stage;
 

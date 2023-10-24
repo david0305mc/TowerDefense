@@ -314,9 +314,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.StageSlotLayerMask);
                 if (obj != null)
                 {
-                    cameraManager.SetFollowObject(obj, GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
+                    WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
+                    cameraManager.SetFollowObject(stageSlot.CameraPivot, GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
                     {
-                        WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                         mainUI.ShowStageInfo(stageSlot.stage, () =>
                         {
                             // startBtn

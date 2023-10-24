@@ -138,8 +138,6 @@ public partial class UserData : Singleton<UserData>
 
     public void ClearStage(int _stage)
     {
-        LocalData.StageClearDic[_stage] = StageData.Create(_stage);
-        return;
         if (!LocalData.StageClearDic.ContainsKey(_stage))
         {
             LocalData.StageClearDic[_stage] = StageData.Create(_stage);
