@@ -182,7 +182,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         followCameraCts = new CancellationTokenSource();
         cameraManager.SetPosition(currStageObj.heroSpawnPos.position + currStageObj.FollowOffset);
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
-        await UniTask.WaitUntil(() => heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
+        await UniTask.WaitUntil(() => heroUIDOrder != null && heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
         while (true)
         {
@@ -691,12 +691,38 @@ public partial class MGameManager : SingletonMono<MGameManager>
         heroUIDOrder.Add(battleHeroData.battleUID);
     }
 
+    private void SpawnDevilCastle()
+    {
+        UnitBattleData battleHeroData = UserData.Instance.AddDevilCastleData(GameConfig.DevilCasleID);
+        Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
+
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(battleHeroData.refData.prefabname);
+        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
+        heroObj.InitObject(battleHeroData.battleUID, false, (_attackData) =>
+        {
+            var enemyObj = GetEnemyObj(_attackData.attackerUID);
+            if (enemyObj == null)
+            {
+                // To Do :
+                return;
+            }
+            DoHeroGetDamage(heroObj, enemyObj.transform.position, _attackData.attackerUID, _attackData.damage);
+        });
+        heroObj.StartFSM();
+        heroDic.Add(battleHeroData.battleUID, heroObj);
+    }
+
     private async UniTask SpawnAllHero()
     {
         heroUIDOrder = new List<int>();
         heroDic = new Dictionary<int, MHeroObj>();
         spawnHeroCts?.Cancel();
         spawnHeroCts = new CancellationTokenSource();
+        if (UserData.Instance.PlayingStage == Game.GameConfig.waveStage)
+        {
+            SpawnDevilCastle();
+        }
+        
         await UniTask.Delay(1000, cancellationToken: spawnHeroCts.Token);
         foreach (var item in UserData.Instance.LocalData.BattlePartyDic)
         {

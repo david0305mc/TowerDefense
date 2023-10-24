@@ -337,6 +337,13 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic.Remove(_enemyUID);
     }
 
+    public UnitBattleData AddDevilCastleData(int _tid)
+    {
+        var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), -1, _tid, 1, 1, false, 100);
+        battleHeroDataDic.Add(data.battleUID, data);
+        return data;
+    }
+
     public UnitBattleData AddBattleHeroData(UnitData _heroData)
     {
         var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), _heroData.uid, _heroData.tid, _heroData.refUnitGradeData.grade, _heroData.count, false, 100);
