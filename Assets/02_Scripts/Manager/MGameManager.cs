@@ -27,8 +27,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private Dictionary<int, MHeroObj> heroDic;
     private List<int> heroUIDOrder;
     private StageObject currStageObj;
-    private AsyncOperationHandle<GameObject> currStageOpHandler; 
+    private AsyncOperationHandle<GameObject> currStageOpHandler;
 
+    public StageObject CurrStageObj => currStageObj;
     public List<GameObject> WayPoints => currStageObj.wayPointLists;
 
     private Dictionary<TileBase, TileData> dataFromTileMap;

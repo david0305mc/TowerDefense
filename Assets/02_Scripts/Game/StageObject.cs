@@ -12,6 +12,7 @@ public class StageObject : MonoBehaviour
     public Tilemap obstacleTileMap;
     public Tilemap treeTileMap;
     public List<GameObject> wayPointLists;
+    public Transform devileCastleSpawnPoint;
 
     public Vector3 FollowOffset = new Vector3(2, 3, 0);
     public float DefaultZoomSize = 5;

@@ -32,6 +32,11 @@ public class MEnemyObj : MBaseObj
     protected override void Idle_Enter()
     {
         base.Idle_Enter();
+
+        if (MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint != null)
+        {
+            fsm.ChangeState(FSMStates.WaypointMove);
+        }
     }
     protected override void Idle_Update()
     {
@@ -43,11 +48,35 @@ public class MEnemyObj : MBaseObj
     }
     protected override void WaypointMove_Enter()
     {
-        Debug.LogError("Enemy Doesnt Have WaypointState");
+        PlayAni("Walk");
+        ResumeAgent();
+        state = fsm.State.ToString();
     }
     protected override void WaypointMove_Update()
     {
-        Debug.LogError("Enemy Doesnt Have WaypointState Update");
+        var targetWayPoint = MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint;
+        UpdateAgentSpeed();
+        DoAgentMove(targetWayPoint.transform.position);
+        FlipRenderers(targetWayPoint.transform.position.x < transform.position.x);
+
+        var targetLists = FindUnitListByArea(unitData.refData.checkrange, false);
+        if (targetLists.Count > 0)
+        {
+            var enemyObj = FindNearestTargetByAggroOrder(targetLists);
+            if (enemyObj != null)
+            {
+                if (SetTargetObject(enemyObj.UID))
+                {
+                    fsm.ChangeState(FSMStates.DashMove);
+                    return;
+                }
+            }
+        }
+
+        if (Vector2.Distance(transform.position, targetWayPoint.transform.position) < 0.3f)
+        {
+            fsm.ChangeState(FSMStates.Idle);
+        }
     }
     protected override void DoSwordAttack(Collider2D collision)
     {
