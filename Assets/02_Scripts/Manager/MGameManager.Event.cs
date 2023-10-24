@@ -86,6 +86,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
+    public void ConsumeStamina(int _stamina)
+    {
+        if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StaminaMaxCount)
+        {
+            UserData.Instance.LocalData.StaminaLastSpawnTime = GameTime.Get();
+        }
+        UserData.Instance.LocalData.Stamina.Value -= _stamina;
+        UserData.Instance.SaveLocalData();
+    }
     public void WinStage()
     {
         gameState = Game.GameConfig.GameState.GameEnd;

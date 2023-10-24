@@ -29,15 +29,14 @@ public class UIPanelStageInfo : MonoBehaviour
             //    PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Power", "OK");
             //    return;
             //}
-            startBtnAction?.Invoke();
-            //if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
-            //{
-            //    startBtnAction?.Invoke();
-            //}
-            //else
-            //{
-            //    PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Stamina", "OK");
-            //}
+            if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+            {
+                startBtnAction?.Invoke();
+            }
+            else
+            {
+                PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Stamina", "OK");
+            }
         });
         closeBtn.onClick.AddListener(() =>
         {

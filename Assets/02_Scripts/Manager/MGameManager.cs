@@ -56,6 +56,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 dataFromTileMap.Add(tile, tileData);
             }
         }
+        CheckStaminaSpawn().Forget();
     }
 
     public static int GenerateUID()
@@ -147,9 +148,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
-        UserData.Instance.AcquireSoul.Value = 0;
-        //UserData.Instance.LocalData.Stamina.Value -= ConfigTable.Instance.StageStartCost;
-         SetIngameUI();
+        UserData.Instance.AcquireSoul.Value = 0; 
+        SetIngameUI();
         var waitTask = ingameUI.StartLoadingUI(); 
         if (currStageObj != null)
         {
@@ -169,6 +169,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitEnemies();
             InitInGameSpeed();
             InitFollowCamera().Forget();
+
+            ConsumeStamina(ConfigTable.Instance.StageStartCost);
             await SpawnAllHero();
             gameState = GameConfig.GameState.InGame;
         });
@@ -233,11 +235,41 @@ public partial class MGameManager : SingletonMono<MGameManager>
         InitWorldGameSpeed();
     }
 
+    private async UniTask CheckStaminaSpawn()
+    {
+        while (true)
+        {
+            if (ConfigTable.Instance.StaminaMaxCount > UserData.Instance.LocalData.Stamina.Value)
+            {
+                if (GameTime.Get() >= UserData.Instance.LocalData.StaminaLastSpawnTime + ConfigTable.Instance.StaminaChargeTime)
+                {
+                    long timeSpan = GameTime.Get() - UserData.Instance.LocalData.StaminaLastSpawnTime;
+                    int count = Mathf.FloorToInt(timeSpan / (float)ConfigTable.Instance.StaminaChargeTime);
+
+                    if (UserData.Instance.LocalData.Stamina.Value + count >= ConfigTable.Instance.StaminaMaxCount)
+                    {
+                        UserData.Instance.LocalData.Stamina.Value = ConfigTable.Instance.StaminaMaxCount;
+                        UserData.Instance.LocalData.StaminaLastSpawnTime = GameTime.Get();
+                    }
+                    else
+                    {
+                        UserData.Instance.LocalData.Stamina.Value += count;
+                        UserData.Instance.LocalData.StaminaLastSpawnTime += (count * ConfigTable.Instance.StaminaChargeTime);
+                    }
+
+                    UserData.Instance.SaveLocalData();
+                }
+            }
+            await UniTask.WaitForSeconds(0.1f, cancellationToken: this.GetCancellationTokenOnDestroy());
+        }
+    }
+
     public void SetWorldUI()
     {
         mainUI.SetActive(true);
         ingameUI.SetActive(false);
     }
+
     public void SetIngameUI()
     {
         mainUI.SetActive(false);
@@ -277,7 +309,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void RetryStage()
     {
-        StartStage(UserData.Instance.PlayingStage);
+        if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+        {
+            StartStage(UserData.Instance.PlayingStage);
+        }
+        else
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Stamina", "OK");
+        }
     }
 
     public void NextStage()
@@ -289,7 +328,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
             PopupManager.Instance.ShowSystemOneBtnPopup("There is no Stage", "OK");
             return;
         }
-        StartStage(UserData.Instance.PlayingStage + 1);
+
+        if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+        {
+            StartStage(UserData.Instance.PlayingStage + 1);
+        }
+        else
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Stamina", "OK");
+        }
+        
     }
 
     public void RemoveStage()
