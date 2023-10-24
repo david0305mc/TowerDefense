@@ -8,6 +8,8 @@ public class ConfigTable : Singleton<ConfigTable>{
 	public string test01;
 	public int maxGold;
 	public int StageStartCost;
+	public int StaminaChargeTime;
+	public int StaminaMaxCount;
 	public void LoadConfig(Dictionary<string, Dictionary<string, object>> rowList)
 	{
 		foreach (var rowItem in rowList)
