@@ -33,9 +33,24 @@ public class UniRxTest : MonoBehaviour
     }
     async UniTask Test03()
     {
-        property.ThrottleFrame(1).Subscribe(val => Debug.Log(val));
-        
-        await UniTask.Yield();
+        property.ThrottleFrame(0).Subscribe(val => Debug.Log(val));
+        property.Value = 1;
+        property.Value = 2;
+        property.Value = 3;
+
+        await UniTask.NextFrame();
+
+        property.Value = 4;
+        property.Value = 5;
+        await UniTask.NextFrame();
+        property.Value = 6;
+        property.Value = 7;
+        await UniTask.NextFrame();
+        property.Value = 8;
+        property.Value = 9;
+        await UniTask.NextFrame();
+        property.Value = 10;
+        property.Value = 11;
     }
 
 }
