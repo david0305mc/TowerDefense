@@ -19,7 +19,6 @@ namespace Game
         public static readonly int DefaultZoomSize = 3;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
-        public static readonly int waveStage = 999;
         public static readonly float projectileRewardSizeFactor = 10f;
         public static readonly float unitTargetDragSpeed = 0.3f;
         public static readonly float normalTargetDragSpeed = 1f;

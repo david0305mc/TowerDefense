@@ -17,7 +17,7 @@ public class UIPanelChallenge : MonoBehaviour
         {
             UIChallengeCell itemObj = Lean.Pool.LeanPool.Spawn(cellPrefab, scrollRect.content);
             itemObj.SetData(Game.GameConfig.WaveStageID_01, ()=> {
-                MGameManager.Instance.StartWaveStage();
+                MGameManager.Instance.StartWaveStage(Game.GameConfig.WaveStageID_01);
             });
             challengeCellList.Add(itemObj);
         }
@@ -25,7 +25,7 @@ public class UIPanelChallenge : MonoBehaviour
         {
             UIChallengeCell itemObj = Lean.Pool.LeanPool.Spawn(cellPrefab, scrollRect.content);
             itemObj.SetData(Game.GameConfig.WaveStageID_02, ()=> {
-                MGameManager.Instance.StartWaveStage();
+                MGameManager.Instance.StartWaveStage(Game.GameConfig.WaveStageID_02);
             });
             challengeCellList.Add(itemObj);
         }

@@ -112,7 +112,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         return nearestObjUID;
     }
 
-    public void StartWaveStage()
+    public void StartWaveStage(int _stageID)
     {
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
@@ -125,7 +125,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             Destroy(currStageObj.gameObject);
         }
-        var stageInfo = DataManager.Instance.GetStageInfoData(Game.GameConfig.waveStage);
+        UserData.Instance.PlayingStage = _stageID;
+        var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         worldMap.gameObject.SetActive(false);
         UniTask.Create(async () =>
         {
@@ -133,7 +134,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await currStageOpHandler;
             await waitTask;
             currStageObj = currStageOpHandler.Result.GetComponent<StageObject>();
-            UserData.Instance.PlayingStage = Game.GameConfig.waveStage;
             ingameUI.EndLoadingUI();
             SetStageUI(timerCts);
             InitEnemies();
@@ -534,17 +534,37 @@ public partial class MGameManager : SingletonMono<MGameManager>
             return;
 
         UserData.Instance.KillBattleHero(_attackerUID, _uid);
-        if (gameState == GameConfig.GameState.InGame && UserData.Instance.isAllHeroDead())
-        {
-            LoseStage();
-        }
-
+        bool isDevilCastle = false;
         if (heroDic.ContainsKey(_uid))
         {
             MHeroObj heroObj = heroDic[_uid];
+            if (heroObj.UnitData.tid == GameConfig.DevilCasleID)
+            {
+                isDevilCastle = true;
+            }
             heroObj.GetKilled();
             Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
             heroDic.Remove(_uid);
+        }
+
+        if (UserData.Instance.IsWaveStage)
+        {
+            if (isDevilCastle)
+            {
+                LoseStage();
+            }
+        }
+        else
+        {
+            if (UserData.Instance.isAllHeroDead())
+            {
+                LoseStage();
+            }
+        }
+
+        if (gameState != GameConfig.GameState.InGame)
+        {
+            Debug.LogError("It is not a In GameState");
         }
     }
     private void RemoveBattleHero(int _uid)
@@ -718,7 +738,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         heroDic = new Dictionary<int, MHeroObj>();
         spawnHeroCts?.Cancel();
         spawnHeroCts = new CancellationTokenSource();
-        if (UserData.Instance.PlayingStage == Game.GameConfig.waveStage)
+        if (UserData.Instance.IsWaveStage)
         {
             SpawnDevilCastle();
         }

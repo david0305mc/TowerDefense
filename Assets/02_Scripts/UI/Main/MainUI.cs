@@ -74,12 +74,10 @@ public class MainUI : MonoBehaviour
     {
         test01Btn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.LoseStage();
         });
 
         WinBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.WinStage();
         });
         HideStageInfo();
         CheckStaminaTimer().Forget();
