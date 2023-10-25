@@ -2194,7 +2194,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8363365658723570244}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2221,6 +2221,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startButton: {fileID: 5176546741281078916}
+  titleText: {fileID: 8210751967487274893}
+  subTitleText: {fileID: 5176546742584065139}
+  cellRewardList:
+  - {fileID: 4293005374443349534}
+  - {fileID: 1431778761488667714}
+  - {fileID: 5395369286486027288}
 --- !u!1 &8363365658841892278
 GameObject:
   m_ObjectHideFlags: 0
