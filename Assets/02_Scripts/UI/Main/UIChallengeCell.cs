@@ -10,9 +10,12 @@ public class UIChallengeCell : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI subTitleText;
     [SerializeField] private List<UICell_Reward> cellRewardList;
+    [SerializeField] private GameObject lockObject;
+    [SerializeField] private TextMeshProUGUI lockText;
 
     public void SetData(int _stageID, System.Action _startAction)
     {
+        var stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         var rewards = DataManager.Instance.GetStageRewards(_stageID);
 
         for (int i = 0; i < rewards.Count; i++)
@@ -31,5 +34,18 @@ public class UIChallengeCell : MonoBehaviour
         {
             _startAction?.Invoke();
         });
+
+        var stageStatus = UserData.Instance.GetStageStatus(_stageID);
+        if (stageStatus == Game.StageStatus.Lock)
+        {
+            var priorStageInfo = DataManager.Instance.GetStageInfoData(stageInfo.priorstageid);
+            lockText.SetText(LocalizeManager.Instance.GetLocalString(priorStageInfo.stagename));
+            lockObject.SetActive(true);
+        }
+        else
+        {
+            lockObject.SetActive(false);
+        }
+        
     }
 }
