@@ -45,6 +45,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public static int flashUidSeed = 1000;
     private float cameraFollowTime;
+    private bool waveSpawnFinished;
 
     protected override void OnSingletonAwake()
     {
@@ -115,6 +116,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void StartWaveStage(int _stageID)
     {
         gameState = GameConfig.GameState.InGame_SpawningHero;
+        waveSpawnFinished = false;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
         UserData.Instance.AcquireSoul.Value = 0;
@@ -149,9 +151,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
-        UserData.Instance.AcquireSoul.Value = 0; 
+        UserData.Instance.AcquireSoul.Value = 0;
         SetIngameUI();
-        var waitTask = ingameUI.StartLoadingUI(); 
+        var waitTask = ingameUI.StartLoadingUI();
         if (currStageObj != null)
         {
             Destroy(currStageObj.gameObject);
@@ -302,7 +304,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
         {
-            StartStage(UserData.Instance.PlayingStage);
+            if (UserData.Instance.IsWaveStage)
+            {
+                StartWaveStage(UserData.Instance.PlayingStage);
+            }
+            else
+            {
+                StartStage(UserData.Instance.PlayingStage);
+            }
         }
         else
         {
@@ -328,7 +337,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Stamina", "OK");
         }
-        
+
     }
 
     public void RemoveStage()
@@ -378,7 +387,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 cameraManager.CancelFollowTarget();
                 cameraFollowTime = 0f;
             }
-        }, ()=> {
+        }, () => {
             if (gameState == GameConfig.GameState.MainUI)
             {
                 mainUI.HideStageInfo();
@@ -414,7 +423,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 {
                     // To Do : ??
                     return;
-                }    
+                }
                 DoEnemyGetDamage(enemyObj, heroObj.transform.position, _attackData.attackerUID, _attackData.damage);
             });
             if (enemyObj.IsEnemyBoss)
@@ -433,7 +442,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             DoAggroToHero(_enemyObj, _attackerUID);
         }
-        
+
         if (isDead)
         {
             KillEnemy(_attackerUID, _enemyObj.UID);
@@ -494,7 +503,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void DoAggroToHero(MEnemyObj _enemyObj, int _attackerUID) 
+    private void DoAggroToHero(MEnemyObj _enemyObj, int _attackerUID)
     {
         var detectedObjs = Physics2D.OverlapCircleAll(_enemyObj.transform.position, 5, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
@@ -583,7 +592,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var enemyObj = enemyDic[_uid];
             var effect = MResourceManager.Instance.GetBuildResource(enemyObj.UnitData.refData.deatheffect).GetComponent<EffectFeedback>();
             var effectPeedback = Lean.Pool.LeanPool.Spawn(effect, enemyObj.transform.position, Quaternion.identity, objRoot);
-            if (!UserData.Instance.IsWaveStage && _uid == enemyBossUID)
+
+            if (UserData.Instance.IsWaveStage && waveSpawnFinished && UserData.Instance.GetAliveEnemyLists().Count == 0 
+                ||!UserData.Instance.IsWaveStage && _uid == enemyBossUID)
             {
                 gameState = GameConfig.GameState.BossDefeatEffect;
                 DisposeCTS();
@@ -592,7 +603,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 cameraManager.SetFollowObject(enemyObj.gameObject, GameConfig.unitTargetDragSpeed, false, Vector2.zero, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
-                { 
+                {
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                     Time.timeScale = 1f;
                     WinStage();
@@ -614,12 +625,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     UserData.Instance.AcquireSoul.Value += enemyObj.UnitData.refUnitGradeData.dropsoulcnt;
                 });
             }
-            
+
             enemyObj.GetKilled();
             enemyObj.gameObject.SetActive(false);
         }
     }
-
     private void RemoveEnemy(int _uid)
     {
         UserData.Instance.RemoveEnmey(_uid);
@@ -749,15 +759,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
             Debug.LogError("currStageObj.enemySpawnPos.Count == 0");
             return;
         }
-        int waveID = 1;
-        
-        while (true)
+
+        var waveInfoList = DataManager.Instance.GetWaveInfoList(UserData.Instance.PlayingStage);
+
+        for (int i = 0; i < waveInfoList.Count; i++)
         {
-            var waveInfo = DataManager.Instance.GetWaveStageData(waveID);
+            var waveInfo = waveInfoList[i];
             await UniTask.WaitForSeconds(waveInfo.time);
             SpawnWaveEnemy(waveInfo);
-            waveID++;
         }
+        waveSpawnFinished = true;
     }
 
     //private void Update()

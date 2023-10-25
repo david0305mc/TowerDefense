@@ -120,11 +120,15 @@ public class MHeroObj : MBaseObj
 
     protected override List<MBaseObj> FindUnitListByArea(int _range, bool isTargetEnemy)
     {
-        var aliveEnemyLists = UserData.Instance.GetAliveEnemyLists();
-        if (aliveEnemyLists.Count() == 1)
+        if (!UserData.Instance.IsWaveStage)
         {
-            MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, true);
-            return new List<MBaseObj>() { targetObj };
+            var aliveEnemyLists = UserData.Instance.GetAliveEnemyLists();
+            if (aliveEnemyLists.Count() == 1)
+            {
+                // Boss
+                MBaseObj targetObj = MGameManager.Instance.GetUnitObj(MGameManager.Instance.EnemyBossUID, true);
+                return new List<MBaseObj>() { targetObj };
+            }
         }
         return base.FindUnitListByArea(_range, isTargetEnemy);
     }

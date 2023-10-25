@@ -179,6 +179,7 @@ public partial class DataManager {
 	}
 	public partial class WaveStage {
 		public int id;
+		public int stageid;
 		public int time;
 		public int unitid;
 		public int unitcnt;

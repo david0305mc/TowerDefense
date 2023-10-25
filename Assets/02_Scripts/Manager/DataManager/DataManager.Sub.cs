@@ -54,5 +54,9 @@ public partial class DataManager
         return StagerewardinfoDic.Values.Where(item => item.stageid == _stageID).ToList();
     }
 
+    public List<WaveStage> GetWaveInfoList(int _stage)
+    {
+        return WavestageArray.Where(item => item.stageid == _stage).OrderByDescending(i=>i.id).ToList();
+    }
 
 }

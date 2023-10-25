@@ -61,7 +61,15 @@ public class WorldMap : MonoBehaviour
         }
         else
         {
-            return stageDic[latestStageID + 1].gameObject;
+            var nextStageStatus = UserData.Instance.GetStageStatus(latestStageID + 1);
+            if (nextStageStatus == Game.StageStatus.Lock)
+            {
+                return stageDic[latestStageID].gameObject;
+            }
+            else
+            {
+                return stageDic[latestStageID + 1].gameObject;
+            }
         }
     }
 }

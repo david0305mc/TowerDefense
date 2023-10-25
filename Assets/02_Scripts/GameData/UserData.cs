@@ -38,11 +38,11 @@ public partial class UserData : Singleton<UserData>
                 return false;
             if (enemyUnit.isDead)
                 return false;
-            if (enemyUnit.tid < Game.GameConfig.StartBuildingID) // Except BuildingUnit
+            if (enemyUnit.tid >= Game.GameConfig.StartBuildingID) // Except BuildingUnit
                 return false;
             if (enemyUnit.uid == MGameManager.Instance.EnemyBossUID)
                 return true;
-            return false;
+            return true;
         }).ToList();
     }
     public ReactiveProperty<bool> IsEnemyItemSelected { get; set; }
@@ -146,11 +146,15 @@ public partial class UserData : Singleton<UserData>
 
     public int GetLatestStage()
     {
-        if (LocalData.StageClearDic.Count == 0)
+        var clearList = LocalData.StageClearDic.Where(data => data.Key != Game.GameConfig.WaveStageID_01
+        && data.Key != Game.GameConfig.WaveStageID_02);
+
+        if (clearList.Count() == 0)
         {
             return 1;
-        } 
-        return LocalData.StageClearDic.Max(i => i.Key);
+        }
+
+        return clearList.Max(m => m.Key);
     }
 
     public StageData GetStageData(int _stageID)
