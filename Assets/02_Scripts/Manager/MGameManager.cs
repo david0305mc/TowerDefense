@@ -433,11 +433,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             enemyDic.Add(data.battleUID, enemyObj);
         }
-        if (enemyBossUID == 0)
-        {
-            Debug.LogError("There is No Enemy Boss");
-            enemyBossUID = enemyDic.First().Value.UID;
-        }
     }
 
     private void DoEnemyGetDamage(MEnemyObj _enemyObj, Vector3 attackerPos, int _attackerUID, int _damage)
@@ -714,10 +709,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private void SpawnDevilCastle()
     {
         UnitBattleData battleHeroData = UserData.Instance.AddDevilCastleData(GameConfig.DevilCasleID);
-        Vector3 spawnPos = currStageObj.heroSpawnPos.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
-
+        
         GameObject unitPrefab = MResourceManager.Instance.GetPrefab(battleHeroData.refData.prefabname);
-        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, spawnPos, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
+        MHeroObj heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, currStageObj.devileCastleSpawnPoint.position, Quaternion.identity, objRoot).GetComponent<MHeroObj>();
         heroObj.InitObject(battleHeroData.battleUID, false, (_attackData) =>
         {
             var enemyObj = GetEnemyObj(_attackData.attackerUID);
