@@ -59,13 +59,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;
         UserData.Instance.SaveLocalData();
     }
-
-    public void AddHero(int _tid, int _count)
-    {
-        UserData.Instance.AddHeroData(_tid, _count);
-        UserData.Instance.SaveLocalData();
-    }
-
     public void RemoveHero(int _heroUID)
     {
         UserData.Instance.RemoveHero(_heroUID);
@@ -84,6 +77,48 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.RemoveBattleParty(_slotIndex);
         MessageDispather.Publish(EMessage.Update_UserData);
         UserData.Instance.SaveLocalData();
+    }
+
+    public void SummonHero(int _count, int _goldCost)
+    {
+        var gachaList = DataManager.Instance.GenerateGachaResultList(_count);
+        foreach (var item in gachaList)
+        {
+            var gachaInfo = DataManager.Instance.GetGachaListData(item);
+            UserData.Instance.AddHeroData(gachaInfo.unitid, _count);
+        }
+        var popup = PopupManager.Instance.Show<GachaResultPopup>();
+        popup.SetData(gachaList);
+        UserData.Instance.LocalData.Gold.Value -= _count;
+        UserData.Instance.SaveLocalData();
+    }
+    public void BuyStamina(int _stamina, int _goldCost)
+    {
+        UserData.Instance.LocalData.Gold.Value -= _goldCost;
+        AddStamina(_stamina, true);
+        UserData.Instance.SaveLocalData();
+    }
+
+    private void AddStamina(int _count, bool _force)
+    {
+        if (UserData.Instance.LocalData.Stamina.Value + _count >= ConfigTable.Instance.StaminaMaxCount)
+        {
+            if (_force)
+            {
+                UserData.Instance.LocalData.Stamina.Value += _count;
+            }
+            else
+            {
+                UserData.Instance.LocalData.Stamina.Value = ConfigTable.Instance.StaminaMaxCount;
+            }
+            
+            UserData.Instance.LocalData.StaminaLastSpawnTime = GameTime.Get();
+        }
+        else
+        {
+            UserData.Instance.LocalData.Stamina.Value += _count;
+            UserData.Instance.LocalData.StaminaLastSpawnTime += (_count * ConfigTable.Instance.StaminaChargeTime);
+        }
     }
 
     public void ConsumeStamina(int _stamina)

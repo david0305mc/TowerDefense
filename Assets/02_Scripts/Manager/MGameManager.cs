@@ -247,17 +247,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     long timeSpan = GameTime.Get() - UserData.Instance.LocalData.StaminaLastSpawnTime;
                     int count = Mathf.FloorToInt(timeSpan / (float)ConfigTable.Instance.StaminaChargeTime);
 
-                    if (UserData.Instance.LocalData.Stamina.Value + count >= ConfigTable.Instance.StaminaMaxCount)
-                    {
-                        UserData.Instance.LocalData.Stamina.Value = ConfigTable.Instance.StaminaMaxCount;
-                        UserData.Instance.LocalData.StaminaLastSpawnTime = GameTime.Get();
-                    }
-                    else
-                    {
-                        UserData.Instance.LocalData.Stamina.Value += count;
-                        UserData.Instance.LocalData.StaminaLastSpawnTime += (count * ConfigTable.Instance.StaminaChargeTime);
-                    }
-
+                    AddStamina(count, false);
                     UserData.Instance.SaveLocalData();
                 }
             }

@@ -5,20 +5,33 @@ using UnityEngine.UI;
 
 public class UIPanelShop : MonoBehaviour
 {
-    [SerializeField] private Button gachaButton;
+    [SerializeField] private Button summonHero_10_Button;
+    [SerializeField] private Button summonHero_3_Button;
+    [SerializeField] private Button buyStamina_10_Button;
+    [SerializeField] private Button buyStamina_50_Button;
+    [SerializeField] private Button buyStamina_100_Button;
     [SerializeField] private ScrollRect scrollRect;
     private void Awake()
     {
-        gachaButton.onClick.AddListener(() =>
+        summonHero_10_Button.onClick.AddListener(() =>
         {
-            var gachaList = DataManager.Instance.GenerateGachaResultList(10);
-            foreach (var item in gachaList)
-            {
-                var gachaInfo = DataManager.Instance.GetGachaListData(item);
-                MGameManager.Instance.AddHero(gachaInfo.unitid, gachaInfo.count);
-            }
-            var popup = PopupManager.Instance.Show<GachaResultPopup>();
-            popup.SetData(gachaList);
+            SummonHero(10, 1000);
+        });
+        summonHero_3_Button.onClick.AddListener(() =>
+        {
+            SummonHero(3, 300);
+        });
+        buyStamina_10_Button.onClick.AddListener(() =>
+        {
+            BuyStamina(10, 10);
+        });
+        buyStamina_50_Button.onClick.AddListener(() =>
+        {
+            BuyStamina(50, 50);
+        });
+        buyStamina_100_Button.onClick.AddListener(() =>
+        {
+            BuyStamina(100, 100);
         });
     }
     private void OnEnable()
@@ -26,5 +39,24 @@ public class UIPanelShop : MonoBehaviour
         scrollRect.verticalNormalizedPosition = 1f;
     }
 
+    private void SummonHero(int _count, int _goldCost)
+    {
+        if (UserData.Instance.LocalData.Gold.Value < _goldCost)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Gold", "OK");
+            return;
+        }
+        MGameManager.Instance.SummonHero(_count, _goldCost);
+    }
+
+    private void BuyStamina(int _count, int _goldCost)
+    {
+        if (UserData.Instance.LocalData.Gold.Value < _goldCost)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Gold", "OK");
+            return;
+        }
+        MGameManager.Instance.BuyStamina(_count, _goldCost);
+    }
 
 }
