@@ -773,15 +773,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     //private void Update()
     //{
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //        Vector3Int gridPosition = currStageObj.tileMap.WorldToCell(mousePosition);
+    //    //if (Input.GetMouseButtonDown(0))
+    //    //    if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>())
+    //    //        soundManager.Play("Tap");
 
-    //        TileBase clickedTile = currStageObj.tileMap.GetTile(gridPosition);
-    //        float walkingSpeed = dataFromTileMap[clickedTile].walkingSpeed;
-    //        Debug.Log($"walkingSpeed {walkingSpeed}");
-    //    }
+    //    //if (Input.GetMouseButtonDown(0))
+    //    //{
+    //    //    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //    //    Vector3Int gridPosition = currStageObj.tileMap.WorldToCell(mousePosition);
+
+    //    //    TileBase clickedTile = currStageObj.tileMap.GetTile(gridPosition);
+    //    //    float walkingSpeed = dataFromTileMap[clickedTile].walkingSpeed;
+    //    //    Debug.Log($"walkingSpeed {walkingSpeed}");
+    //    //}
     //}
 
     public float GetTileWalkingSpeed(Vector3 worldPosition) 
