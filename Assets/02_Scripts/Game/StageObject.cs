@@ -25,14 +25,15 @@ public class StageObject : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (wayPointLists.Count <= 1)
-            return;
         Gizmos.color = Color.red;
-        for (int i = 0; i < wayPointLists.Count - 1; i++)
+        if (wayPointLists.Count > 0)
         {
-            if (wayPointLists[i] == null || wayPointLists[i + 1] == null)
-                continue;
-            Gizmos.DrawLine(wayPointLists[i].transform.position, wayPointLists[i + 1].transform.position);
+            for (int i = 0; i < wayPointLists.Count - 1; i++)
+            {
+                if (wayPointLists[i] == null || wayPointLists[i + 1] == null)
+                    continue;
+                Gizmos.DrawLine(wayPointLists[i].transform.position, wayPointLists[i + 1].transform.position);
+            }
         }
 
         {
