@@ -44,7 +44,7 @@ public class InGameUI : MonoBehaviour
     }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
-        timeLeft = endUnixTime;
+        timeLeft = endUnixTime - GameTime.Get();
         UniTask.Create(async () =>
         {
             while (timeLeft > 0)
@@ -52,8 +52,6 @@ public class InGameUI : MonoBehaviour
                 timeLeft -= Time.deltaTime;
                 await UniTask.Yield(cancellationToken: _cts.Token);
             }
-            tileLeftText.SetText("00:00");
-            MGameManager.Instance.LoseStage();
         });
         UniTask.Create(async () =>
         {
@@ -63,23 +61,10 @@ public class InGameUI : MonoBehaviour
                 tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
                 await UniTask.WaitForSeconds(1f, cancellationToken: _cts.Token);
             }
+            tileLeftText.SetText("00:00");
+            MGameManager.Instance.LoseStage();
         });
         disposable.Clear();
-        // Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
-        //.Select(x => timeLeft -= Time.deltaTime)
-        //.TakeWhile(s => s > 0)
-        //.Subscribe(timeLeft =>
-        //{
-        //    var timeSpan = TimeSpan.FromSeconds(timeLeft);
-        //    tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
-        //},
-        //() =>
-        //{
-        //    tileLeftText.SetText("00:00");
-        //    MGameManager.Instance.LoseStage();
-        //     // To Do : Result
-        //}).AddTo(_cts.Token);
-
         UserData.Instance.AcquireSoul.Subscribe(_soul =>
         {
             acquireSoulText.SetText(_soul.ToString());
