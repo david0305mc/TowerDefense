@@ -27,8 +27,6 @@ public class MainUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI staminaText;
     [SerializeField] private TextMeshProUGUI staminaTimerText;
     [SerializeField] private TextMeshProUGUI goldText;
-    [SerializeField] private Button test01Btn;
-    [SerializeField] private Button WinBtn;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
 
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
@@ -72,13 +70,6 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
-        test01Btn.onClick.AddListener(() =>
-        {
-        });
-
-        WinBtn.onClick.AddListener(() =>
-        {
-        });
         HideStageInfo();
         CheckStaminaTimer().Forget();
     }
