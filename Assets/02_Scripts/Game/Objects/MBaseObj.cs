@@ -490,6 +490,24 @@ public class MBaseObj : MonoBehaviour, Damageable
     }
     public virtual void DoAggro(int _attackerUID)
     {
+        if (agent != null)
+        {
+            if (unitData.refData.unit_type != UNIT_TYPE.ARCHER)
+            {
+                MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_attackerUID, !IsEnemy());
+                NavMeshPath navPath = new NavMeshPath();
+                if (!agent.CalculatePath(GetFixedStuckPos(targetObj.transform.position), navPath))
+                {
+                    return;
+                }
+                else
+                {
+                    if (navPath.status != NavMeshPathStatus.PathComplete)
+                        return;
+                }
+            }
+        }
+
         if (!isFixedTarget)
         {
             SetTargetObject(_attackerUID);
@@ -562,11 +580,60 @@ public class MBaseObj : MonoBehaviour, Damageable
                 {
                     if (isTargetEnemy)
                     {
-                        return baseObj.IsEnemy();
+                        if (baseObj.IsEnemy())
+                        {
+                            if (agent != null)
+                            {
+                                var navPath = new NavMeshPath();
+                                
+                                if (baseObj.UnitData.tid >= Game.GameConfig.StartBuildingID || unitData.refData.unit_type == UNIT_TYPE.ARCHER)
+                                { 
+                                    // 대상이 건물이거나, 내가 원거리이면 패스
+                                    return true;
+                                }
+                                else
+                                {
+                                    if (agent.CalculatePath(GetFixedStuckPos(baseObj.transform.position), navPath))
+                                    {
+                                        return navPath.status == NavMeshPathStatus.PathComplete;
+                                    }
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
                     }
                     else
                     {
-                        return !baseObj.IsEnemy();
+                        if (!baseObj.IsEnemy())
+                        {
+                            if (agent != null)
+                            {
+                                var navPath = new NavMeshPath();
+                                if (baseObj.UnitData.tid >= Game.GameConfig.StartBuildingID || unitData.refData.unit_type == UNIT_TYPE.ARCHER)
+                                {
+                                    // 대상이 건물이거나, 내가 원거리이면 패스
+                                    return true;
+                                }
+                                else
+                                {
+                                    if (agent.CalculatePath(GetFixedStuckPos(baseObj.transform.position), navPath))
+                                    {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                            else 
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
                     }
                 }
                 else
