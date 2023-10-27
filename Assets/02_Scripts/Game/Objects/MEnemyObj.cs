@@ -29,6 +29,13 @@ public class MEnemyObj : MBaseObj
     {
         base.StartFSM();
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawCube(transform.position - new Vector3(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f, 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
+        Gizmos.DrawCube(transform.position - new Vector3(-(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f), 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
+    }
     protected override void Idle_Enter()
     {
         base.Idle_Enter();

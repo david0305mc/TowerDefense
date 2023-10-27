@@ -70,8 +70,10 @@ public class MBaseObj : MonoBehaviour, Damageable
     private CancellationTokenSource knockBackCTS;
 
     public float ColliderRadius => circleCollider.radius;
-    private readonly float attackDistMarge = 0.2f;
+    private readonly float attackDistMarge = 0.3f;
     private float defaultDirection;
+    private Dictionary<int, long> targetBlockDic;
+
     protected virtual void Awake()
     {
         if (agent != null)
@@ -79,6 +81,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             agent.updateRotation = false;
             agent.updateUpAxis = false;
         }
+        targetBlockDic = new Dictionary<int, long>();
         knockBackCTS = new CancellationTokenSource();
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -128,6 +131,38 @@ public class MBaseObj : MonoBehaviour, Damageable
             DoAttackEnd();
         });
         fsm.ChangeState(FSMStates.PrevIdle);
+    }
+
+    public Vector3 GetRandomAttackRange()
+    {
+        float randSizeX = Random.Range(0, MGameManager.Instance.AttackRangeW);
+        float randSizeY = Random.Range(0, ColliderRadius * 2);
+        return new Vector3(randSizeX, randSizeY, 0);
+    }
+
+    public Vector3 GetLeftAttackPivot()
+    {
+        return new Vector2(transform.position.x, transform.position.y) - new Vector2(ColliderRadius, 0);
+    }
+    public Vector3 GetRightAttackPivot()
+    {
+        return new Vector2(transform.position.x, transform.position.y) + new Vector2(ColliderRadius, 0);
+    }
+
+    public Vector3 GetLeftAttackRnage()
+    {
+        float randSizeX = Random.Range(0, MGameManager.Instance.AttackRangeW);
+        //float randSizeY = Random.Range(0, ColliderRadius * 2);
+        float randSizeY = Random.Range(0, MGameManager.Instance.AttackRangeH);
+
+        return transform.position - new Vector3((ColliderRadius + MGameManager.Instance.AttackRangeW), MGameManager.Instance.AttackRangeH * 0.5f, 0) + new Vector3(randSizeX, randSizeY, 0);
+    }
+    public Vector3 GetRightAttackRnage()
+    {
+        float randSizeX = Random.Range(0, MGameManager.Instance.AttackRangeW);
+        float randSizeY = Random.Range(0, MGameManager.Instance.AttackRangeH);
+
+        return transform.position + new Vector3(ColliderRadius, -MGameManager.Instance.AttackRangeH * 0.5f, 0) + new Vector3(randSizeX, randSizeY, 0);
     }
 
     public void SetDeadAction(System.Action _deadAction)
@@ -215,12 +250,17 @@ public class MBaseObj : MonoBehaviour, Damageable
         else
         {
             MBaseObj opponentUnitObj = MGameManager.Instance.GetUnitObj(targetObjUID, !UnitData.IsEnemy);
-            float attackRange = unitData.refUnitGradeData.attackrange * 0.1f;
-            if (attackRange < opponentUnitObj.ColliderRadius + this.ColliderRadius)
+            float range = attackDistMarge;
+            if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
             {
-                attackRange = opponentUnitObj.ColliderRadius + this.ColliderRadius;
+                float attackRange = unitData.refUnitGradeData.attackrange * 0.1f;
+
+                if (attackRange < opponentUnitObj.ColliderRadius + this.ColliderRadius)
+                {
+                    range = opponentUnitObj.ColliderRadius + this.ColliderRadius;
+                }
             }
-            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > attackRange + attackDistMarge)
+            if (Vector2.Distance(transform.position, opponentUnitObj.transform.position + targetoffset) > range)
             {
                 fsm.ChangeState(FSMStates.DashMove);
             }
@@ -301,6 +341,56 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
     }
 
+    private void BlockTarget(int _uid)
+    {
+        if (!targetBlockDic.ContainsKey(_uid))
+        {
+            targetBlockDic.Add(_uid, GameTime.Get());
+            Debug.LogError("Disable Target Approch");
+        }
+        else
+        {
+            Debug.LogError("Duplicate Error");
+        }
+        targetObjUID = -1;
+        isFixedTarget = false;
+    }
+
+    private void UnBlockTarget(int _uid)
+    {
+        targetBlockDic.Remove(_uid);
+    }
+
+    protected bool IsBlockTarget(int _uid)
+    {
+        if (targetBlockDic.TryGetValue(_uid, out long _value))
+        {
+            if (_value + 5 <= GameTime.Get())
+            {
+                targetBlockDic.Remove(_uid);
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected bool CalcPath(Vector3 _target)
+    {
+        NavMeshPath navPath = new NavMeshPath();
+        if (!agent.CalculatePath(GetFixedStuckPos(_target), navPath))
+        {
+            return false;
+        }
+        else
+        {
+            if (navPath.status != NavMeshPathStatus.PathComplete)
+                return false;
+        }
+        return true;
+    }
     protected virtual void DashMove_Enter()
     {
         PlayAni("Walk");
@@ -332,18 +422,29 @@ public class MBaseObj : MonoBehaviour, Damageable
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(targetObjUID, !IsEnemy());
         if (targetObj != null)
         {
-            FlipRenderers(targetObj.transform.position.x < transform.position.x);
-            UpdateAgentSpeed();
-            DoAgentMove(targetObj.transform.position + targetoffset);
-            float attackRange = unitData.refUnitGradeData.attackrange * 0.1f;
-            if (attackRange < targetObj.ColliderRadius + this.ColliderRadius)
+            float range = attackDistMarge;
+            if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
             {
-                attackRange = targetObj.ColliderRadius + this.ColliderRadius;
+                range = unitData.refUnitGradeData.attackrange * 0.1f;
+
+                //if (attackRange < targetObj.ColliderRadius + this.ColliderRadius)
+                //{
+                //    range = targetObj.ColliderRadius + this.ColliderRadius;
+                //}
             }
-            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < attackRange + attackDistMarge)
+
+            if (Vector2.Distance(transform.position, targetObj.transform.position + targetoffset) < range)
             {
                 fsm.ChangeState(FSMStates.Attack);
             }
+            else
+            {
+                FlipRenderers(targetObj.transform.position.x < transform.position.x);
+                UpdateAgentSpeed();
+                DoDashMove(targetObj);
+            }
+            if (!IsEnemy())
+                Debug.DrawLine(transform.position, targetObj.transform.position + targetoffset, Color.blue);
         }
         else
         {
@@ -495,17 +596,13 @@ public class MBaseObj : MonoBehaviour, Damageable
             if (unitData.refData.unit_type != UNIT_TYPE.ARCHER)
             {
                 MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_attackerUID, !IsEnemy());
-                NavMeshPath navPath = new NavMeshPath();
-                if (!agent.CalculatePath(GetFixedStuckPos(targetObj.transform.position), navPath))
+                if (!CalcPath(targetObj.transform.position))
                 {
                     return;
                 }
-                else
-                {
-                    if (navPath.status != NavMeshPathStatus.PathComplete)
-                        return;
-                }
             }
+            
+            UnBlockTarget(_attackerUID);
         }
 
         if (!isFixedTarget)
@@ -522,6 +619,28 @@ public class MBaseObj : MonoBehaviour, Damageable
                 fsm.ChangeState(FSMStates.DashMove);
             }
         }
+    }
+    private void DoDashMove(MBaseObj targetObj)
+    {
+        if (agent == null)
+            return;
+
+        if (!agent.isActiveAndEnabled)
+            return;
+
+        var _pos = targetObj.transform.position + targetoffset;
+        Vector3 fixedPos = GetFixedStuckPos(_pos);
+        NavMeshPath path = new NavMeshPath();
+        if (agent.CalculatePath(fixedPos, path))
+        {
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                agent.SetPath(path);
+                return;
+            }
+        }
+
+        BlockTarget(targetObj.UID);
     }
     protected void DoAgentMove(Vector3 _pos)
     {
@@ -578,6 +697,9 @@ public class MBaseObj : MonoBehaviour, Damageable
                 MBaseObj baseObj = item.GetComponent<MBaseObj>();
                 if (baseObj != null)
                 {
+                    if (IsBlockTarget(baseObj.UID))
+                        return false;
+
                     if (isTargetEnemy)
                     {
                         if (baseObj.IsEnemy())
@@ -770,11 +892,14 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected virtual bool SetTargetObject(int _uid)
     {
-        if (targetObjUID == _uid)
+        if (targetObjUID == _uid && _uid != -1)
         {
             return false;
         }
         MBaseObj targetObj = MGameManager.Instance.GetUnitObj(_uid, !IsEnemy());
+
+        //transform.position - new Vector3(-(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f), 0, 0) + new Vector3(randSizeX, randSizeY, 0);
+
         float randX = Random.Range(0f, 0.31f);
         float randY = Random.Range(-0.1f, 0.1f);
 
@@ -783,9 +908,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         Vector3 pos02 = new Vector3(-randX, randY, 0);
         //pos02 = Vector3.zero;
 
-        var samplePos01 = pos01 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0);
-        var samplePos02 = pos02 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0);
-
         //var samplePos01 = SamplePosition(pos01 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0));
         //var samplePos02 = SamplePosition(pos02 + new Vector3(targetObj.transform.position.x, targetObj.transform.position.y, 0));
         //if (samplePos01  == Game.GameConfig.PositiveInfinityVector && samplePos02 == Game.GameConfig.PositiveInfinityVector)
@@ -793,14 +915,16 @@ public class MBaseObj : MonoBehaviour, Damageable
         //    Debug.Log("not available TargetPos");
         //    return false;
         //}
-
-        if (Vector2.Distance(samplePos01, transform.position) < Vector2.Distance(samplePos02, transform.position))
+        
+        if ((Vector2.Distance(transform.position, targetObj.GetLeftAttackPivot()) < Vector2.Distance(transform.position, targetObj.GetRightAttackPivot())))
         {
-            targetoffset = pos01;
+            var samplePos01 = targetObj.GetLeftAttackRnage();
+            targetoffset = samplePos01 - targetObj.transform.position;
         }
         else
         {
-            targetoffset = pos02;
+            var samplePos02 = targetObj.GetRightAttackRnage();
+            targetoffset = samplePos02 - targetObj.transform.position;
         }
         targetObj_Test = targetObj.gameObject;
         targetObjUID = _uid;
