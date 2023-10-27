@@ -89,7 +89,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         var popup = PopupManager.Instance.Show<GachaResultPopup>();
         popup.SetData(gachaList);
-        UserData.Instance.LocalData.Gold.Value -= _count;
+        UserData.Instance.LocalData.Gold.Value -= _goldCost;
         UserData.Instance.SaveLocalData();
     }
     public void BuyStamina(int _stamina, int _goldCost)
