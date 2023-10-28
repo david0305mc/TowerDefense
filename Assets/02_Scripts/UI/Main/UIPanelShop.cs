@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIPanelShop : MonoBehaviour
 {
     [SerializeField] private Button summonHero_10_Button;
-    [SerializeField] private Button summonHero_3_Button;
+    [SerializeField] private Button summonHero_1_Button;
     [SerializeField] private Button buyStamina_10_Button;
     [SerializeField] private Button buyStamina_50_Button;
     [SerializeField] private Button buyStamina_100_Button;
@@ -17,9 +17,9 @@ public class UIPanelShop : MonoBehaviour
         {
             SummonHero(10, 1000);
         });
-        summonHero_3_Button.onClick.AddListener(() =>
+        summonHero_1_Button.onClick.AddListener(() =>
         {
-            SummonHero(3, 300);
+            SummonHero(1, 100);
         });
         buyStamina_10_Button.onClick.AddListener(() =>
         {

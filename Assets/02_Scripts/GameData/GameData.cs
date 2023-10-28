@@ -26,7 +26,7 @@ public class LocalSaveData
         Soul = new ReactiveProperty<long>(0);
         Stamina = new ReactiveProperty<long>(ConfigTable.Instance.StageStartCost);
         Exp = new ReactiveProperty<long>(0);
-        Gold = new ReactiveProperty<long>(1000);
+        Gold = new ReactiveProperty<long>(100);
         HeroDataDic = new SerializableDictionary<int, UnitData>();
         BattlePartyDic = new SerializableDictionary<int, int>();
         Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
