@@ -24,6 +24,13 @@ public class TutorialManager : Singleton<TutorialManager>
                 }
                 break;
             case TUTO_TYPE.DIALOUGE:
+                {
+                    var popup = PopupManager.Instance.Show<DialoguePopup>();
+                    popup.SetData(tutoInfo.id, () =>
+                    {
+                        PlayEnd(tutoInfo.tutotype);
+                    });
+                }
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
                 break;
@@ -49,8 +56,17 @@ public class TutorialManager : Singleton<TutorialManager>
                 }
                 break;
             case TUTO_TYPE.DIALOUGE:
+                {
+                    if (nextTutoInfo.tutotype != TUTO_TYPE.DIALOUGE)
+                    {
+                        PopupManager.Instance.Hide<DialoguePopup>();
+                    }
+                }
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
+                { 
+                
+                }
                 break;
             case TUTO_TYPE.NEEDTOUCH:
                 break;
