@@ -22,6 +22,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private SoulRewardObj soulRewardPrefab;
     [SerializeField] private GoldRewardObj goldRewardPrefab;
     [SerializeField] private GameObject cameraFollowObject;
+    [SerializeField] private TutorialTouchObject tutorialTouchObj;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -857,6 +858,47 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             _endAction?.Invoke();
         });
+    }
+
+    public void SetTutorialTouchWait(int _tutoID, UnityEngine.Events.UnityAction _endAction)
+    {
+        UnityEngine.Events.UnityAction endAction;
+
+        switch (_tutoID)
+        {
+            case 7:  // StageSlot01
+                {
+                    endAction = () =>
+                    {
+                        mainUI.ShowStageInfo(1, null);
+                        worldMap.SelectStage(1);
+                        _endAction?.Invoke();
+                    };
+                }
+                break;
+
+            case 8:
+                {
+                    endAction = () =>
+                    {
+                        tutorialTouchObj.SetActive(false);
+                        StartStage(1);
+                        _endAction?.Invoke();
+                    };
+                }
+                break;
+            default:
+                endAction = _endAction;
+                break;
+        }
+
+        tutorialTouchObj.SetActive(true);
+        tutorialTouchObj.SetData(_tutoID, endAction);
+    }
+
+    public void HideTutorialTouchWait()
+    {
+        tutorialTouchObj.SetActive(false);
     }
 
     private void OnDestroy()

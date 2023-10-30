@@ -12,6 +12,9 @@ public class TutorialManager : Singleton<TutorialManager>
     public void Play()
     {
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(UserData.Instance.LocalData.CurrTutorialID);
+        if (tutoInfo == null)
+            return;
+
         switch (tutoInfo.tutotype)
         {
             case TUTO_TYPE.CUTSCENE:
@@ -19,7 +22,9 @@ public class TutorialManager : Singleton<TutorialManager>
                     var popup = PopupManager.Instance.Show<CutScenePopup>();
                     popup.SetData(int.Parse(tutoInfo.value1), () =>
                     {
-                        PlayEnd(tutoInfo.tutotype);
+                        PlayEnd(tutoInfo.id, ()=> {
+                            popup.Hide();
+                        });
                     });
                 }
                 break;
@@ -28,55 +33,84 @@ public class TutorialManager : Singleton<TutorialManager>
                     var popup = PopupManager.Instance.Show<DialoguePopup>();
                     popup.SetData(tutoInfo.id, () =>
                     {
-                        PlayEnd(tutoInfo.tutotype);
+                        PlayEnd(tutoInfo.id, ()=> {
+                            popup.Hide();
+                        });
                     });
                 }
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
                 {
                     MGameManager.Instance.SetTutorialCamera(int.Parse(tutoInfo.value1), () => {
-                        PlayEnd(tutoInfo.tutotype);
+                        PlayEnd(tutoInfo.id, null);
                     });
                 }
                 break;
             case TUTO_TYPE.NEEDTOUCH:
+                {
+                    MGameManager.Instance.SetTutorialTouchWait(tutoInfo.id, ()=> {
+                        PlayEnd(tutoInfo.id, null);
+                    });
+                }
                 break;
         }
     }
 
-    public void PlayEnd(TUTO_TYPE _prevTutoType)
+    public void PlayEnd(int _prevTutoID, System.Action _hidePrevTuto)
     {
+        var prevTutoInfo = DataManager.Instance.GetTutorialInfoData(_prevTutoID);
         UserData.Instance.LocalData.CurrTutorialID++;
         UserData.Instance.SaveLocalData();
-
         var nextTutoInfo = DataManager.Instance.GetTutorialInfoData(UserData.Instance.LocalData.CurrTutorialID);
-        switch (_prevTutoType)
+        if (nextTutoInfo == null)
+        {
+            _hidePrevTuto?.Invoke();
+            return;
+        }
+
+        switch (prevTutoInfo.tutotype)
         {
             case TUTO_TYPE.CUTSCENE:
                 {
                     if (nextTutoInfo.tutotype != TUTO_TYPE.CUTSCENE)
                     {
-                        PopupManager.Instance.Hide<CutScenePopup>();
+                        _hidePrevTuto?.Invoke();
                     }
+                    Play();
                 }
                 break;
             case TUTO_TYPE.DIALOUGE:
                 {
                     if (nextTutoInfo.tutotype != TUTO_TYPE.DIALOUGE)
                     {
-                        PopupManager.Instance.Hide<DialoguePopup>();
+                        _hidePrevTuto?.Invoke();
                     }
+                    Play();
                 }
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
-                { 
-                
+                {
+                    Play();
                 }
                 break;
             case TUTO_TYPE.NEEDTOUCH:
+                {
+                    MGameManager.Instance.HideTutorialTouchWait();
+                    switch (prevTutoInfo.id)
+                    {
+                        case 7:
+                            Play();
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
         }
-        Play();
     }
 
 }
