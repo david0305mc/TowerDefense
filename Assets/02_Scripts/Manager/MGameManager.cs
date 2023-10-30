@@ -404,7 +404,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
         mainUI.InitTabGroup();
         SetWorldUI();
         TutorialManager.Instance.Play();
-
     }
 
     private void Start()
@@ -849,6 +848,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 Lean.Pool.LeanPool.Despawn(effect);
             });
         }
+    }
+
+    public void SetTutorialCamera(int _stageID, System.Action _endAction)
+    {
+        WorldMapStageSlot stageSlot = worldMap.GetStageSlotObj(_stageID);
+        MCameraManager.Instance.SetFollowObject(stageSlot.CameraPivot, Game.GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
+        {
+            _endAction?.Invoke();
+        });
     }
 
     private void OnDestroy()

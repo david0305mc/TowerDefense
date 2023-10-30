@@ -72,4 +72,9 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
+
+    public WorldMapStageSlot GetStageSlotObj(int _stageID)
+    {
+        return stageDic[_stageID];
+    }
 }

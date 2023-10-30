@@ -17,9 +17,9 @@ public class TutorialManager : Singleton<TutorialManager>
             case TUTO_TYPE.CUTSCENE:
                 {
                     var popup = PopupManager.Instance.Show<CutScenePopup>();
-                    popup.SetData(int.Parse(tutoInfo.value1), () => 
-                    { 
-                        PlayEnd(tutoInfo.tutotype); 
+                    popup.SetData(int.Parse(tutoInfo.value1), () =>
+                    {
+                        PlayEnd(tutoInfo.tutotype);
                     });
                 }
                 break;
@@ -33,6 +33,11 @@ public class TutorialManager : Singleton<TutorialManager>
                 }
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
+                {
+                    MGameManager.Instance.SetTutorialCamera(int.Parse(tutoInfo.value1), () => {
+                        PlayEnd(tutoInfo.tutotype);
+                    });
+                }
                 break;
             case TUTO_TYPE.NEEDTOUCH:
                 break;
