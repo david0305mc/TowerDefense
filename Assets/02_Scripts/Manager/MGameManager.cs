@@ -403,6 +403,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.InitWorld();
         mainUI.InitTabGroup();
         SetWorldUI();
+        TutorialManager.Instance.Play();
+
     }
 
     private void Start()

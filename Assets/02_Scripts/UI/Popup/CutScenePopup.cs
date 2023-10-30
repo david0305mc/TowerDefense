@@ -1,18 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CutScenePopup : MonoBehaviour
+public class CutScenePopup : PopupBase
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject curScene01;
+    [SerializeField] private GameObject curScene02;
+    [SerializeField] private GameObject curScene03;
+    [SerializeField] private GameObject curScene04;
+    [SerializeField] private Button button;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void InitPopup(Action _hideAction)
     {
-        
+        base.InitPopup(_hideAction);
     }
+
+    public void SetData(int _cutSceneID, UnityEngine.Events.UnityAction _action)
+    {
+        curScene01.SetActive(_cutSceneID >= 1);
+        curScene02.SetActive(_cutSceneID >= 2);
+        curScene03.SetActive(_cutSceneID >= 3);
+        curScene04.SetActive(_cutSceneID >= 4);
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(_action);
+    }
+
 }
+

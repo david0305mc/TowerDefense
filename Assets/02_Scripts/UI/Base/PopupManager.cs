@@ -32,6 +32,15 @@ public class PopupManager : SingletonMono<PopupManager>
         return uiPopup;
     }
 
+    public void Hide<T>() where T : PopupBase    
+    {
+        var prefabName = typeof(T).Name;
+        if(popupDic.TryGetValue(prefabName, out PopupBase popup))
+        {
+            popup.Hide();
+        }
+    }
+
     private PopupBase MakePopup(string prefabName)
     {
         if (popupDic.TryGetValue(prefabName, out var popup))
