@@ -44,3 +44,10 @@ public enum LANGUAGE_TYPE
 	DE                           = 7,        	// 
 	RU                           = 8,        	// 
 }
+public enum TUTO_TYPE 
+{ 
+	CUTSCENE                     = 0,        	// 
+	DIALOUGE                     = 1,        	// 
+	CAMERASTAGEMOVE              = 2,        	// 
+	NEEDTOUCH                    = 3,        	// 
+}

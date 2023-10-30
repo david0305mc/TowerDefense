@@ -199,4 +199,44 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class TutorialInfo {
+		public int id;
+		public TUTO_TYPE tutotype;
+		public string value1;
+		public int delay;
+		public string memo;
+	};
+	public TutorialInfo[] TutorialinfoArray { get; private set; }
+	public Dictionary<int, TutorialInfo> TutorialinfoDic { get; private set; }
+	public void BindTutorialInfoData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(TutorialinfoArray)).SetValue(this, deserializaedData, null);
+		TutorialinfoDic = TutorialinfoArray.ToDictionary(i => i.id);
+	}
+	public TutorialInfo GetTutorialInfoData(int _id){
+		if (TutorialinfoDic.TryGetValue(_id, out TutorialInfo value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
+	public partial class Dialogue {
+		public int id;
+		public string localizekey;
+		public int anim;
+	};
+	public Dialogue[] DialogueArray { get; private set; }
+	public Dictionary<int, Dialogue> DialogueDic { get; private set; }
+	public void BindDialogueData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(DialogueArray)).SetValue(this, deserializaedData, null);
+		DialogueDic = DialogueArray.ToDictionary(i => i.id);
+	}
+	public Dialogue GetDialogueData(int _id){
+		if (DialogueDic.TryGetValue(_id, out Dialogue value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

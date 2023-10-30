@@ -10,6 +10,8 @@ public class ConfigTable : Singleton<ConfigTable>{
 	public int StageStartCost;
 	public int StaminaChargeTime;
 	public int StaminaMaxCount;
+	public int StaminaDefaultCount;
+	public int GoldDefault;
 	public void LoadConfig(Dictionary<string, Dictionary<string, object>> rowList)
 	{
 		foreach (var rowItem in rowList)
