@@ -24,9 +24,9 @@ public class LocalSaveData
         StaminaLastSpawnTime = GameTime.Get();
         StageClearDic = new SerializableDictionary<int, StageData>();
         Soul = new ReactiveProperty<long>(0);
-        Stamina = new ReactiveProperty<long>(ConfigTable.Instance.StageStartCost);
+        Stamina = new ReactiveProperty<long>(ConfigTable.Instance.StaminaDefaultCount);
         Exp = new ReactiveProperty<long>(0);
-        Gold = new ReactiveProperty<long>(100);
+        Gold = new ReactiveProperty<long>(ConfigTable.Instance.GoldDefault);
         HeroDataDic = new SerializableDictionary<int, UnitData>();
         BattlePartyDic = new SerializableDictionary<int, int>();
         Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>

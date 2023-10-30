@@ -95,7 +95,8 @@ public partial class UserData : Singleton<UserData>
 
     private void InitNewGameData()
     {
-
+        var heroData = AddHeroData(ConfigTable.Instance.DefaultUnit01, 1);
+        AddBattleParty(heroData.uid);
     }
 
     public int FindEmptySlot()
