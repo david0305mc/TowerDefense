@@ -10,7 +10,7 @@ using System;
 
 public class MainUI : MonoBehaviour
 {
-    enum BottomTab
+    public enum BottomTab
     {
         Shop,
         Arrangement,
@@ -167,7 +167,7 @@ public class MainUI : MonoBehaviour
                 break;
         }
     }
-    private void SelectTab(BottomTab _tab)
+    public void SelectTab(BottomTab _tab)
     {
         tabGruop.SelectTab((int)_tab);
     }

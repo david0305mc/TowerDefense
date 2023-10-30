@@ -239,6 +239,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
         cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
         FollowToCurrStage();
         InitWorldGameSpeed();
+        if (UserData.Instance.LocalData.CurrTutorialID == 10)
+        {
+            TutorialManager.Instance.Play();
+        }
     }
 
     private async UniTask CheckStaminaSpawn()
@@ -884,6 +888,30 @@ public partial class MGameManager : SingletonMono<MGameManager>
                         tutorialTouchObj.SetActive(false);
                         StartStage(1);
                         _endAction?.Invoke();
+                    };
+                }
+                break;
+            case 9:
+                {
+                    endAction = () =>
+                    {
+                        tutorialTouchObj.SetActive(false);
+                        
+                        _endAction?.Invoke();
+                    };
+                }
+                break;
+
+            case 11:
+                {
+                    endAction = () =>
+                    {
+                        mainUI.SelectTab(MainUI.BottomTab.Shop);
+                        _endAction?.Invoke();
+
+                        // 12
+
+
                     };
                 }
                 break;

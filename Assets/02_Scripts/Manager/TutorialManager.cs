@@ -9,7 +9,7 @@ public class TutorialManager : Singleton<TutorialManager>
         base.init();
     }
 
-    public void Play()
+    public void Play(System.Action _endAction = null)
     {
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(UserData.Instance.LocalData.CurrTutorialID);
         if (tutoInfo == null)
@@ -50,6 +50,7 @@ public class TutorialManager : Singleton<TutorialManager>
                 {
                     MGameManager.Instance.SetTutorialTouchWait(tutoInfo.id, ()=> {
                         PlayEnd(tutoInfo.id, null);
+                        _endAction?.Invoke();
                     });
                 }
                 break;
@@ -104,6 +105,9 @@ public class TutorialManager : Singleton<TutorialManager>
                         case 8:
                             break;
                         case 9:
+                            break;
+                        case 11:
+
                             break;
                         default:
                             break;
