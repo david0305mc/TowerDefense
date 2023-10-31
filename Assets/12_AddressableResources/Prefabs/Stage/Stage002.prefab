@@ -98746,12 +98746,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyObjRoot: {fileID: 3741245573472755629}
   heroSpawnPos: {fileID: 3741245573332395475}
+  enemySpawnPos: []
   tileMap: {fileID: 3741245572154164715}
   obstacleTileMap: {fileID: 3741245572603433813}
   treeTileMap: {fileID: 0}
   wayPointLists:
   - {fileID: 3741245572852651954}
   - {fileID: 2699227727189398323}
+  devileCastleSpawnPoint: {fileID: 0}
+  FollowOffset: {x: 2, y: 3, z: 0}
+  DefaultZoomSize: 9
+  ZoomMin: 7
+  ZoomMax: 13
+  SizeMinX: -10
+  SizeMaxX: 25
+  SizeMinY: -10
+  SizeMaxY: 25
 --- !u!1 &3741245573332395476
 GameObject:
   m_ObjectHideFlags: 0
