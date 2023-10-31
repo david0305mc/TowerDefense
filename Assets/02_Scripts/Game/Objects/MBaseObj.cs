@@ -185,7 +185,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         hpBar.value = 1f;
         if (swordAttackChecker != null)
         {
-            swordAttackChecker.SetAttackAction(_isEnemy, 2, collision =>
+            swordAttackChecker.SetAttackAction(_isEnemy, unitData.refUnitGradeData.multiattackcount, collision =>
             {
                 if (fsm.State != FSMStates.Attack)
                 {
