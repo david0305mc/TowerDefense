@@ -4865,6 +4865,7 @@ GameObject:
   - component: {fileID: 8142796649528087604}
   - component: {fileID: 8142796649528087605}
   - component: {fileID: 6963223909996732657}
+  - component: {fileID: 7283266309771571514}
   m_Layer: 5
   m_Name: Equip
   m_TagString: Untagged
@@ -4975,6 +4976,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7283266309771571514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8142796649528087607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3ae443dce7ce2458e74e3dc13ae58f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TutorialID: 15
 --- !u!1 &8142796649570624231
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,7 +5562,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.15
+  m_fontSize: 31.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

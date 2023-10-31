@@ -21,39 +21,41 @@ public class UIPanelUnitSelect : MonoBehaviour
     {
         InitUserListScroll();
         InitBattlePartyUI();
+
     }
 
     private void InitUserListScroll()
     {
         heroDataList = UserData.Instance.LocalData.HeroDataDic.Values.ToList();
-        UIUnitData[] itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(heroDataList[i].uid)).ToArray();
+        UIUnitData[] itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(i, heroDataList[i].uid)).ToArray();
         gridView.UpdateContents(itemData);
         gridView.OnCellClicked(index =>
         {
-            UnitData heroData = heroDataList[index];
-            var popup = PopupManager.Instance.Show<UnitInfoPopup>();
-            popup.SetData(heroData.uid, () =>
-            {
-                if (UserData.Instance.FindEmptySlot() == -1)
-                {
-                    PopupManager.Instance.ShowSystemOneBtnPopup("No Empty Slot", "OK");
-                    return;
-                }
+            ShowUnitInfoPopup(index);
+        });
+    }
 
-                int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
-                if (partySlotIndex == -1)
-                {
-                    int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
-                    //battlePartyList[slotIndex].AddHero(heroData.uid);
-                    //InitUserListScroll();
-                }
-                else
-                {
-                    MGameManager.Instance.RemoveBattleParty(partySlotIndex);
-                    //battlePartyList[partySlotIndex].RemoveHero();
-                    //InitUserListScroll();
-                }
-            });
+    public void ShowUnitInfoPopup(int _index)
+    {
+        UnitData heroData = heroDataList[_index];
+        var popup = PopupManager.Instance.Show<UnitInfoPopup>();
+        popup.SetData(heroData.uid, () =>
+        {
+            if (UserData.Instance.FindEmptySlot() == -1)
+            {
+                PopupManager.Instance.ShowSystemOneBtnPopup("No Empty Slot", "OK");
+                return;
+            }
+
+            int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
+            if (partySlotIndex == -1)
+            {
+                int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
+            }
+            else
+            {
+                MGameManager.Instance.RemoveBattleParty(partySlotIndex);
+            }
         });
     }
     private void InitBattlePartyUI()

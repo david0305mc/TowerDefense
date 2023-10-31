@@ -138,6 +138,11 @@ public class MainUI : MonoBehaviour
     {
         if (tabGruop.CurrTabIndex == (int)BottomTab.Arrangement)
         {
+
+
+
+
+            // To Do : Check
             HideArrangementUI();
         }
 
@@ -191,5 +196,10 @@ public class MainUI : MonoBehaviour
     public void OnClicEventBtn()
     {
 
+    }
+
+    public void ShowUnitInfo(int _index)
+    {
+        unitSelectPanel.ShowUnitInfoPopup(_index);
     }
 }

@@ -43,7 +43,6 @@ public class UnitInfoPopup : PopupBase
         euipToggleBtn.onClick.AddListener(() =>
         {
             equipAction?.Invoke();
-            UpdateUI();
             Hide();
         });
         upgradeBtn.onClick.AddListener(() =>
@@ -58,7 +57,15 @@ public class UnitInfoPopup : PopupBase
         unitData = UserData.Instance.GetHeroData(_heroUID);
         equipAction = _equipAction;
         heroNameText.SetText(unitData.refData.unitname);
-        UpdateUI();    
+        UpdateUI();
+
+        if (UserData.Instance.LocalData.CurrTutorialID == 15)
+        {
+            MGameManager.Instance.PlayNextTutorial(() => {
+                equipAction?.Invoke();
+                Hide();
+            });
+        }
     }
 
     private void UpdateUI()

@@ -7,9 +7,10 @@ using UnityEngine.UI;
 
 public class UIUnitData  : GridItemData
 {
-    public UIUnitData(int index) : base(index)
-    { 
-    
+    public int uid;
+    public UIUnitData(int _index, int _uid) : base(_index)
+    {
+        uid = _uid;
     }
 }
 
@@ -32,12 +33,23 @@ public class UIUnitCell : UIGridCell
 
     }
 
-    public override void UpdateContent(GridItemData itemData)
+    public override void UpdateContent(GridItemData _itemData)
     {
+        UIUnitData itemData = (UIUnitData)_itemData;
         var selected = Context.SelectedIndex == Index;
-        var heroData = UserData.Instance.GetHeroData(itemData.id);
+        var heroData = UserData.Instance.GetHeroData(itemData.uid);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
         iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
         unitGradeInfo.SetData(heroData.grade, heroData.IsMaxGrade, heroData.count, heroData.refUnitGradeData.upgradepiececnt);
+
+        if (UserData.Instance.LocalData.CurrTutorialID == 14)
+        {
+            if (itemData.id == 1)
+            {
+                TutorialTouchEvent obj = gameObject.AddComponent<TutorialTouchEvent>();
+                obj.TutorialID = 14;
+            }
+            MGameManager.Instance.PlayNextTutorial();
+        }
     }
 }

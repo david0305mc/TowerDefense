@@ -121,7 +121,7 @@ public class GameResultPopup : PopupBase
 
         if (UserData.Instance.LocalData.CurrTutorialID == 9)
         {
-            TutorialManager.Instance.Play(()=> {
+            MGameManager.Instance.PlayNextTutorial(()=> {
                 Hide();
                 _homeAction?.Invoke();
             });

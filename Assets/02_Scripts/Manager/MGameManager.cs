@@ -241,7 +241,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         InitWorldGameSpeed();
         if (UserData.Instance.LocalData.CurrTutorialID == 10)
         {
-            TutorialManager.Instance.Play();
+            PlayNextTutorial();
         }
     }
 
@@ -408,7 +408,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.InitWorld();
         mainUI.InitTabGroup();
         SetWorldUI();
-        TutorialManager.Instance.Play();
+        PlayNextTutorial();
     }
 
     private void Start()
@@ -855,80 +855,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    public void SetTutorialCamera(int _stageID, System.Action _endAction)
-    {
-        WorldMapStageSlot stageSlot = worldMap.GetStageSlotObj(_stageID);
-        MCameraManager.Instance.SetFollowObject(stageSlot.CameraPivot, Game.GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
-        {
-            _endAction?.Invoke();
-        });
-    }
-
-    public void SetTutorialTouchWait(int _tutoID, UnityEngine.Events.UnityAction _endAction)
-    {
-        UnityEngine.Events.UnityAction endAction;
-
-        switch (_tutoID)
-        {
-            case 7:  // StageSlot01
-                {
-                    endAction = () =>
-                    {
-                        mainUI.ShowStageInfo(1, null);
-                        worldMap.SelectStage(1);
-                        _endAction?.Invoke();
-                    };
-                }
-                break;
-
-            case 8:
-                {
-                    endAction = () =>
-                    {
-                        tutorialTouchObj.SetActive(false);
-                        StartStage(1);
-                        _endAction?.Invoke();
-                    };
-                }
-                break;
-            case 9:
-                {
-                    endAction = () =>
-                    {
-                        tutorialTouchObj.SetActive(false);
-                        
-                        _endAction?.Invoke();
-                    };
-                }
-                break;
-
-            case 11:
-                {
-                    endAction = () =>
-                    {
-                        mainUI.SelectTab(MainUI.BottomTab.Shop);
-                        _endAction?.Invoke();
-
-                        // 12
-
-
-                    };
-                }
-                break;
-            default:
-                endAction = _endAction;
-                break;
-        }
-
-        tutorialTouchObj.SetActive(true);
-        tutorialTouchObj.SetData(_tutoID, endAction);
-    }
-
-    public void HideTutorialTouchWait()
-    {
-        tutorialTouchObj.SetActive(false);
-    }
-
+  
     private void OnDestroy()
     {
         spawnHeroCts?.Cancel();

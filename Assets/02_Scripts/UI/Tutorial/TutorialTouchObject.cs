@@ -16,7 +16,6 @@ public class TutorialTouchObject : MonoBehaviour
         {
             arrowObj.transform.position = tutoEventButton.transform.position;
         }
-        var tutoInfo = DataManager.Instance.GetTutorialInfoData(_tutoID);
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(_action);
     }

@@ -79,7 +79,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.SaveLocalData();
     }
 
-    public void SummonHero(int _count, int _goldCost)
+    public void SummonHero(int _count, int _goldCost, System.Action _hideAction = null)
     {
         var gachaList = DataManager.Instance.GenerateGachaResultList(_count);
         foreach (var item in gachaList)
@@ -87,7 +87,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var gachaInfo = DataManager.Instance.GetGachaListData(item);
             UserData.Instance.AddHeroData(gachaInfo.unitid, _count);
         }
-        var popup = PopupManager.Instance.Show<GachaResultPopup>();
+        var popup = PopupManager.Instance.Show<GachaResultPopup>(_hideAction);
         popup.SetData(gachaList);
         UserData.Instance.LocalData.Gold.Value -= _goldCost;
         UserData.Instance.SaveLocalData();
