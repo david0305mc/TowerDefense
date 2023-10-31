@@ -62,6 +62,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         }
         CheckStaminaSpawn().Forget();
+        HideTutorialTouchWait();
     }
 
     public static int GenerateUID()

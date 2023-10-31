@@ -31,6 +31,8 @@ namespace Game
         public static readonly int WaveStageID_02 = 1000;
         public static readonly int DevilCasleID = 20001;
 
+        public static readonly int LastTutorial = 19;
+
         public static readonly string DefaultLayerName = "Default";
         public static readonly string ForegroundLayerName = "Foreground";
         public static readonly string UILayerName = "UI";

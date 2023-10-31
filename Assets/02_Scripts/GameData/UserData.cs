@@ -281,6 +281,13 @@ public partial class UserData : Singleton<UserData>
             //localData = Utill.EncryptXOR(localData);
             LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
             LocalData.UpdateRefData();
+
+            if (LocalData.CurrTutorialID < Game.GameConfig.LastTutorial)
+            {
+                // Restart 
+                LocalData = new LocalSaveData();
+                InitNewGameData();
+            }
         }
         else
         {

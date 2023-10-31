@@ -14,7 +14,7 @@ public class TutorialTouchObject : MonoBehaviour
         var tutoEventButton = tutoButtons.FirstOrDefault(item => item.TutorialID == _tutoID);
         if (tutoEventButton != null)
         {
-            arrowObj.transform.position = tutoEventButton.transform.position;
+            arrowObj.transform.position = tutoEventButton.GetOffsetPosition();
         }
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(_action);

@@ -72,6 +72,7 @@ public class MainUI : MonoBehaviour
     {
         HideStageInfo();
         CheckStaminaTimer().Forget();
+        
     }
 
     private async UniTask CheckStaminaTimer()

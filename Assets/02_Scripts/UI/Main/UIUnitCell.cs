@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using FancyScrollView;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class UIUnitData  : GridItemData
 {
@@ -46,10 +47,14 @@ public class UIUnitCell : UIGridCell
         {
             if (itemData.id == 1)
             {
-                TutorialTouchEvent obj = gameObject.AddComponent<TutorialTouchEvent>();
-                obj.TutorialID = 14;
+                UniTask.Create(async () =>
+                {
+                    await UniTask.Yield();
+                    TutorialTouchEvent obj = iconImage.AddComponent<TutorialTouchEvent>();
+                    obj.TutorialID = 14;
+                    MGameManager.Instance.PlayNextTutorial();
+                });
             }
-            MGameManager.Instance.PlayNextTutorial();
         }
     }
 }
