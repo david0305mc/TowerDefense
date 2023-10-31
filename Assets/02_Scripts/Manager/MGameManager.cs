@@ -663,7 +663,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         var projectileInfo = DataManager.Instance.GetProjectileInfoData(attackerObj.UnitData.refUnitGradeData.projectileid);
         ProjectileBase bullet = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetProjectile(projectileInfo.prefabname), attackerObj.FirePos, Quaternion.identity, objRoot);
-        bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.attackDamage, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
+        bullet.Shoot(new AttackData(attackerObj.UID, attackerObj.UnitData.tid, attackerObj.UnitData.attackDamage, attackerObj.UnitData.grade, !attackerObj.UnitData.IsEnemy), GetUnitObj(_targetUID, !attackerObj.UnitData.IsEnemy), projectileInfo.speed);
     }
 
     private void SpawnWaveEnemy(DataManager.WaveStage _waveStageInfo)
@@ -809,24 +809,33 @@ public partial class MGameManager : SingletonMono<MGameManager>
     }
     public void DoAreaAttack(AttackData _attackData, Vector2 _pos)
     {
-        var unitGradeInfo = DataManager.Instance.GetUnitGrade(_attackData.attackerTID, 1);
+        var unitGradeInfo = DataManager.Instance.GetUnitGrade(_attackData.attackerTID, _attackData.grade);
 
         if (unitGradeInfo.splashrange == 0)
         {
             return;
         }
+        //
 
+        int count = 0;
         var detectedObjs = Physics2D.OverlapCircleAll(_pos, unitGradeInfo.splashrange, Game.GameConfig.UnitLayerMask);
         if (detectedObjs.Length > 0)
         {
             foreach (var obj in detectedObjs)
             {
+                if (count > unitGradeInfo.multiattackcount)
+                {
+                    Debug.LogError("count > unitGradeInfo.multiattackcount");
+                    return;
+                }
+
                 if (_attackData.attackToEnemy)
                 {
                     MEnemyObj enemyObj = obj.GetComponent<MEnemyObj>();
                     if (enemyObj != null)
                     {
                         DoEnemyGetDamage(enemyObj, _pos, _attackData.attackerUID, unitGradeInfo.splashdmg);
+                        count++;
                     }
                 }
                 else
@@ -835,6 +844,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     if (heroObj != null)
                     {
                         DoHeroGetDamage(heroObj, _pos, _attackData.attackerUID, unitGradeInfo.splashdmg);
+                        count++;
                     }
                 }
             }
