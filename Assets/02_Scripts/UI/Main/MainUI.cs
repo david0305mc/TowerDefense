@@ -136,16 +136,6 @@ public class MainUI : MonoBehaviour
     }
     private void OnBottomTabClicked(int _index)
     {
-        if (tabGruop.CurrTabIndex == (int)BottomTab.Arrangement)
-        {
-
-
-
-
-            // To Do : Check
-            HideArrangementUI();
-        }
-
         switch ((BottomTab)_index)
         {
             case BottomTab.Worldmap:
@@ -175,27 +165,6 @@ public class MainUI : MonoBehaviour
     public void SelectTab(BottomTab _tab)
     {
         tabGruop.SelectTab((int)_tab);
-    }
-
-    public void OnClicShopBtn()
-    { 
-    
-    }
-    public void OnClicArrangeBtn()
-    {
-
-    }
-    public void OnClicWorldMapBtn()
-    {
-
-    }
-    public void OnClicPvpBtn()
-    {
-
-    }
-    public void OnClicEventBtn()
-    {
-
     }
 
     public void ShowUnitInfo(int _index)
