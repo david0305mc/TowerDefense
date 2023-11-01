@@ -13,15 +13,14 @@ public class UIPanelUnitSelect : MonoBehaviour
 
     private void Awake()
     {
-        MessageDispather.Receive(EMessage.Update_UserData).Subscribe(_ => {
+        MessageDispather.Receive(EMessage.Update_HeroParty).Subscribe(_ => {
             InitUI(); 
         });
     }
     public void InitUI()
     {
-        InitUserListScroll();
         InitBattlePartyUI();
-
+        InitUserListScroll();
     }
 
     private void InitUserListScroll()

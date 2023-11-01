@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class UIBattlePartySlot : MonoBehaviour
 {
@@ -30,25 +31,21 @@ public class UIBattlePartySlot : MonoBehaviour
     {
         slotIndex = _slotIndex;
         touchAction = _touchAction;
-
-        if (heroObj != null)
-        {
-            Lean.Pool.LeanPool.Despawn(heroObj);
-            heroObj = null;
-        }
-
         if (_unitUID != -1)
         {
-            emptySlot.SetActive(false);
-            var heroData = UserData.Instance.GetHeroData(_unitUID);
-            GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
-            heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, characterViewTr).GetComponent<MHeroObj>();
-            heroObj.transform.SetLocalPosition(Vector3.zero);
+            if (_unitUID != unitUID)
+            {
+                emptySlot.SetActive(false);
+                var heroData = UserData.Instance.GetHeroData(_unitUID);
+                GameObject unitPrefab = MResourceManager.Instance.GetPrefab(heroData.refData.prefabname);
+                heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, characterViewTr).GetComponent<MHeroObj>();
+                heroObj.transform.SetLocalPosition(Vector3.zero);
+            }
             heroObj.SetUIMode(Game.GameConfig.CanvasMainUILayerOrder + slotIndex + 2);
         }
         else
         {
-            emptySlot.SetActive(true);
+            ClearPool();
         }
         unitUID = _unitUID;
     }
@@ -67,12 +64,13 @@ public class UIBattlePartySlot : MonoBehaviour
 
     public void ClearPool()
     {
-        //if (heroObj != null)
-        //{
-        //    unitUID = -1;
-        //    heroObj.SetBattleMode();
-        //    Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
-        //    emptySlot.SetActive(true);
-        //}
+        if (heroObj != null)
+        {
+            unitUID = -1;
+            heroObj.SetBattleMode();
+            Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
+            heroObj = null;
+        }
+        emptySlot.SetActive(true);
     }
 }

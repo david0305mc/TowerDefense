@@ -12,13 +12,13 @@ public class SpawnTestManager : MonoBehaviour
 
     private void Awake()
     {
-        MessageDispather.Receive(EMessage.Update_UserData).Subscribe(_ =>
+        MessageDispather.Receive(EMessage.Update_HeroParty).Subscribe(_ =>
         {
             SpawnItem();
         });
 
         spawnButton.onClick.AddListener(() => {
-            MessageDispather.Publish(EMessage.Update_UserData);
+            MessageDispather.Publish(EMessage.Update_HeroParty);
         });
     }
 
