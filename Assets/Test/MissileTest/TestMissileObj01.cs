@@ -46,10 +46,10 @@ public class TestMissileObj01 : MonoBehaviour
         if (elapse >= 1)
         {
             float dist = Vector2.Distance(srcPos, dstPos);
-            float moveRate = Time.deltaTime / dist * speed;
-            var moveDelta = (dstPos - srcPos) * Vector2.one * moveRate;
+            float addElapse = Time.deltaTime / dist * speed;
+            var moveDelta = lastMoveVector.normalized * addElapse * dist;
 
-            rigidBody2d.transform.position = new Vector2(transform.position.x, transform.position.y) + lastMoveVector;
+            rigidBody2d.transform.position = new Vector2(transform.position.x, transform.position.y) + moveDelta;
             //rigidBody2d.MovePosition(new Vector2(transform.position.x, transform.position.y)  + moveDelta);
             prevPos = transform.position;
 
@@ -69,6 +69,7 @@ public class TestMissileObj01 : MonoBehaviour
 
             lastMoveVector = pos - prevPos;
             targetRotate = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
+            rigidBody2d.transform.rotation = targetRotate;
             prevPos = pos;
             //if (pos == new Vector2(transform.position.x, transform.position.y))
             //{
