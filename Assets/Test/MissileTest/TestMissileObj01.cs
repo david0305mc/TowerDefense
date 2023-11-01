@@ -31,7 +31,7 @@ public class TestMissileObj01 : MonoBehaviour
         speed = _speed;
         prevPos = srcPos;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         UpdateMissile();
     }
@@ -46,11 +46,11 @@ public class TestMissileObj01 : MonoBehaviour
         if (elapse >= 1)
         {
             float dist = Vector2.Distance(srcPos, dstPos);
-            float addElapse = Time.deltaTime / dist * speed;
+            float addElapse = (Time.fixedDeltaTime / dist) * speed;
             var moveDelta = lastMoveVector.normalized * addElapse * dist;
 
-            rigidBody2d.transform.position = new Vector2(transform.position.x, transform.position.y) + moveDelta;
-            //rigidBody2d.MovePosition(new Vector2(transform.position.x, transform.position.y)  + moveDelta);
+            //rigidBody2d.transform.position = new Vector2(transform.position.x, transform.position.y) + moveDelta;
+            rigidBody2d.MovePosition(new Vector2(transform.position.x, transform.position.y) + moveDelta);
             prevPos = transform.position;
 
             return false;
@@ -58,18 +58,20 @@ public class TestMissileObj01 : MonoBehaviour
         else
         {
             float dist = Vector2.Distance(srcPos, dstPos);
-            elapse += Time.deltaTime / dist * speed;
+            elapse += Time.fixedDeltaTime / dist * speed;
 
             var height = curve.Evaluate(elapse);
 
             var pos = Vector2.Lerp(srcPos, dstPos, elapse) + new Vector2(0, height);
-            rigidBody2d.transform.position = pos;
-            //rigidBody2d.MovePosition(pos);
-            //rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
+            
+            rigidBody2d.MovePosition(pos);
+            rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
+
+            //rigidBody2d.transform.position = pos;
+            //targetRotate = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
+            //rigidBody2d.transform.rotation = targetRotate;
 
             lastMoveVector = pos - prevPos;
-            targetRotate = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
-            rigidBody2d.transform.rotation = targetRotate;
             prevPos = pos;
             //if (pos == new Vector2(transform.position.x, transform.position.y))
             //{
