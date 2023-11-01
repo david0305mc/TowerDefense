@@ -46,34 +46,28 @@ public class GameResultPopup : PopupBase
     public void SetData(bool isWin, List<DataManager.StageRewardInfo> rewards, System.Action _homeAction, System.Action _retryAction, System.Action _nextStageAction)
     {
         InitBattleParty();
+        
+        List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
+        rewardLists.Add(new UIRewardCellData(0));
+        foreach (var rewardInfo in rewards)
+        {
+            rewardLists.Add(new UIRewardCellData(rewardInfo.id));
+        }
+        gridView.UpdateContents(rewardLists.ToArray());
+        gridView.OnCellClicked(index =>
+        {
+            //SelectCell(index);
+        });
 
+        killViewObject.SetActive(true);
         if (isWin)
         {
-            killViewObject.SetActive(true);
             winObject.SetActive(true);
-            loseObject.SetActive(false);
-
-            List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
-            rewardLists.Add(new UIRewardCellData(0));
-
-            foreach (var rewardInfo in rewards)
-            {
-                rewardLists.Add(new UIRewardCellData(rewardInfo.id));
-            }
-
-            //var itemData = Enumerable.Range(0, 10).Select(i => new UIRewardCellData(i)).ToArray();
-            gridView.UpdateContents(rewardLists.ToArray());
-
-            gridView.OnCellClicked(index =>
-            {
-                //SelectCell(index);
-            });
-
+            loseObject.SetActive(false); 
         }
         else
         {
             winObject.SetActive(false);
-            killViewObject.SetActive(false);
             loseObject.SetActive(true);
         }
 

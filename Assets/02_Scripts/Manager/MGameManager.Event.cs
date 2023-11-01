@@ -134,9 +134,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = Game.GameConfig.GameState.GameEnd;
         cameraManager.EnableCameraControl = true;
-        var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
-
         AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.PlayingStage);
         
@@ -160,8 +158,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
         gameState = Game.GameConfig.GameState.GameEnd;
         DisposeCTS();
         SetAllUnitEndState();
+        List<DataManager.StageRewardInfo> stageRewards = new List<DataManager.StageRewardInfo>();
+        AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
         var popup = PopupManager.Instance.Show<GameResultPopup>();
-        popup.SetData(false, null, () =>
+        popup.SetData(false, stageRewards, () =>
         {
             RemoveStage();
             BackToWorld();
