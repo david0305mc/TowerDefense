@@ -23,8 +23,8 @@ namespace Game
         public static readonly float unitTargetDragSpeed = 0.3f;
         public static readonly float normalTargetDragSpeed = 1f;
 
-        public static readonly int CanvasMainUILayerOrder = 100;
-        public static readonly int CanvasPopupManagerLayerOrder = 200;
+        public static int CanvasMainUILayerOrder = 100;
+        public static readonly int CanvasPopupManagerLayerOrder = 300;
         public static readonly int StartBuildingID = 10000;
 
         public static readonly int WaveStageID_01 = 999;

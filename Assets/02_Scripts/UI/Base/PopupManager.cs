@@ -5,7 +5,14 @@ using Game;
 public class PopupManager : SingletonMono<PopupManager>
 {
     private Dictionary<string, PopupBase> popupDic = new Dictionary<string, PopupBase>();
+    private Canvas canvas;
+    protected override void OnSingletonAwake()
+    {
+        base.OnSingletonAwake();
+        canvas = GetComponent<Canvas>();
+        GameConfig.CanvasMainUILayerOrder = canvas.renderOrder;
 
+    }
     public CommonPopup ShowSystemOneBtnPopup(string messageStr, string btnStr, System.Action okAction = null)
     {
         var popup = Show<CommonPopup>();
