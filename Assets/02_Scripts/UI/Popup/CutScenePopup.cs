@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class CutScenePopup : PopupBase
 {
@@ -22,7 +23,7 @@ public class CutScenePopup : PopupBase
         base.InitPopup(_hideAction);
     }
 
-    public void SetData(int _cutSceneID, UnityEngine.Events.UnityAction _action)
+    public void SetData(int _cutSceneID, int _delay, UnityEngine.Events.UnityAction _action)
     {
         curScene01.SetActive(_cutSceneID >= 1);
         curScene02.SetActive(_cutSceneID >= 2);
@@ -31,6 +32,13 @@ public class CutScenePopup : PopupBase
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(_action);
+        button.enabled = false;
+
+        UniTask.Create(async () =>
+        {
+            await UniTask.Delay(_delay);
+            button.enabled = true;
+        });
     }
 
 }

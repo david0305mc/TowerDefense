@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class DialoguePopup : PopupBase
 {
@@ -25,8 +26,15 @@ public class DialoguePopup : PopupBase
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(_tutoID);
         var dialogueInfo = DataManager.Instance.GetDialogueData(int.Parse(tutoInfo.value1));
         messageText.SetText(LocalizeManager.Instance.GetLocalString(dialogueInfo.localizekey));
+
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(_action);
+        nextButton.enabled = false;
+        UniTask.Create(async () =>
+        {
+            await UniTask.Delay(tutoInfo.delay);
+            nextButton.enabled = true;
+        });
     }
 
 }

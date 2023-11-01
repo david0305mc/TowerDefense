@@ -16,7 +16,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             case TUTO_TYPE.CUTSCENE:
                 {
                     var popup = PopupManager.Instance.Show<CutScenePopup>();
-                    popup.SetData(int.Parse(tutoInfo.value1), () =>
+                    popup.SetData(int.Parse(tutoInfo.value1), tutoInfo.delay, () =>
                     {
                         OnTutorialEnd(tutoInfo.id, () => {
                             popup.Hide();
@@ -37,8 +37,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 break;
             case TUTO_TYPE.CAMERASTAGEMOVE:
                 {
+                    TouchBlockManager.Instance.AddLock();
                     SetTutorialCamera(int.Parse(tutoInfo.value1), () => {
                         OnTutorialEnd(tutoInfo.id, null);
+                        TouchBlockManager.Instance.RemoveLock();
                     });
                 }
                 break;
