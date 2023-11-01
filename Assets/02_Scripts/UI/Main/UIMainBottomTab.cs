@@ -7,13 +7,20 @@ public class UIMainBottomTab : MonoBehaviour
 {
     [SerializeField] private List<GameObject> onObject;
     [SerializeField] private Button tabButton;
+    [SerializeField] private bool IsTabDisabled;
 
     public void SetTabData(int _index, System.Action<int> _tabAction)
     {
         tabButton.onClick.RemoveAllListeners();
         tabButton.onClick.AddListener(() =>
         {
+            if (IsTabDisabled)
+            {
+                PopupManager.Instance.ShowSystemOneBtnPopup("Disabled", "OK");
+                return;
+            }
             _tabAction?.Invoke(_index);
+
         });
     }
 

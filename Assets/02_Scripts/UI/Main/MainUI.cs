@@ -157,8 +157,6 @@ public class MainUI : MonoBehaviour
                 break;
             case BottomTab.Pvp:
                 {
-                    //UI 에서 시작 버튼 눌러야 시작되게끔 수정 필요
-                    //MGameManager.Instance.StartWaveStage();
                 }
                 break;
         }
