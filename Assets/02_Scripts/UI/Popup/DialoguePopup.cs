@@ -23,7 +23,8 @@ public class DialoguePopup : PopupBase
     public void SetData(int _tutoID, UnityEngine.Events.UnityAction _action)
     {
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(_tutoID);
-        messageText.SetText(LocalizeManager.Instance.GetLocalString(tutoInfo.memo));
+        var dialogueInfo = DataManager.Instance.GetDialogueData(int.Parse(tutoInfo.value1));
+        messageText.SetText(LocalizeManager.Instance.GetLocalString(dialogueInfo.localizekey));
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(_action);
     }
