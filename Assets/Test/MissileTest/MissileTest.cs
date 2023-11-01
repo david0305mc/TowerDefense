@@ -22,7 +22,7 @@ public class MissileTest : MonoBehaviour
     private void Shoot()
     {
         var missile = Lean.Pool.LeanPool.Spawn(missile01, srcObj.transform);
-        missile.Shoot(dstObj, 5);
+        missile.Shoot(dstObj, 3);
     }
 
 }

@@ -9,11 +9,13 @@ public class TestMissileObj01 : MonoBehaviour
 
     protected float elapse;
     protected float speed;
-    protected Vector3 prevPos;
+    protected Vector2 prevPos;
     protected GameObject targetObj;
 
     protected Vector3 srcPos;
     protected Vector3 dstPos;
+    private Quaternion targetRotate;
+    private Vector2 lastMoveVector;
 
     protected virtual void Awake()
     {
@@ -43,20 +45,36 @@ public class TestMissileObj01 : MonoBehaviour
 
         if (elapse >= 1)
         {
-            Dispose();
+            float dist = Vector2.Distance(srcPos, dstPos);
+            float moveRate = Time.deltaTime / dist * speed;
+            var moveDelta = (dstPos - srcPos) * Vector2.one * moveRate;
+
+            rigidBody2d.transform.position = new Vector2(transform.position.x, transform.position.y) + lastMoveVector;
+            //rigidBody2d.MovePosition(new Vector2(transform.position.x, transform.position.y)  + moveDelta);
+            prevPos = transform.position;
+
             return false;
         }
+        else
+        {
+            float dist = Vector2.Distance(srcPos, dstPos);
+            elapse += Time.deltaTime / dist * speed;
 
-        float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * speed;
+            var height = curve.Evaluate(elapse);
 
-        var height = curve.Evaluate(elapse);
+            var pos = Vector2.Lerp(srcPos, dstPos, elapse) + new Vector2(0, height);
+            rigidBody2d.transform.position = pos;
+            //rigidBody2d.MovePosition(pos);
+            //rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
 
-        var pos = Vector2.Lerp(srcPos, dstPos, elapse) + new Vector2(0, height);
-        rigidBody2d.MovePosition(pos);
-        rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
-
-        prevPos = pos;
+            lastMoveVector = pos - prevPos;
+            targetRotate = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
+            prevPos = pos;
+            //if (pos == new Vector2(transform.position.x, transform.position.y))
+            //{
+            //    Debug.LogError("pos == new Vector2(transform.position.x, transform.position.y)");
+            //}
+        }
 
         return true;
     }
