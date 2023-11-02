@@ -58,16 +58,17 @@ public class ProjectileBezier : ProjectileBase
             CalculateCurvePoints(samplePointCount);
 
         float dist = Vector2.Distance(srcPos, dstPos);
-        elapse += Time.deltaTime / dist * speed;
+        elapse += Time.fixedDeltaTime / dist * speed;
 
         float fLen = (curvePoints.Length - 1) * elapse;
         fLen = Mathf.Clamp((int)fLen, 0, curvePoints.Length - 1);
-        var pos = curvePoints[(int)fLen];
+        Vector2 pos = curvePoints[(int)fLen];
 
         if (prevPos != pos)
         {
             rigidBody2d.MovePosition(pos);
             rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
+            lastMoveVector = pos - prevPos;
         }
         prevPos = pos;
 
