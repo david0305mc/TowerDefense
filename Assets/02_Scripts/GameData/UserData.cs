@@ -34,14 +34,14 @@ public partial class UserData : Singleton<UserData>
     {
         return enemyDataDic.Values.Where(enemyUnit =>
         {
+            if (enemyUnit.battleUID == MGameManager.Instance.EnemyBossUID)
+                return true;
             if (enemyUnit.battleUID == -1)
                 return false;
             if (enemyUnit.isDead)
                 return false;
             if (enemyUnit.tid >= Game.GameConfig.StartBuildingID) // Except BuildingUnit
                 return false;
-            if (enemyUnit.uid == MGameManager.Instance.EnemyBossUID)
-                return true;
             return true;
         }).ToList();
     }
