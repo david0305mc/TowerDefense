@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TestMissileObj01 : MonoBehaviour
 {
     [SerializeField] private AnimationCurve curve;
@@ -18,6 +19,9 @@ public class TestMissileObj01 : MonoBehaviour
     private Vector2 lastMoveVector;
 
     private int multiTargetCount;
+    private float lifeTime;
+    private float afterHitLifeTime;
+    private bool toBeDisposal;
 
     protected virtual void Awake()
     {
@@ -26,12 +30,14 @@ public class TestMissileObj01 : MonoBehaviour
 
     public virtual void Shoot(GameObject _targetObj, float _speed)
     {
+        lifeTime = 10f;
         targetObj = _targetObj;
-        multiTargetCount = 3;
+        multiTargetCount = 0;
         srcPos = transform.position;
         elapse = 0f;
         speed = _speed;
         prevPos = srcPos;
+        toBeDisposal = false;
     }
     private void FixedUpdate()
     {
@@ -40,6 +46,22 @@ public class TestMissileObj01 : MonoBehaviour
 
     protected virtual bool UpdateMissile()
     {
+        lifeTime -= Time.fixedDeltaTime;
+        if (lifeTime <= 0)
+        {
+            Dispose();
+            return false;
+        }
+        if (toBeDisposal)
+        {
+            afterHitLifeTime -= Time.fixedDeltaTime;
+            if (afterHitLifeTime <= 0)
+            {
+                Dispose();
+                return false;
+            }
+        }
+
         if (targetObj != null)
         {
             dstPos = targetObj.transform.position;
@@ -89,10 +111,18 @@ public class TestMissileObj01 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        multiTargetCount--;
-        if (multiTargetCount <= 0)
+        if (multiTargetCount == 0)
+        {
+            toBeDisposal = true;
+            afterHitLifeTime = 0.1f;
+        }
+
+        multiTargetCount++;
+        if (multiTargetCount > 10)
         {
             Dispose();
         }
+
+        Debug.LogError("Hit");
     }
 }
