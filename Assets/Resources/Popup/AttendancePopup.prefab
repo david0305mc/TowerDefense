@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 524046915125663307}
-  - component: {fileID: 1354737124965694320}
+  - component: {fileID: -2507798001239288798}
   m_Layer: 5
   m_Name: AttendancePopup
   m_TagString: Untagged
@@ -129,7 +129,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1354737124965694320
+--- !u!114 &-2507798001239288798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,15 +138,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 524046915125663308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf38e9bd0d9ccd4b9101a12d32ce8a9, type: 3}
+  m_Script: {fileID: 11500000, guid: dd40ce57fc31c974483f7970de754950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   openAnim: {fileID: 0}
   closeBtn: {fileID: 6664510181339308329}
-  messageText: {fileID: 0}
-  okBtnText: {fileID: 0}
-  okBtn: {fileID: 0}
-  cancelBtn: {fileID: 0}
 --- !u!1 &524046916693744111
 GameObject:
   m_ObjectHideFlags: 0

@@ -238,6 +238,8 @@ MonoBehaviour:
   staminaTimerText: {fileID: 3238053022796120640}
   goldText: {fileID: 3238053020786532930}
   tabGruop: {fileID: 2756652710380001252}
+  attendanceButton: {fileID: 6114643904422997576}
+  optionButton: {fileID: 6114643903135400864}
   stageInfoPanel: {fileID: 8651050593435967320}
   unitSelectPanel: {fileID: 5545772812000472053}
 --- !u!114 &862054747678699704
@@ -7563,6 +7565,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4822377368184622974, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822377368184622974, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 4000
+      objectReference: {fileID: 0}
     - target: {fileID: 5662059698877054804, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -8448,19 +8458,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5745104655158653609, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745104655158653609, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745104655158653609, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5745104655158653609, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -736.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7450535311012648683, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_ChildAlignment
@@ -8468,19 +8478,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8970285533115016562, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970285533115016562, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970285533115016562, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970285533115016562, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1800.185
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970285533328778670, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_SizeDelta.y

@@ -28,6 +28,8 @@ public class MainUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI staminaTimerText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
+    [SerializeField] private Button attendanceButton;
+    [SerializeField] private Button optionButton;
 
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
@@ -67,12 +69,19 @@ public class MainUI : MonoBehaviour
         disposable.Clear();
         disposable.Dispose();
     }
-
+    
     private void Awake()
     {
         HideStageInfo();
         CheckStaminaTimer().Forget();
-        
+        attendanceButton.onClick.AddListener(() =>
+        {
+            PopupManager.Instance.Show<AttendancePopup>();
+        });
+        optionButton.onClick.AddListener(() =>
+        {
+
+        });
     }
 
     private async UniTask CheckStaminaTimer()
