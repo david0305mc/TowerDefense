@@ -16,6 +16,10 @@ public class GachaResultPopup : PopupBase
     [SerializeField] private TextMeshProUGUI unitNameText;
     [SerializeField] private Transform unitPos;
 
+    [SerializeField] private Image unitRarityImage;
+    [SerializeField] private TextMeshProUGUI unitrarityText;
+    [SerializeField] private UnitGradeInfo unitGradeInfo;
+
     [SerializeField] private UIGridView resultScrollView = default;
 
     private MHeroObj heroObj = default;
@@ -63,15 +67,22 @@ public class GachaResultPopup : PopupBase
     {
         ClearPool();
         animator.SetTrigger("ShowUpEffect");
+        int grade = 1;
         var gachaInfo = DataManager.Instance.GetGachaListData(gachaList[index]);
-        var unitInfo = DataManager.Instance.GetUnitinfoData(gachaInfo.unitid);
+        var unitData = UserData.Instance.GetHeroDataByTID(gachaInfo.unitid);
+        //var unitInfo = DataManager.Instance.GetUnitinfoData(gachaInfo.unitid);
+        //var unitGradeInfo = DataManager.Instance.GetUnitGrade(gachaInfo.unitid, grade);
 
-        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(unitInfo.prefabname);
+        GameObject unitPrefab = MResourceManager.Instance.GetPrefab(unitData.refData.prefabname);
         heroObj = Lean.Pool.LeanPool.Spawn(unitPrefab, Vector3.zero, Quaternion.identity, unitPos).GetComponent<MHeroObj>();
         heroObj.transform.SetLocalPosition(Vector3.zero);
         heroObj.SetUIMode(Game.GameConfig.CanvasPopupManagerLayerOrder + index + 2);
         
-        unitNameText.SetText(unitInfo.unitname);
+        unitNameText.SetText(unitData.refData.unitname);
+        unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
+        unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
+        unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
+        //rarityBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
     }
 
     private void ShowResultList()

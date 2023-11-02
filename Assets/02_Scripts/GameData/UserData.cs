@@ -218,6 +218,11 @@ public partial class UserData : Singleton<UserData>
         return null;
     }
 
+    public UnitData GetHeroDataByTID(int _tid)
+    {
+        return LocalData.HeroDataDic.Values.FirstOrDefault(item => item.tid == _tid);
+    }
+
     public bool isBattleHeroDead(int _battleUID)
     {
         try
