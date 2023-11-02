@@ -17,6 +17,8 @@ public class TestMissileObj01 : MonoBehaviour
     private Quaternion targetRotate;
     private Vector2 lastMoveVector;
 
+    private int multiTargetCount;
+
     protected virtual void Awake()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
@@ -25,7 +27,7 @@ public class TestMissileObj01 : MonoBehaviour
     public virtual void Shoot(GameObject _targetObj, float _speed)
     {
         targetObj = _targetObj;
-
+        multiTargetCount = 3;
         srcPos = transform.position;
         elapse = 0f;
         speed = _speed;
@@ -67,16 +69,12 @@ public class TestMissileObj01 : MonoBehaviour
             rigidBody2d.MovePosition(pos);
             rigidBody2d.MoveRotation(GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT));
 
-            //rigidBody2d.transform.position = pos;
-            //targetRotate = GameUtil.LookAt2D(prevPos, pos, GameUtil.FacingDirection.RIGHT);
-            //rigidBody2d.transform.rotation = targetRotate;
-
             lastMoveVector = pos - prevPos;
             prevPos = pos;
-            //if (pos == new Vector2(transform.position.x, transform.position.y))
-            //{
-            //    Debug.LogError("pos == new Vector2(transform.position.x, transform.position.y)");
-            //}
+            if (pos == new Vector2(transform.position.x, transform.position.y))
+            {
+                Debug.LogError("pos == new Vector2(transform.position.x, transform.position.y)");
+            }
         }
 
         return true;
@@ -89,4 +87,12 @@ public class TestMissileObj01 : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        multiTargetCount--;
+        if (multiTargetCount <= 0)
+        {
+            Dispose();
+        }
+    }
 }
