@@ -10,7 +10,7 @@ public class PopupManager : SingletonMono<PopupManager>
     {
         base.OnSingletonAwake();
         canvas = GetComponent<Canvas>();
-        GameConfig.CanvasPopupManagerLayerOrder = canvas.renderOrder;
+        GameConfig.CanvasPopupManagerLayerOrder = canvas.sortingOrder;
 
     }
     public CommonPopup ShowSystemOneBtnPopup(string messageStr, string btnStr, System.Action okAction = null)
