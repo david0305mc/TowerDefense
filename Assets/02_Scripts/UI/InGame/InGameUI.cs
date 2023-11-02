@@ -22,8 +22,6 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private Button speedBtn;
 
     private CompositeDisposable disposable = new CompositeDisposable();
-    private float timeLeft;
-
     public async UniTask StartLoadingUI()
     {
         loadingUI.SetActive(true);
@@ -44,19 +42,11 @@ public class InGameUI : MonoBehaviour
     }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
-        timeLeft = endUnixTime - GameTime.Get();
         UniTask.Create(async () =>
         {
-            while (timeLeft > 0)
+            while (endUnixTime - GameTime.Get() > 0)
             {
-                timeLeft -= Time.deltaTime;
-                await UniTask.Yield(cancellationToken: _cts.Token);
-            }
-        });
-        UniTask.Create(async () =>
-        {
-            while (timeLeft > 0)
-            {
+                float timeLeft = endUnixTime - GameTime.Get();
                 var timeSpan = TimeSpan.FromSeconds(timeLeft);
                 tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
                 await UniTask.WaitForSeconds(1f, cancellationToken: _cts.Token);

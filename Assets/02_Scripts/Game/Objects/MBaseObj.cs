@@ -658,7 +658,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         else
         {
-            Debug.Log("path not found");
+            //Debug.Log("path not found");
             Vector3 samplePos = SamplePosition(fixedPos);
             if (samplePos != Game.GameConfig.PositiveInfinityVector)
             {
