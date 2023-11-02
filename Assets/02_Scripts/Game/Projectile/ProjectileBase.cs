@@ -28,6 +28,7 @@ public class ProjectileBase : MonoBehaviour
     {
         attackData = _attackData;
         targetObj = _targetObj;
+        dstPos = targetObj.transform.position;
         
         srcPos = transform.position;
         elapse = 0f;

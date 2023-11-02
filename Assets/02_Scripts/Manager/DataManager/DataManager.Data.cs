@@ -94,6 +94,9 @@ public partial class DataManager {
 	}
 	public partial class ProjectileInfo {
 		public int id;
+		public int nontarget;
+		public int lifetime;
+		public int afterhitlifetime;
 		public int speed;
 		public string prefabname;
 	};
