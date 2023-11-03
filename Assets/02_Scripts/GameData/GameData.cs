@@ -11,6 +11,9 @@ public class LocalSaveData
     public int uidSeed;
     public int CurrTutorialID;
     public long StaminaLastSpawnTime;
+    public int AttendanceDay;
+    public SerializableDictionary<int, int> AttendanceRewardedDic;
+    public long NextAttendanceTime;
     public ReactiveProperty<long> Soul;
     public ReactiveProperty<long> Stamina;
     public ReactiveProperty<long> Exp;
@@ -23,7 +26,10 @@ public class LocalSaveData
     {
         uidSeed = 1000;
         CurrTutorialID = 1;
+        AttendanceDay = 5;
+        AttendanceRewardedDic = new SerializableDictionary<int, int>();
         StaminaLastSpawnTime = GameTime.Get();
+        NextAttendanceTime = GameTime.GetLocalMidnight();
         StageClearDic = new SerializableDictionary<int, StageData>();
         Soul = new ReactiveProperty<long>(0);
         Stamina = new ReactiveProperty<long>(ConfigTable.Instance.StaminaDefaultCount);

@@ -52,6 +52,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         }
     }
+
+    public void ReceiveAttendanceReward(int _day)
+    {
+        UserData.Instance.LocalData.AttendanceRewardedDic[_day] = 1;
+        UserData.Instance.SaveLocalData();
+        MessageDispather.Publish(EMessage.Update_Attendance);
+    }
+
     public void AddStageGold(int _stageID)
     {
         var stageData = UserData.Instance.GetStageData(_stageID);

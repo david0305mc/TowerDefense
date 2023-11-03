@@ -15,9 +15,10 @@ public class SpawnTestManager : MonoBehaviour
         MessageDispather.Receive(EMessage.Update_HeroParty).Subscribe(_ =>
         {
             SpawnItem();
-        });
+        }).AddTo(gameObject);
 
-        spawnButton.onClick.AddListener(() => {
+        spawnButton.onClick.AddListener(() =>
+        {
             MessageDispather.Publish(EMessage.Update_HeroParty);
         });
     }

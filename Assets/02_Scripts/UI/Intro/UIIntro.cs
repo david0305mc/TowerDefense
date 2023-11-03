@@ -43,7 +43,7 @@ public class UIIntro : MonoBehaviour
         await DataManager.Instance.LoadConfigTable();
         await MResourceManager.Instance.LoadResources();
         await playLoadingUI;
-        GameTime.InitLocalBase();
+        await GameTime.InitGameTime();
         SoundManager.Instance.Play("Bgm/Bgm_01", SoundType.Bgm);
         DataManager.Instance.MakeClientDT();
         UserData.Instance.InitData();

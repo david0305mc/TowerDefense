@@ -18,6 +18,9 @@ public class UIAttendanceCell : UIGridCell
 {
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private List<UICell_Reward>  uiRewardLists;
+    [SerializeField] private GameObject getButton;
+    [SerializeField] private GameObject unactiveButton;
+    [SerializeField] private GameObject rewardedButton;
 
     public override void Initialize()
     {
@@ -26,8 +29,9 @@ public class UIAttendanceCell : UIGridCell
 
     public override void UpdateContent(GridItemData _itemData)
     {
-        dayText.SetText($"Day {_itemData.id}");
-        List<DataManager.Attendance> dataLists = DataManager.Instance.GetAttendanceInfosByDay(_itemData.id);
+        int day = _itemData.id;
+        dayText.SetText($"Day {day}");
+        List<DataManager.Attendance> dataLists = DataManager.Instance.GetAttendanceInfosByDay(day);
         for (int i = 0; i < dataLists.Count; i++)
         {
             uiRewardLists[i].SetActive(true);
@@ -37,6 +41,28 @@ public class UIAttendanceCell : UIGridCell
         for (int i = dataLists.Count; i < uiRewardLists.Count; i++)
         {
             uiRewardLists[i].SetActive(false);
+        }
+
+        if (UserData.Instance.LocalData.AttendanceDay >= day)
+        {
+            if (UserData.Instance.LocalData.AttendanceRewardedDic.ContainsKey(day) && UserData.Instance.LocalData.AttendanceRewardedDic[day] == 1)
+            {
+                rewardedButton.SetActive(true);
+                getButton.SetActive(false);
+                unactiveButton.SetActive(false);
+            }
+            else
+            {
+                rewardedButton.SetActive(false);
+                getButton.SetActive(true);
+                unactiveButton.SetActive(false);
+            }
+        }
+        else 
+        {
+            rewardedButton.SetActive(false);
+            getButton.SetActive(false);
+            unactiveButton.SetActive(true);
         }
     }
 }

@@ -10,7 +10,7 @@ public class GridItemData
 {
     public int id { get; }
 
-    public GridItemData(int index) => id = index;
+    public GridItemData(int _id) => id = _id;
 }
 
 public class GridContext : FancyGridViewContext

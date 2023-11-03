@@ -13,9 +13,10 @@ public class UIPanelUnitSelect : MonoBehaviour
 
     private void Awake()
     {
-        MessageDispather.Receive(EMessage.Update_HeroParty).Subscribe(_ => {
-            InitUI(); 
-        });
+        MessageDispather.Receive(EMessage.Update_HeroParty).Subscribe(_ =>
+        {
+            InitUI();
+        }).AddTo(gameObject);
     }
     public void InitUI()
     {
