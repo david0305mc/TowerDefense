@@ -362,6 +362,7 @@ public partial class UserData : Singleton<UserData>
             if (LocalData.AttendanceDay > DataManager.Instance.AttendanceDic.Values.Max(item=>item.day))
             {
                 LocalData.AttendanceDay = 1;
+                LocalData.AttendanceRewardedDic.Clear();
             }
             LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
         }
