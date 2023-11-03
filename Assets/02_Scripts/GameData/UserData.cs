@@ -354,6 +354,18 @@ public partial class UserData : Singleton<UserData>
         enemyDataDic.Remove(_enemyUID);
     }
 
+    public void CheckAttendance()
+    {
+        if (GameTime.Get() >= LocalData.NextAttendanceTime)
+        {
+            LocalData.AttendanceDay ++;
+            if (LocalData.AttendanceDay > DataManager.Instance.AttendanceDic.Values.Max(item=>item.day))
+            {
+                LocalData.AttendanceDay = 1;
+            }
+            LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
+        }
+    }
     public UnitBattleData AddDevilCastleData(int _tid)
     {
         var data = UnitBattleData.Create(MGameManager.GenerateFlashUID(), -1, _tid, 1, 1, false, 100);
