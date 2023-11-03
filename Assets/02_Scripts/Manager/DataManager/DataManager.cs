@@ -27,6 +27,7 @@ public partial class DataManager : Singleton<DataManager>
 			"WaveStage",
 			"TutorialInfo",
 			"Dialogue",
+			"Attendance",
 		};
 
 	public async UniTask LoadDataAsync()

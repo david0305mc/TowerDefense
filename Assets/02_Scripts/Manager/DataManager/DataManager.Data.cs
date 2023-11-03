@@ -242,4 +242,25 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class Attendance {
+		public int id;
+		public int day;
+		public ITEM_TYPE rewardtype;
+		public int rewardid;
+		public int rewardcount;
+	};
+	public Attendance[] AttendanceArray { get; private set; }
+	public Dictionary<int, Attendance> AttendanceDic { get; private set; }
+	public void BindAttendanceData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(AttendanceArray)).SetValue(this, deserializaedData, null);
+		AttendanceDic = AttendanceArray.ToDictionary(i => i.id);
+	}
+	public Attendance GetAttendanceData(int _id){
+		if (AttendanceDic.TryGetValue(_id, out Attendance value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };
