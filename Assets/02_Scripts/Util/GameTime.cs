@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class GameTime 
 {
@@ -11,6 +12,26 @@ public class GameTime
     public static void InitLocalBase()
     {
         Init((DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds);
+    }
+    public static async UniTask InitGameTime()
+    {
+        string dateTimeString = await Network.NetworkManager.GetNetworkTime();
+
+        if (string.IsNullOrEmpty(dateTimeString))
+        {
+            InitLocalBase();
+        }
+        else
+        {
+            Debug.Log($"date {dateTimeString}");
+            //DateTime localTime = DateTime.Parse(dateTimeString).ToLocalTime();
+            //DateTime minight = new DateTime(localTime.Year, localTime.Month, localTime.Day + 1);
+            //Debug.Log($"Korea {localTime}");
+            //Debug.Log($"Korea midnight {minight}");
+            //var localTimeSpan = minight.Subtract(localTime);
+            //Debug.Log($"time left {localTimeSpan}");
+            Init((DateTime.Parse(dateTimeString) - DateTime.UnixEpoch).TotalSeconds);
+        }
     }
 
     public static void Init(double _gameTime)

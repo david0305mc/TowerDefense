@@ -15,8 +15,7 @@ public class LocalTimeTest : MonoBehaviour
 
     private async UniTask CheckTime()
     {
-        UnityWebRequest request = new UnityWebRequest();
-        using (request = UnityWebRequest.Get("www.google.com"))
+        using (var request = UnityWebRequest.Get("http://google.com"))
         {
             var webRequest = await request.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -27,8 +26,16 @@ public class LocalTimeTest : MonoBehaviour
             {
                 string date = request.GetResponseHeader("date");
                 Debug.Log($"date {date}");
-                DateTime dateTime = DateTime.Parse(date).ToLocalTime();
-                Debug.Log($"Korea {dateTime}");
+
+
+                DateTime localTime = DateTime.Parse(date).ToLocalTime();
+                DateTime minight = new DateTime(localTime.Year, localTime.Month, localTime.Day + 1);
+                Debug.Log($"Korea {localTime}");
+                Debug.Log($"Korea midnight {minight}");
+
+                var localTimeSpan = minight.Subtract(localTime);
+
+                Debug.Log($"time left {localTimeSpan}");
             }
 
         }
