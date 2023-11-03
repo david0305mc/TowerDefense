@@ -56,6 +56,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void ReceiveAttendanceReward(int _day)
     {
         UserData.Instance.LocalData.AttendanceRewardedDic[_day] = 1;
+        UserData.Instance.LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
         UserData.Instance.SaveLocalData();
         MessageDispather.Publish(EMessage.Update_Attendance);
     }
