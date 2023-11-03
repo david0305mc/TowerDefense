@@ -57,4 +57,30 @@ public class UICell_Reward : UIGridCell
             }
         }
     }
+
+    public void SetData(int _itemID, ITEM_TYPE _itemType, int _count)
+    {
+        switch (_itemType)
+        {
+            case ITEM_TYPE.UNIT:
+                {
+                    var unitInfo = DataManager.Instance.GetUnitinfoData(_itemID);
+                    thumbnail.sprite = MResourceManager.Instance.GetSpriteFromAtlas(unitInfo.thumbnailpath);
+                    countText.SetText(_count.ToString());
+                }
+                break;
+            case ITEM_TYPE.SOUL:
+                {
+                    thumbnail.sprite = MResourceManager.Instance.SoulSprite;
+                    countText.SetText(_count.ToString());
+                }
+                break;
+            case ITEM_TYPE.EXP:
+                {
+                    thumbnail.sprite = MResourceManager.Instance.ExpSprite;
+                    countText.SetText(_count.ToString());
+                }
+                break;
+        }
+    }
 }

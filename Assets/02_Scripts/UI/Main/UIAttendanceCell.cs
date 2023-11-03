@@ -16,44 +16,27 @@ public class UIAttendanceCellData : GridItemData
 
 public class UIAttendanceCell : UIGridCell
 {
-
-    [SerializeField] private Image iconImage;
-    [SerializeField] private GameObject checkerObject;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private TextMeshProUGUI countText;
-    [SerializeField] private UnitGradeInfo unitGradeInfo;
+    [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private List<UICell_Reward>  uiRewardLists;
 
     public override void Initialize()
     {
         base.Initialize();
     }
 
-    public void SetData(int _uid)
-    {
-
-    }
-
     public override void UpdateContent(GridItemData _itemData)
     {
-        //UIUnitData itemData = (UIUnitData)_itemData;
-        //var selected = Context.SelectedIndex == Index;
-        //var heroData = UserData.Instance.GetHeroData(itemData.uid);
-        //checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
-        //iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
-        //unitGradeInfo.SetData(heroData.grade, heroData.IsMaxGrade, heroData.count, heroData.refUnitGradeData.upgradepiececnt);
+        dayText.SetText($"Day {_itemData.id}");
+        List<DataManager.Attendance> dataLists = DataManager.Instance.GetAttendanceInfosByDay(_itemData.id);
+        for (int i = 0; i < dataLists.Count; i++)
+        {
+            uiRewardLists[i].SetActive(true);
+            uiRewardLists[i].SetData(dataLists[i].rewardid, dataLists[i].rewardtype, dataLists[i].rewardcount);
+        }
 
-        //if (UserData.Instance.LocalData.CurrTutorialID == 14)
-        //{
-        //    if (itemData.id == 1)
-        //    {
-        //        UniTask.Create(async () =>
-        //        {
-        //            await UniTask.Yield();
-        //            TutorialTouchEvent obj = iconImage.AddComponent<TutorialTouchEvent>();
-        //            obj.TutorialID = 14;
-        //            MGameManager.Instance.PlayNextTutorial();
-        //        });
-        //    }
-        //}
+        for (int i = dataLists.Count; i < uiRewardLists.Count; i++)
+        {
+            uiRewardLists[i].SetActive(false);
+        }
     }
 }

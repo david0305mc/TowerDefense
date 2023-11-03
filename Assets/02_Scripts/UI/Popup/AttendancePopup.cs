@@ -17,10 +17,12 @@ public class AttendancePopup : PopupBase
     {
         base.InitPopup(_hideAction);
 
-        UIAttendanceCellData[] itemData = Enumerable.Range(0, 7).Select(i => new UIAttendanceCellData(i)).ToArray();
+        int maxDay = DataManager.Instance.AttendanceDic.Max(item => item.Value.day);
+        UIAttendanceCellData[] itemData = Enumerable.Range(1, maxDay).Select(i => new UIAttendanceCellData(i)).ToArray();
         gridView.UpdateContents(itemData);
         gridView.OnCellClicked(index =>
         {
+            Debug.Log("OnCellClicked");
         });
     }
 
