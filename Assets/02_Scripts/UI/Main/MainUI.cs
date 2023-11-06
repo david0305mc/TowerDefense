@@ -24,12 +24,14 @@ public class MainUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI soulText;
     [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI staminaText;
     [SerializeField] private TextMeshProUGUI staminaTimerText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private UIMainBottomTabGroup tabGruop;
     [SerializeField] private Button attendanceButton;
     [SerializeField] private Button optionButton;
+    [SerializeField] private Button testLevelBtn;
     [SerializeField] private GameObject subMenuObject;
 
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
@@ -37,6 +39,24 @@ public class MainUI : MonoBehaviour
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
+    private void Awake()
+    {
+        HideStageInfo();
+        CheckStaminaTimer().Forget();
+        attendanceButton.onClick.AddListener(() =>
+        {
+            UserData.Instance.CheckAttendance();
+            PopupManager.Instance.Show<AttendancePopup>();
+        });
+        optionButton.onClick.AddListener(() =>
+        {
+            PopupManager.Instance.Show<LevelUpPopup>();
+        });
+        testLevelBtn.onClick.AddListener(() =>
+        {
+            MGameManager.Instance.AddExp(3);
+        });
+    }
     private void OnEnable()
     {
         UserData.Instance.LocalData.Soul.Subscribe(_value =>
@@ -52,6 +72,7 @@ public class MainUI : MonoBehaviour
         UserData.Instance.LocalData.Exp.Subscribe(_value =>
         {
             expText.SetText(_value.ToString());
+            levelText.SetText(DataManager.Instance.ConvertExpToLevel((int)_value).ToString());
         }).AddTo(disposable);
 
         UserData.Instance.LocalData.Gold.Subscribe(_value =>
@@ -71,20 +92,6 @@ public class MainUI : MonoBehaviour
         disposable.Dispose();
     }
     
-    private void Awake()
-    {
-        HideStageInfo();
-        CheckStaminaTimer().Forget();
-        attendanceButton.onClick.AddListener(() =>
-        {
-            UserData.Instance.CheckAttendance();
-            PopupManager.Instance.Show<AttendancePopup>();
-        });
-        optionButton.onClick.AddListener(() =>
-        {
-
-        });
-    }
 
     private async UniTask CheckStaminaTimer()
     {

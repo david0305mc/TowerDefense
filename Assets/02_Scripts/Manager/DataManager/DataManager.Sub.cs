@@ -64,4 +64,13 @@ public partial class DataManager
         return AttendanceDic.Values.Where(item => item.day == _day).ToList();
     }
 
+    public int ConvertExpToLevel(long _exp)
+    {
+        foreach (var item in LevelArray)
+        {
+            if (_exp < item.exp)
+                return item.level;
+        }
+        return LevelArray.Max(item => item.level);
+    }
 }

@@ -151,6 +151,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.LocalData.Stamina.Value -= _stamina;
         UserData.Instance.SaveLocalData();
     }
+
+    public void AddExp(int _exp)
+    {
+        int prevLevel = DataManager.Instance.ConvertExpToLevel(UserData.Instance.LocalData.Exp.Value);
+        UserData.Instance.LocalData.Exp.Value += _exp;
+        int currLevel = DataManager.Instance.ConvertExpToLevel(UserData.Instance.LocalData.Exp.Value);
+        if (prevLevel < currLevel)
+        {
+            PopupManager.Instance.Show<LevelUpPopup>();
+        }
+    }
+
     public void WinStage()
     {
         gameState = Game.GameConfig.GameState.GameEnd;

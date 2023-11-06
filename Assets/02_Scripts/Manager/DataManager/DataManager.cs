@@ -28,6 +28,7 @@ public partial class DataManager : Singleton<DataManager>
 			"TutorialInfo",
 			"Dialogue",
 			"Attendance",
+			"Level",
 		};
 
 	public async UniTask LoadDataAsync()
