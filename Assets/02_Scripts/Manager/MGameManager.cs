@@ -144,7 +144,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
-            InitFollowCamera().Forget();
+            StartFollowCamera().Forget();
             await SpawnAllHero();
             StartEnemyWave().Forget();
             gameState = GameConfig.GameState.InGame;
@@ -175,19 +175,46 @@ public partial class MGameManager : SingletonMono<MGameManager>
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
-            InitFollowCamera().Forget();
+            TouchBlockManager.Instance.AddLock();
+            await ShowStageAround();
+            StartFollowCamera().Forget();
 
             ConsumeStamina(ConfigTable.Instance.StageStartCost);
             await SpawnAllHero();
+            TouchBlockManager.Instance.RemoveLock();
             gameState = GameConfig.GameState.InGame;
         });
     }
 
-    private async UniTaskVoid InitFollowCamera()
+    private async UniTask ShowStageAround()
+    {
+        if (enemyBossUID != 0)
+        {
+            UniTaskCompletionSource ucs = new UniTaskCompletionSource();
+            var bossObj = GetEnemyObj(enemyBossUID);
+            cameraManager.SetPosition(bossObj.transform.position + currStageObj.FollowOffset);
+            cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
+            await UniTask.WaitForSeconds(0.3f);
+            PopupManager.Instance.Show<TouchPopup>(() => {
+                cameraManager.CancelFollowTarget();
+                ucs.TrySetResult();
+            });
+            cameraManager.SetFollowObject(currStageObj.heroSpawnPos.gameObject, GameConfig.normalTargetDragSpeed, false, currStageObj.FollowOffset, () => {
+                ucs.TrySetResult();
+            }, true);
+            await ucs.Task;
+            cameraManager.SetPosition(currStageObj.heroSpawnPos.position + currStageObj.FollowOffset);
+        }
+        else
+        {
+            cameraManager.SetPosition(currStageObj.heroSpawnPos.position + currStageObj.FollowOffset);
+        }
+    }
+
+
+    private async UniTaskVoid StartFollowCamera()
     {
         followCameraCts = new CancellationTokenSource();
-        cameraManager.SetPosition(currStageObj.heroSpawnPos.position + currStageObj.FollowOffset);
-        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
         await UniTask.WaitUntil(() => heroUIDOrder != null && heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
         while (true)
@@ -206,7 +233,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 cameraFollowTime = 0f;
             }
             await UniTask.Yield(cancellationToken: followCameraCts.Token);
-            cameraFollowTime += Time.deltaTime;
+            cameraFollowTime += Time.unscaledDeltaTime;
         }
     }
     private MHeroObj GetFirstCameraTarget()

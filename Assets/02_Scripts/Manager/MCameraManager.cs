@@ -28,6 +28,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
     private Vector3 newPos;
     private Vector3 oldPos;
+    private Vector3 orgPos;
 
     private float newZoom;
     private float oldZoom;
@@ -49,7 +50,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private System.Action followTargetAction;
     private bool keepFollow;
     private float followSpeedFactor;
-
+    private float uniVelocityElapse;
+    private bool isUniVelocity;
     public float ZoomSize => newZoom;
 
     protected override void OnSingletonAwake()
@@ -116,7 +118,17 @@ public class MCameraManager : SingletonMono<MCameraManager>
         newPos = new Vector3(Mathf.Clamp(newPos.x, mapSizeMinX, mapSizeMaxX), Mathf.Clamp(newPos.y, mapSizeMinY, mapSizeMaxY), -10);
         if (!newPos.Equals(oldPos))
         {
-            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * followSpeed * followSpeedFactor);
+            if (isUniVelocity)
+            {
+                var dist = Vector2.Distance(orgPos, newPos);
+                uniVelocityElapse += (Time.unscaledDeltaTime / dist) * followSpeed;
+                transform.position = Vector3.Lerp(orgPos, newPos, uniVelocityElapse);
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * followSpeed * followSpeedFactor);
+            }
+            
             oldPos = transform.position;
         }
 
@@ -310,14 +322,17 @@ public class MCameraManager : SingletonMono<MCameraManager>
         dragStartAction = _dragStartAction;
     }
 
-    public void SetFollowObject(GameObject _target, float _dragSpeedFactor,  bool _keepFollow, Vector3 _offset, System.Action _targetAction)
+    public void SetFollowObject(GameObject _target, float _dragSpeedFactor,  bool _keepFollow, Vector3 _offset, System.Action _targetAction, bool _isUniVelocity = false)
     {
         followOffeset = _offset;
         keepFollow = _keepFollow;
         followTarget = _target;
         followTargetAction = _targetAction;
+        orgPos = transform.position;
         newPos = followTarget.transform.position + _offset;
         followSpeedFactor = _dragSpeedFactor;
+        isUniVelocity = _isUniVelocity;
+        uniVelocityElapse = 0f;
     }
 
     public void CancelFollowTarget()
@@ -326,6 +341,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         followTargetAction = null;
         newPos = transform.position;
         followSpeedFactor = 1f;
+        isUniVelocity = false;
     }
     //private void ZoomCamera()
     //{
