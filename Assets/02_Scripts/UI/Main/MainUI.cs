@@ -30,6 +30,7 @@ public class MainUI : MonoBehaviour
     [SerializeField] private UIMainBottomTabGroup tabGruop;
     [SerializeField] private Button attendanceButton;
     [SerializeField] private Button optionButton;
+    [SerializeField] private GameObject subMenuObject;
 
     [SerializeField] private UIPanelStageInfo stageInfoPanel;
     [SerializeField] private UIPanelUnitSelect unitSelectPanel;
@@ -153,20 +154,29 @@ public class MainUI : MonoBehaviour
                 {
                     MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 5, -2, 9, -2, 6);
                     MGameManager.Instance.FollowToCurrStage();
+                    subMenuObject.SetActive(true);
                 }
                 break;
 
             case BottomTab.Arrangement:
                 {
-                    ShowArrangementUI();  
+                    ShowArrangementUI();
+                    subMenuObject.SetActive(false);
                 }
                 break;
             case BottomTab.Event:
                 {
+                    subMenuObject.SetActive(false);
                 }
                 break;
             case BottomTab.Pvp:
                 {
+                    subMenuObject.SetActive(false);
+                }
+                break;
+            case BottomTab.Shop:
+                {
+                    subMenuObject.SetActive(false);
                 }
                 break;
         }
