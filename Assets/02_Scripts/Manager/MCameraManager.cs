@@ -24,8 +24,6 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private static Vector3 PositiveInfinityVector = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
     private Camera mainCamera;
 
-    public bool EnableCameraControl;
-
     private Vector3 newPos;
     private Vector3 oldPos;
     private Vector3 orgPos;
@@ -64,7 +62,6 @@ public class MCameraManager : SingletonMono<MCameraManager>
         oldZoom = newZoom;
         followTarget = null;
         followTargetAction = null;
-        EnableCameraControl = true;
         followSpeedFactor = 1f;
     }
     void Start()
@@ -80,7 +77,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             return;
         }
 
-        if (!EnableCameraControl)
+        if (TouchBlockManager.Instance.IsLock())
         {
             return;
         }

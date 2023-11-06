@@ -154,7 +154,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void WinStage()
     {
         gameState = Game.GameConfig.GameState.GameEnd;
-        cameraManager.EnableCameraControl = true;
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
         AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
         UserData.Instance.ClearStage(UserData.Instance.PlayingStage);

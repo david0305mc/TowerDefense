@@ -119,6 +119,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void StartWaveStage(int _stageID)
     {
+        TouchBlockManager.Instance.AddLock();
         gameState = GameConfig.GameState.InGame_SpawningHero;
         waveSpawnFinished = false;
         stageCts = new CancellationTokenSource();
@@ -148,10 +149,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await SpawnAllHero();
             StartEnemyWave().Forget();
             gameState = GameConfig.GameState.InGame;
+            TouchBlockManager.Instance.RemoveLock();
         });
     }
     public void StartStage(int stageID)
     {
+        TouchBlockManager.Instance.AddLock();
         gameState = GameConfig.GameState.InGame_SpawningHero;
         stageCts = new CancellationTokenSource();
         timerCts = new CancellationTokenSource();
@@ -175,7 +178,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
-            TouchBlockManager.Instance.AddLock();
             await ShowStageAround();
             StartFollowCamera().Forget();
 
@@ -183,6 +185,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             await SpawnAllHero();
             TouchBlockManager.Instance.RemoveLock();
             gameState = GameConfig.GameState.InGame;
+
         });
     }
 
@@ -635,13 +638,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 gameState = GameConfig.GameState.BossDefeatEffect;
                 DisposeCTS();
                 Time.timeScale = 0.3f;
-                cameraManager.EnableCameraControl = false;
+                TouchBlockManager.Instance.AddLock();
                 cameraManager.SetFollowObject(enemyObj.gameObject, GameConfig.unitTargetDragSpeed, false, Vector2.zero, null);
                 SetAllUnitEndState();
                 effectPeedback.SetData(() =>
                 {
                     Lean.Pool.LeanPool.Despawn(effectPeedback);
                     Time.timeScale = 1f;
+                    TouchBlockManager.Instance.RemoveLock();
                     WinStage();
                 });
                 effectPeedback.SetTimeScaleAction(_scale =>
