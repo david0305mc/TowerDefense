@@ -356,15 +356,17 @@ public partial class UserData : Singleton<UserData>
 
     public void CheckAttendance()
     {
+        int maxDay = DataManager.Instance.AttendanceDic.Values.Max(item => item.day);
+
         if (GameTime.Get() >= LocalData.NextAttendanceTime)
         {
             LocalData.AttendanceDay ++;
-            if (LocalData.AttendanceDay > DataManager.Instance.AttendanceDic.Values.Max(item=>item.day))
+            if (LocalData.AttendanceDay > maxDay)
             {
-                LocalData.AttendanceDay = 1;
-                LocalData.AttendanceRewardedDic.Clear();
+                LocalData.AttendanceDay = maxDay;
             }
             LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
+            SaveLocalData();
         }
     }
     public UnitBattleData AddDevilCastleData(int _tid)

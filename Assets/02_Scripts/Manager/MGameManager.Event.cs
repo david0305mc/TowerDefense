@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System.Linq;
 
 public partial class MGameManager : SingletonMono<MGameManager>
 {
@@ -57,6 +58,17 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         UserData.Instance.LocalData.AttendanceRewardedDic[_day] = 1;
         UserData.Instance.LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
+
+        int maxDay = DataManager.Instance.AttendanceDic.Values.Max(item => item.day);
+        if (maxDay == UserData.Instance.LocalData.AttendanceDay)
+        {
+            int rewardCount = UserData.Instance.LocalData.AttendanceRewardedDic.Values.Count(item => item == 0);
+            if (rewardCount == 0)
+            {
+                UserData.Instance.LocalData.AttendanceDay = 0;
+                UserData.Instance.LocalData.AttendanceRewardedDic.Clear();
+            }
+        }
         UserData.Instance.SaveLocalData();
         MessageDispather.Publish(EMessage.Update_Attendance);
     }
