@@ -29,17 +29,17 @@ public class MEnemyObj : MBaseObj
     {
         base.StartFSM();
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
 
-        Gizmos.DrawCube(transform.position - new Vector3(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f, 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
-        Gizmos.DrawCube(transform.position - new Vector3(-(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f), 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
-    }
+    //    Gizmos.DrawCube(transform.position - new Vector3(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f, 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
+    //    Gizmos.DrawCube(transform.position - new Vector3(-(ColliderRadius + MGameManager.Instance.AttackRangeW * 0.5f), 0, 0), new Vector3(MGameManager.Instance.AttackRangeW, MGameManager.Instance.AttackRangeH, 0));
+    //}
     protected override void Idle_Enter()
     {
         base.Idle_Enter();
-
+        detectDelay = Random.Range(0, 2f);
         if (MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint != null)
         {
             fsm.ChangeState(FSMStates.WaypointMove);
@@ -47,9 +47,10 @@ public class MEnemyObj : MBaseObj
     }
     protected override void Idle_Update()
     {
-        commonDelay += Time.deltaTime;
-        if (commonDelay >= 0.1f)
+        detectDelay -= Time.deltaTime;
+        if (detectDelay <= 0)
         {
+            detectDelay = Random.Range(0, 2f);
             DetectHero();
         }
     }
@@ -106,7 +107,6 @@ public class MEnemyObj : MBaseObj
     
     private void DetectHero()
     {
-        commonDelay = 0;
         var detectedObjs = FindUnitListByArea(unitData.refData.checkrange, false);
         if (detectedObjs != default && detectedObjs.Count > 0)
         {

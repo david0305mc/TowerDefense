@@ -14,6 +14,9 @@ public class AnimationLink : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        if (animator == null)
+            return;
+
         for (int i = 0; i < animator.runtimeAnimatorController.animationClips.Length; i++)
         {
             AnimationClip clip = animator.runtimeAnimatorController.animationClips[i];

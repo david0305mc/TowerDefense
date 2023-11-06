@@ -51,6 +51,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected float attackLongDelayCount;
     protected float attackDelay;
     protected float commonDelay;
+    protected float detectDelay;
     protected int targetObjUID;
     protected bool isFixedTarget;
 
@@ -86,9 +87,18 @@ public class MBaseObj : MonoBehaviour, Damageable
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
-        renderRoot = animator.transform;
-        defaultDirection = renderRoot.localScale.x;
-        animationLink = animator.GetComponent<AnimationLink>();
+        if (animator != null)
+        {
+            renderRoot = animator.transform;
+            defaultDirection = renderRoot.localScale.x;
+            animationLink = animator.GetComponent<AnimationLink>();
+        }
+        else
+        {
+            renderRoot = transform;
+            defaultDirection = renderRoot.localScale.x;
+        }
+        
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
         originMaterial = spriteRenderers[0].material;
@@ -105,31 +115,35 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
 
         fsm = new StateMachine<FSMStates, StateDriverUnity>(this);
-        animationLink.SetEvent(() =>
+        if (animationLink != null)
         {
-            if (fsm.State != FSMStates.Attack)
+            animationLink.SetEvent(() =>
             {
-                return;
-            }
-            // Fire Only For Projectile
-            if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
-            {
-                if (!UserData.Instance.isUnitDead(targetObjUID, !UnitData.IsEnemy))
+                if (fsm.State != FSMStates.Attack)
                 {
-                    MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                    return;
                 }
-            }
+                // Fire Only For Projectile
+                if (unitData.refData.unit_type == UNIT_TYPE.ARCHER)
+                {
+                    if (!UserData.Instance.isUnitDead(targetObjUID, !UnitData.IsEnemy))
+                    {
+                        MGameManager.Instance.LauchProjectile(this, targetObjUID);
+                    }
+                }
 
-        }, () => {
+            }, () => {
 
-            // Attack Ani End
-            if (fsm.State != FSMStates.Attack)
-            {
-                return;
-            }
+                // Attack Ani End
+                if (fsm.State != FSMStates.Attack)
+                {
+                    return;
+                }
 
-            DoAttackEnd();
-        });
+                DoAttackEnd();
+            });
+        }
+     
         fsm.ChangeState(FSMStates.PrevIdle);
     }
 

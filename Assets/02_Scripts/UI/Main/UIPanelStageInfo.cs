@@ -79,7 +79,7 @@ public class UIPanelStageInfo : MonoBehaviour
                 requrePowerText.color = enableColor;
                 break;
         }
-
+        startBtn.SetActive(true);
         List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
         List<DataManager.StageRewardInfo> rewards = DataManager.Instance.GetStageRewards(_stageID);
         foreach (var rewardInfo in rewards)
