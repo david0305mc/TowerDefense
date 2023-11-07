@@ -52,7 +52,14 @@ public class InGameUI : MonoBehaviour
                 await UniTask.WaitForSeconds(1f, cancellationToken: _cts.Token);
             }
             tileLeftText.SetText("00:00");
-            MGameManager.Instance.LoseStage();
+            if (UserData.Instance.IsWaveStage)
+            {
+                MGameManager.Instance.WinStage();
+            }
+            else
+            {
+                MGameManager.Instance.LoseStage();
+            }
         });
         disposable.Clear();
         UserData.Instance.AcquireSoul.Subscribe(_soul =>
