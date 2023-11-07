@@ -50,11 +50,11 @@ public class MainUI : MonoBehaviour
         });
         optionButton.onClick.AddListener(() =>
         {
-            PopupManager.Instance.Show<LevelUpPopup>();
+
         });
         testLevelBtn.onClick.AddListener(() =>
         {
-            MGameManager.Instance.AddExp(3);
+
         });
     }
     private void OnEnable()

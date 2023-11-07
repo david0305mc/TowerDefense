@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public partial class MGameManager : SingletonMono<MGameManager>
 {
@@ -23,7 +24,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             switch ((ITEM_TYPE)item.rewardtype)
             {
                 case ITEM_TYPE.EXP:
-                    UserData.Instance.LocalData.Exp.Value += item.rewardcount;
+                    AddExp(item.rewardcount);
                     break;
                 case ITEM_TYPE.SOUL:
                     UserData.Instance.LocalData.Soul.Value += item.rewardcount;
@@ -164,8 +165,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             UserData.Instance.LocalData.Gold.Value += levelInfo.goldreward;
             UserData.Instance.LocalData.UnitSlotCount.Value = levelInfo.unlockslot;
             AddStamina(ConfigTable.Instance.StaminaMaxCount, false);
-            var popup = PopupManager.Instance.Show<LevelUpPopup>();
-            popup.SetData(currLevel);
         }
     }
 
@@ -173,9 +172,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         gameState = Game.GameConfig.GameState.GameEnd;
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
+        int prevLevel = UserData.Instance.LocalData.Level.Value;
         AddStageRewards(UserData.Instance.AcquireSoul.Value, stageRewards);
+        int currLevel = UserData.Instance.LocalData.Level.Value;
         UserData.Instance.ClearStage(UserData.Instance.PlayingStage);
-        
+
         var popup = PopupManager.Instance.Show<GameResultPopup>();
         popup.SetData(true, stageRewards, () =>
         {
@@ -190,6 +191,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
             RemoveStage();
             NextStage();
         });
+
+        if (prevLevel < currLevel)
+        {
+            TouchBlockManager.Instance.AddLock();
+            UniTask.Create(async () =>
+            {
+                await UniTask.WaitForSeconds(1f);
+                var popup = PopupManager.Instance.Show<LevelUpPopup>();
+                popup.SetData(currLevel);
+                TouchBlockManager.Instance.RemoveLock();
+            });
+        }
     }
     public void LoseStage()
     {
