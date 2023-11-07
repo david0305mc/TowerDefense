@@ -41,19 +41,20 @@ public class UIPanelUnitSelect : MonoBehaviour
         var popup = PopupManager.Instance.Show<UnitInfoPopup>();
         popup.SetData(heroData.uid, () =>
         {
-            if (UserData.Instance.FindEmptySlot() == -1)
-            {
-                PopupManager.Instance.ShowSystemOneBtnPopup("No Empty Slot", "OK");
-                return;
-            }
-
             int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
             if (partySlotIndex == -1)
             {
+                // Equip
+                if (UserData.Instance.FindEmptySlot() == -1)
+                {
+                    PopupManager.Instance.ShowSystemOneBtnPopup("No Empty Slot", "OK");
+                    return;
+                }
                 int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
             }
             else
             {
+                // UnEquip
                 MGameManager.Instance.RemoveBattleParty(partySlotIndex);
             }
         });

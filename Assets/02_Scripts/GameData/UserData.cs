@@ -103,7 +103,7 @@ public partial class UserData : Singleton<UserData>
 
     public int FindEmptySlot()
     {
-        for (int i = 0; i < Game.GameConfig.MaxBattlePartyCount; i++)
+        for (int i = 0; i < GetUnitSlotCount(); i++)
         {
             if (LocalData.BattlePartyDic[i] == -1)
             {
@@ -263,6 +263,10 @@ public partial class UserData : Singleton<UserData>
         }
     }
 
+    public int GetUnitSlotCount()
+    {
+        return DataManager.Instance.GetLevelData(LocalData.Level.Value).unlockslot;
+    }
     public void SaveEnemyData()
     {
         //InBuildData EnemyData = new InBuildData();

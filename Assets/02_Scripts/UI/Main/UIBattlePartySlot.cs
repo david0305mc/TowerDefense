@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 public class UIBattlePartySlot : MonoBehaviour
 {
     [SerializeField] private GameObject emptySlot;
+    [SerializeField] private GameObject lockSlot;
     [SerializeField] private Transform characterViewTr;
     [SerializeField] private Button button;
 
@@ -50,18 +51,6 @@ public class UIBattlePartySlot : MonoBehaviour
         unitUID = _unitUID;
     }
 
-    public void RemoveHero()
-    {
-        unitUID = -1;
-        //Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
-        emptySlot.SetActive(true);
-    }
-
-    public void SetHeroObj(int _unitUID)
-    {
-        
-    }
-
     public void ClearPool()
     {
         if (heroObj != null)
@@ -71,6 +60,16 @@ public class UIBattlePartySlot : MonoBehaviour
             Lean.Pool.LeanPool.Despawn(heroObj.gameObject);
             heroObj = null;
         }
-        emptySlot.SetActive(true);
+
+        if (UserData.Instance.GetUnitSlotCount() < slotIndex + 1)
+        {
+            emptySlot.SetActive(false);
+            lockSlot.SetActive(true);
+        }
+        else
+        {
+            emptySlot.SetActive(true);
+            lockSlot.SetActive(false);
+        }
     }
 }

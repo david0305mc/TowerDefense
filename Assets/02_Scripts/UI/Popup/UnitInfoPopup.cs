@@ -31,6 +31,7 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private TextMeshProUGUI upgradeCostText;
 
     private System.Action equipAction;
+    private System.Action unEquipAction;
     private UnitData unitData;
 
     protected override void Awake()
