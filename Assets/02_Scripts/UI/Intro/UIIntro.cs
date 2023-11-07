@@ -36,7 +36,6 @@ public class UIIntro : MonoBehaviour
         loadingUI.SetActive(true); 
         var playLoadingUI = loadingUI.PlayLoadingUIAsync();
         await UniTask.Yield();
-        await UniTask.Yield();
         LocalizeManager.Instance.Initialize();
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();

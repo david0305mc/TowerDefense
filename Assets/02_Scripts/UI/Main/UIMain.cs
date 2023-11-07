@@ -43,4 +43,14 @@ public class UIMain : SingletonMono<UIMain>
             Gizmos.DrawLine(boundaries.Item4, boundaries.Item1);
         }
     }
+
+    public void Broadcast(string funcName)
+    {
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+#endif
+        {
+            gameObject.BroadcastMessage(funcName, SendMessageOptions.DontRequireReceiver);
+        }
+    }
 }

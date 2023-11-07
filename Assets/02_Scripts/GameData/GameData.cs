@@ -14,6 +14,7 @@ public class LocalSaveData
     public int AttendanceDay;
     public SerializableDictionary<int, int> AttendanceRewardedDic;
     public long NextAttendanceTime;
+
     public ReactiveProperty<int> Level;
     public ReactiveProperty<long> Soul;
     public ReactiveProperty<long> Stamina;
@@ -40,6 +41,7 @@ public class LocalSaveData
         HeroDataDic = new SerializableDictionary<int, UnitData>();
         BattlePartyDic = new SerializableDictionary<int, int>();
         Level = new ReactiveProperty<int>(1);
+
         Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
         {
             BattlePartyDic[i] = -1;

@@ -13,6 +13,8 @@ public class LocalizeManager : Singleton<LocalizeManager>
             Debug.LogWarningFormat("[Localization/SetLanguage] {0}", value);
             language = value;
             PlayerPrefs.SetString("Language", language.ToString());
+            // broad Casting
+            UIMain.Instance.Broadcast("OnLocalize");
         }
     }
 

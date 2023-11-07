@@ -13,16 +13,26 @@ public class Localize : MonoBehaviour
         uiText = GetComponent<TextMeshProUGUI>();
         if (uiText != null)
         {
-            string localString = LocalizeManager.Instance.GetLocalString(key);
-            if (string.IsNullOrEmpty(localString))
-            {
-                Debug.LogError($"there is no key {key}");
-                uiText.SetText(key);
-            }
-            else
-            {
-                uiText.SetText(localString);
-            }
+            UpdateLocalization();
         }
+    }
+
+    private void UpdateLocalization()
+    {
+        string localString = LocalizeManager.Instance.GetLocalString(key);
+        if (string.IsNullOrEmpty(localString))
+        {
+            Debug.LogError($"there is no key {key}");
+            uiText.SetText(key);
+        }
+        else
+        {
+            uiText.SetText(localString);
+        }
+    }
+
+    private void OnLocalize()
+    {
+        UpdateLocalization();
     }
 }
