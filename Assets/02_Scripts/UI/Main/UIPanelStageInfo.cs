@@ -22,13 +22,6 @@ public class UIPanelStageInfo : MonoBehaviour
     private void Awake()
     {
         startBtn.onClick.AddListener(() => {
-            //&& BattlePower >= stageInfo.needcombatpower
-
-            //if (UserData.Instance.BattlePower < stageInfo.needcombatpower)
-            //{
-            //    PopupManager.Instance.ShowSystemOneBtnPopup("Not Enough Power", "OK");
-            //    return;
-            //}
             if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
             {
                 startBtnAction?.Invoke();
@@ -49,6 +42,11 @@ public class UIPanelStageInfo : MonoBehaviour
         stageInfo = DataManager.Instance.GetStageInfoData(_stageID);
         startBtnAction = _startAction;
         closeBtnAction = _closeAction;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
         titleText.SetText(LocalizeManager.Instance.GetLocalString(stageInfo.stagename));
         battlePowerText.SetText(UserData.Instance.BattlePower.ToString());
         requrePowerText.SetText(stageInfo.needcombatpower.ToString());
@@ -62,8 +60,8 @@ public class UIPanelStageInfo : MonoBehaviour
         {
             requreEnegyText.color = disableColor;
         }
-        
-        var stageStatus = UserData.Instance.GetStageStatus(_stageID);
+
+        var stageStatus = UserData.Instance.GetStageStatus(stageInfo.id);
         switch (stageStatus)
         {
             case Game.StageStatus.Lock:
@@ -81,7 +79,7 @@ public class UIPanelStageInfo : MonoBehaviour
         }
         startBtn.SetActive(true);
         List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
-        List<DataManager.StageRewardInfo> rewards = DataManager.Instance.GetStageRewards(_stageID);
+        List<DataManager.StageRewardInfo> rewards = DataManager.Instance.GetStageRewards(stageInfo.id);
         foreach (var rewardInfo in rewards)
         {
             rewardLists.Add(new UIRewardCellData(rewardInfo.id));
@@ -90,5 +88,10 @@ public class UIPanelStageInfo : MonoBehaviour
         gridView.OnCellClicked(index =>
         {
         });
+    }
+
+    private void OnLocalize()
+    {
+        UpdateUI();
     }
 }
