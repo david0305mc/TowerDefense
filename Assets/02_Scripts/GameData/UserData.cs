@@ -96,9 +96,26 @@ public partial class UserData : Singleton<UserData>
     private void InitNewGameData()
     {
         var heroData = AddHeroData(ConfigTable.Instance.DefaultUnit01, 1);
+
         AddBattleParty(heroData.uid);
         var levelInfo = DataManager.Instance.GetLevelData(LocalData.Level.Value);
         LocalData.UnitSlotCount = new ReactiveProperty<int>(levelInfo.unlockslot);
+    }
+
+    public bool HasAttendacneReward()
+    {
+        for (int i = 1; i < LocalData.AttendanceDay + 1; i++)
+        {
+            if (!LocalData.AttendanceRewardedDic.ContainsKey(i))
+            {
+                return true;
+            }
+            if (LocalData.AttendanceRewardedDic[i] == 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int FindEmptySlot()

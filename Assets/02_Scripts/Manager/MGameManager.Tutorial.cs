@@ -5,11 +5,11 @@ using UnityEngine;
 public partial class MGameManager : SingletonMono<MGameManager>
 {
 
-    public void PlayNextTutorial(System.Action _endAction = null)
+    public bool PlayNextTutorial(System.Action _endAction = null)
     {
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(UserData.Instance.LocalData.CurrTutorialID);
         if (tutoInfo == null)
-            return;
+            return false;
 
         switch (tutoInfo.tutotype)
         {
@@ -53,7 +53,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     });
                 }
                 break;
+
+            case TUTO_TYPE.ATTENDANCE:
+                {
+                    var popup = PopupManager.Instance.Show<AttendancePopup>(()=> {
+                        OnTutorialEnd(tutoInfo.id, () => {
+                            
+                        });
+                    });
+                }
+                break;
         }
+        return true;
     }
 
     public void OnTutorialEnd(int _prevTutoID, System.Action _hidePrevTuto)

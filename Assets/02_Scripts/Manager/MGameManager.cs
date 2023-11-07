@@ -274,6 +274,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             PlayNextTutorial();
         }
+        else if (UserData.Instance.LocalData.CurrTutorialID == 20)
+        {
+            PlayNextTutorial();
+        }
     }
 
     private async UniTask CheckStaminaSpawn()
@@ -439,7 +443,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
         worldMap.InitWorld();
         mainUI.InitTabGroup();
         SetWorldUI();
-        PlayNextTutorial();
+        if (!PlayNextTutorial())
+        {
+            UserData.Instance.CheckAttendance();
+            if (UserData.Instance.HasAttendacneReward())
+            {
+                PopupManager.Instance.Show<AttendancePopup>();
+            }
+        }
     }
 
     private void Start()

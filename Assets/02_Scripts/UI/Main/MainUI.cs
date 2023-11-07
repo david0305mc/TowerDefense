@@ -45,7 +45,6 @@ public class MainUI : MonoBehaviour
         CheckStaminaTimer().Forget();
         attendanceButton.onClick.AddListener(() =>
         {
-            UserData.Instance.CheckAttendance();
             PopupManager.Instance.Show<AttendancePopup>();
         });
         optionButton.onClick.AddListener(() =>

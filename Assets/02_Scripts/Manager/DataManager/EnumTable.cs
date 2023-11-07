@@ -50,4 +50,5 @@ public enum TUTO_TYPE
 	DIALOUGE                     = 1,        	// 
 	CAMERASTAGEMOVE              = 2,        	// 
 	NEEDTOUCH                    = 3,        	// 
+	ATTENDANCE                   = 4,        	// 
 }

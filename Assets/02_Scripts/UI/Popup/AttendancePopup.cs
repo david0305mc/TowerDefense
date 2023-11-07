@@ -21,6 +21,7 @@ public class AttendancePopup : PopupBase
     public override void InitPopup(Action _hideAction)
     {
         base.InitPopup(_hideAction);
+        UserData.Instance.CheckAttendance();
         UpdateUI();
     }
 
@@ -32,7 +33,6 @@ public class AttendancePopup : PopupBase
         gridView.OnCellClicked(index =>
         {
             MGameManager.Instance.ReceiveAttendanceReward(index + 1);
-            Debug.Log("OnCellClicked");
         });
     }
 
