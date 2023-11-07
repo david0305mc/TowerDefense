@@ -50,11 +50,7 @@ public class MainUI : MonoBehaviour
         });
         optionButton.onClick.AddListener(() =>
         {
-
-        });
-        testLevelBtn.onClick.AddListener(() =>
-        {
-
+            PopupManager.Instance.Show<OptionPopup>();
         });
     }
     private void OnEnable()
