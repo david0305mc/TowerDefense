@@ -14,10 +14,12 @@ public class LocalSaveData
     public int AttendanceDay;
     public SerializableDictionary<int, int> AttendanceRewardedDic;
     public long NextAttendanceTime;
+    public ReactiveProperty<int> Level;
     public ReactiveProperty<long> Soul;
     public ReactiveProperty<long> Stamina;
     public ReactiveProperty<long> Exp;
     public ReactiveProperty<long> Gold;
+    public ReactiveProperty<int> UnitSlotCount;
     public SerializableDictionary<int, StageData> StageClearDic;
     public SerializableDictionary<int, UnitData> HeroDataDic;
     public SerializableDictionary<int, int> BattlePartyDic;
@@ -37,6 +39,7 @@ public class LocalSaveData
         Gold = new ReactiveProperty<long>(ConfigTable.Instance.GoldDefault);
         HeroDataDic = new SerializableDictionary<int, UnitData>();
         BattlePartyDic = new SerializableDictionary<int, int>();
+        Level = new ReactiveProperty<int>(1);
         Enumerable.Range(0, Game.GameConfig.MaxBattlePartyCount).ToList().ForEach(i =>
         {
             BattlePartyDic[i] = -1;

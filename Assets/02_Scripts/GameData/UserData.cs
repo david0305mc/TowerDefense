@@ -97,6 +97,8 @@ public partial class UserData : Singleton<UserData>
     {
         var heroData = AddHeroData(ConfigTable.Instance.DefaultUnit01, 1);
         AddBattleParty(heroData.uid);
+        var levelInfo = DataManager.Instance.GetLevelData(LocalData.Level.Value);
+        LocalData.UnitSlotCount = new ReactiveProperty<int>(levelInfo.unlockslot);
     }
 
     public int FindEmptySlot()

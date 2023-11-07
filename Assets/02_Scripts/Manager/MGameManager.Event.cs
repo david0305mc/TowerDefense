@@ -159,7 +159,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
         int currLevel = DataManager.Instance.ConvertExpToLevel(UserData.Instance.LocalData.Exp.Value);
         if (prevLevel < currLevel)
         {
-            PopupManager.Instance.Show<LevelUpPopup>();
+            var levelInfo = DataManager.Instance.GetLevelData(currLevel);
+            UserData.Instance.LocalData.Level.Value = currLevel;
+            UserData.Instance.LocalData.Gold.Value += levelInfo.goldreward;
+            UserData.Instance.LocalData.UnitSlotCount.Value = levelInfo.unlockslot;
+            AddStamina(ConfigTable.Instance.StaminaMaxCount, false);
+            var popup = PopupManager.Instance.Show<LevelUpPopup>();
+            popup.SetData(currLevel);
         }
     }
 
