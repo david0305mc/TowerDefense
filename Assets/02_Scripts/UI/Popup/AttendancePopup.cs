@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UniRx;
+using Cysharp.Threading.Tasks;
 
 public class AttendancePopup : PopupBase
 {
@@ -32,7 +33,20 @@ public class AttendancePopup : PopupBase
         gridView.UpdateContents(itemData);
         gridView.OnCellClicked(index =>
         {
+            int prevLevel = UserData.Instance.LocalData.Level.Value;
             MGameManager.Instance.ReceiveAttendanceReward(index + 1);
+            int currLevel = UserData.Instance.LocalData.Level.Value;
+            if (prevLevel < currLevel)
+            {
+                TouchBlockManager.Instance.AddLock();
+                UniTask.Create(async () =>
+                {
+                    await UniTask.WaitForSeconds(0.3f);
+                    var popup = PopupManager.Instance.Show<LevelUpPopup>();
+                    popup.SetData(currLevel);
+                    TouchBlockManager.Instance.RemoveLock();
+                });
+            }
         });
     }
 
