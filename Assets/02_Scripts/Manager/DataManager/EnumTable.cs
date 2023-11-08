@@ -24,6 +24,7 @@ public enum ITEM_TYPE
 	UNIT                         = 0,        	// 조각
 	SOUL                         = 1,        	// 영혼 아이템 (재화)
 	EXP                          = 2,        	// 경험치
+	STAMINA                      = 3,        	// 스태미나
 }
 public enum RARITY_TYPE 
 { 

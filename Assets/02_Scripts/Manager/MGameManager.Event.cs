@@ -9,10 +9,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
 {
     //유저 데이터가 바뀌는 액션
 
-    public void AddSoul(int _add)
+    public void AddSoul(int _add, bool forceSave = true)
     {
         UserData.Instance.LocalData.Soul.Value += _add;
-        UserData.Instance.SaveLocalData();
+        if (forceSave)
+        {
+            UserData.Instance.SaveLocalData();
+        }
     }
 
     public void AddStageRewards(int _soul, List<DataManager.StageRewardInfo> rewards)
@@ -55,8 +58,45 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
+    public void ReceiveReward(List<RewardData> _rewardList)
+    {
+        foreach (var item in _rewardList)
+        {
+            switch (item.rewardtype)
+            {
+                case ITEM_TYPE.EXP:
+                    AddExp(item.rewardcount);
+                    break;
+                case ITEM_TYPE.SOUL:
+                    AddSoul(item.rewardcount, false);
+                    break;
+                case ITEM_TYPE.UNIT:
+                    UserData.Instance.AddHeroData(item.rewardid, item.rewardcount);
+                    break;
+                case ITEM_TYPE.STAMINA:
+                    AddStamina(item.rewardcount, true);
+                    break;
+            }
+        }
+        var popup = PopupManager.Instance.Show<RewardPopup>();
+        popup.SetData(_rewardList);
+    }
     public void ReceiveAttendanceReward(int _day)
     {
+        var attendanceInfoLists = DataManager.Instance.GetAttendanceInfosByDay(_day);
+
+        List<RewardData> rewardList = new List<RewardData>();
+        foreach (var item in attendanceInfoLists)
+        {
+            rewardList.Add(new RewardData()
+            {
+                rewardtype = item.rewardtype,
+                rewardid = item.rewardid,
+                rewardcount = item.rewardcount,
+            });
+        }
+        ReceiveReward(rewardList);
+
         UserData.Instance.LocalData.AttendanceRewardedDic[_day] = 1;
         UserData.Instance.LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
 
@@ -117,7 +157,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void BuyStamina(int _stamina, int _goldCost)
     {
         UserData.Instance.LocalData.Gold.Value -= _goldCost;
-        AddStamina(_stamina, true);
+        var receiveLists = new List<RewardData>() { new RewardData() { rewardtype = ITEM_TYPE.STAMINA, rewardcount = _stamina, rewardid = -1 } };
+        ReceiveReward(receiveLists);
         UserData.Instance.SaveLocalData();
     }
 
@@ -131,7 +172,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             else
             {
-                UserData.Instance.LocalData.Stamina.Value = ConfigTable.Instance.StaminaMaxCount;
+                if (UserData.Instance.LocalData.Stamina.Value < ConfigTable.Instance.StaminaMaxCount)
+                {
+                    UserData.Instance.LocalData.Stamina.Value = ConfigTable.Instance.StaminaMaxCount;
+                }
             }
             
             UserData.Instance.LocalData.StaminaLastSpawnTime = GameTime.Get();

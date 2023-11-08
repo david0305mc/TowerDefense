@@ -166,3 +166,10 @@ public class AttackData
     }
 }
 
+public class RewardData
+{
+    public ITEM_TYPE rewardtype;
+    public int rewardid;
+    public int rewardcount;
+}
+

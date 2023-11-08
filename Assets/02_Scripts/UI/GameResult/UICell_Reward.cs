@@ -81,6 +81,12 @@ public class UICell_Reward : UIGridCell
                     countText.SetText(_count.ToString());
                 }
                 break;
+            case ITEM_TYPE.STAMINA:
+                {
+                    thumbnail.sprite = MResourceManager.Instance.StaminaSprite;
+                    countText.SetText(_count.ToString());
+                }
+                break;
         }
     }
 }
