@@ -103,8 +103,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         int maxDay = DataManager.Instance.AttendanceDic.Values.Max(item => item.day);
         if (maxDay == UserData.Instance.LocalData.AttendanceDay)
         {
-            int rewardCount = UserData.Instance.LocalData.AttendanceRewardedDic.Values.Count(item => item == 0);
-            if (rewardCount == 0)
+            if (!UserData.Instance.HasAttendacneReward())
             {
                 UserData.Instance.LocalData.AttendanceDay = 0;
                 UserData.Instance.LocalData.AttendanceRewardedDic.Clear();
