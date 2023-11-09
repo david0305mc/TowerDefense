@@ -233,6 +233,12 @@ public class MCameraManager : SingletonMono<MCameraManager>
             groundDragStarted = false;
             dragStartPos = PositiveInfinityVector;
         }
+
+        float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
+        if (scrollAmount != 0)
+        {
+            newZoom = newZoom - scrollAmount;
+        }
     }
 
     private void UpdateTwoTouch()
