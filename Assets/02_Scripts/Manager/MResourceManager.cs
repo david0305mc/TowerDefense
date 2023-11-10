@@ -21,6 +21,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
     [SerializeField] private SpriteAtlas iconAtlas;
 
     public Material FlashMaterial;
+    public Material SpriteDefaultMaterial;
     public Color FlashColor;
     public Color RarityColorCommon;
     public Color RarityColorRare;

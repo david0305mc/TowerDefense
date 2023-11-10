@@ -64,7 +64,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
     private CircleCollider2D circleCollider;
-    private Material originMaterial;
+    
     private List<Color> originColorLists;
     private NavMeshPath currNavPath;
     public Vector3 targetoffset;
@@ -101,7 +101,6 @@ public class MBaseObj : MonoBehaviour, Damageable
         
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
-        originMaterial = spriteRenderers[0].material;
         originColorLists = new List<Color>();
         hpBar.SetActive(false);
 
@@ -546,7 +545,7 @@ public class MBaseObj : MonoBehaviour, Damageable
 
         Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
         {
-            spriteRenderers[i].material = originMaterial;
+            spriteRenderers[i].material = MResourceManager.Instance.SpriteDefaultMaterial;
             spriteRenderers[i].color = originColorLists[i];
         });
     }
@@ -839,7 +838,7 @@ public class MBaseObj : MonoBehaviour, Damageable
             await UniTask.Delay(100, cancellationToken: flashCts.Token);
             Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
             {
-                spriteRenderers[i].material = originMaterial;
+                spriteRenderers[i].material = MResourceManager.Instance.SpriteDefaultMaterial;
                 spriteRenderers[i].color = originColorLists[i];
             });
         });
