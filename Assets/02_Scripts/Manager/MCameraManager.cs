@@ -176,15 +176,15 @@ public class MCameraManager : SingletonMono<MCameraManager>
                 pinchStarted = false;
             }
         }
-        else
-        {
-            pinchStarted = false;
-            float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
-            if (scrollAmount != 0)
-            {
-                newZoom = newZoom - scrollAmount;
-            }
-        }
+        //else
+        //{
+        //    pinchStarted = false;
+        //    float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
+        //    if (scrollAmount != 0)
+        //    {
+        //        newZoom = newZoom - scrollAmount;
+        //    }
+        //}
     }
 
     private void UpdateOneTouch()
@@ -234,7 +234,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
             dragStartPos = PositiveInfinityVector;
         }
 
-        float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * 10;
+        float scrollAmount = Input.mouseScrollDelta.y;
         if (scrollAmount != 0)
         {
             newZoom = newZoom - scrollAmount;
