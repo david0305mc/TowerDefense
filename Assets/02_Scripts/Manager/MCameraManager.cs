@@ -92,7 +92,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
 
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
+    //private void FixedUpdate()
     {
         if (followTarget != null)
         {
