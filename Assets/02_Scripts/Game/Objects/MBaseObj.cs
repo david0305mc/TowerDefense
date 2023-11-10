@@ -74,6 +74,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     private readonly float attackDistMarge = 0.3f;
     private float defaultDirection;
     private Dictionary<int, long> targetBlockDic;
+    private Canvas canvas;
 
     protected virtual void Awake()
     {
@@ -84,6 +85,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         targetBlockDic = new Dictionary<int, long>();
         knockBackCTS = new CancellationTokenSource();
+        canvas = GetComponentInChildren<Canvas>();
         sortingGroup = GetComponent<SortingGroup>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
@@ -102,7 +104,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
         originColorLists = new List<Color>();
-        hpBar.SetActive(false);
+        HideCanvase();
 
         Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i => {
             originColorLists.Add(spriteRenderers[i].color);
@@ -221,7 +223,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         sortingGroup.sortingLayerName = Game.GameConfig.UILayerName;
         sortingGroup.sortingOrder = _sortingOrder;
         fsm.ChangeState(FSMStates.PrevIdle);
-        hpBar.SetActive(false);
+        HideCanvase();
         transform.SetScale(200f);
         PlayAni("Idle");
     }
@@ -235,7 +237,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         sortingGroup.sortingLayerName = Game.GameConfig.ForegroundLayerName;
         sortingGroup.sortingOrder = 0;
         attackDelay = 0f;
-        hpBar.SetActive(false);
+        HideCanvase();
         transform.SetScale(1f);
     }
 
@@ -518,7 +520,7 @@ public class MBaseObj : MonoBehaviour, Damageable
     public void SetEndState()
     {
         fsm.ChangeState(FSMStates.End);
-        hpBar.SetActive(false);
+        HideCanvase();
     }
 
     protected virtual void End_Enter()
@@ -810,8 +812,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     public virtual void GetAttacked(Vector3 attackerPos, int knockBack)
     {
-        if (!hpBar.IsActive())
-            hpBar.SetActive(true);
+        if (canvas != null && !canvas.IsActive())
+            ShowCanvas();
         DoFlashEffect();
         UpdateHPBar();
         KnockBack2(attackerPos, knockBack);
@@ -985,5 +987,15 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
 
         return Game.GameConfig.PositiveInfinityVector;
+    }
+
+    private void ShowCanvas()
+    {
+        canvas?.gameObject.SetActive(true);
+    }
+
+    private void HideCanvase()
+    {
+        canvas?.gameObject.SetActive(false);
     }
 }
