@@ -60,7 +60,7 @@ public class SoulRewardObj : MonoBehaviour
         float cameraScale = MCameraManager.Instance.ZoomSize / Game.GameConfig.projectileRewardSizeFactor;
         speed = orgSpeed * cameraScale;
         transform.localScale = orgScale * cameraScale;
-        trainRenderer.SetScale(cameraScale);
+        trainRenderer.SetScale(transform.localScale.x);
 
         dstPos = targetObj.position;
         float dist = Vector2.Distance(srcPos, dstPos);

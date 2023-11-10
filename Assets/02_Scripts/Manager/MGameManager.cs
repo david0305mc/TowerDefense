@@ -182,8 +182,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
             StartFollowCamera().Forget();
 
             ConsumeStamina(ConfigTable.Instance.StageStartCost);
-            await SpawnAllHero();
             TouchBlockManager.Instance.RemoveLock();
+            await SpawnAllHero();
             gameState = GameConfig.GameState.InGame;
 
         });
