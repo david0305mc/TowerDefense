@@ -97,7 +97,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
         else
         {
-            renderRoot = transform;
+            renderRoot = transform.Find("Anim");
             defaultDirection = renderRoot.localScale.x;
         }
         
@@ -361,11 +361,9 @@ public class MBaseObj : MonoBehaviour, Damageable
         if (!targetBlockDic.ContainsKey(_uid))
         {
             targetBlockDic.Add(_uid, GameTime.Get());
-            Debug.LogError("Disable Target Approch");
         }
         else
         {
-            Debug.LogError("Duplicate Error");
         }
         targetObjUID = -1;
         isFixedTarget = false;
@@ -572,6 +570,8 @@ public class MBaseObj : MonoBehaviour, Damageable
 
     protected void PlayAni(string str)
     {
+        if (animator == null)
+            return;
         //ResetTrigger();
         //animator.SetTrigger(str);
 
