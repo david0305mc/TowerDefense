@@ -28,7 +28,7 @@ public class LocalSaveData
     public LocalSaveData()
     {
         uidSeed = 1000;
-        CurrTutorialID = 1;
+        CurrTutorialID = 19;
         AttendanceDay = 1;
         AttendanceRewardedDic = new SerializableDictionary<int, int>();
         StaminaLastSpawnTime = GameTime.Get();
