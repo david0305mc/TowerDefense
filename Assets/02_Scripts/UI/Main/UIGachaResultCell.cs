@@ -15,6 +15,7 @@ public class UIGacharesultData : GridItemData
 
 public class UIGachaResultCell : UIGridCell
 {
+    [SerializeField] private Image thumbnailBG;
     [SerializeField] private Image thumbnail;
     [SerializeField] private TextMeshProUGUI countText;
 
@@ -29,5 +30,6 @@ public class UIGachaResultCell : UIGridCell
         countText.SetText(gachaInfo.count.ToString());
         var unitInfo = DataManager.Instance.GetUnitinfoData(gachaInfo.unitid);
         thumbnail.sprite = MResourceManager.Instance.GetSpriteFromAtlas(unitInfo.thumbnailpath);
+        thumbnailBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitInfo.unitrarity}");
     }
 }
