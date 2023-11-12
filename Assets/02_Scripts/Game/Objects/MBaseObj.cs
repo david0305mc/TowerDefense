@@ -543,7 +543,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         cts?.Cancel();
         flashCts?.Cancel();
 
-        if (MResourceManager.Instance != null)
+        if (MResourceManager.Instance != null && spriteRenderers != null)
         {
             Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
             {
