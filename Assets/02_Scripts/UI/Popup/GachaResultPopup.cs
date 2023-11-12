@@ -78,7 +78,7 @@ public class GachaResultPopup : PopupBase
         heroObj.transform.SetLocalPosition(Vector3.zero);
         heroObj.SetUIMode(Game.GameConfig.CanvasPopupManagerLayerOrder + index + 2);
         
-        unitNameText.SetText(unitData.refData.unitname);
+        unitNameText.SetText(LocalizeManager.Instance.GetLocalString(unitData.refData.unitname));
         unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
         unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
         unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);

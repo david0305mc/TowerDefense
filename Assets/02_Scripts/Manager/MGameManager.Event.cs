@@ -275,19 +275,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
         var heroData = UserData.Instance.GetHeroData(_uid);
         if (heroData.IsMaxGrade)
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("Max Grade", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("maxGrade"), "OK");
             return;
         }
 
         if (heroData.refUnitGradeData.upgradepiececnt > heroData.count)
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("more piece Please", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("morePiece"), "OK");
             return;
         }
 
         if (heroData.refUnitGradeData.upgradecostcnt > UserData.Instance.LocalData.Soul.Value)
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("Soul is not enough", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("moreSoul"), "OK");
             return;    
         }
 

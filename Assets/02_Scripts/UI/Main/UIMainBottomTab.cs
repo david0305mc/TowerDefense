@@ -16,7 +16,7 @@ public class UIMainBottomTab : MonoBehaviour
         {
             if (IsTabDisabled)
             {
-                PopupManager.Instance.ShowSystemOneBtnPopup("Disabled", "OK");
+                PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("DisableTabText"), "OK");
                 return;
             }
             _tabAction?.Invoke(_index);

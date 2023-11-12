@@ -58,7 +58,7 @@ public class UnitInfoPopup : PopupBase
     {
         unitData = UserData.Instance.GetHeroData(_heroUID);
         equipAction = _equipAction;
-        heroNameText.SetText(unitData.refData.unitname);
+        heroNameText.SetText(LocalizeManager.Instance.GetLocalString(unitData.refData.unitname));
         UpdateUI();
 
         if (UserData.Instance.LocalData.CurrTutorialID == 15)
