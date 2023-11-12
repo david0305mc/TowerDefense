@@ -145,6 +145,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
+
+            cameraManager.SetPosition(currStageObj.heroSpawnPos);
+            cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
             StartFollowCamera().Forget();
             await SpawnAllHero();
             StartEnemyWave().Forget();
