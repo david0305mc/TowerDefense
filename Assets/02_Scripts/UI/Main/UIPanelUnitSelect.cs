@@ -73,7 +73,7 @@ public class UIPanelUnitSelect : MonoBehaviour
                 // Equip
                 if (UserData.Instance.FindEmptySlot() == -1)
                 {
-                    PopupManager.Instance.ShowSystemOneBtnPopup("No Empty Slot", "OK");
+                    PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("AlertNoEmptySlot"), "OK");
                     return;
                 }
                 int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
