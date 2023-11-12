@@ -429,6 +429,7 @@ public partial class UserData : Singleton<UserData>
         heroData.grade++;
         heroData.count -= heroData.refUnitGradeData.upgradepiececnt;
         LocalData.Soul.Value -= heroData.refUnitGradeData.upgradecostcnt;
+        heroData.UpdateRefData();
     }
 
 }
