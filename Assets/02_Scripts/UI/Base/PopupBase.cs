@@ -44,6 +44,8 @@ public class PopupBase : MonoBehaviour
         {
             completeOpenAni?.Invoke();
         }
+
+        SoundManager.Instance.Play("Sfx/etfx_pop_balloon", SoundType.Effect);
     }
 
     public void Hide()
