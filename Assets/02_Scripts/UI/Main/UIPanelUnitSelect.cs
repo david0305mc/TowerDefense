@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UniRx;
+using UnityEngine.UI;
 
 public class UIPanelUnitSelect : MonoBehaviour
 {
-    [SerializeField] private UIGridView gridView = default;
+    //[SerializeField] private UIGridView gridView = default;
+    [SerializeField] private UIUnitCell unitCellPrefab;
+    [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private List<UIBattlePartySlot> battlePartyList = default;
 
     private List<UnitData> heroDataList;
+    private List<UIUnitCell> uiUnitCelLists;
 
     private void Awake()
     {
@@ -17,6 +21,7 @@ public class UIPanelUnitSelect : MonoBehaviour
         {
             InitUI();
         }).AddTo(gameObject);
+        uiUnitCelLists = new List<UIUnitCell>();
     }
     public void InitUI()
     {
@@ -24,18 +29,35 @@ public class UIPanelUnitSelect : MonoBehaviour
         InitUserListScroll();
     }
 
+    private void ClearUnitListPool()
+    {
+        foreach (var item in uiUnitCelLists)
+        {
+            Lean.Pool.LeanPool.Despawn(item);
+        }
+        uiUnitCelLists.Clear();
+    }
+
     private void InitUserListScroll()
     {
+        if (uiUnitCelLists.Count > 0)
+        {
+            ClearUnitListPool();
+        }
+
         heroDataList = (from item in UserData.Instance.LocalData.HeroDataDic
                         orderby item.Key ascending
                         orderby item.Value.grade descending
                         orderby item.Value.refData.unitrarity descending
                         select item.Value).ToList();
-        UIUnitData[] itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(i, heroDataList[i].uid)).ToArray();
-        gridView.UpdateContents(itemData);
-        gridView.OnCellClicked(index =>
+
+        Enumerable.Range(0, heroDataList.Count).ToList().ForEach(i =>
         {
-            ShowUnitInfoPopup(index);
+            UIUnitCell unitCell = Lean.Pool.LeanPool.Spawn(unitCellPrefab, scrollRect.content);
+            unitCell.SetData(i, heroDataList[i].uid, (index)=> {
+                ShowUnitInfoPopup(index);
+            });
+            uiUnitCelLists.Add(unitCell);
         });
     }
 
@@ -75,7 +97,7 @@ public class UIPanelUnitSelect : MonoBehaviour
         });
     }
 
-    private void ClearPool()
+    private void ClearBattlePartyPool()
     {
         foreach (var item in battlePartyList)
         {
@@ -84,7 +106,8 @@ public class UIPanelUnitSelect : MonoBehaviour
     }
     private void OnDisable()
     {
-        ClearPool();
+        ClearBattlePartyPool();
+        ClearUnitListPool();
     }
 
 }

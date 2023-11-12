@@ -2,20 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using FancyScrollView;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 
-public class UIUnitData  : GridItemData
-{
-    public int uid;
-    public UIUnitData(int _index, int _uid) : base(_index)
-    {
-        uid = _uid;
-    }
-}
-
-public class UIUnitCell : UIGridCell
+public class UIUnitCell : MonoBehaviour
 {
     [SerializeField] private Image iconBGImage;
     [SerializeField] private Image iconImage;
@@ -24,22 +14,11 @@ public class UIUnitCell : UIGridCell
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI countText;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
+    [SerializeField] private Button button;
 
-    public override void Initialize()
+    public void SetData(int _index, int _uid, System.Action<int> _action)
     {
-        base.Initialize();
-    }
-
-    public void SetData(int _uid)
-    {
-
-    }
-
-    public override void UpdateContent(GridItemData _itemData)
-    {
-        UIUnitData itemData = (UIUnitData)_itemData;
-        var selected = Context.SelectedIndex == Index;
-        var heroData = UserData.Instance.GetHeroData(itemData.uid);
+        var heroData = UserData.Instance.GetHeroData(_uid);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
         iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
         iconBGImage.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)heroData.refData.unitrarity}");
@@ -47,7 +26,7 @@ public class UIUnitCell : UIGridCell
 
         if (UserData.Instance.LocalData.CurrTutorialID == 14)
         {
-            if (itemData.id == 1)
+            if (_index == 1)
             {
                 UniTask.Create(async () =>
                 {
@@ -58,5 +37,13 @@ public class UIUnitCell : UIGridCell
                 });
             }
         }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() =>
+        {
+            _action?.Invoke(_index);
+        });
     }
+
+
 }
