@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 367289758607972837}
   - component: {fileID: 875067517825617150}
   - component: {fileID: 2927561824566236599}
+  - component: {fileID: 8455691006553719267}
   m_Layer: 5
   m_Name: IconImage
   m_TagString: Untagged
@@ -384,6 +385,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 110
+--- !u!95 &8455691006553719267
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521732211808587863}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5f304d100c1db254fbc115b7b9be4ce1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2289564871112769207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,8 +1267,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -63.3, y: -0}
-  m_SizeDelta: {x: 92, y: 92}
+  m_AnchoredPosition: {x: -63.3, y: 0}
+  m_SizeDelta: {x: 143.25, y: 143.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7381986137641129986
 CanvasRenderer:
