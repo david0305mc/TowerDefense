@@ -279,7 +279,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
             return;
         }
 
-        if (heroData.refUnitGradeData.upgradepiececnt > UserData.Instance.LocalData.Soul.Value)
+        if (heroData.refUnitGradeData.upgradepiececnt > heroData.count)
+        {
+            PopupManager.Instance.ShowSystemOneBtnPopup("more piece Please", "OK");
+            return;
+        }
+
+        if (heroData.refUnitGradeData.upgradecostcnt > UserData.Instance.LocalData.Soul.Value)
         {
             PopupManager.Instance.ShowSystemOneBtnPopup("Soul is not enough", "OK");
             return;    
