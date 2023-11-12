@@ -16,6 +16,11 @@ public class TutorialTouchObject : MonoBehaviour
         {
             arrowObj.transform.position = tutoEventButton.GetOffsetPosition();
         }
+        else
+        {
+            Debug.LogError($"There is no TutoEventButton {_tutoID}");
+        }
+
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(_action);
     }

@@ -2019,7 +2019,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -451, y: 0}
-  m_SizeDelta: {x: 90, y: 90}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2676546490046684161
 CanvasRenderer:
@@ -3045,7 +3045,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -451, y: 0}
-  m_SizeDelta: {x: 90, y: 90}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2676546491758271745
 CanvasRenderer:
@@ -3137,7 +3137,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -451, y: 0}
-  m_SizeDelta: {x: 90, y: 90}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2676546491826762161
 CanvasRenderer:
@@ -4657,7 +4657,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -451, y: 0}
-  m_SizeDelta: {x: 90, y: 90}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3238053021365211354
 CanvasRenderer:
@@ -5822,56 +5822,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &4338940923781768571
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5336300550488227882}
-  - component: {fileID: 5332281100453898313}
-  m_Layer: 5
-  m_Name: TutoButton
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &5336300550488227882
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4338940923781768571}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 405216245638742638}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5332281100453898313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4338940923781768571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d3ae443dce7ce2458e74e3dc13ae58f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialID: 12
 --- !u!1 &4347068129744735376
 GameObject:
   m_ObjectHideFlags: 0
@@ -7979,7 +7929,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5009971135922117046, guid: 321f2dd440d34244591946025bec329e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -1567.69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5009971135922117046, guid: 321f2dd440d34244591946025bec329e, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8538,10 +8488,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7450535311012648683, guid: 5187de3a08613434eac35ca70098db74, type: 3}
-      propertyPath: m_ChildAlignment
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8970285533115016562, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8562,14 +8508,8 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5716303485057782799, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5187de3a08613434eac35ca70098db74, type: 3}
---- !u!224 &405216245638742638 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8970285532276459960, guid: 5187de3a08613434eac35ca70098db74, type: 3}
-  m_PrefabInstance: {fileID: 8782939759886060502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3916428617238329440 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5745104655038542774, guid: 5187de3a08613434eac35ca70098db74, type: 3}
