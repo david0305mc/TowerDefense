@@ -42,14 +42,15 @@ public class InGameUI : MonoBehaviour
     }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
+        float timeLeft = endUnixTime - GameTime.Get();
         UniTask.Create(async () =>
         {
-            while (endUnixTime - GameTime.Get() > 0)
+            while (timeLeft > 0)
             {
-                float timeLeft = endUnixTime - GameTime.Get();
+                timeLeft -= Time.deltaTime;
                 var timeSpan = TimeSpan.FromSeconds(timeLeft);
                 tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
-                await UniTask.WaitForSeconds(1f, cancellationToken: _cts.Token);
+                await UniTask.Yield(_cts.Token);
             }
             tileLeftText.SetText("00:00");
             if (UserData.Instance.IsWaveStage)
