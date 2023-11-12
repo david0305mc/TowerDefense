@@ -543,11 +543,14 @@ public class MBaseObj : MonoBehaviour, Damageable
         cts?.Cancel();
         flashCts?.Cancel();
 
-        Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
+        if (MResourceManager.Instance != null && spriteRenderers != null)
         {
-            spriteRenderers[i].material = MResourceManager.Instance.SpriteDefaultMaterial;
-            spriteRenderers[i].color = originColorLists[i];
-        });
+            Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i =>
+            {
+                spriteRenderers[i].material = MResourceManager.Instance.SpriteDefaultMaterial;
+                spriteRenderers[i].color = originColorLists[i];
+            });
+        }
     }
 
     private void OnDestroy()
