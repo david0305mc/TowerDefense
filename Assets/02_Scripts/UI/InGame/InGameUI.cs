@@ -20,7 +20,8 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private LoadingUI loadingUI;
     [SerializeField] private Button pauseBtn;
     [SerializeField] private Button speedBtn;
-
+    
+    private double timeLeft;
     private CompositeDisposable disposable = new CompositeDisposable();
     public async UniTask StartLoadingUI()
     {
@@ -34,20 +35,28 @@ public class InGameUI : MonoBehaviour
     }
     private void Awake()
     {
+        timeLeft = 0;
         speedBtn.onClick.AddListener(() =>
         {
             Time.timeScale = UserData.Instance.NextGameSpeed();
             UpdateUI();
         });
     }
+
+    private void Update()
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft -= Time.deltaTime;
+        }
+    }
     public void SetData(long endUnixTime, CancellationTokenSource _cts)
     {
-        float timeLeft = endUnixTime - GameTime.Get();
+        timeLeft = endUnixTime - GameTime.Get();
         UniTask.Create(async () =>
         {
             while (timeLeft > 0)
             {
-                timeLeft -= Time.deltaTime;
                 var timeSpan = TimeSpan.FromSeconds(timeLeft);
                 tileLeftText.SetText(timeSpan.ToString(@"mm\:ss"));
                 await UniTask.Yield(_cts.Token);
@@ -80,6 +89,7 @@ public class InGameUI : MonoBehaviour
     private void OnDisable()
     {
         disposable.Clear();
+        timeLeft = 0;
     }
 }
 

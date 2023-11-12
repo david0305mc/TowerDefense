@@ -819,7 +819,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         for (int i = 0; i < waveInfoList.Count; i++)
         {
             var waveInfo = waveInfoList[i];
-            await UniTask.WaitForSeconds(waveInfo.time);
+            await UniTask.WaitForSeconds(waveInfo.time, cancellationToken:stageCts.Token);
             SpawnWaveEnemy(waveInfo);
         }
         waveSpawnFinished = true;
