@@ -12,15 +12,19 @@ public class UIPanelStageInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI battlePowerText;
     [SerializeField] private TextMeshProUGUI requrePowerText;
     [SerializeField] private TextMeshProUGUI requreEnegyText;
-    [SerializeField] private UIGridView gridView = default;
+    [SerializeField] private UICell_Reward uiCellRewardPrefab;
+    //[SerializeField] private UIGridView gridView = default;
+    [SerializeField] private ScrollRect scrollRect = default;
     [SerializeField] private Color disableColor;
     [SerializeField] private Color enableColor;
 
     private System.Action startBtnAction;
     private System.Action closeBtnAction;
     private DataManager.StageInfo stageInfo;
+    private List<UICell_Reward> uiCellRewardList;
     private void Awake()
     {
+        uiCellRewardList = new List<UICell_Reward>();
         startBtn.onClick.AddListener(() => {
             if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
             {
@@ -78,18 +82,33 @@ public class UIPanelStageInfo : MonoBehaviour
                 break;
         }
         startBtn.SetActive(true);
-        List<UIRewardCellData> rewardLists = new List<UIRewardCellData>();
+
+        if (uiCellRewardList.Count > 0)
+        {
+            ClearPool();  
+        }
+        
         List<DataManager.StageRewardInfo> rewards = DataManager.Instance.GetStageRewards(stageInfo.id);
         foreach (var rewardInfo in rewards)
         {
-            rewardLists.Add(new UIRewardCellData(rewardInfo.id));
+            var uiCell = Lean.Pool.LeanPool.Spawn(uiCellRewardPrefab, scrollRect.content);
+            uiCell.SetData(rewardInfo.rewardid, rewardInfo.rewardtype, rewardInfo.rewardcount);
+            uiCellRewardList.Add(uiCell);
         }
-        gridView.UpdateContents(rewardLists.ToArray());
-        gridView.OnCellClicked(index =>
-        {
-        });
     }
 
+    private void OnDisable()
+    {
+        ClearPool();
+    }
+    private void ClearPool()
+    {
+        foreach (var item in uiCellRewardList)
+        {
+            Lean.Pool.LeanPool.Despawn(item);
+        }
+        uiCellRewardList.Clear();
+    }
     private void OnLocalize()
     {
         UpdateUI();
