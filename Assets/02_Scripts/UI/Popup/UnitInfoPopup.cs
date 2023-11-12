@@ -108,7 +108,7 @@ public class UnitInfoPopup : PopupBase
             maxUpgradeBtn.SetActive(false);
             upgradeCostText.SetText(unitData.refUnitGradeData.upgradecostcnt.ToString());
             
-            int nextPower = DataManager.Instance.GetUnitGrade(unitData.uid, unitData.grade + 1).combatpower;
+            int nextPower = DataManager.Instance.GetUnitGrade(unitData.tid, unitData.grade + 1).combatpower;
             combatPowerText.SetText(unitData.refUnitGradeData.combatpower.ToString());
             nextCombatPowerText.SetText(nextPower.ToString());
         }
