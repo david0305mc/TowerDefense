@@ -57,9 +57,7 @@ public class GameTime
         Debug.Log($"Korea {localTime}");
         DateTime midNightTime = new DateTime(localTime.Year, localTime.Month, localTime.Day + 1);
         Debug.Log($"Korea midnight {midNightTime}");
-        //return Convert.ToInt64(Utill.ConvertToUnitxTimeStamp(midNightTime));
-
-        return Get() + 3;
+        return Convert.ToInt64(Utill.ConvertToUnitxTimeStamp(midNightTime));
     }
 
 }
