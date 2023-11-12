@@ -17,6 +17,7 @@ public class UIUnitData  : GridItemData
 
 public class UIUnitCell : UIGridCell
 {
+    [SerializeField] private Image iconBGImage;
     [SerializeField] private Image iconImage;
     [SerializeField] private GameObject checkerObject;
     [SerializeField] private Slider progressBar;
@@ -41,6 +42,7 @@ public class UIUnitCell : UIGridCell
         var heroData = UserData.Instance.GetHeroData(itemData.uid);
         checkerObject.SetActive(UserData.Instance.GetPartySlotIndexByUID(heroData.uid) != -1);
         iconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(heroData.refData.thumbnailpath);
+        iconBGImage.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)heroData.refData.unitrarity}");
         unitGradeInfo.SetData(heroData.grade, heroData.IsMaxGrade, heroData.count, heroData.refUnitGradeData.upgradepiececnt);
 
         if (UserData.Instance.LocalData.CurrTutorialID == 14)
