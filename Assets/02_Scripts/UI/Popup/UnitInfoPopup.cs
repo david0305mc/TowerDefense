@@ -12,7 +12,9 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private Button euipToggleBtn;
     [SerializeField] private Button upgradeBtn;
     [SerializeField] private Button maxUpgradeBtn;
-    [SerializeField] private Image rarityBG;
+    [SerializeField] private Image unitIconImage;
+    [SerializeField] private Image unitBGImage;
+    [SerializeField] private Image textRarityBG;
     [SerializeField] private TextMeshProUGUI euipToggleText;
     [SerializeField] private TextMeshProUGUI heroNameText;
     [SerializeField] private TextMeshProUGUI unitrarityText;
@@ -25,7 +27,6 @@ public class UnitInfoPopup : PopupBase
     [SerializeField] private GameObject combatDefaltObj;
     [SerializeField] private GameObject combatMaxObj;
 
-    [SerializeField] private Image unitRarityImage;
     [SerializeField] private UnitGradeInfo unitGradeInfo;
 
     [SerializeField] private TextMeshProUGUI upgradeCostText;
@@ -84,8 +85,9 @@ public class UnitInfoPopup : PopupBase
 
         unitGradeInfo.SetData(unitData.grade, unitData.IsMaxGrade, unitData.count, unitData.refUnitGradeData.upgradepiececnt);
         unitrarityText.SetText(unitData.refData.unitrarity.GetEnumLocalization());
-        unitRarityImage.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
-        rarityBG.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
+        unitIconImage.sprite = MResourceManager.Instance.GetSpriteFromAtlas(unitData.refData.thumbnailpath);
+        textRarityBG.color = MResourceManager.Instance.GetRarityColor(unitData.refData.unitrarity);
+        unitBGImage.sprite = MResourceManager.Instance.GetBuildAtlas($"RatingBG_{(int)unitData.refData.unitrarity}");
      
         hpText.SetText(unitData.refUnitGradeData.hp.ToString());
         int damage = unitData.refUnitGradeData.attackdmg * unitData.refUnitGradeData.attackcount + unitData.refUnitGradeData.splashdmg;
