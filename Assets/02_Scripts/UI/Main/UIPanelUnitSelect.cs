@@ -26,7 +26,11 @@ public class UIPanelUnitSelect : MonoBehaviour
 
     private void InitUserListScroll()
     {
-        heroDataList = UserData.Instance.LocalData.HeroDataDic.Values.ToList();
+        heroDataList = (from item in UserData.Instance.LocalData.HeroDataDic
+                        orderby item.Key ascending
+                        orderby item.Value.grade descending
+                        orderby item.Value.refData.unitrarity descending
+                        select item.Value).ToList();
         UIUnitData[] itemData = Enumerable.Range(0, heroDataList.Count).Select(i => new UIUnitData(i, heroDataList[i].uid)).ToArray();
         gridView.UpdateContents(itemData);
         gridView.OnCellClicked(index =>
