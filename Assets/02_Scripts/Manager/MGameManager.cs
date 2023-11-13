@@ -235,10 +235,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 MHeroObj targetHero = GetFirstCameraTarget();
                 if (targetHero != null)
                 {
+                    targetHero.SetSelected(true);
                     cameraManager.SetFollowObject(targetHero.gameObject, GameConfig.unitTargetDragSpeed, true, currStageObj.FollowOffset, null);
                     targetHero.SetDeadAction(() =>
                     {
-                        cameraManager.CancelFollowTarget();
+                        if (cameraManager.FollowTarget == targetHero.gameObject)
+                        {
+                            cameraManager.CancelFollowTarget();
+                        }
                     });
                 }
                 cameraFollowTime = 0f;
@@ -469,10 +473,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     if (unitObj != null)
                     {
                         StopFollowCamera();
+                        unitObj.SetSelected(true);
                         cameraManager.SetFollowObject(unitObj.gameObject, GameConfig.unitTargetDragSpeed, true, currStageObj.FollowOffset, null);
                         unitObj.SetDeadAction(() =>
                         {
-                            StartFollowCamera().Forget();
+                            if (cameraManager.FollowTarget == unitObj.gameObject)
+                            {
+                                StartFollowCamera().Forget();
+                            }
                         });
                     }
                     else

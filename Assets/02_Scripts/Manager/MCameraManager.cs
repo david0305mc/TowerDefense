@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine.EventSystems;
 using Game;
+using UniRx;
 
 public class MCameraManager : SingletonMono<MCameraManager>
 {
@@ -44,6 +45,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
     private System.Action touchAction;
     private System.Action dragStartAction;
     private GameObject followTarget;
+    public GameObject FollowTarget => followTarget;
     private Vector3 followOffeset;
     private System.Action followTargetAction;
     private bool keepFollow;
@@ -346,6 +348,8 @@ public class MCameraManager : SingletonMono<MCameraManager>
         newPos = transform.position;
         followSpeedFactor = 1f;
         isUniVelocity = false;
+
+        MessageDispather.Publish(EMessage.DeSelectUnitTarget);
     }
     //private void ZoomCamera()
     //{

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UniRx;
 
 public class MBaseObj : MonoBehaviour, Damageable
 {
@@ -28,6 +29,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     [SerializeField] protected Transform firePos;
     [SerializeField] protected int tid;
     [SerializeField] protected string state;
+    private Transform selectedObject;
+
     protected UnitBattleData unitData;
     public UnitBattleData UnitData => unitData;
 
@@ -100,6 +103,8 @@ public class MBaseObj : MonoBehaviour, Damageable
             renderRoot = transform.Find("Anim");
             defaultDirection = renderRoot.localScale.x;
         }
+
+        selectedObject = hpBar.transform.Find("SelectedObj");
         
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
@@ -146,6 +151,11 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
      
         fsm.ChangeState(FSMStates.PrevIdle);
+
+        MessageDispather.Receive(EMessage.DeSelectUnitTarget).Subscribe(_ =>
+        {
+            SetSelected(false);
+        }).AddTo(gameObject);
     }
 
     public Vector3 GetRandomAttackRange()
@@ -162,6 +172,18 @@ public class MBaseObj : MonoBehaviour, Damageable
     public Vector3 GetRightAttackPivot()
     {
         return new Vector2(transform.position.x, transform.position.y) + new Vector2(ColliderRadius, 0);
+    }
+
+    public void SetSelected(bool _val)
+    {
+        if (_val)
+        {
+            if (!canvas.isActiveAndEnabled)
+            {
+                canvas.SetActive(true);
+            }
+        }
+        selectedObject?.gameObject.SetActive(_val);
     }
 
     public Vector3 GetLeftAttackRnage()
