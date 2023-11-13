@@ -447,14 +447,17 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     WorldMapStageSlot stageSlot = obj.GetComponent<WorldMapStageSlot>();
                     cameraManager.SetFollowObject(stageSlot.CameraPivot, GameConfig.normalTargetDragSpeed, false, Vector2.zero, () =>
                     {
-                        mainUI.ShowStageInfo(stageSlot.stage, () =>
+                        UniTask.Create(async () =>
                         {
-                            // startBtn
-                            StartStage(stageSlot.stage);
+                            await UniTask.Yield();
+                            mainUI.ShowStageInfo(stageSlot.stage, () =>
+                            {
+                                // startBtn
+                                StartStage(stageSlot.stage);
+                                worldMap.SelectStage(stageSlot.stage);
+                                CheckStageGold(stageSlot.stage, stageSlot.transform.position);
+                            });
                         });
-                        worldMap.SelectStage(stageSlot.stage);
-
-                        CheckStageGold(stageSlot.stage, stageSlot.transform.position);
                     });
                 }
                 else
@@ -878,7 +881,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
 
         var waveInfoList = DataManager.Instance.GetWaveInfoList(UserData.Instance.PlayingStage);
-
+        
         for (int i = 0; i < waveInfoList.Count; i++)
         {
             var waveInfo = waveInfoList[i];
