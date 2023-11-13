@@ -221,6 +221,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private async UniTaskVoid StartFollowCamera()
     {
+        if (followCameraCts != null)
+        {
+            followCameraCts.Cancel();
+        }
         followCameraCts = new CancellationTokenSource();
         await UniTask.WaitUntil(() => heroUIDOrder != null && heroUIDOrder.Count > 0, cancellationToken: followCameraCts.Token);
         cameraFollowTime = 2f;
@@ -241,6 +245,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             await UniTask.Yield(cancellationToken: followCameraCts.Token);
             cameraFollowTime += Time.unscaledDeltaTime;
+        }
+    }
+
+    private void StopFollowCamera()
+    {
+        if (followCameraCts != null)
+        {
+            followCameraCts.Cancel();
         }
     }
     private MHeroObj GetFirstCameraTarget()
@@ -443,8 +455,30 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
             else
             {
-                cameraManager.CancelFollowTarget();
-                cameraFollowTime = 0f;
+                GameObject obj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.UnitLayerMask);
+                if (obj != null)
+                {
+                    MBaseObj unitObj = obj.GetComponent<MBaseObj>();
+                    if (unitObj != null)
+                    {
+                        StopFollowCamera();
+                        cameraManager.SetFollowObject(unitObj.gameObject, GameConfig.unitTargetDragSpeed, true, currStageObj.FollowOffset, null);
+                        unitObj.SetDeadAction(() =>
+                        {
+                            StartFollowCamera().Forget();
+                        });
+                    }
+                    else
+                    {
+                        cameraManager.CancelFollowTarget();
+                        cameraFollowTime = 0f;
+                    }
+                }
+                else
+                {
+                    cameraManager.CancelFollowTarget();
+                    cameraFollowTime = 0f;
+                }
             }
         }, () => {
             if (gameState == GameConfig.GameState.MainUI)
