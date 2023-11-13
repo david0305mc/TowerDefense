@@ -105,11 +105,10 @@ public class MBaseObj : MonoBehaviour, Damageable
         }
 
         selectedObject = hpBar.transform.Find("SelectedObj");
-        
+
         swordAttackChecker = GetComponentInChildren<SwordAttackChecker>(true);
         circleCollider = GetComponent<CircleCollider2D>();
         originColorLists = new List<Color>();
-        HideCanvase();
 
         Enumerable.Range(0, spriteRenderers.Length).ToList().ForEach(i => {
             originColorLists.Add(spriteRenderers[i].color);
@@ -260,6 +259,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         sortingGroup.sortingOrder = 0;
         attackDelay = 0f;
         HideCanvase();
+        SetSelected(false);
         transform.SetScale(1f);
     }
 
