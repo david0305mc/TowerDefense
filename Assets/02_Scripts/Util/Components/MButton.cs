@@ -9,6 +9,6 @@ public class MButton : Button
     public override void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);
-        SoundManager.Instance.Play("Sfx/Sfx_001");
+        //SoundManager.Instance.Play("Sfx/Sfx_001");
     }
 }

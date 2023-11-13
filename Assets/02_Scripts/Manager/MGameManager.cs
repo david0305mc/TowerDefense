@@ -10,6 +10,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public partial class MGameManager : SingletonMono<MGameManager>
 {
@@ -891,6 +893,21 @@ public partial class MGameManager : SingletonMono<MGameManager>
         waveSpawnFinished = true;
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            var obj = EventSystem.current.currentSelectedGameObject;
+            if (obj == null)
+            {
+                return;
+            }
+
+            if (obj.GetComponent<Button>() != null)
+                SoundManager.Instance.Play("Sfx/etfx_pop_balloon");
+        }
+        
+    }
     //private void Update()
     //{
     //    //if (Input.GetMouseButtonDown(0))
