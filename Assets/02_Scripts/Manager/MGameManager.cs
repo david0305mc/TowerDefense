@@ -371,6 +371,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
         RetryStage();
     }
 
+    public void ExitStage()
+    {
+        DisposeCTS();
+        RemoveStage();
+        BackToWorld();
+    }
+
     public void RetryStage()
     {
         if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)

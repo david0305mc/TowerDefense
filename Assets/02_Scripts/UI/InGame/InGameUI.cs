@@ -58,7 +58,8 @@ public class InGameUI : MonoBehaviour
                 },
                 () =>
                 {
-                    MGameManager.Instance.GotoIntro();
+                    popup.Hide();
+                    MGameManager.Instance.ExitStage();
                 });
         });
     }
