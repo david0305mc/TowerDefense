@@ -60,23 +60,23 @@ public partial class DataManager {
 		public int grade;
 		public int combatpower;
 		public int hp;
-		public int walkspeed;
 		public int attackdmg;
 		public int attackrange;
-		public int attackcount;
 		public int multiattackcount;
-		public int attackshortdelay;
 		public int attacklongdelay;
-		public int projectileid;
-		public int splashdmg;
-		public int splashrange;
-		public string splasheffectprefab;
 		public int knockback;
 		public int summoncnt;
-		public string boomeffectprefab;
 		public int upgradepiececnt;
 		public int upgradecostcnt;
 		public int dropsoulcnt;
+		public int splashdmg;
+		public int splashrange;
+		public string splasheffectprefab;
+		public string boomeffectprefab;
+		public int projectileid;
+		public int attackcount;
+		public int attackshortdelay;
+		public int walkspeed;
 	};
 	public UnitGradeInfo[] UnitgradeinfoArray { get; private set; }
 	public Dictionary<int, UnitGradeInfo> UnitgradeinfoDic { get; private set; }
@@ -99,6 +99,7 @@ public partial class DataManager {
 		public int afterhitlifetime;
 		public int speed;
 		public string prefabname;
+		public string memo;
 	};
 	public ProjectileInfo[] ProjectileinfoArray { get; private set; }
 	public Dictionary<int, ProjectileInfo> ProjectileinfoDic { get; private set; }
@@ -163,6 +164,7 @@ public partial class DataManager {
 	public partial class GachaList {
 		public int id;
 		public int unitid;
+		public int rarity;
 		public int count;
 		public int weight;
 	};

@@ -18,6 +18,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
+    public void AddGold(int _add, bool _forceSave = true)
+    {
+        UserData.Instance.LocalData.Gold.Value += _add;
+        if (_forceSave)
+        {
+            UserData.Instance.SaveLocalData();
+        }
+    }
     public void AddStageRewards(int _soul, List<DataManager.StageRewardInfo> rewards)
     {
         UserData.Instance.LocalData.Soul.Value += _soul;
@@ -74,7 +82,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     UserData.Instance.AddHeroData(item.rewardid, item.rewardcount);
                     break;
                 case ITEM_TYPE.STAMINA:
-                    AddStamina(item.rewardcount, true);
+                    AddStamina(item.rewardcount, false);
+                    break;
+                case ITEM_TYPE.GOLD:
+                    AddGold(item.rewardcount, false);
                     break;
             }
         }
@@ -116,9 +127,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public void AddStageGold(int _stageID)
     {
         var stageData = UserData.Instance.GetStageData(_stageID);
-
-        UserData.Instance.LocalData.Gold.Value += stageData.refData.goldproductamount;
-        UserData.Instance.SaveLocalData();
+        AddGold(stageData.refData.goldproductamount, true);
     }
     public void RemoveHero(int _heroUID)
     {

@@ -54,6 +54,12 @@ public class UICell_Reward : UIGridCell
                         countText.SetText(rewardInfo.rewardcount.ToString());
                     }
                     break;
+                case ITEM_TYPE.GOLD:
+                    {
+                        thumbnail.sprite = MResourceManager.Instance.GoldSprite;
+                        countText.SetText(rewardInfo.rewardcount.ToString());
+                    }
+                    break;
             }
         }
     }
@@ -84,6 +90,12 @@ public class UICell_Reward : UIGridCell
             case ITEM_TYPE.STAMINA:
                 {
                     thumbnail.sprite = MResourceManager.Instance.StaminaSprite;
+                    countText.SetText(_count.ToString());
+                }
+                break;
+            case ITEM_TYPE.GOLD:
+                {
+                    thumbnail.sprite = MResourceManager.Instance.GoldSprite;
                     countText.SetText(_count.ToString());
                 }
                 break;

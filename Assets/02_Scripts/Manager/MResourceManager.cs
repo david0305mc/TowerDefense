@@ -30,6 +30,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
     public AnimationCurve KnockBackCurve;
     public Sprite SoulSprite;
     public Sprite ExpSprite;
+    public Sprite GoldSprite;
     public Sprite StaminaSprite;
 
     private Dictionary<string, ProjectileBase> projectileDic;
