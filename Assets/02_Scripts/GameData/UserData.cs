@@ -301,6 +301,10 @@ public partial class UserData : Singleton<UserData>
         //Utill.SaveFile(InBuildDataExportPath, saveData);
     }
 
+    public bool IsOnTutorial()
+    {
+        return LocalData.CurrTutorialID < Game.GameConfig.LastTutorial;
+    }
     public void LoadLocalData()
     {
         if (File.Exists(LocalFilePath))
@@ -310,7 +314,7 @@ public partial class UserData : Singleton<UserData>
             LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
             LocalData.UpdateRefData();
 
-            if (LocalData.CurrTutorialID < Game.GameConfig.LastTutorial)
+            if (IsOnTutorial())
             {
                 // Restart 
                 LocalData = new LocalSaveData();

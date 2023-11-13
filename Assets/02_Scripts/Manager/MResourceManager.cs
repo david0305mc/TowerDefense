@@ -91,7 +91,7 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
         foreach (var item in DataManager.Instance.ProjectileinfoDic)
         {
-            if (prefabDic.ContainsKey(item.Value.prefabname))
+            if (!prefabDic.ContainsKey(item.Value.prefabname))
             {
                 prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
             }

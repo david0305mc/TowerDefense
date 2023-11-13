@@ -46,8 +46,15 @@ public class InGameUI : MonoBehaviour
             popup.SetData(
                 () =>
                 {
-                    popup.Hide();
-                    MGameManager.Instance.RestartStage();
+                    if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
+                    {
+                        popup.Hide();
+                        MGameManager.Instance.RestartStage();
+                    }
+                    else
+                    {
+                        PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Stamina", "OK");
+                    }
                 },
                 () =>
                 {

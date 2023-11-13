@@ -188,8 +188,8 @@ public class MainUI : MonoBehaviour
         tabGruop.SelectTab((int)_tab);
     }
 
-    public void ShowUnitInfo(int _index)
+    public void ShowUnitInfo(int _uid)
     {
-        unitSelectPanel.ShowUnitInfoPopup(_index);
+        unitSelectPanel.ShowUnitInfoPopup(_uid);
     }
 }

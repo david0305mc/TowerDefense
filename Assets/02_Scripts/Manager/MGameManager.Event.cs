@@ -146,7 +146,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
         foreach (var item in gachaList)
         {
             var gachaInfo = DataManager.Instance.GetGachaListData(item);
-            UserData.Instance.AddHeroData(gachaInfo.unitid, gachaInfo.count);
+            var unitData = UserData.Instance.AddHeroData(gachaInfo.unitid, gachaInfo.count);
+
+            if (UserData.Instance.IsOnTutorial())
+            {
+                UserData.Instance.LocalData.TutorialSpawnedUnitUID = unitData.uid;
+            }
         }
         var popup = PopupManager.Instance.Show<GachaResultPopup>(_hideAction);
         popup.SetData(gachaList);

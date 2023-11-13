@@ -26,7 +26,7 @@ public class UIUnitCell : MonoBehaviour
 
         if (UserData.Instance.LocalData.CurrTutorialID == 14)
         {
-            if(_uid != ConfigTable.Instance.DefaultUnit01)
+            if(heroData.uid == UserData.Instance.LocalData.TutorialSpawnedUnitUID)
             {
                 UniTask.Create(async () =>
                 {

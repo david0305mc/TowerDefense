@@ -157,7 +157,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                             break;
                         case 14:
                             {
-                                mainUI.ShowUnitInfo(1);
+                                mainUI.ShowUnitInfo(UserData.Instance.LocalData.TutorialSpawnedUnitUID);
                             }
                             break;
                         case 15:

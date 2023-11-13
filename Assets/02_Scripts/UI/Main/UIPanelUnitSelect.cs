@@ -55,19 +55,18 @@ public class UIPanelUnitSelect : MonoBehaviour
         {
             UIUnitCell unitCell = Lean.Pool.LeanPool.Spawn(unitCellPrefab, scrollRect.content);
             unitCell.SetData(i, heroDataList[i].uid, (index)=> {
-                ShowUnitInfoPopup(index);
+                ShowUnitInfoPopup(heroDataList[index].uid);
             });
             uiUnitCelLists.Add(unitCell);
         });
     }
 
-    public void ShowUnitInfoPopup(int _index)
+    public void ShowUnitInfoPopup(int _uid)
     {
-        UnitData heroData = heroDataList[_index];
         var popup = PopupManager.Instance.Show<UnitInfoPopup>();
-        popup.SetData(heroData.uid, () =>
+        popup.SetData(_uid, () =>
         {
-            int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(heroData.uid);
+            int partySlotIndex = UserData.Instance.GetPartySlotIndexByUID(_uid);
             if (partySlotIndex == -1)
             {
                 // Equip
@@ -76,7 +75,7 @@ public class UIPanelUnitSelect : MonoBehaviour
                     PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("AlertNoEmptySlot"), "OK");
                     return;
                 }
-                int slotIndex = MGameManager.Instance.AddBattleParty(heroData.uid);
+                int slotIndex = MGameManager.Instance.AddBattleParty(_uid);
             }
             else
             {
