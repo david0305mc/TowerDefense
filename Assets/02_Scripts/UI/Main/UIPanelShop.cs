@@ -43,7 +43,7 @@ public class UIPanelShop : MonoBehaviour
     {
         if (UserData.Instance.LocalData.Gold.Value < _goldCost)
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Gold", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("notEnoughGold"), "OK");
             return;
         }
         MGameManager.Instance.SummonHero(_count, _goldCost);
@@ -53,7 +53,7 @@ public class UIPanelShop : MonoBehaviour
     {
         if (UserData.Instance.LocalData.Gold.Value < _goldCost)
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("Not enough Gold", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("notEnoughGold"), "OK");
             return;
         }
         MGameManager.Instance.BuyStamina(_count, _goldCost);
