@@ -470,7 +470,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 if (obj != null)
                 {
                     MBaseObj unitObj = obj.GetComponent<MBaseObj>();
-                    if (unitObj != null)
+                    if (unitObj != null && !unitObj.IsEnemy())
                     {
                         StopFollowCamera();
                         unitObj.SetSelected(true);
