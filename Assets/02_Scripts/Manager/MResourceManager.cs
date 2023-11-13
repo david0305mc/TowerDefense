@@ -64,17 +64,23 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
         foreach (var item in particleSet)
         {
-            var obj = Resources.LoadAsync<GameObject>(item);
-            await obj;
-            buildResouirceDic.Add(item, obj.asset as GameObject);
+            if (!buildResouirceDic.ContainsKey(item))
+            {
+                var obj = Resources.LoadAsync<GameObject>(item);
+                await obj;
+                buildResouirceDic.Add(item, obj.asset as GameObject);
+            }
         }
     }
     
     private async UniTask LoadAtlas()
     {
         string key = "SpriteAtlas/Atlas_Icon.spriteatlas";
-        opAtlasHandleDic[key] = Addressables.LoadAssetAsync<SpriteAtlas>(key);
-        await opAtlasHandleDic[key];
+        if (!opAtlasHandleDic.ContainsKey(key))
+        {
+            opAtlasHandleDic[key] = Addressables.LoadAssetAsync<SpriteAtlas>(key);
+            await opAtlasHandleDic[key];
+        }
     }
 
     private async UniTaskVoid LoadPopups()
@@ -85,14 +91,20 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
         foreach (var item in DataManager.Instance.ProjectileinfoDic)
         {
-            prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
+            if (prefabDic.ContainsKey(item.Value.prefabname))
+            {
+                prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
+            }
         }
     }
     private async UniTask LoadUnits()
     {
         foreach (var item in DataManager.Instance.UnitinfoDic)
         {
-            prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
+            if (!prefabDic.ContainsKey(item.Value.prefabname))
+            {
+                prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
+            }
         }
     }
     private async UniTask LoadBoomEffect()

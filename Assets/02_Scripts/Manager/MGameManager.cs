@@ -9,6 +9,7 @@ using Game;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 public partial class MGameManager : SingletonMono<MGameManager>
 {
@@ -343,6 +344,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             item.Value.SetEndState();
         }
+    }
+
+    public void GotoIntro()
+    {
+        DisposeCTS();
+        RemoveStage();
+        SceneManager.LoadScene("Intro");
+    }
+    public void RestartStage()
+    {
+        DisposeCTS();
+        RemoveStage();
+        RetryStage();
     }
 
     public void RetryStage()

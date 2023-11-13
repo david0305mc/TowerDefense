@@ -31,7 +31,6 @@ public class InGameUI : MonoBehaviour
     public void EndLoadingUI()
     {
         loadingUI.SetActive(false);
-
     }
     private void Awake()
     {
@@ -40,6 +39,20 @@ public class InGameUI : MonoBehaviour
         {
             Time.timeScale = UserData.Instance.NextGameSpeed();
             UpdateUI();
+        });
+        pauseBtn.onClick.AddListener(() =>
+        {
+            var popup = PopupManager.Instance.Show<PausePopup>();
+            popup.SetData(
+                () =>
+                {
+                    popup.Hide();
+                    MGameManager.Instance.RestartStage();
+                },
+                () =>
+                {
+                    MGameManager.Instance.GotoIntro();
+                });
         });
     }
 
