@@ -56,7 +56,7 @@ public partial class DataManager
 
     public List<WaveStage> GetWaveInfoList(int _stage)
     {
-        return WavestageArray.Where(item => item.stageid == _stage).OrderByDescending(i => i.id).ToList();
+        return WavestageArray.Where(item => item.stageid == _stage).OrderBy(i => i.id).ToList();
     }
 
     public List<Attendance> GetAttendanceInfosByDay(int _day)
