@@ -129,6 +129,12 @@ public partial class UserData : Singleton<UserData>
         }
         return -1;
     }
+
+    public int GetBattlePartyCount()
+    {
+        return LocalData.BattlePartyDic.Where(item => item.Value > 0).Count();
+    }
+
     public int AddBattleParty(int _heroUID)
     {
         int emptySlotIndex = FindEmptySlot();

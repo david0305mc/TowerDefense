@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class UIPanelStageInfo : MonoBehaviour
 {
@@ -26,6 +27,13 @@ public class UIPanelStageInfo : MonoBehaviour
     {
         uiCellRewardList = new List<UICell_Reward>();
         startBtn.onClick.AddListener(() => {
+
+            if (UserData.Instance.GetBattlePartyCount() == 0)
+            {
+                PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("needUnitSetMessage"), "OK");
+                return;
+            }
+
             if (UserData.Instance.LocalData.Stamina.Value >= ConfigTable.Instance.StageStartCost)
             {
                 startBtnAction?.Invoke();
