@@ -35,11 +35,6 @@ public class MHeroObj : MBaseObj
                 var attackData = new AttackData(this.unitData.battleUID, this.unitData.tid, this.unitData.attackDamage, unitData.grade, !UnitData.IsEnemy);
                 MGameManager.Instance.ShowBoomEffect(attackData, collision.ClosestPoint(transform.position));
                 damagable.GetDamaged(attackData);
-
-                if (UserData.Instance.IsEnemyDead(targetObjUID))
-                {
-                    fsm.ChangeState(FSMStates.Idle);
-                }
             }
         }
     }
