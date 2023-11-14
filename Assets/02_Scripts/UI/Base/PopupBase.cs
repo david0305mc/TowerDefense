@@ -21,10 +21,6 @@ public class PopupBase : MonoBehaviour
             });
         }
     }
-    private void Start()
-    {
-        //openAnim.Play("PopupOpen");
-    }
     public virtual void InitPopup(System.Action _hideAction)
     {
         hideAction = _hideAction;
@@ -44,8 +40,6 @@ public class PopupBase : MonoBehaviour
         {
             completeOpenAni?.Invoke();
         }
-
-        SoundManager.Instance.Play("Sfx/etfx_pop_balloon", SoundType.Effect);
     }
 
     public void Hide()
