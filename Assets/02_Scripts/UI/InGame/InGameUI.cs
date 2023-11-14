@@ -117,7 +117,7 @@ public class InGameUI : MonoBehaviour
         else
         {
             pauseBtn.SetActive(true);
-            speedBtn.SetActive(UserData.Instance.LocalData.Level.Value > 5);
+            speedBtn.SetActive(UserData.Instance.LocalData.Level.Value > 2);
         }
     }
 
