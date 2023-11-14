@@ -456,9 +456,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
                             {
                                 // startBtn
                                 StartStage(stageSlot.stage);
-                                worldMap.SelectStage(stageSlot.stage);
-                                CheckStageGold(stageSlot.stage, stageSlot.transform.position);
                             });
+                            worldMap.SelectStage(stageSlot.stage);
+                            CheckStageGold(stageSlot.stage, stageSlot.transform.position);
                         });
                     });
                 }
