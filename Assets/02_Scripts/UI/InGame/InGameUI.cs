@@ -107,6 +107,20 @@ public class InGameUI : MonoBehaviour
         speedIconX4.SetActive(UserData.Instance.GameSpeed == 4);
     }
 
+    private void OnEnable()
+    {
+        if (UserData.Instance.IsOnTutorial())
+        {
+            pauseBtn.SetActive(false);
+            speedBtn.SetActive(false);
+        }
+        else
+        {
+            pauseBtn.SetActive(true);
+            speedBtn.SetActive(UserData.Instance.LocalData.Level.Value > 5);
+        }
+    }
+
     private void OnDisable()
     {
         disposable.Clear();

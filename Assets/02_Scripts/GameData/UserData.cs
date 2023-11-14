@@ -95,6 +95,7 @@ public partial class UserData : Singleton<UserData>
 
     private void InitNewGameData()
     {
+        LocalData = new LocalSaveData();
         var heroData = AddHeroData(ConfigTable.Instance.DefaultUnit01, 1);
 
         AddBattleParty(heroData.uid);
@@ -315,22 +316,29 @@ public partial class UserData : Singleton<UserData>
     {
         if (File.Exists(LocalFilePath))
         {
-            var localData = Utill.LoadFromFile(LocalFilePath);
-            //localData = Utill.EncryptXOR(localData);
-            LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
-            LocalData.UpdateRefData();
+            try
+            {
+                var localData = Utill.LoadFromFile(LocalFilePath);
+                localData = Utill.EncryptXOR(localData);
+                LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
+            }
+            catch
+            {
+                // NewGame
+                InitNewGameData();
+                return;
+            }
 
+            LocalData.UpdateRefData();
             if (IsOnTutorial())
             {
                 // Restart 
-                LocalData = new LocalSaveData();
                 InitNewGameData();
             }
         }
         else
         {
             // NewGame
-            LocalData = new LocalSaveData();
             InitNewGameData();
         }
     }
@@ -338,7 +346,7 @@ public partial class UserData : Singleton<UserData>
     public void SaveLocalData()
     {
         var saveData = JsonUtility.ToJson(LocalData);
-        //saveData = Utill.EncryptXOR(saveData);
+        saveData = Utill.EncryptXOR(saveData);
         Utill.SaveFile(LocalFilePath, saveData);
     }
 
