@@ -73,4 +73,15 @@ public partial class DataManager
         }
         return LevelArray.Max(item => item.level);
     }
+
+    public int GetUnlockLevelBySlotIndex(int _slotIndex)
+    {
+        var levelDataList = LevelDic.Values.Where(item => item.unlockslot == _slotIndex).ToList();
+
+        if (levelDataList.Count > 0)
+        {
+            return levelDataList.OrderBy(item => item.id).First().level;
+        }
+        return -1;
+    }
 }

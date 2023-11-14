@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using TMPro;
 
 public class UIBattlePartySlot : MonoBehaviour
 {
     [SerializeField] private GameObject emptySlot;
     [SerializeField] private GameObject lockSlot;
+    [SerializeField] private TextMeshProUGUI unlockLvText;
     [SerializeField] private Transform characterViewTr;
     [SerializeField] private Button button;
 
@@ -48,7 +50,24 @@ public class UIBattlePartySlot : MonoBehaviour
         {
             ClearPool();
         }
+
+        UpdateLockState();
         unitUID = _unitUID;
+    }
+
+    private void UpdateLockState()
+    {
+        if (UserData.Instance.GetUnitSlotCount() < slotIndex + 1)
+        {
+            emptySlot.SetActive(false);
+            lockSlot.SetActive(true);
+            unlockLvText.SetText($"LEVEL {DataManager.Instance.GetUnlockLevelBySlotIndex(slotIndex + 1)}");
+        }
+        else
+        {
+            emptySlot.SetActive(true);
+            lockSlot.SetActive(false);
+        }
     }
 
     public void ClearPool()
@@ -61,15 +80,5 @@ public class UIBattlePartySlot : MonoBehaviour
             heroObj = null;
         }
 
-        if (UserData.Instance.GetUnitSlotCount() < slotIndex + 1)
-        {
-            emptySlot.SetActive(false);
-            lockSlot.SetActive(true);
-        }
-        else
-        {
-            emptySlot.SetActive(true);
-            lockSlot.SetActive(false);
-        }
     }
 }
