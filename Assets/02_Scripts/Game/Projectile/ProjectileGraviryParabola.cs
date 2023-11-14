@@ -18,9 +18,15 @@ public class ProjectileGraviryParabola : ProjectileBase
         prevPos = transform.position;
     }
     protected override bool UpdateMissile()
-    {
+    {   
         if (!base.UpdateMissile())
         {
+            return false;
+        }
+
+        if (elapse > 1)
+        {
+            Dispose();
             return false;
         }
 
