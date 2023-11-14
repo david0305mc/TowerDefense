@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 7833206931387827376}
   - component: {fileID: 4329297135594395351}
   - component: {fileID: 8807486515338086067}
-  - component: {fileID: 3352953681293469957}
   - component: {fileID: 2250975091983562765}
   - component: {fileID: 4679902719461496102}
+  - component: {fileID: -531154521980600747}
   m_Layer: 0
   m_Name: 11002_Indian_Catapult_Bullet
   m_TagString: Untagged
@@ -117,42 +117,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7220045, y: 0.6841736}
   m_EdgeRadius: 0
---- !u!114 &3352953681293469957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2422460180569466054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43672f0a7e978b848bf97dbb0638fd6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 67.39705
-      outSlope: 67.39705
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.054166667
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -41.50379
-      outSlope: -41.50379
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.07499999
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!210 &2250975091983562765
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -272,6 +236,26 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &-531154521980600747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2422460180569466054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cd061b606e2af4387d103e16a54256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpSpeed: 3
+  gravity: -20
 --- !u!1 &2665834481522128394
 GameObject:
   m_ObjectHideFlags: 0

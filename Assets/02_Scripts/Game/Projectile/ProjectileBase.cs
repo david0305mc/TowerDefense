@@ -17,6 +17,7 @@ public class ProjectileBase : MonoBehaviour
     protected Vector2 srcPos;
     protected Vector2 dstPos;
     protected Vector2 lastMoveVector;
+    protected float dist;
 
     private bool isDisposed;
     private bool toBeDiposal;
@@ -47,6 +48,7 @@ public class ProjectileBase : MonoBehaviour
         
         dstPos = targetObj.transform.position;
         srcPos = transform.position;
+        dist = Vector2.Distance(srcPos, dstPos);
         moveDist = Vector2.Distance(srcPos, dstPos);
         elapse = 0f;
         speed = _speed;
