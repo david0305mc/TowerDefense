@@ -25,7 +25,7 @@ public class MissileTest : MonoBehaviour
         //var missile = Lean.Pool.LeanPool.Spawn(missile01, srcObj.transform);
         //missile.Shoot(dstObj, 3);
         var missile = Lean.Pool.LeanPool.Spawn(gravityMissile, srcObj.transform);
-        missile.Shoot(dstObj.transform.position, 3, -10);
+        missile.Shoot(dstObj.transform.position, 2, -20);
     }
 
 
