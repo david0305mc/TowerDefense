@@ -18,17 +18,17 @@ public class ProjectileGraviryParabola : ProjectileBase
         prevPos = transform.position;
     }
     protected override bool UpdateMissile()
-    {   
-        if (!base.UpdateMissile())
-        {
-            return false;
-        }
-
+    {
         if (elapse > 1)
         {
             Dispose();
             return false;
         }
+        if (!base.UpdateMissile())
+        {
+            return false;
+        }
+
 
         float dist = Mathf.Max(Vector2.Distance(srcPos, dstPos), 3f);
         elapse += Time.fixedDeltaTime / dist * speed;
