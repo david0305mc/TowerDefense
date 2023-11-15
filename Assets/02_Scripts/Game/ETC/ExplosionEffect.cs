@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class ExplosionEffect : MonoBehaviour
 {
@@ -14,7 +15,17 @@ public class ExplosionEffect : MonoBehaviour
     public void SetData(AttackData _attackData, System.Action _endAction)
     {
         attackData = _attackData;
-        cfxrEffect.EndAction = _endAction;
+        if (cfxrEffect != null)
+        {
+            cfxrEffect.EndAction = _endAction;
+        }
+        else
+        {
+            UniTask.Create(async () =>
+            {
+                await UniTask.WaitForSeconds(3f);
+            });
+        }
     }
 
     private void Dispose()

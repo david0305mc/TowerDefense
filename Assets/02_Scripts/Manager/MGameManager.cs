@@ -986,7 +986,13 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         if (!string.IsNullOrEmpty(unitGradeInfo.boomeffectprefab))
         {
-            ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(MResourceManager.Instance.GetPrefab(unitGradeInfo.boomeffectprefab), _pos, Quaternion.identity, objRoot).GetComponent<ExplosionEffect>();
+            var effectPrefab = MResourceManager.Instance.GetPrefab(unitGradeInfo.boomeffectprefab);
+            if (effectPrefab == null)
+            {
+                Debug.LogError($"effectPrefab == null {unitGradeInfo.boomeffectprefab}");
+                return;
+            }
+            ExplosionEffect effect = Lean.Pool.LeanPool.Spawn(effectPrefab, _pos, Quaternion.identity, objRoot).GetComponent<ExplosionEffect>();
             effect.SetData(_attackData, () =>
             {
                 Lean.Pool.LeanPool.Despawn(effect);

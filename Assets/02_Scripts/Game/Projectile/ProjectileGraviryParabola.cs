@@ -22,6 +22,7 @@ public class ProjectileGraviryParabola : ProjectileBase
         if (elapse > 1)
         {
             Dispose();
+            MGameManager.Instance.ShowBoomEffect(attackData, transform.position);
             return false;
         }
         if (!base.UpdateMissile())
