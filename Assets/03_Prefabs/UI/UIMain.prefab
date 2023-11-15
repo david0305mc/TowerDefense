@@ -8116,17 +8116,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 405216244847632684}
     m_Modifications:
+    - target: {fileID: 3595674282326815012, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3595674282326815017, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4822377368184622974, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 4000
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 4822377368184622974, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 4000
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 5662059698877054804, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_Pivot.x
@@ -8218,7 +8222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8549508866831397560, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc96a9fe751b6d4f976a2717229e7af, type: 3}
@@ -9174,6 +9178,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 888755918171871178}
     m_Modifications:
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5336300550488227882, guid: 5187de3a08613434eac35ca70098db74, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5745104655038542769, guid: 5187de3a08613434eac35ca70098db74, type: 3}
       propertyPath: m_Name
       value: Panel@Shop
