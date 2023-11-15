@@ -89,7 +89,6 @@ public class UIPanelStageInfo : MonoBehaviour
                 requrePowerText.color = enableColor;
                 break;
         }
-        startBtn.SetActive(true);
 
         if (uiCellRewardList.Count > 0)
         {
