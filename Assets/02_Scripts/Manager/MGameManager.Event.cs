@@ -227,6 +227,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void WinStage()
     {
+        TouchBlockManager.Instance.AddLock();
         gameState = Game.GameConfig.GameState.GameEnd;
         var stageRewards = DataManager.Instance.GetStageRewards(UserData.Instance.PlayingStage);
         int prevLevel = UserData.Instance.LocalData.Level.Value;
@@ -251,7 +252,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
         if (prevLevel < currLevel)
         {
-            TouchBlockManager.Instance.AddLock();
             UniTask.Create(async () =>
             {
                 await UniTask.WaitForSeconds(1f);
@@ -259,6 +259,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 popup.SetData(currLevel);
                 TouchBlockManager.Instance.RemoveLock();
             });
+        }
+        else
+        {
+            TouchBlockManager.Instance.RemoveLock();
         }
     }
     public void LoseStage()

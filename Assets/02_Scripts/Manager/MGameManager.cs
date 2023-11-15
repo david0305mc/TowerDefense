@@ -184,11 +184,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
             SetStageUI(timerCts);
             InitEnemies();
             InitInGameSpeed();
+            TouchBlockManager.Instance.RemoveLock();
             await ShowStageAround();
             StartFollowCamera().Forget();
 
             ConsumeStamina(ConfigTable.Instance.StageStartCost);
-            TouchBlockManager.Instance.RemoveLock();
             await SpawnAllHero();
             gameState = GameConfig.GameState.InGame;
 
