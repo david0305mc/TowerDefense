@@ -175,7 +175,7 @@ public class InGameUI : MonoBehaviour
     private void OnDisable()
     {
         disposable.Clear();
-        devilTaklCts.Cancel();
+        devilTaklCts?.Cancel();
         timeLeft = 0;
     }
 
@@ -183,8 +183,8 @@ public class InGameUI : MonoBehaviour
     {
         disposable.Clear();
         disposable.Dispose();
-        devilTaklCts.Cancel();
-        devilTaklCts.Dispose();
+        devilTaklCts?.Cancel();
+        devilTaklCts?.Dispose();
     }
 }
 
