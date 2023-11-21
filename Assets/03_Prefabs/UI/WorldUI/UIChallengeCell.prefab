@@ -623,6 +623,7 @@ GameObject:
   - component: {fileID: 3478311712848216347}
   - component: {fileID: 6213724500839735230}
   - component: {fileID: 8142102149920848590}
+  - component: {fileID: 1178049094674680316}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -747,6 +748,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1178049094674680316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3543423525734864483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: challenge_btn
 --- !u!1 &4770471430978973038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1144,7 @@ GameObject:
   - component: {fileID: 5176546742584065138}
   - component: {fileID: 5176546742584065140}
   - component: {fileID: 5176546742584065139}
+  - component: {fileID: 8048290895728384020}
   m_Layer: 5
   m_Name: SubText (1)
   m_TagString: Untagged
@@ -1254,6 +1269,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8048290895728384020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5176546742584065137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: challenge_desc
 --- !u!1 &5624454604795245596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1955,6 +1983,7 @@ GameObject:
   - component: {fileID: 8210751967487274890}
   - component: {fileID: 8210751967487274892}
   - component: {fileID: 8210751967487274893}
+  - component: {fileID: 7345206192987002134}
   m_Layer: 5
   m_Name: MainText
   m_TagString: Untagged
@@ -2079,6 +2108,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7345206192987002134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210751967487274891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: challenge_title
 --- !u!1 &8363365657470288823
 GameObject:
   m_ObjectHideFlags: 0

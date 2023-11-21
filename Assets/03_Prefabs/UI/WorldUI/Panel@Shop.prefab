@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 5357139056552365926}
   - component: {fileID: 5357139056552365920}
   - component: {fileID: 5357139056552365921}
+  - component: {fileID: 8299463694140062121}
   m_Layer: 5
   m_Name: MainText
   m_TagString: Untagged
@@ -185,6 +186,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8299463694140062121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357139056552365927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: gacha_sub_title
 --- !u!1 &5357139056560689749
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 800.884, y: -736.96}
+  m_AnchoredPosition: {x: 540, y: -736.96}
   m_SizeDelta: {x: 1040, y: 1473.92}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5745104655251958373
@@ -880,6 +894,7 @@ GameObject:
   - component: {fileID: 5745104656303966105}
   - component: {fileID: 5745104656303966111}
   - component: {fileID: 5745104656303966110}
+  - component: {fileID: 5295299105351575466}
   m_Layer: 5
   m_Name: MainText
   m_TagString: Untagged
@@ -1004,6 +1019,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5295299105351575466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745104656303966104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: shop_gacha_title
 --- !u!1 &8763455677803875714
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,6 +1772,7 @@ GameObject:
   - component: {fileID: 8763455679342074293}
   - component: {fileID: 8763455679342074299}
   - component: {fileID: 8763455679342074292}
+  - component: {fileID: 9007167913782626373}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1868,6 +1897,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9007167913782626373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763455679342074294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: gacha_10_btn
 --- !u!1 &8970285531252571891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,6 +2892,7 @@ GameObject:
   - component: {fileID: 8970285531991268510}
   - component: {fileID: 8970285531991268504}
   - component: {fileID: 8970285531991268511}
+  - component: {fileID: 2281067336733121128}
   m_Layer: 5
   m_Name: SubText (1)
   m_TagString: Untagged
@@ -2975,6 +3018,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2281067336733121128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970285531991268509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: gacha_sub_desc
 --- !u!1 &8970285531996895404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3246,6 +3302,7 @@ GameObject:
   - component: {fileID: 8970285532067541397}
   - component: {fileID: 8970285532067541399}
   - component: {fileID: 8970285532067541398}
+  - component: {fileID: 1663673506639491326}
   m_Layer: 5
   m_Name: MainText
   m_TagString: Untagged
@@ -3370,6 +3427,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1663673506639491326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970285532067541396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: common_stamina
 --- !u!1 &8970285532083204607
 GameObject:
   m_ObjectHideFlags: 0
@@ -4779,6 +4849,7 @@ GameObject:
   - component: {fileID: 8970285532448687594}
   - component: {fileID: 8970285532448687588}
   - component: {fileID: 8970285532448687595}
+  - component: {fileID: 1097287597310837550}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4903,6 +4974,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1097287597310837550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970285532448687593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22084a1ade9b0cb43b6e55b25e5059bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: gacha_1_btn
 --- !u!1 &8970285532461566853
 GameObject:
   m_ObjectHideFlags: 0
@@ -5974,7 +6058,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 800.884, y: -1800.185}
+  m_AnchoredPosition: {x: 540, y: -1800.185}
   m_SizeDelta: {x: 1040, y: 652.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8970285533145570292
