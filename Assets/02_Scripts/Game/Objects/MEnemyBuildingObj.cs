@@ -8,5 +8,8 @@ public class MEnemyBuildingObj : MEnemyObj
     {
 
     }
-
+    public override void DoUserSkillReact()
+    {
+        //DoAgentMove
+    }
 }

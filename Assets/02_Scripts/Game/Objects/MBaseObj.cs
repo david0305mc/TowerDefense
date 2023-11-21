@@ -23,7 +23,7 @@ public class MBaseObj : MonoBehaviour, Damageable
         End,
     }
 
-    [SerializeField] private Slider hpBar;
+    [SerializeField] protected Slider hpBar;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Rigidbody2D rigidBody2d;
     [SerializeField] protected Transform firePos;
@@ -67,7 +67,8 @@ public class MBaseObj : MonoBehaviour, Damageable
     protected SwordAttackChecker swordAttackChecker;
     private SpriteRenderer[] spriteRenderers;
     private CircleCollider2D circleCollider;
-    
+    protected Vector2 targetWayPoint;
+
     private List<Color> originColorLists;
     private NavMeshPath currNavPath;
     public Vector3 targetoffset;

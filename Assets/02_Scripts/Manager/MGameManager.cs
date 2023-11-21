@@ -500,14 +500,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     cameraFollowTime = 0f;
                 }
 
-                // Skill 
+                // User Skill 
                 {
                     Vector3 hitPoint = cameraManager.TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
 
                     var battleHeroData = UserData.Instance.GetBattleHeroDataAlive();
                     AttackData attackData = new AttackData(GameConfig.UserObjectUID, 10001, 10, 1, true);
-                    MGameManager.Instance.ShowBoomEffect(attackData, hitPoint);
-                    MGameManager.Instance.DoAreaAttack(attackData, hitPoint);
+                    ShowBoomEffect(attackData, hitPoint);
+                    DoAreaAttack(attackData, hitPoint);
                 }
             }
         }, () => {
@@ -567,7 +567,11 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void DoEnemyGetDamage(MEnemyObj _enemyObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
-        // GetDamaged
+        if (_enemyObj.IsEnemyBoss && GameConfig.UserObjectUID == _attackerUID)
+        {
+            return;
+        }
+
         bool isDead = UserData.Instance.AttackToEnmey(_enemyObj.UID, _damage);
         if (!UserData.Instance.isBattleHeroDead(_attackerUID))
         {
@@ -585,8 +589,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
             {
                 if (GameConfig.UserObjectUID == _attackerUID)
                 {
-                    // User Object UID
+                    // User Skill
                     _enemyObj.GetAttacked(attackerPos, 0);
+                    _enemyObj.DoUserSkillReact();
                 }
                 else
                 {

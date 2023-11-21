@@ -10,7 +10,6 @@ using System.Linq;
 
 public class MHeroObj : MBaseObj
 {
-    public GameObject targetWayPoint;
     private int wayPointIndex;
 
     protected override void Awake()
@@ -65,7 +64,7 @@ public class MHeroObj : MBaseObj
 
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
-                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
+                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].transform.position;
                 fsm.ChangeState(FSMStates.WaypointMove);
             }
         }
@@ -81,8 +80,8 @@ public class MHeroObj : MBaseObj
     protected override void WaypointMove_Update()
     {
         UpdateAgentSpeed();
-        DoAgentMove(targetWayPoint.transform.position);
-        FlipRenderers(targetWayPoint.transform.position.x < transform.position.x);
+        DoAgentMove(targetWayPoint);
+        FlipRenderers(targetWayPoint.x < transform.position.x);
  
         var targetLists = FindUnitListByArea(unitData.refData.checkrange, true);
         if (targetLists.Count > 0)
@@ -98,13 +97,13 @@ public class MHeroObj : MBaseObj
             }
         }
         
-        if (Vector2.Distance(transform.position, targetWayPoint.transform.position) < 0.3f)
+        if (Vector2.Distance(transform.position, targetWayPoint) < 0.3f)
         {
             wayPointIndex++;
 
             if (MGameManager.Instance.WayPoints.Count > wayPointIndex)
             {
-                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].gameObject;
+                targetWayPoint = MGameManager.Instance.WayPoints[wayPointIndex].transform.position;
             }
             else
             {

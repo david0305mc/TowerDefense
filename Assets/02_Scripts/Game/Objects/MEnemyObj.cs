@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 
 public class MEnemyObj : MBaseObj
 {
-
+    [SerializeField] private GameObject devilHitedIcon;
     [SerializeField] private bool isEnemyBoss;
     public bool IsEnemyBoss => isEnemyBoss;
 
@@ -23,6 +24,8 @@ public class MEnemyObj : MBaseObj
     protected override void Awake()
     {
         base.Awake();
+        devilHitedIcon = hpBar.transform.Find("DevilHittedIcon").gameObject;
+        devilHitedIcon?.SetActive(false);
     }
 
     public override void StartFSM()
@@ -42,6 +45,7 @@ public class MEnemyObj : MBaseObj
         detectDelay = Random.Range(0, 2f);
         if (MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint != null)
         {
+            targetWayPoint = MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint.position;
             fsm.ChangeState(FSMStates.WaypointMove);
         }
     }
@@ -62,10 +66,9 @@ public class MEnemyObj : MBaseObj
     }
     protected override void WaypointMove_Update()
     {
-        var targetWayPoint = MGameManager.Instance.CurrStageObj.devileCastleSpawnPoint;
         UpdateAgentSpeed();
-        DoAgentMove(targetWayPoint.transform.position);
-        FlipRenderers(targetWayPoint.transform.position.x < transform.position.x);
+        DoAgentMove(targetWayPoint);
+        FlipRenderers(targetWayPoint.x < transform.position.x);
 
         var targetLists = FindUnitListByArea(unitData.refData.checkrange, false);
         if (targetLists.Count > 0)
@@ -81,7 +84,7 @@ public class MEnemyObj : MBaseObj
             }
         }
 
-        if (Vector2.Distance(transform.position, targetWayPoint.transform.position) < 0.3f)
+        if (Vector2.Distance(transform.position, targetWayPoint) < 0.3f)
         {
             fsm.ChangeState(FSMStates.Idle);
         }
@@ -107,6 +110,22 @@ public class MEnemyObj : MBaseObj
             return;
         }
         base.DoAggro(_attackerUID);
+    }
+
+    public virtual void DoUserSkillReact()
+    {
+        if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.PrevIdle)
+        {
+            targetWayPoint = (Vector2)transform.position + Random.insideUnitCircle * 3f;
+            fsm.ChangeState(FSMStates.WaypointMove);
+
+            UniTask.Create(async () =>
+            {
+                devilHitedIcon?.SetActive(true);
+                await UniTask.WaitForSeconds(2f, cancellationToken: this.GetCancellationTokenOnDestroy());
+                devilHitedIcon?.SetActive(false);
+            });
+        }
     }
 
     private void DetectHero()
