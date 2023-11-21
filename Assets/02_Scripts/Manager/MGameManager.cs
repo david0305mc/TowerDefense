@@ -508,6 +508,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     AttackData attackData = new AttackData(GameConfig.UserObjectUID, 10001, 10, 1, true);
                     ShowBoomEffect(attackData, hitPoint);
                     DoAreaAttack(attackData, hitPoint);
+                    ingameUI.ShowDevilTalk();
                 }
             }
         }, () => {

@@ -7,6 +7,7 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class InGameUI : MonoBehaviour
 {
@@ -14,16 +15,21 @@ public class InGameUI : MonoBehaviour
     public Transform SoulTarget => soulTargetTR;
     [SerializeField] private TextMeshProUGUI tileLeftText;
     [SerializeField] private TextMeshProUGUI acquireSoulText;
+    [SerializeField] private TextMeshProUGUI devilTalkText;
+    [SerializeField] private Animator devilTalkAnimator;
+    [SerializeField] private GameObject devilTalkObject;
     [SerializeField] private GameObject speedIconX1;
     [SerializeField] private GameObject speedIconX2;
     [SerializeField] private GameObject speedIconX4;
     [SerializeField] private LoadingUI loadingUI;
     [SerializeField] private Button pauseBtn;
     [SerializeField] private Button speedBtn;
-    [SerializeField] private Button skillBtn;
 
     private double timeLeft;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private CancellationTokenSource devilTaklCts;
+    private UniTask showDevilTalkTask;
+    private long lastShowDevilTalkTime;
     public async UniTask StartLoadingUI()
     {
         loadingUI.SetActive(true);
@@ -93,12 +99,56 @@ public class InGameUI : MonoBehaviour
                 MGameManager.Instance.LoseStage();
             }
         });
-        disposable.Clear();
+        disposable?.Clear();
+
         UserData.Instance.AcquireSoul.Subscribe(_soul =>
         {
             acquireSoulText.SetText(_soul.ToString());
         }).AddTo(disposable);
+
+        devilTalkAnimator.SetTrigger("idle");
+        devilTalkObject.SetActive(false);
+        lastShowDevilTalkTime = -1;
         UpdateUI();
+    }
+
+    public void ShowDevilTalk()
+    {
+        if (lastShowDevilTalkTime + ConfigTable.Instance.ShowDevilSayTextCoolTime < GameTime.Get())
+        {
+            lastShowDevilTalkTime = GameTime.Get();
+            ShowDevilTalkAsync().Forget();
+        }
+    }
+
+    private async UniTask ShowDevilTalkAsync()
+    {
+        if (devilTaklCts != null)
+        {
+            devilTaklCts.Cancel();
+        }
+        devilTaklCts = new CancellationTokenSource();
+
+        var devilSayInfo = DataManager.Instance.GetRandomDevilSay();
+
+        string animString = "Idle";
+        switch (devilSayInfo.anim)
+        {
+            case 1:
+                animString = "Happy";
+                break;
+            case 2:
+                animString = "Angry";
+                break;
+        }
+
+        devilTalkAnimator.SetTrigger(animString);
+        devilTalkText.SetText(LocalizeManager.Instance.GetLocalString(devilSayInfo.saytext));
+        devilTalkObject.SetActive(true);
+        await UniTask.WaitForSeconds(ConfigTable.Instance.ShowDevilSayTextCoolTime, cancellationToken: devilTaklCts.Token);
+        devilTalkAnimator.SetTrigger("Idle");
+        devilTalkObject.SetActive(false);
+        devilTalkText.SetText(string.Empty);
     }
 
     public void UpdateUI()
@@ -125,7 +175,16 @@ public class InGameUI : MonoBehaviour
     private void OnDisable()
     {
         disposable.Clear();
+        devilTaklCts.Cancel();
         timeLeft = 0;
+    }
+
+    private void OnDestroy()
+    {
+        disposable.Clear();
+        disposable.Dispose();
+        devilTaklCts.Cancel();
+        devilTaklCts.Dispose();
     }
 }
 

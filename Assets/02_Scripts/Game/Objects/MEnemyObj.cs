@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-
+using UnityEngine.AI;
 
 public class MEnemyObj : MBaseObj
 {
@@ -112,13 +112,30 @@ public class MEnemyObj : MBaseObj
         base.DoAggro(_attackerUID);
     }
 
+
+    private Vector2 GetRandomWayPoint(float _dist)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            var pos = (Vector2)transform.position + Random.insideUnitCircle * _dist;
+            NavMeshPath path = new NavMeshPath();
+            if (agent.CalculatePath(pos, path))
+            {
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    return pos;
+                }
+            }
+        }
+        return transform.position;
+    }
+
     public virtual void DoUserSkillReact()
     {
         if (fsm.State == FSMStates.Idle || fsm.State == FSMStates.PrevIdle)
         {
-            targetWayPoint = (Vector2)transform.position + Random.insideUnitCircle * 3f;
+            targetWayPoint = GetRandomWayPoint(3f);
             fsm.ChangeState(FSMStates.WaypointMove);
-
             UniTask.Create(async () =>
             {
                 devilHitedIcon?.SetActive(true);

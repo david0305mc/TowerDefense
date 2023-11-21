@@ -13,6 +13,8 @@ public class ConfigTable : Singleton<ConfigTable>{
 	public int StaminaDefaultCount;
 	public int GoldDefault;
 	public int DefaultUnit01;
+	public int WorldShipRewardCooltime;
+	public int ShowDevilSayTextCoolTime;
 	public void LoadConfig(Dictionary<string, Dictionary<string, object>> rowList)
 	{
 		foreach (var rowItem in rowList)

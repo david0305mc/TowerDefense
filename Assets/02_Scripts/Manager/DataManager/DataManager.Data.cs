@@ -286,4 +286,25 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class DevilSay {
+		public int id;
+		public string saytext;
+		public string memo;
+		public int showtime;
+		public int anim;
+	};
+	public DevilSay[] DevilsayArray { get; private set; }
+	public Dictionary<int, DevilSay> DevilsayDic { get; private set; }
+	public void BindDevilSayData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(DevilsayArray)).SetValue(this, deserializaedData, null);
+		DevilsayDic = DevilsayArray.ToDictionary(i => i.id);
+	}
+	public DevilSay GetDevilSayData(int _id){
+		if (DevilsayDic.TryGetValue(_id, out DevilSay value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

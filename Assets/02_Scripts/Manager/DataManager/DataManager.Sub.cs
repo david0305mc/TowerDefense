@@ -84,4 +84,9 @@ public partial class DataManager
         }
         return -1;
     }
+
+    public DevilSay GetRandomDevilSay()
+    {
+        return DevilsayArray[Random.Range(0, DevilsayArray.Length - 1)];
+    }
 }
