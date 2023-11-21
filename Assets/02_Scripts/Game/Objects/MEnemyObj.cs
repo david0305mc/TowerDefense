@@ -99,7 +99,16 @@ public class MEnemyObj : MBaseObj
             }
         }
     }
-    
+
+    public override void DoAggro(int _attackerUID)
+    {
+        if (_attackerUID == Game.GameConfig.UserObjectUID)
+        {
+            return;
+        }
+        base.DoAggro(_attackerUID);
+    }
+
     private void DetectHero()
     {
         var detectedObjs = FindUnitListByArea(unitData.refData.checkrange, false);

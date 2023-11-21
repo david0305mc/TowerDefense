@@ -397,7 +397,7 @@ public class MCameraManager : SingletonMono<MCameraManager>
         }
     }
 
-    private Vector3 TryGetRayCastHitPoint(Vector2 _touchPoint, int _layerMask)
+    public Vector3 TryGetRayCastHitPoint(Vector2 _touchPoint, int _layerMask)
     {   
         var mousePos = mainCamera.ScreenToWorldPoint(_touchPoint);
         

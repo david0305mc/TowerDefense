@@ -56,8 +56,11 @@ public class MResourceManager : SingletonMono<MResourceManager>
         HashSet<string> particleSet = new HashSet<string>();
 
         foreach (var item in DataManager.Instance.UnitinfoArray)
-        { 
-            if(!particleSet.Contains(item.deatheffect))
+        {
+            if (string.IsNullOrEmpty(item.deatheffect))
+                continue;
+
+            if (!particleSet.Contains(item.deatheffect))
             {
                 particleSet.Add(item.deatheffect);
             }
@@ -65,6 +68,9 @@ public class MResourceManager : SingletonMono<MResourceManager>
 
         foreach (var item in particleSet)
         {
+            if (string.IsNullOrEmpty(item))
+                continue;
+
             if (!buildResouirceDic.ContainsKey(item))
             {
                 var obj = Resources.LoadAsync<GameObject>(item);
@@ -92,6 +98,9 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
         foreach (var item in DataManager.Instance.ProjectileinfoDic)
         {
+            if (string.IsNullOrEmpty(item.Value.prefabname))
+                continue;
+
             if (!prefabDic.ContainsKey(item.Value.prefabname))
             {
                 prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
@@ -102,6 +111,9 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
         foreach (var item in DataManager.Instance.UnitinfoDic)
         {
+            if (string.IsNullOrEmpty(item.Value.prefabname))
+                continue;
+
             if (!prefabDic.ContainsKey(item.Value.prefabname))
             {
                 prefabDic[item.Value.prefabname] = await Addressables.LoadAssetAsync<GameObject>(item.Value.prefabname);
@@ -112,6 +124,9 @@ public class MResourceManager : SingletonMono<MResourceManager>
     {
         foreach (var item in DataManager.Instance.UnitgradeinfoArray)
         {
+            if (string.IsNullOrEmpty(item.boomeffectprefab))
+                continue;
+
             if (!prefabDic.ContainsKey(item.boomeffectprefab))
             {
                 prefabDic[item.boomeffectprefab] = await Addressables.LoadAssetAsync<GameObject>(item.boomeffectprefab);

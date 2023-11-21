@@ -253,6 +253,9 @@ public partial class UserData : Singleton<UserData>
     {
         try
         {
+            if (_battleUID == Game.GameConfig.UserObjectUID)
+                return false;
+
             return battleHeroDataDic[_battleUID].isDead;
         }
         catch
@@ -272,6 +275,18 @@ public partial class UserData : Singleton<UserData>
             return battleHeroDataDic[_battleUID];
         return null;
     }
+    public UnitBattleData GetBattleHeroDataAlive()
+    {
+        foreach (var item in battleHeroDataDic)
+        {
+            if (!item.Value.isDead)
+            {
+                return item.Value;
+            }
+        }
+        return null;
+    }
+
     public InBuildData LoadInBuildData()
     {
         var textAsset = Resources.Load("textData") as TextAsset;
@@ -427,6 +442,10 @@ public partial class UserData : Singleton<UserData>
     public void KillEnemy(int _heroUID, int _enemyUID)
     {
         enemyDataDic[_enemyUID].isDead = true;
+        if (_heroUID == Game.GameConfig.UserObjectUID)
+        {
+            return;
+        }
         battleHeroDataDic[_heroUID].killCount++;
     }
 

@@ -499,6 +499,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     cameraManager.CancelFollowTarget();
                     cameraFollowTime = 0f;
                 }
+
+                // Skill 
+                {
+                    Vector3 hitPoint = cameraManager.TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
+
+                    var battleHeroData = UserData.Instance.GetBattleHeroDataAlive();
+                    AttackData attackData = new AttackData(GameConfig.UserObjectUID, 10001, 10, 1, true);
+                    MGameManager.Instance.ShowBoomEffect(attackData, hitPoint);
+                    MGameManager.Instance.DoAreaAttack(attackData, hitPoint);
+                }
             }
         }, () => {
             if (gameState == GameConfig.GameState.MainUI)
@@ -573,10 +583,21 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var heroObj = GetHeroObj(_attackerUID);
             if (heroObj == null)
             {
-                // To Do - missile 
-                return;
+                if (GameConfig.UserObjectUID == _attackerUID)
+                {
+                    // User Object UID
+                    _enemyObj.GetAttacked(attackerPos, 0);
+                }
+                else
+                {
+                    // To Do - missile 
+                    return;
+                }
             }
-            _enemyObj.GetAttacked(attackerPos, heroObj.UnitData.refUnitGradeData.knockback);
+            else
+            {
+                _enemyObj.GetAttacked(attackerPos, heroObj.UnitData.refUnitGradeData.knockback);
+            }
         }
         UIMain.Instance.ShowDamageText(_enemyObj.transform.position, _damage);
     }
@@ -982,10 +1003,12 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public void ShowBoomEffect(AttackData _attackData, Vector2 _pos, string name = default)
     {
+        
         var unitGradeInfo = DataManager.Instance.GetUnitGrade(_attackData.attackerTID, 1);
 
         if (!string.IsNullOrEmpty(unitGradeInfo.boomeffectprefab))
         {
+            //var effectPrefab = MResourceManager.Instance.GetPrefab("BoomEffect/Stone_Boom_Effect.prefab");
             var effectPrefab = MResourceManager.Instance.GetPrefab(unitGradeInfo.boomeffectprefab);
             if (effectPrefab == null)
             {

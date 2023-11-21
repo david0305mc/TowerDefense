@@ -30,6 +30,7 @@ namespace Game
         public static readonly int WaveStageID_01 = 999;
         public static readonly int WaveStageID_02 = 1000;
         public static readonly int DevilCasleID = 20001;
+        public static readonly int UserObjectUID = 10000;
 
         public static readonly int LastTutorial = 19;
 
