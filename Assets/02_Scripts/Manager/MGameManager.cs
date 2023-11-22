@@ -203,7 +203,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             var bossObj = GetEnemyObj(enemyBossUID);
             cameraManager.SetPosition(bossObj.transform.position + currStageObj.FollowOffset);
             cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
-            await UniTask.WaitForSeconds(0.3f);
             PopupManager.Instance.Show<TouchPopup>(() => {
                 cameraManager.CancelFollowTarget();
                 ucs.TrySetResult();
