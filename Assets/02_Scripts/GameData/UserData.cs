@@ -361,6 +361,7 @@ public partial class UserData : Singleton<UserData>
 
     public void SaveLocalData()
     {
+        LocalData.LastLoginTime = GameTime.Get();
         var saveData = JsonUtility.ToJson(LocalData);
         saveData = Utill.EncryptXOR(saveData);
         Utill.SaveFile(LocalFilePath, saveData);

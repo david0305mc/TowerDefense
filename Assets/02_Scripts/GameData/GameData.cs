@@ -12,6 +12,7 @@ public class LocalSaveData
     public int ShipRewardID;
     public long ShipRewardableTime;
     public long LastPushRewardedTime;
+    public long LastLoginTime;
     public int CurrTutorialID;
     public int TutorialSpawnedUnitUID;
     public long StaminaLastSpawnTime;

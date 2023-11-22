@@ -93,10 +93,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public async UniTask ReceiveOfflineReward()
     {
         UniTaskCompletionSource ucs = new UniTaskCompletionSource();
-        var popup = PopupManager.Instance.Show<OfflineRewardPopup>(()=> {
+        var popup = PopupManager.Instance.Show<OfflineRewardPopup>();
+        popup.SetData(_gold => {
+
+            List<RewardData> rewardList = new List<RewardData>();
+            rewardList.Add(new RewardData()
+            {
+                rewardtype = ITEM_TYPE.GOLD,
+                rewardid = 0,
+                rewardcount = _gold,
+            });
+            ReceiveReward(rewardList);
+            UserData.Instance.SaveLocalData();
             ucs.TrySetResult();
         });
-        popup.SetData();
         await ucs.Task;
     }
     public async UniTask ReceivePushReward()
