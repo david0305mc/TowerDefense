@@ -537,6 +537,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             UniTask.Create(async () =>
             {
+                await ReceiveOfflineReward();
                 await ReceivePushReward();
                 UserData.Instance.CheckAttendance();
                 if (UserData.Instance.HasAttendacneReward())

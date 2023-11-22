@@ -789,7 +789,7 @@ GameObject:
   - component: {fileID: 2901012188657627328}
   - component: {fileID: 2901012188657627330}
   - component: {fileID: 2901012188657627331}
-  - component: {fileID: 4170656644264641543}
+  - component: {fileID: 1672198168600770968}
   m_Layer: 5
   m_Name: GetBtn
   m_TagString: Untagged
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4170656644264641543
+--- !u!114 &1672198168600770968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -865,7 +865,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2901012188657627329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c4ba97f403bbb94f8b25f6b7b1d5a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1013,6 +1013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2901012189263563189}
+  - component: {fileID: 1482883132322938190}
   m_Layer: 5
   m_Name: OfflineRewardPopup
   m_TagString: Untagged
@@ -1042,6 +1043,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1482883132322938190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2901012189263563186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c4a7fe1aec57c43b0d700e2cdef5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openAnim: {fileID: 0}
+  closeBtn: {fileID: 8321146196578172631}
+  receiveBtn: {fileID: 1672198168600770968}
 --- !u!1 &3041346278613599405
 GameObject:
   m_ObjectHideFlags: 0

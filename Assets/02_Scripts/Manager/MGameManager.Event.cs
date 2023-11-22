@@ -90,7 +90,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
             }
         }
     }
-
+    public async UniTask ReceiveOfflineReward()
+    {
+        UniTaskCompletionSource ucs = new UniTaskCompletionSource();
+        var popup = PopupManager.Instance.Show<OfflineRewardPopup>(()=> {
+            ucs.TrySetResult();
+        });
+        popup.SetData();
+        await ucs.Task;
+    }
     public async UniTask ReceivePushReward()
     {
         UniTaskCompletionSource ucs = new UniTaskCompletionSource();
@@ -109,8 +117,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 ucs.TrySetResult();
             });
             popup.SetData(rewardList);
-
-            Debug.LogError($"pushRewardInfo{ pushRewardInfo.time.ToString()}");
             System.DateTime rewardTime = System.DateTime.Parse(pushRewardInfo.time);
             var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
             UserData.Instance.LocalData.LastPushRewardedTime = (long)timeStamp;
