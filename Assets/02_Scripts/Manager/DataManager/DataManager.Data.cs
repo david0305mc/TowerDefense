@@ -307,4 +307,25 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class WorldShipReward {
+		public int id;
+		public int trycount;
+		public ITEM_TYPE rewardtype;
+		public int rewardid;
+		public int rewardcount;
+	};
+	public WorldShipReward[] WorldshiprewardArray { get; private set; }
+	public Dictionary<int, WorldShipReward> WorldshiprewardDic { get; private set; }
+	public void BindWorldShipRewardData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(WorldshiprewardArray)).SetValue(this, deserializaedData, null);
+		WorldshiprewardDic = WorldshiprewardArray.ToDictionary(i => i.id);
+	}
+	public WorldShipReward GetWorldShipRewardData(int _id){
+		if (WorldshiprewardDic.TryGetValue(_id, out WorldShipReward value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

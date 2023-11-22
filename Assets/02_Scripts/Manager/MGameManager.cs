@@ -464,9 +464,18 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 }
                 else
                 {
-                    cameraManager.CancelFollowTarget();
-                    mainUI.HideStageInfo();
-                    worldMap.SelectStage(-1);
+                    GameObject shipRewardObj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.ShopRewardLayerMask);
+                    if (shipRewardObj != null)
+                    {
+                        CheckShipReward();
+                        shipRewardObj.GetComponent<ShipReardObj>().CheckReward();
+                    }
+                    else
+                    {
+                        cameraManager.CancelFollowTarget();
+                        mainUI.HideStageInfo();
+                        worldMap.SelectStage(-1);
+                    }
                 }
             }
             else
@@ -933,7 +942,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
             if (obj.GetComponent<Button>() != null)
                 SoundManager.Instance.Play("Sfx/etfx_pop_balloon");
         }
-        
     }
     //private void Update()
     //{
@@ -1026,6 +1034,19 @@ public partial class MGameManager : SingletonMono<MGameManager>
             {
                 Lean.Pool.LeanPool.Despawn(effect);
             });
+        }
+    }
+
+    private void CheckShipReward()
+    {
+        var shipRewardInfo = DataManager.Instance.GetWorldShipRewardData(UserData.Instance.LocalData.ShipRewardID + 1);
+        if (shipRewardInfo != null)
+        {
+            ReceiveShipReward(shipRewardInfo.id);
+        }
+        else
+        {
+            ReceiveShipReward(1);
         }
     }
 

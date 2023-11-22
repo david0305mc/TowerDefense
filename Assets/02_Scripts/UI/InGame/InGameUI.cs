@@ -145,7 +145,7 @@ public class InGameUI : MonoBehaviour
         devilTalkAnimator.SetTrigger(animString);
         devilTalkText.SetText(LocalizeManager.Instance.GetLocalString(devilSayInfo.saytext));
         devilTalkObject.SetActive(true);
-        await UniTask.WaitForSeconds(ConfigTable.Instance.ShowDevilSayTextCoolTime, cancellationToken: devilTaklCts.Token);
+        await UniTask.WaitForSeconds(devilSayInfo.showtime, cancellationToken: devilTaklCts.Token);
         devilTalkAnimator.SetTrigger("Idle");
         devilTalkObject.SetActive(false);
         devilTalkText.SetText(string.Empty);

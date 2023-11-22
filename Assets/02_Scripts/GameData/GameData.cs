@@ -9,6 +9,7 @@ using System.Linq;
 public class LocalSaveData
 {
     public int uidSeed;
+    public int ShipRewardID;
     public int CurrTutorialID;
     public int TutorialSpawnedUnitUID;
     public long StaminaLastSpawnTime;
@@ -31,6 +32,7 @@ public class LocalSaveData
         uidSeed = 1000;
         CurrTutorialID = 1;
         TutorialSpawnedUnitUID = -1;
+        ShipRewardID = 0;
         AttendanceDay = 1;
         AttendanceRewardedDic = new SerializableDictionary<int, int>();
         StaminaLastSpawnTime = GameTime.Get();

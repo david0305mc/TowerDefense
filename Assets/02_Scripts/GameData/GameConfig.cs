@@ -41,6 +41,7 @@ namespace Game
         public static int ItemLayerMask = LayerMask.GetMask("Item");
         public static int GroundLayerMask = LayerMask.GetMask("Ground");
         public static int StageSlotLayerMask = LayerMask.GetMask("StageSlot");
+        public static int ShopRewardLayerMask = LayerMask.GetMask("ShipReward");
         public static int UILayerMask = LayerMask.GetMask("UI");
 
         public static readonly string BoxIcon01 = "Images/Round/hide_box_img_1";

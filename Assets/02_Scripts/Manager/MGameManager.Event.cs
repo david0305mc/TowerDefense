@@ -92,6 +92,22 @@ public partial class MGameManager : SingletonMono<MGameManager>
         var popup = PopupManager.Instance.Show<RewardPopup>();
         popup.SetData(_rewardList);
     }
+
+    public void ReceiveShipReward(int _id)
+    {
+        var shipRewardInfo = DataManager.Instance.GetWorldShipRewardData(_id);
+        
+        List<RewardData> rewardList = new List<RewardData>();
+        rewardList.Add(new RewardData()
+        {
+            rewardtype = shipRewardInfo.rewardtype,
+            rewardid = shipRewardInfo.rewardid,
+            rewardcount = shipRewardInfo.rewardcount,
+        });
+        ReceiveReward(rewardList);
+        UserData.Instance.LocalData.ShipRewardID = _id + 1;
+        UserData.Instance.SaveLocalData();
+    }
     public void ReceiveAttendanceReward(int _day)
     {
         var attendanceInfoLists = DataManager.Instance.GetAttendanceInfosByDay(_day);

@@ -30,6 +30,7 @@ public partial class DataManager : Singleton<DataManager>
 			"Attendance",
 			"Level",
 			"DevilSay",
+			"WorldShipReward",
 		};
 
 	public async UniTask LoadDataAsync()
