@@ -335,6 +335,13 @@ public partial class DataManager {
 		public ITEM_TYPE rewardtype;
 		public int rewardid;
 		public int rewardcount;
+		public string memo1;
+		public string memo2;
+		public string memo3;
+		public string memo4;
+		public string memo5;
+		public string memo6;
+		public string memo7;
 	};
 	public PushReward[] PushrewardArray { get; private set; }
 	public Dictionary<int, PushReward> PushrewardDic { get; private set; }
