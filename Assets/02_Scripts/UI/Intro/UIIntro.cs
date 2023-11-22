@@ -15,7 +15,9 @@ public class UIIntro : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 120;
-        
+        NotificationManager.Instance.RequestAuthorization();
+        NotificationManager.Instance.RegisterNotificationChannel();
+
         startBtn.onClick.AddListener(() =>
         {
             foreach (var item in preloadingObjLists)
