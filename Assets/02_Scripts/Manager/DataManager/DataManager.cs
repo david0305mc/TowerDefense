@@ -39,6 +39,8 @@ public partial class DataManager : Singleton<DataManager>
 		
 		foreach (var tableName in tableNames)
 		{
+			if (tableName == "Localization")
+				continue;
 #if DEV
 			string data = Resources.Load<TextAsset>(Path.Combine("Data", $"{tableName}")).ToString();
 #else
@@ -55,6 +57,14 @@ public partial class DataManager : Singleton<DataManager>
 				Debug.LogError($"Table Load Failed {tableName}");
 			}
         }
+	}
+
+	public void LoadLocalization()
+	{
+		string tableName = "Localization";
+		string data = Resources.Load<TextAsset>(Path.Combine("Data", $"{tableName}")).ToString();
+		MethodInfo method = GetType().GetMethod($"Bind{tableName}Data");
+		method.Invoke(DataManager.Instance, new object[] { Type.GetType($"DataManager+{tableName}"), data });
 	}
 
 	public async UniTask LoadConfigTable()

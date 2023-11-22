@@ -19,6 +19,7 @@ public class UIIntro : MonoBehaviour
         NotificationManager.Instance.RegisterNotificationChannel();
         NotificationManager.Instance.CancelAllNotification();
 
+        DataManager.Instance.LoadLocalization();
         startBtn.onClick.AddListener(() =>
         {
             foreach (var item in preloadingObjLists)

@@ -7,8 +7,8 @@ public class Localize : MonoBehaviour
 {
     [SerializeField] private string key;
     private TextMeshProUGUI uiText;
-         
-    private void Awake()
+
+    private void Start()
     {
         uiText = GetComponent<TextMeshProUGUI>();
         if (uiText != null)
