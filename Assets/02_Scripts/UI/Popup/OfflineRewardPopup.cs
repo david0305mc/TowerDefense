@@ -17,9 +17,9 @@ public class OfflineRewardPopup : PopupBase
     }
 
     public void SetData(System.Action<int> _action)
-    {     
-        var seconds = GameTime.Get() - UserData.Instance.LocalData.LastLoginTime;
-        long maxSeconds = (long)System.TimeSpan.FromHours(1).TotalSeconds;
+    {
+        var seconds = UserData.Instance.OfflineTimeSeconds;
+        long maxSeconds = ConfigTable.Instance.OfflineRewardMaxTime;
         string param01 = System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss");
         string param02 = System.TimeSpan.FromSeconds(maxSeconds).ToString(@"hh\:mm\:ss");
         timeDescText.SetText($"{param01} / {param02}");
@@ -34,9 +34,14 @@ public class OfflineRewardPopup : PopupBase
         }
         long goldSeconds = seconds > maxSeconds ? maxSeconds : seconds;
         gauge.value = goldSeconds / (float)maxSeconds;
+        if (goldSeconds == 0)
+        {
+            Debug.LogError($"seconds {seconds} maxSeconds {maxSeconds}");
+        }
 
+        int d = ConfigTable.Instance.OfflineRewardRate;
         int goldproductterm = DataManager.Instance.GetStageInfoData(1).goldproductterm;
-        int goldAmt = Mathf.FloorToInt(goldSeconds / (float)goldproductterm) * goldAcc;
+        int goldAmt = Mathf.FloorToInt(goldSeconds / (float)goldproductterm) * goldAcc * d / 100;
         goldText.SetText(goldAmt.GetCommaString());
 
         receiveBtn.onClick.RemoveAllListeners();

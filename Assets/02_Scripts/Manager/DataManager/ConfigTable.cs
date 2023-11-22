@@ -15,6 +15,8 @@ public class ConfigTable : Singleton<ConfigTable>{
 	public int DefaultUnit01;
 	public int WorldShipRewardCooltime;
 	public int ShowDevilSayTextCoolTime;
+	public int OfflineRewardMaxTime;
+	public int OfflineRewardRate;
 	public void LoadConfig(Dictionary<string, Dictionary<string, object>> rowList)
 	{
 		foreach (var rowItem in rowList)

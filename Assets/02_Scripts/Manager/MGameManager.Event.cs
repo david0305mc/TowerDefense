@@ -104,6 +104,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 rewardcount = _gold,
             });
             ReceiveReward(rewardList);
+            UserData.Instance.OfflineTimeSeconds = 0;
             UserData.Instance.SaveLocalData();
             ucs.TrySetResult();
         });

@@ -16,6 +16,7 @@ public partial class UserData : Singleton<UserData>
     public int PlayingStage { get; set; }
     public int BattlePower { get; private set; }
     public int GameSpeed { get; private set; }
+    public long OfflineTimeSeconds{ get; set; }
 
     public bool IsWaveStage => PlayingStage == Game.GameConfig.WaveStageID_01 || PlayingStage == Game.GameConfig.WaveStageID_02;
 
@@ -102,6 +103,7 @@ public partial class UserData : Singleton<UserData>
         var levelInfo = DataManager.Instance.GetLevelData(LocalData.Level.Value);
         LocalData.UnitSlotCount = new ReactiveProperty<int>(levelInfo.unlockslot);
         LocalData.ShipRewardableTime = GameTime.Get();
+        OfflineTimeSeconds = -1;
     }
 
     public bool HasAttendacneReward()
@@ -337,6 +339,7 @@ public partial class UserData : Singleton<UserData>
                 var localData = Utill.LoadFromFile(LocalFilePath);
                 localData = Utill.EncryptXOR(localData);
                 LocalData = JsonUtility.FromJson<LocalSaveData>(localData);
+                OfflineTimeSeconds = GameTime.Get() - LocalData.LastLoginTime;
             }
             catch
             {
