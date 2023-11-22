@@ -94,20 +94,32 @@ public partial class MGameManager : SingletonMono<MGameManager>
     public async UniTask ReceivePushReward()
     {
         UniTaskCompletionSource ucs = new UniTaskCompletionSource();
-        var pushRewardInfo = DataManager.Instance.PushrewardArray[0];
-        List<RewardData> rewardList = new List<RewardData>();
-        rewardList.Add(new RewardData()
+        var pushRewardInfo = DataManager.Instance.GetAvailablePushReward();
+        if (pushRewardInfo != null)
         {
-            rewardtype = pushRewardInfo.rewardtype,
-            rewardid = pushRewardInfo.rewardid,
-            rewardcount = pushRewardInfo.rewardcount,
-        });
-        ReceiveReward(rewardList);
-        var popup = PopupManager.Instance.Show<PushRewardPopup>(()=> {
+            List<RewardData> rewardList = new List<RewardData>();
+            rewardList.Add(new RewardData()
+            {
+                rewardtype = pushRewardInfo.rewardtype,
+                rewardid = pushRewardInfo.rewardid,
+                rewardcount = pushRewardInfo.rewardcount,
+            });
+            ReceiveReward(rewardList);
+            var popup = PopupManager.Instance.Show<PushRewardPopup>(() => {
+                ucs.TrySetResult();
+            });
+            popup.SetData(rewardList);
+
+            Debug.LogError($"pushRewardInfo{ pushRewardInfo.time.ToString()}");
+            System.DateTime rewardTime = System.DateTime.Parse(pushRewardInfo.time);
+            var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
+            UserData.Instance.LocalData.LastPushRewardedTime = (long)timeStamp;
+            UserData.Instance.SaveLocalData();
+        }
+        else
+        {
             ucs.TrySetResult();
-        });
-        popup.SetData(rewardList);
-        UserData.Instance.SaveLocalData();
+        }
         await ucs.Task;
     }
 

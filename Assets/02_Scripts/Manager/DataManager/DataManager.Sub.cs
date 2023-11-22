@@ -89,4 +89,25 @@ public partial class DataManager
     {
         return DevilsayArray[Random.Range(0, DevilsayArray.Length - 1)];
     }
+
+    public PushReward GetAvailablePushReward()
+    {
+        List<PushReward> pushRewardList = new List<PushReward>();
+        for (int i = 0; i < PushrewardArray.Length; i++)
+        {
+            long lastPushRewardedTime = UserData.Instance.LocalData.LastPushRewardedTime;
+            System.DateTime rewardTime = System.DateTime.Parse(PushrewardArray[i].time);
+            var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
+
+            if (lastPushRewardedTime < timeStamp && timeStamp < GameTime.Get())
+            {
+                pushRewardList.Add(PushrewardArray[i]);
+            }
+        }
+        if (pushRewardList.Count > 0)
+        {
+            return PushrewardDic[pushRewardList.Max(item => item.id)];
+        }
+        return null;
+    }
 }
