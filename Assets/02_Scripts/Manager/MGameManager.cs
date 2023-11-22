@@ -467,8 +467,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     GameObject shipRewardObj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.ShopRewardLayerMask);
                     if (shipRewardObj != null)
                     {
-                        CheckShipReward();
-                        shipRewardObj.GetComponent<ShipReardObj>().CheckReward();
+                        CheckShipReward(shipRewardObj.GetComponent<ShipRewardObj>());
                     }
                     else
                     {
@@ -1037,16 +1036,25 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void CheckShipReward()
+    private void CheckShipReward(ShipRewardObj _shipRewardObj)
     {
-        var shipRewardInfo = DataManager.Instance.GetWorldShipRewardData(UserData.Instance.LocalData.ShipRewardID + 1);
-        if (shipRewardInfo != null)
+        if (UserData.Instance.LocalData.ShipRewardableTime <= GameTime.Get())
         {
-            ReceiveShipReward(shipRewardInfo.id);
+            var shipRewardInfo = DataManager.Instance.GetWorldShipRewardData(UserData.Instance.LocalData.ShipRewardID + 1);
+            if (shipRewardInfo != null)
+            {
+                ReceiveShipReward(shipRewardInfo.id);
+            }
+            else
+            {
+                ReceiveShipReward(1);
+            }
+            UserData.Instance.LocalData.ShipRewardableTime = GameTime.Get() + ConfigTable.Instance.WorldShipRewardCooltime;
+            _shipRewardObj.ReceiveReward();
         }
         else
         {
-            ReceiveShipReward(1);
+            PopupManager.Instance.ShowSystemOneBtnPopup("Wait Cool Time", "OK");
         }
     }
 

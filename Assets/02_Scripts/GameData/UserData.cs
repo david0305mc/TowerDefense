@@ -101,6 +101,7 @@ public partial class UserData : Singleton<UserData>
         AddBattleParty(heroData.uid);
         var levelInfo = DataManager.Instance.GetLevelData(LocalData.Level.Value);
         LocalData.UnitSlotCount = new ReactiveProperty<int>(levelInfo.unlockslot);
+        LocalData.ShipRewardableTime = GameTime.Get();
     }
 
     public bool HasAttendacneReward()

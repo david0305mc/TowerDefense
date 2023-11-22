@@ -10,6 +10,7 @@ public class LocalSaveData
 {
     public int uidSeed;
     public int ShipRewardID;
+    public long ShipRewardableTime;
     public int CurrTutorialID;
     public int TutorialSpawnedUnitUID;
     public long StaminaLastSpawnTime;
