@@ -103,6 +103,7 @@ public partial class UserData : Singleton<UserData>
         var levelInfo = DataManager.Instance.GetLevelData(LocalData.Level.Value);
         LocalData.UnitSlotCount = new ReactiveProperty<int>(levelInfo.unlockslot);
         LocalData.ShipRewardableTime = GameTime.Get();
+        LocalData.SignUpTime = GameTime.Get();
         OfflineTimeSeconds = -1;
     }
 

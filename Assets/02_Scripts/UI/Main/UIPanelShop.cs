@@ -89,9 +89,8 @@ public class UIPanelShop : MonoBehaviour
         freeSummon_Button.enabled = false;
         if (cts != null)
         {
-            
+            cts?.Cancel();
         }
-        cts?.Cancel();
         cts = new CancellationTokenSource();
 
         UniTask.Create(async () =>
