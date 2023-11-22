@@ -11,6 +11,7 @@ public class LocalSaveData
     public int uidSeed;
     public int ShipRewardID;
     public long ShipRewardableTime;
+    public long FreeGachaRewardableTime;
     public long LastPushRewardedTime;
     public long LastLoginTime;
     public int CurrTutorialID;
