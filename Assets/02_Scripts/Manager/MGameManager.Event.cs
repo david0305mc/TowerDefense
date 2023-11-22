@@ -89,8 +89,26 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     break;
             }
         }
-        var popup = PopupManager.Instance.Show<RewardPopup>();
-        popup.SetData(_rewardList);
+    }
+
+    public async UniTask ReceivePushReward()
+    {
+        UniTaskCompletionSource ucs = new UniTaskCompletionSource();
+        var pushRewardInfo = DataManager.Instance.PushrewardArray[0];
+        List<RewardData> rewardList = new List<RewardData>();
+        rewardList.Add(new RewardData()
+        {
+            rewardtype = pushRewardInfo.rewardtype,
+            rewardid = pushRewardInfo.rewardid,
+            rewardcount = pushRewardInfo.rewardcount,
+        });
+        ReceiveReward(rewardList);
+        var popup = PopupManager.Instance.Show<PushRewardPopup>(()=> {
+            ucs.TrySetResult();
+        });
+        popup.SetData(rewardList);
+        UserData.Instance.SaveLocalData();
+        await ucs.Task;
     }
 
     public void ReceiveShipReward(int _id)
@@ -105,6 +123,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
             rewardcount = shipRewardInfo.rewardcount,
         });
         ReceiveReward(rewardList);
+        var popup = PopupManager.Instance.Show<RewardPopup>();
+        popup.SetData(rewardList);
         UserData.Instance.LocalData.ShipRewardID = _id + 1;
         UserData.Instance.SaveLocalData();
     }
@@ -123,6 +143,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
             });
         }
         ReceiveReward(rewardList);
+        var popup = PopupManager.Instance.Show<RewardPopup>();
+        popup.SetData(rewardList);
 
         UserData.Instance.LocalData.AttendanceRewardedDic[_day] = 1;
         UserData.Instance.LocalData.NextAttendanceTime = GameTime.GetLocalMidnight();
@@ -188,6 +210,8 @@ public partial class MGameManager : SingletonMono<MGameManager>
         UserData.Instance.LocalData.Gold.Value -= _goldCost;
         var receiveLists = new List<RewardData>() { new RewardData() { rewardtype = ITEM_TYPE.STAMINA, rewardcount = _stamina, rewardid = -1 } };
         ReceiveReward(receiveLists);
+        var popup = PopupManager.Instance.Show<RewardPopup>();
+        popup.SetData(receiveLists);
         UserData.Instance.SaveLocalData();
     }
 

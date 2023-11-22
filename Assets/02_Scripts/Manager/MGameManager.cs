@@ -535,11 +535,16 @@ public partial class MGameManager : SingletonMono<MGameManager>
         SetWorldUI();
         if (!PlayNextTutorial())
         {
-            UserData.Instance.CheckAttendance();
-            if (UserData.Instance.HasAttendacneReward())
+            UniTask.Create(async () =>
             {
-                PopupManager.Instance.Show<AttendancePopup>();
-            }
+                await ReceivePushReward();
+                UserData.Instance.CheckAttendance();
+                if (UserData.Instance.HasAttendacneReward())
+                {
+                    PopupManager.Instance.Show<AttendancePopup>();
+                }
+            });
+            
         }
     }
 
