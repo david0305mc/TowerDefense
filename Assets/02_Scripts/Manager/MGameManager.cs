@@ -1058,7 +1058,27 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-  
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            foreach (var item in DataManager.Instance.PushrewardArray)
+            {
+                System.DateTime rewardTime = System.DateTime.Parse(item.time);
+                var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
+                if (GameTime.Get() < timeStamp)
+                {
+                    NotificationManager.Instance.SendNotification(item.message, item.message, rewardTime);
+                    Debug.Log(rewardTime.ToString());
+                }
+            }
+        }
+        else
+        {
+            NotificationManager.Instance.CancelAllNotification();
+        }
+    }
+
     private void OnDestroy()
     {
         spawnHeroCts?.Cancel();

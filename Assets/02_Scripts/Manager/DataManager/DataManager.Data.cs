@@ -328,4 +328,26 @@ public partial class DataManager {
 		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
 		return null;
 	}
+	public partial class PushReward {
+		public int id;
+		public string message;
+		public string time;
+		public ITEM_TYPE rewardtype;
+		public int rewardid;
+		public int rewardcount;
+	};
+	public PushReward[] PushrewardArray { get; private set; }
+	public Dictionary<int, PushReward> PushrewardDic { get; private set; }
+	public void BindPushRewardData(Type type, string text){
+		var deserializaedData = CSVDeserialize(text, type);
+		GetType().GetProperty(nameof(PushrewardArray)).SetValue(this, deserializaedData, null);
+		PushrewardDic = PushrewardArray.ToDictionary(i => i.id);
+	}
+	public PushReward GetPushRewardData(int _id){
+		if (PushrewardDic.TryGetValue(_id, out PushReward value)){
+			return value;
+		}
+		UnityEngine.Debug.LogError($"table doesnt contain id {_id}");
+		return null;
+	}
 };

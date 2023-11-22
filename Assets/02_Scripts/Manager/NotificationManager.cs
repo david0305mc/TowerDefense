@@ -38,6 +38,20 @@ public class NotificationManager : Singleton<NotificationManager>
 
         AndroidNotificationCenter.SendNotification(notification, channelId: "devil_Channel");
     }
+    public void SendNotification(string _title, string _text, System.DateTime _dateTime)
+    {
+        var notification = new AndroidNotification();
+        notification.Title = _title;
+        notification.Text = _text;
+        notification.FireTime = _dateTime;
+
+        AndroidNotificationCenter.SendNotification(notification, channelId: "devil_Channel");
+    }
+
+    public void CancelAllNotification()
+    {
+        AndroidNotificationCenter.CancelAllNotifications();
+    }
 #else
  public void RequestAuthorization()
     {

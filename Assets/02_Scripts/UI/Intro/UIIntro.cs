@@ -17,6 +17,7 @@ public class UIIntro : MonoBehaviour
         Application.targetFrameRate = 120;
         NotificationManager.Instance.RequestAuthorization();
         NotificationManager.Instance.RegisterNotificationChannel();
+        NotificationManager.Instance.CancelAllNotification();
 
         startBtn.onClick.AddListener(() =>
         {
