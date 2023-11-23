@@ -1086,7 +1086,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
                 if (GameTime.Get() < timeStamp)
                 {
-                    NotificationManager.Instance.SendNotification(item.message, item.message, rewardTime);
+                    NotificationManager.Instance.SendNotification(LocalizeManager.Instance.GetLocalString(item.title), LocalizeManager.Instance.GetLocalString(item.message), rewardTime);
                 }
             }
             UserData.Instance.SaveLocalData();

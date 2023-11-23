@@ -330,6 +330,7 @@ public partial class DataManager {
 	}
 	public partial class PushReward {
 		public int id;
+		public string title;
 		public string message;
 		public string time;
 		public ITEM_TYPE rewardtype;
