@@ -82,7 +82,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     UserData.Instance.AddHeroData(item.rewardid, item.rewardcount);
                     break;
                 case ITEM_TYPE.STAMINA:
-                    AddStamina(item.rewardcount, false);
+                    AddStamina(item.rewardcount, true);
                     break;
                 case ITEM_TYPE.GOLD:
                     AddGold(item.rewardcount, false);
