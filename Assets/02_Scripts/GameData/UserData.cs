@@ -337,7 +337,8 @@ public partial class UserData : Singleton<UserData>
     }
     public void LoadLocalData()
     {
-        if (File.Exists(LocalFilePath))
+        int newUser = PlayerPrefs.GetInt("NewUser", 0);
+        if (newUser == 1)
         {
             try
             {
@@ -373,6 +374,10 @@ public partial class UserData : Singleton<UserData>
         var saveData = JsonUtility.ToJson(LocalData);
         saveData = Utill.EncryptXOR(saveData);
         Utill.SaveFile(LocalFilePath, saveData);
+        if (PlayerPrefs.GetInt("NewUser", 0) == 0)
+        {
+            PlayerPrefs.SetInt("NewUser", 1);
+        }
     }
 
     /// New Game
