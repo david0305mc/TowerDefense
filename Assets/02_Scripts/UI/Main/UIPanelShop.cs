@@ -37,15 +37,15 @@ public class UIPanelShop : MonoBehaviour
         });
         buyStamina_10_Button.onClick.AddListener(() =>
         {
-            BuyStamina(10, 10);
+            BuyStamina(10, 1000);
         });
         buyStamina_50_Button.onClick.AddListener(() =>
         {
-            BuyStamina(50, 50);
+            BuyStamina(50, 4500);
         });
         buyStamina_100_Button.onClick.AddListener(() =>
         {
-            BuyStamina(100, 100);
+            BuyStamina(100, 8000);
         });
         freeSummon_Button.onClick.AddListener(() =>
         {
