@@ -26,6 +26,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     [SerializeField] private GoldRewardObj goldRewardPrefab;
     [SerializeField] private GameObject cameraFollowObject;
     [SerializeField] private TutorialTouchObject tutorialTouchObj;
+    [SerializeField] private ShipRewardObj shipRewardObj;
 
     private Dictionary<int, MEnemyObj> enemyDic;
     private Dictionary<int, MHeroObj> heroDic;
@@ -469,7 +470,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     GameObject shipRewardObj = cameraManager.TryGetRayCastObject(Input.mousePosition, GameConfig.ShopRewardLayerMask);
                     if (shipRewardObj != null)
                     {
-                        CheckShipReward(shipRewardObj.GetComponent<ShipRewardObj>());
+                        CheckShipReward();
                     }
                     else
                     {
@@ -1044,7 +1045,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
     }
 
-    private void CheckShipReward(ShipRewardObj _shipRewardObj)
+    private void CheckShipReward()
     {
         if (UserData.Instance.LocalData.ShipRewardableTime <= GameTime.Get())
         {
@@ -1058,7 +1059,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 ReceiveShipReward(1);
             }
             UserData.Instance.LocalData.ShipRewardableTime = GameTime.Get() + ConfigTable.Instance.WorldShipRewardCooltime;
-            _shipRewardObj.ReceiveReward();
+            shipRewardObj.ReceiveReward();
         }
         else
         {

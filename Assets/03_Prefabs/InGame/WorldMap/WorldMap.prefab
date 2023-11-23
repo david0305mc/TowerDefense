@@ -87,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5407596758626655680}
   - component: {fileID: 6019804593525055753}
+  - component: {fileID: 4865735274734892002}
   m_Layer: 10
   m_Name: ShipObj
   m_TagString: Untagged
@@ -162,6 +163,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &4865735274734892002
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47197361838748641}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.76}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.24, y: 2.64}
+    newSize: {x: 3.24, y: 2.64}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.26, y: 6.7}
+  m_EdgeRadius: 0
 --- !u!1 &184465146049513188
 GameObject:
   m_ObjectHideFlags: 0
@@ -27713,7 +27740,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8457705992076136856}
   - component: {fileID: 5087518216818714697}
-  - component: {fileID: 4059105985518584831}
   m_Layer: 10
   m_Name: ShipReward
   m_TagString: Untagged
@@ -27750,32 +27776,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonGiftAnimator: {fileID: 599228731975849631}
---- !u!61 &4059105985518584831
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8457705992076136863}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &8507687765620547713
 GameObject:
   m_ObjectHideFlags: 0
