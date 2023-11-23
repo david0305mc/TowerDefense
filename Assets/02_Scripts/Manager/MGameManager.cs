@@ -337,6 +337,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         var stageInfo = DataManager.Instance.GetStageInfoData(UserData.Instance.PlayingStage);
         ingameUI.SetData(GameTime.Get() + stageInfo.stagecleartime, _cts);
+        ingameUI.ShowDevilTalk(2);
     }
     public void FollowToCurrStage()
     {

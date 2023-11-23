@@ -112,16 +112,16 @@ public class InGameUI : MonoBehaviour
         UpdateUI();
     }
 
-    public void ShowDevilTalk()
+    public void ShowDevilTalk(int _sayID = -1)
     {
         if (lastShowDevilTalkTime + ConfigTable.Instance.ShowDevilSayTextCoolTime < GameTime.Get())
         {
             lastShowDevilTalkTime = GameTime.Get();
-            ShowDevilTalkAsync().Forget();
+            ShowDevilTalkAsync(_sayID).Forget();
         }
     }
 
-    private async UniTask ShowDevilTalkAsync()
+    private async UniTask ShowDevilTalkAsync(int _sayID)
     {
         if (devilTaklCts != null)
         {
@@ -129,8 +129,16 @@ public class InGameUI : MonoBehaviour
         }
         devilTaklCts = new CancellationTokenSource();
 
-        var devilSayInfo = DataManager.Instance.GetRandomDevilSay();
-
+        DataManager.DevilSay devilSayInfo;
+        if (_sayID == -1)
+        {
+            devilSayInfo = DataManager.Instance.GetRandomDevilSay();
+        }
+        else
+        {
+            devilSayInfo = DataManager.Instance.GetDevilSayData(_sayID);
+        }
+        
         string animString = "Idle";
         switch (devilSayInfo.anim)
         {
