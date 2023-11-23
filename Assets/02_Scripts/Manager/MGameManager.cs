@@ -1082,12 +1082,14 @@ public partial class MGameManager : SingletonMono<MGameManager>
     {
         if (pause)
         {
+            int count = 0;
             foreach (var item in DataManager.Instance.PushrewardArray)
             {
                 System.DateTime rewardTime = System.DateTime.Parse(item.time);
                 var timeStamp = Utill.ConvertToUnitxTimeStamp(rewardTime);
-                if (GameTime.Get() < timeStamp)
+                if (GameTime.Get() < timeStamp && count < 10)
                 {
+                    count++;
                     NotificationManager.Instance.SendNotification(LocalizeManager.Instance.GetLocalString(item.title), LocalizeManager.Instance.GetLocalString(item.message), rewardTime);
                 }
             }
