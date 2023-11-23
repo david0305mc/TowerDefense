@@ -24,6 +24,7 @@ namespace Game
         public static readonly int WorldMapSizeMinY = -4;
         public static readonly int WorldMapSizeMaxY = 6;
 
+        public static readonly int OfflineRewardMinSecond = 60;
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
         public static readonly float projectileRewardSizeFactor = 10f;
