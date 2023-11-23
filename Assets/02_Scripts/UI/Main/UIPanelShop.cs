@@ -80,7 +80,7 @@ public class UIPanelShop : MonoBehaviour
 
     private void EnableFreeGacha()
     {
-        freeGachaText.SetText(LocalizeManager.Instance.GetLocalString("Free"));
+        freeGachaText.SetText(LocalizeManager.Instance.GetLocalString("gacha_dragon_btn"));
         freeSummon_Button.enabled = true;
         freeSummonBtnImage.color = freeSummonOrgColor;
     }
