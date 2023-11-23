@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using System.Threading;
+using TMPro;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-public class DisasterObj : MonoBehaviour
+public class WorldmapLockObj : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI disasterTimeText;
 
@@ -17,11 +17,11 @@ public class DisasterObj : MonoBehaviour
     {
         if (UserData.Instance.LocalData.SignUpTime + disasterTime <= GameTime.Get())
         {
-            disasterTimeText.SetText(LocalizeManager.Instance.GetLocalString("Comming Soon"));
+            gameObject.SetActive(false);
         }
         else
         {
-            WaitForDiaster();
+            WaitForUnlock();
         }
     }
 
@@ -38,7 +38,7 @@ public class DisasterObj : MonoBehaviour
         cts = null;
     }
 
-    public void WaitForDiaster()
+    public void WaitForUnlock()
     {
         if (cts != null)
         {
@@ -54,7 +54,7 @@ public class DisasterObj : MonoBehaviour
                 disasterTimeText.SetText(System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss"));
                 await UniTask.WaitForSeconds(0.1f, cancellationToken: cts.Token);
             }
-            disasterTimeText.SetText(LocalizeManager.Instance.GetLocalString("Comming Soon"));
+            gameObject.SetActive(false);
         });
     }
 }

@@ -75,6 +75,10 @@ public partial class UserData : Singleton<UserData>
     public void UpdateData()
     {
         CalcBattlePower();
+        if (LocalData.SignUpTime == 0)
+        {
+            LocalData.SignUpTime = GameTime.Get();
+        }
     }
 
     public int NextGameSpeed() 
