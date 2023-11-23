@@ -109,7 +109,7 @@ public class UIPanelShop : MonoBehaviour
     private void SummonFreeGacha()
     {
         SummonHero(3, 0);
-        UserData.Instance.LocalData.FreeGachaRewardableTime = GameTime.Get() + 10;
+        UserData.Instance.LocalData.FreeGachaRewardableTime = GameTime.Get() + ConfigTable.Instance.FreeGachaCooltime;
         WaitForReward();
     }
     private void SummonHero(int _count, int _goldCost)
