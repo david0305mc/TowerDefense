@@ -302,6 +302,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             PlayNextTutorial();
         }
+
+        if (!PlayNextTutorial())
+        {
+            UniTask.Create(async () =>
+            {
+                await ReceiveOfflineReward();
+                ReceivePushReward().Forget();
+            });
+        }
     }
 
     private async UniTask CheckStaminaSpawn()
@@ -1085,6 +1094,15 @@ public partial class MGameManager : SingletonMono<MGameManager>
         else
         {
             NotificationManager.Instance.FlushNotifications();
+            UserData.Instance.OfflineTimeSeconds = GameTime.Get() - UserData.Instance.LocalData.LastLoginTime;
+            UniTask.Create(async () =>
+            {
+                if (!PlayNextTutorial() && gameState == GameConfig.GameState.MainUI)
+                {
+                    await ReceiveOfflineReward();
+                    ReceivePushReward().Forget();
+                }
+            });
         }
     }
 

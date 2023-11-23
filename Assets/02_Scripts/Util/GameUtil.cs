@@ -61,7 +61,8 @@ public class GameUtil
     public static string ConvertSecondsToTimeleft(long _seconds)
     {
         var timeSpaen = System.TimeSpan.FromSeconds(_seconds);
-        return $"{timeSpaen.TotalHours:00}:{timeSpaen.Minutes:00}:{timeSpaen.Seconds:00}";
+        int hour = Mathf.FloorToInt((float)timeSpaen.TotalHours);
+        return $"{hour:00}:{timeSpaen.Minutes:00}:{timeSpaen.Seconds:00}";
     }
 }
 
