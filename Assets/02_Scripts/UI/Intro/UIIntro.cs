@@ -15,10 +15,6 @@ public class UIIntro : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 120;
-        NotificationManager.Instance.RequestAuthorization();
-        NotificationManager.Instance.Initialize();
-        NotificationManager.Instance.FlushNotifications();
-        NotificationManager.Instance.RegisterNotificationChannel();
 
         DataManager.Instance.LoadLocalization();
         startBtn.onClick.AddListener(() =>
@@ -36,11 +32,20 @@ public class UIIntro : MonoBehaviour
         loadingUI.SetActive(false);
     }
 
+    private void InitNotification()
+    {
+        NotificationManager.Instance.RequestAuthorization();
+        NotificationManager.Instance.Initialize();
+        NotificationManager.Instance.FlushNotifications();
+        NotificationManager.Instance.RegisterNotificationChannel();
+    }
+
     private async UniTaskVoid StartGame()
     {
-        loadingUI.SetActive(true); 
+        loadingUI.SetActive(true);
         var playLoadingUI = loadingUI.PlayLoadingUIAsync();
         await UniTask.Yield();
+        InitNotification();
         LocalizeManager.Instance.Initialize();
         await Resources.UnloadUnusedAssets();
         await DataManager.Instance.LoadDataAsync();
