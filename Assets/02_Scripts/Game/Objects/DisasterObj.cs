@@ -10,7 +10,7 @@ public class DisasterObj : MonoBehaviour
     [SerializeField] private TextMeshProUGUI disasterTimeText;
 
     private CancellationTokenSource cts;
-    private readonly long disasterTime = 60 * 60 * 24 * 5;
+    private readonly long disasterTime = 60 * 60 * 24 * 4;
 
 
     private void OnEnable()
@@ -55,7 +55,7 @@ public class DisasterObj : MonoBehaviour
             while (UserData.Instance.LocalData.SignUpTime + disasterTime > GameTime.Get())
             {
                 var seconds = UserData.Instance.LocalData.SignUpTime + disasterTime - GameTime.Get();
-                disasterTimeText.SetText(System.TimeSpan.FromSeconds(seconds).ToString(@"dd\:hh\:mm"));
+                disasterTimeText.SetText(System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss"));
                 await UniTask.WaitForSeconds(0.1f, cancellationToken: cts.Token);
             }
             disasterTimeText.SetText(LocalizeManager.Instance.GetLocalString("Comming Soon"));
