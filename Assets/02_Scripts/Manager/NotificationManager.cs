@@ -46,7 +46,8 @@ public class NotificationManager : Singleton<NotificationManager>
         notification.Title = _title;
         notification.Text = _text;
         notification.FireTime = _dateTime;
-
+        notification.LargeIcon = "icon_1";
+        notification.SmallIcon = "icon_0";
         AndroidNotificationCenter.SendNotification(notification, channelId: "devil_Channel");
     }
 
