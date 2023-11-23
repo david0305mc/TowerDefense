@@ -1063,7 +1063,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            PopupManager.Instance.ShowSystemOneBtnPopup("Wait Cool Time", "OK");
+            PopupManager.Instance.ShowSystemOneBtnPopup(LocalizeManager.Instance.GetLocalString("worldmap_skeleton_reward_wait_text"), "OK");
         }
     }
 
