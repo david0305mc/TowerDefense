@@ -150,7 +150,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             InitInGameSpeed();
 
             cameraManager.SetPosition(currStageObj.heroSpawnPos);
-            cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
+            cameraManager.SetZoomAndSize(currStageObj.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
             StartFollowCamera().Forget();
             await SpawnAllHero();
             StartEnemyWave().Forget();
@@ -202,7 +202,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             UniTaskCompletionSource ucs = new UniTaskCompletionSource();
             var bossObj = GetEnemyObj(enemyBossUID);
             cameraManager.SetPosition(bossObj.transform.position + currStageObj.FollowOffset);
-            cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
+            cameraManager.SetZoomAndSize(currStageObj.DefaultZoomSize, currStageObj.ZoomMin, currStageObj.ZoomMax, currStageObj.SizeMinX, currStageObj.SizeMaxX, currStageObj.SizeMinY, currStageObj.SizeMaxY);
             PopupManager.Instance.Show<TouchPopup>(() => {
                 cameraManager.CancelFollowTarget();
                 ucs.TrySetResult();
@@ -288,7 +288,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         cameraManager.CancelFollowTarget();
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
-        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 7, -2, 9, -2, 6);
+        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 5, -2, 9, -2, 6);
         FollowToCurrStage();
         InitWorldGameSpeed();
         if (UserData.Instance.LocalData.CurrTutorialID == 10)
