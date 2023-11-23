@@ -16,7 +16,14 @@ namespace Game
             GameEnd,
         }
 
-        public static readonly int DefaultZoomSize = 3;
+        public static readonly float WorldMapDefaultZoomSize = 3;
+        public static readonly float WorldMapZoomMin = 2;
+        public static readonly float WorldMapZoomMax = 5;
+        public static readonly int WorldMapSizeMinX = -12;
+        public static readonly int WorldMapSizeMaxX = 12;
+        public static readonly int WorldMapSizeMinY = -4;
+        public static readonly int WorldMapSizeMaxY = 6;
+
         public static readonly int MaxBattlePartyCount = 6;
         public static readonly int ItemSelectedLayerOrder = 10;
         public static readonly float projectileRewardSizeFactor = 10f;

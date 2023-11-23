@@ -288,7 +288,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
         cameraManager.CancelFollowTarget();
         worldMap.gameObject.SetActive(true);
         worldMap.UpdateWorld();
-        cameraManager.SetZoomAndSize(GameConfig.DefaultZoomSize, 2, 5, -2, 9, -2, 6);
+        cameraManager.SetZoomAndSize(GameConfig.WorldMapDefaultZoomSize, GameConfig.WorldMapZoomMin, GameConfig.WorldMapZoomMax, 
+            GameConfig.WorldMapSizeMinX, GameConfig.WorldMapSizeMaxX, GameConfig.WorldMapSizeMinY, GameConfig.WorldMapSizeMaxY);
+
         FollowToCurrStage();
         InitWorldGameSpeed();
         if (UserData.Instance.LocalData.CurrTutorialID == 10)

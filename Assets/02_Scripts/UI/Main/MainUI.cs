@@ -7,6 +7,7 @@ using UniRx;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using System;
+using Game;
 
 public class MainUI : MonoBehaviour
 {
@@ -154,7 +155,9 @@ public class MainUI : MonoBehaviour
         {
             case BottomTab.Worldmap:
                 {
-                    MCameraManager.Instance.SetZoomAndSize(Game.GameConfig.DefaultZoomSize, 2, 5, -2, 9, -2, 6);
+                    MCameraManager.Instance.SetZoomAndSize(GameConfig.WorldMapDefaultZoomSize, GameConfig.WorldMapZoomMin, GameConfig.WorldMapZoomMax, 
+                        GameConfig.WorldMapSizeMinX, GameConfig.WorldMapSizeMaxX, GameConfig.WorldMapSizeMinY, GameConfig.WorldMapSizeMaxY);
+
                     MGameManager.Instance.FollowToCurrStage();
                     subMenuObject.SetActive(true);
                 }
