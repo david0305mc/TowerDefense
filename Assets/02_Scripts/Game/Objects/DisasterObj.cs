@@ -51,7 +51,8 @@ public class DisasterObj : MonoBehaviour
             while (UserData.Instance.LocalData.SignUpTime + disasterTime > GameTime.Get())
             {
                 var seconds = UserData.Instance.LocalData.SignUpTime + disasterTime - GameTime.Get();
-                disasterTimeText.SetText(System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss"));
+                disasterTimeText.SetText(GameUtil.ConvertSecondsToTimeleft(seconds));
+                
                 await UniTask.WaitForSeconds(0.1f, cancellationToken: cts.Token);
             }
             disasterTimeText.SetText(LocalizeManager.Instance.GetLocalString("Comming Soon"));
