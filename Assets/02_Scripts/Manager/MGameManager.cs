@@ -520,8 +520,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     cameraFollowTime = 0f;
                 }
 
-                // User Skill 
+                if (!UserData.Instance.IsOnTutorial())
                 {
+                    // User Skill 
                     Vector3 hitPoint = cameraManager.TryGetRayCastHitPoint(Input.mousePosition, GameConfig.GroundLayerMask);
 
                     var battleHeroData = UserData.Instance.GetBattleHeroDataAlive();
@@ -530,6 +531,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
                     DoAreaAttack(attackData, hitPoint);
                     ingameUI.ShowDevilTalk();
                 }
+                
             }
         }, () => {
             if (gameState == GameConfig.GameState.MainUI)
@@ -1097,7 +1099,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
             UserData.Instance.OfflineTimeSeconds = GameTime.Get() - UserData.Instance.LocalData.LastLoginTime;
             UniTask.Create(async () =>
             {
-                if (!PlayNextTutorial() && gameState == GameConfig.GameState.MainUI)
+                if (!UserData.Instance.IsOnTutorial() && gameState == GameConfig.GameState.MainUI)
                 {
                     await ReceiveOfflineReward();
                     ReceivePushReward().Forget();
