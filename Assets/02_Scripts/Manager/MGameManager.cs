@@ -1080,7 +1080,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
         }
         else
         {
-            NotificationManager.Instance.CancelAllNotification();
+            NotificationManager.Instance.FlushNotifications();
         }
     }
 

@@ -35,6 +35,8 @@ public class NotificationManager : Singleton<NotificationManager>
         notification.Title = _title;
         notification.Text = _text;
         notification.FireTime = System.DateTime.Now.AddSeconds(_fireTimeInSeconds);
+        notification.LargeIcon = "icon_1";
+        notification.SmallIcon = "icon_0";
 
         AndroidNotificationCenter.SendNotification(notification, channelId: "devil_Channel");
     }
@@ -48,9 +50,17 @@ public class NotificationManager : Singleton<NotificationManager>
         AndroidNotificationCenter.SendNotification(notification, channelId: "devil_Channel");
     }
 
-    public void CancelAllNotification()
+    public void FlushNotifications()
     {
+        AndroidNotificationCenter.CancelAllScheduledNotifications();
+        AndroidNotificationCenter.CancelAllDisplayedNotifications();
         AndroidNotificationCenter.CancelAllNotifications();
+    }
+
+    public void Initialize()
+    {
+        AndroidNotificationCenter.Initialize();
+    
     }
 #else
  public void RequestAuthorization()
