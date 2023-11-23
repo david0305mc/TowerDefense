@@ -58,15 +58,10 @@ public class UIPanelShop : MonoBehaviour
 
         if (UserData.Instance.LocalData.FreeGachaRewardableTime <= GameTime.Get())
         {
-            //PlayAnim("Ready");
-            freeSummon_Button.enabled = true;
-            freeGachaText.SetText(LocalizeManager.Instance.GetLocalString("Free"));
-            freeSummonBtnImage.color = freeSummonOrgColor;
+            EnableFreeGacha();
         }
         else
         {
-            //PlayAnim("Idle");
-            //WaitForReward();
             WaitForReward();
         }
     }
@@ -83,10 +78,22 @@ public class UIPanelShop : MonoBehaviour
         cts = null;
     }
 
-    public void WaitForReward()
+    private void EnableFreeGacha()
+    {
+        freeGachaText.SetText(LocalizeManager.Instance.GetLocalString("Free"));
+        freeSummon_Button.enabled = true;
+        freeSummonBtnImage.color = freeSummonOrgColor;
+    }
+
+    private void DisableFreeGacha()
     {
         freeSummonBtnImage.color = new Color(0, 0, 0, 100 / (float)255);
         freeSummon_Button.enabled = false;
+    }
+
+    public void WaitForReward()
+    {
+        DisableFreeGacha();
         if (cts != null)
         {
             cts?.Cancel();
@@ -101,8 +108,7 @@ public class UIPanelShop : MonoBehaviour
                 freeGachaText.SetText(System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss"));
                 await UniTask.WaitForSeconds(0.1f, cancellationToken: cts.Token);
             }
-            freeGachaText.SetText(LocalizeManager.Instance.GetLocalString("Free"));
-            freeSummon_Button.enabled = true;
+            EnableFreeGacha();
         });
     }
 
