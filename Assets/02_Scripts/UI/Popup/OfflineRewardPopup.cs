@@ -20,7 +20,9 @@ public class OfflineRewardPopup : PopupBase
     {
         var seconds = UserData.Instance.OfflineTimeSeconds;
         long maxSeconds = ConfigTable.Instance.OfflineRewardMaxTime;
-        string param01 = System.TimeSpan.FromSeconds(seconds).ToString(@"hh\:mm\:ss");
+        long goldSeconds = seconds > maxSeconds ? maxSeconds : seconds;
+
+        string param01 = System.TimeSpan.FromSeconds(goldSeconds).ToString(@"hh\:mm\:ss");
         string param02 = System.TimeSpan.FromSeconds(maxSeconds).ToString(@"hh\:mm\:ss");
         timeDescText.SetText($"{param01} / {param02}");
 
@@ -32,11 +34,10 @@ public class OfflineRewardPopup : PopupBase
                 goldAcc += item.goldproductamount;
             }
         }
-        long goldSeconds = seconds > maxSeconds ? maxSeconds : seconds;
         gauge.value = goldSeconds / (float)maxSeconds;
         if (goldSeconds == 0)
         {
-            Debug.LogError($"seconds {seconds} maxSeconds {maxSeconds}");
+            Debug.LogError($"seconds {goldSeconds} maxSeconds {maxSeconds}");
         }
 
         int d = ConfigTable.Instance.OfflineRewardRate;
