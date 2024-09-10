@@ -7,9 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
-
-
-public class FirebaseManager : MonoBehaviour
+public class FirebaseTest : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputfiendID;
     [SerializeField] private TMP_InputField inputfiendPassword;
@@ -160,3 +158,5 @@ public class FirebaseManager : MonoBehaviour
         SignInGPGS();
     }
 }
+
+
