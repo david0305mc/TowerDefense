@@ -53,9 +53,9 @@ public class GameTime
 
     public static long GetLocalMidnight()
     {
-        DateTime localTime = Utill.ConvertFromUnixTimestamp(Get());
+        DateTime localTime = Utill.ConvertFromUnixTimestamp(Get()).ToLocalTime();
         Debug.Log($"Korea {localTime}");
-        DateTime midNightTime = new DateTime(localTime.Year, localTime.Month, localTime.Day).AddDays(1);
+        DateTime midNightTime = new DateTime(localTime.Year, localTime.Month, localTime.Day + 1);
         Debug.Log($"Korea midnight {midNightTime}");
         return Convert.ToInt64(Utill.ConvertToUnitxTimeStamp(midNightTime));
     }
