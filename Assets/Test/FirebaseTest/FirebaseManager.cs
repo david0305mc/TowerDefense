@@ -5,11 +5,15 @@ using Firebase;
 using Firebase.Auth;
 using UnityEngine.UI;
 using TMPro;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+
 
 public class FirebaseManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputfiendID;
     [SerializeField] private TMP_InputField inputfiendPassword;
+    [SerializeField] private TextMeshProUGUI logText;
     private FirebaseAuth auth;
     private FirebaseUser user;
 
@@ -17,7 +21,33 @@ public class FirebaseManager : MonoBehaviour
     private void Awake()
     {
         isSignIn = false;
+        InitializeGPGS();
         InitializeFirebase();
+    }
+
+    void InitializeGPGS()
+    {
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
+    }
+
+    private void SignInGPGS()
+    {
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthenication);
+    }
+
+    private void ProcessAuthenication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
+        {
+            string name = PlayGamesPlatform.Instance.GetUserDisplayName();
+            string id = PlayGamesPlatform.Instance.GetUserId();
+            logText.text = $"Sucess {name}";
+        }
+        else
+        {
+            logText.text = "Failed";
+        }
     }
 
     void InitializeFirebase()
@@ -123,5 +153,10 @@ public class FirebaseManager : MonoBehaviour
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
         });
+    }
+
+    public void OnClickBtnGPGSLogin()
+    {
+        SignInGPGS();
     }
 }
