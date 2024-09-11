@@ -7,11 +7,14 @@ using UnityEngine.UI;
 using TMPro;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using Cysharp.Threading.Tasks;
+
 public class FirebaseTest : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputfiendID;
     [SerializeField] private TMP_InputField inputfiendPassword;
-    [SerializeField] private TextMeshProUGUI logText;
+    [SerializeField] private TextMeshProUGUI gpgsText;
+    [SerializeField] private TextMeshProUGUI firebaseText;
     private FirebaseAuth auth;
     private FirebaseUser user;
 
@@ -25,31 +28,57 @@ public class FirebaseTest : MonoBehaviour
 
     void InitializeGPGS()
     {
-        // enables saving game progress.
-        
+        var config = new PlayGamesClientConfiguration.Builder();
+        PlayGamesPlatform.InitializeInstance(
+            config.RequestIdToken()
+            .RequestEmail()
+            .Build());
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
     }
 
-    private void SignInGPGS()
+    private async UniTask SignInGPGS()
     {
-        PlayGamesPlatform.Instance.Authenticate(ProcessAuthenication);
-    }
+        UniTaskCompletionSource ucs = new UniTaskCompletionSource();
+        Social.localUser.Authenticate(ret =>
+        {
+            if (!ret)
+            {
+                ucs.TrySetCanceled();
+                gpgsText.text = "Failed";
+                return;
+            }
 
-    private void ProcessAuthenication(SignInStatus status)
+            ucs.TrySetResult();
+            
+        });
+        await ucs.Task;
+        gpgsText.text = $"Sucess {name}";
+        return;
+        //PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptAlways, _status =>
+        //{
+        //    if (_status == SignInStatus.Success)
+        //    {
+        //        string name = PlayGamesPlatform.Instance.GetUserDisplayName();
+        //        string id = PlayGamesPlatform.Instance.GetUserId();
+        //        gpgsText.text = $"Sucess {name}";
+        //        StartCoroutine(TryFirebaseLogin()); // Firebase Login ½Ãµµ
+        //    }
+        //    else
+        //    {
+
+        //        gpgsText.text = "Failed";
+        //    }
+        //});
+    }
+    private void SignOut()
     {
-        if (status == SignInStatus.Success)
+        if (Social.localUser.authenticated)
         {
-            string name = PlayGamesPlatform.Instance.GetUserDisplayName();
-            string id = PlayGamesPlatform.Instance.GetUserId();
-            logText.text = $"Sucess {name}";
-        }
-        else
-        {
-            logText.text = "Failed";
+            PlayGamesPlatform.Instance.SignOut();
+            auth.SignOut();
         }
     }
-
     void InitializeFirebase()
     {
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
@@ -98,7 +127,7 @@ public class FirebaseTest : MonoBehaviour
             Debug.LogError("empty inputfiendPassword");
             return;
         }
-        SignIn(inputfiendID.text, inputfiendPassword.text);
+        SignInFirebase(inputfiendID.text, inputfiendPassword.text);
     }
     public void OnClickBtnSignUP()
     {
@@ -112,10 +141,10 @@ public class FirebaseTest : MonoBehaviour
             Debug.LogError("empty inputfiendPassword");
             return;
         }
-        SignUp(inputfiendID.text, inputfiendPassword.text);
+        SignUpFirebase(inputfiendID.text, inputfiendPassword.text);
     }
 
-    public void SignUp(string email, string password)
+    public void SignUpFirebase(string email, string password)
     {
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled)
@@ -135,7 +164,7 @@ public class FirebaseTest : MonoBehaviour
                 result.User.DisplayName, result.User.UserId);
         });
     }
-    public void SignIn(string email, string password)
+    public void SignInFirebase(string email, string password)
     {
         auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled)
@@ -153,6 +182,32 @@ public class FirebaseTest : MonoBehaviour
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
         });
+    }
+    IEnumerator TryFirebaseLogin()
+    {
+        while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
+            yield return null;
+        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
+
+        Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
+        auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        {
+            if (task.IsCanceled)
+            {
+                firebaseText.SetText("SignInWithCredentialAsync was canceled!!");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                firebaseText.SetText("SignInWithCredentialAsync encountered an error: " + task.Exception);
+
+                return;
+            }
+            user = task.Result;
+
+        });
+        
+        
     }
 
     public void OnClickBtnGPGSLogin()
