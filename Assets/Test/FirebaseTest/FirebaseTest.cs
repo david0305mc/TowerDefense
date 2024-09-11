@@ -54,22 +54,7 @@ public class FirebaseTest : MonoBehaviour
         });
         await ucs.Task;
         gpgsText.text = $"Sucess {name}";
-        return;
-        //PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptAlways, _status =>
-        //{
-        //    if (_status == SignInStatus.Success)
-        //    {
-        //        string name = PlayGamesPlatform.Instance.GetUserDisplayName();
-        //        string id = PlayGamesPlatform.Instance.GetUserId();
-        //        gpgsText.text = $"Sucess {name}";
-        //        StartCoroutine(TryFirebaseLogin()); // Firebase Login ½Ãµµ
-        //    }
-        //    else
-        //    {
-
-        //        gpgsText.text = "Failed";
-        //    }
-        //});
+        StartCoroutine(TryFirebaseLogin()); 
     }
     private void SignOut()
     {
@@ -94,14 +79,14 @@ public class FirebaseTest : MonoBehaviour
                 && auth.CurrentUser.IsValid();
             if (!signedIn && user != null)
             {
-                Debug.Log("Signed out " + user.UserId);
+                gpgsText.SetText("Signed out " + user.UserId);
                 isSignIn = false;
             }
             user = auth.CurrentUser;
             if (signedIn)
             {
                 isSignIn = true;
-                Debug.Log("Signed in " + user.UserId);
+                gpgsText.SetText("Signed in " + user.UserId);
                 //displayName = user.DisplayName ?? "";
                 //emailAddress = user.Email ?? "";
                 //photoUrl = user.PhotoUrl ?? "";
@@ -115,74 +100,6 @@ public class FirebaseTest : MonoBehaviour
         auth = null;
     }
 
-    public void OnClickBtnSignIn()
-    {
-        if (string.IsNullOrEmpty(inputfiendID.text))
-        {
-            Debug.LogError("empty inputfiendID");
-            return;
-        }
-        if (string.IsNullOrEmpty(inputfiendPassword.text))
-        {
-            Debug.LogError("empty inputfiendPassword");
-            return;
-        }
-        SignInFirebase(inputfiendID.text, inputfiendPassword.text);
-    }
-    public void OnClickBtnSignUP()
-    {
-        if (string.IsNullOrEmpty(inputfiendID.text))
-        {
-            Debug.LogError("empty inputfiendID");
-            return;
-        }
-        if (string.IsNullOrEmpty(inputfiendPassword.text))
-        {
-            Debug.LogError("empty inputfiendPassword");
-            return;
-        }
-        SignUpFirebase(inputfiendID.text, inputfiendPassword.text);
-    }
-
-    public void SignUpFirebase(string email, string password)
-    {
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                return;
-            }
-
-            // Firebase user has been created.
-            Firebase.Auth.AuthResult result = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-        });
-    }
-    public void SignInFirebase(string email, string password)
-    {
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                return;
-            }
-
-            Firebase.Auth.AuthResult result = task.Result;
-            Debug.LogFormat("User signed in successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-        });
-    }
     IEnumerator TryFirebaseLogin()
     {
         while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
