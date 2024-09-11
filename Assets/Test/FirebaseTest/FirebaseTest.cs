@@ -25,6 +25,8 @@ public class FirebaseTest : MonoBehaviour
 
     void InitializeGPGS()
     {
+        // enables saving game progress.
+        
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
     }
