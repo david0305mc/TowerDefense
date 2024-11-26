@@ -1,6 +1,8 @@
 
 #if UNITY_ANDROID
+using System;
 using Unity.Notifications.Android;
+using UnityEngine;
 using UnityEngine.Android;
 #else
 
@@ -11,9 +13,16 @@ public class NotificationManager : Singleton<NotificationManager>
 #if UNITY_ANDROID
     public void RequestAuthorization()
     {
-        if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+        try
         {
-            Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
+            if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+            {
+                Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 
