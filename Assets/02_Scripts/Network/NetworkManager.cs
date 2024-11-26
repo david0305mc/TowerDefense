@@ -93,7 +93,7 @@ namespace Network
 
         public static async UniTask<string> GetNetworkTime()
         {
-            using (var request = UnityWebRequest.Get("http://google.com"))
+            using (var request = UnityWebRequest.Get("www.google.com"))
             {
                 var webRequest = await request.SendWebRequest();
                 if (webRequest.result != UnityWebRequest.Result.Success)
