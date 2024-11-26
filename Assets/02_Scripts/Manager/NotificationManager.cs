@@ -15,9 +15,13 @@ public class NotificationManager : Singleton<NotificationManager>
     {
         try
         {
-            if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+            string androidInfo = SystemInfo.operatingSystem;
+            int apiLevel = int.Parse(androidInfo.Substring(androidInfo.IndexOf("-") + 1, 3), System.Globalization.CultureInfo.InvariantCulture);
+            Debug.Log("apiLevel: " + apiLevel);
+
+            if (33 <= apiLevel && !UnityEngine.Android.Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
             {
-                Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
+                UnityEngine.Android.Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
             }
         }
         catch (Exception e)
