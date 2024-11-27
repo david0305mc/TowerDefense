@@ -97,18 +97,20 @@ public partial class MGameManager : SingletonMono<MGameManager>
         {
             var popup = PopupManager.Instance.Show<OfflineRewardPopup>();
             popup.SetData(_gold => {
-
-                List<RewardData> rewardList = new List<RewardData>();
-                rewardList.Add(new RewardData()
+                AdManager.Instance.ShowRewardedAd(_ =>
                 {
-                    rewardtype = ITEM_TYPE.GOLD,
-                    rewardid = 0,
-                    rewardcount = _gold,
+                    List<RewardData> rewardList = new List<RewardData>();
+                    rewardList.Add(new RewardData()
+                    {
+                        rewardtype = ITEM_TYPE.GOLD,
+                        rewardid = 0,
+                        rewardcount = _gold * 2,
+                    });
+                    ReceiveReward(rewardList);
+                    UserData.Instance.OfflineTimeSeconds = 0;
+                    UserData.Instance.SaveLocalData();
+                    ucs.TrySetResult();
                 });
-                ReceiveReward(rewardList);
-                UserData.Instance.OfflineTimeSeconds = 0;
-                UserData.Instance.SaveLocalData();
-                ucs.TrySetResult();
             });
         }
         else

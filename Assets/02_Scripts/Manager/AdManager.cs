@@ -96,12 +96,12 @@ public class AdManager : Singleton<AdManager>
         }
     }
 
-    public void ShowRewardedAd()
+    public void ShowRewardedAd(System.Action<Reward> _callback)
     {
         if (adQueue.Count > 0)
         {
             var rewardedAD = adQueue.Dequeue();
-            ShowRewardedAd(rewardedAD);
+            ShowRewardedAd(rewardedAD, _callback);
         }
         else
         {
@@ -109,13 +109,11 @@ public class AdManager : Singleton<AdManager>
         }
     }
 
-    public void ShowRewardedAd(RewardedAd _rewardedAd)
+    public void ShowRewardedAd(RewardedAd _rewardedAd, System.Action<Reward> _callback)
     {
-        const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
         _rewardedAd.Show((Reward reward) =>
         {
-            // TODO: Reward the user.
-            Debug.Log(string.Format(rewardMsg, reward.Type, reward.Amount));
+            _callback?.Invoke(reward);
         });
     }
 
