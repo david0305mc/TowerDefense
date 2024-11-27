@@ -17,6 +17,7 @@ public class UIIntro : MonoBehaviour
         Application.targetFrameRate = 120;
 
         DataManager.Instance.LoadLocalization();
+        AdManager.Instance.InitAD();
         startBtn.onClick.AddListener(() =>
         {
             foreach (var item in preloadingObjLists)
@@ -42,6 +43,7 @@ public class UIIntro : MonoBehaviour
 
     private async UniTaskVoid StartGame()
     {
+        AdManager.Instance.ShowRewardedAd();
         loadingUI.SetActive(true);
         var playLoadingUI = loadingUI.PlayLoadingUIAsync();
         await UniTask.Yield();
