@@ -43,7 +43,6 @@ public class UIIntro : MonoBehaviour
 
     private async UniTaskVoid StartGame()
     {
-        AdManager.Instance.ShowRewardedAd(null);
         loadingUI.SetActive(true);
         var playLoadingUI = loadingUI.PlayLoadingUIAsync();
         await UniTask.Yield();

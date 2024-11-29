@@ -7,6 +7,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     public bool PlayNextTutorial(System.Action _endAction = null)
     {
+        // skip Tutorial
+        return false;
+
         var tutoInfo = DataManager.Instance.GetTutorialInfoData(UserData.Instance.LocalData.CurrTutorialID);
         if (tutoInfo == null)
             return false;
