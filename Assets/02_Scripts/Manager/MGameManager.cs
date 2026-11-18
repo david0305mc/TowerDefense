@@ -40,6 +40,10 @@ public partial class MGameManager : SingletonMono<MGameManager>
     private Dictionary<TileBase, TileData> dataFromTileMap;
     private GameConfig.GameState gameState;
 
+    // Spawned units can already fight while the remaining heroes are spawning.
+    private bool IsBattleActive => gameState == GameConfig.GameState.InGame
+        || gameState == GameConfig.GameState.InGame_SpawningHero;
+
     private CancellationTokenSource followCameraCts;
     private CancellationTokenSource timerCts;
     private CancellationTokenSource stageCts;
@@ -596,6 +600,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void DoEnemyGetDamage(MEnemyObj _enemyObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
+        if (!IsBattleActive)
+            return;
+
         if (_enemyObj.IsEnemyBoss && GameConfig.UserObjectUID == _attackerUID)
         {
             return;
@@ -638,6 +645,9 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void DoHeroGetDamage(MHeroObj _heroObj, Vector3 attackerPos, int _attackerUID, int _damage)
     {
+        if (!IsBattleActive)
+            return;
+
         bool isDead = UserData.Instance.AttackToHero(_heroObj.UID, _damage);
         if (!UserData.Instance.IsEnemyDead(_attackerUID))
         {
@@ -700,7 +710,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void KillBattleHero(int _attackerUID, int _uid)
     {
-        if (gameState == GameConfig.GameState.BossDefeatEffect || gameState == GameConfig.GameState.GameEnd)
+        if (!IsBattleActive)
             return;
 
         UserData.Instance.KillBattleHero(_attackerUID, _uid);
@@ -731,11 +741,6 @@ public partial class MGameManager : SingletonMono<MGameManager>
                 LoseStage();
             }
         }
-
-        if (gameState != GameConfig.GameState.InGame)
-        {
-            Debug.LogError("It is not a In GameState");
-        }
     }
     private void RemoveBattleHero(int _uid)
     {
@@ -759,7 +764,7 @@ public partial class MGameManager : SingletonMono<MGameManager>
 
     private void KillEnemy(int attackerUID, int _uid)
     {
-        if (gameState == GameConfig.GameState.BossDefeatEffect || gameState == GameConfig.GameState.GameEnd)
+        if (!IsBattleActive)
             return;
 
         UserData.Instance.KillEnemy(attackerUID, _uid);
