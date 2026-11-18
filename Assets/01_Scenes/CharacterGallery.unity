@@ -1,0 +1,405 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 9
+  m_Fog: 0
+  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.01
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 12
+  m_GIWorkflowMode: 1
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 0
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_FinalGather: 0
+    m_FinalGatherFiltering: 1
+    m_FinalGatherRayCount: 256
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 1
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 5
+    m_PVRFilteringGaussRadiusAO: 2
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 2
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &2099472705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2099472708}
+  - component: {fileID: 2099472707}
+  - component: {fileID: 2099472706}
+  - component: {fileID: 2099472709}
+  m_Layer: 0
+  m_Name: Character Gallery
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &2099472706
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099472705}
+  m_Enabled: 1
+--- !u!20 &2099472707
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099472705}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.045, g: 0.065, b: 0.1, a: 1}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &2099472708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099472705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2099472709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099472705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4d76a41ef840a5a7a2c4bbe2eee495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characters:
+  - prefab: {fileID: 5324555947154473395, guid: 5d6e29ab291535548bc966ca69b8e9c4, type: 3}
+    category: Heroes
+  - prefab: {fileID: 8236748966363557941, guid: e3b53b4697a6bb2428cd452df07d4efd, type: 3}
+    category: Heroes
+  - prefab: {fileID: 4012603838095874479, guid: ca5d98b192af76a45a7605e02dfc2005, type: 3}
+    category: Heroes
+  - prefab: {fileID: 3037717833779457698, guid: 4f84e9eb46a4f5048b34d0d086f687e2, type: 3}
+    category: Heroes
+  - prefab: {fileID: 4910511953944077938, guid: 5f830c4cd5a7463449d0c1d7b13938b2, type: 3}
+    category: Heroes
+  - prefab: {fileID: 7831856361261440970, guid: 82c615e95f4838e4b92efbdce87a28e4, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5519325310232538392, guid: e61c90a4da29f244eafdd3e380f0bbc2, type: 3}
+    category: Heroes
+  - prefab: {fileID: 3016070487833916967, guid: d289bd97e55951040a5144e75d552ed6, type: 3}
+    category: Heroes
+  - prefab: {fileID: 4912250370921588312, guid: 5dca36927805ecc418c7b2849d3ed985, type: 3}
+    category: Heroes
+  - prefab: {fileID: 289733005461722118, guid: 1af12b3cb878fa64ab77c869704ebd4b, type: 3}
+    category: Heroes
+  - prefab: {fileID: 3800361413652434448, guid: 82344cdf506161646950878887af2a8b, type: 3}
+    category: Heroes
+  - prefab: {fileID: 872113865328098688, guid: 9a1cd3ed2340f0b4cbb6261d244311cf, type: 3}
+    category: Heroes
+  - prefab: {fileID: 3409563586749193335, guid: db039c58e2182e047ac80c34b1feeb9e, type: 3}
+    category: Heroes
+  - prefab: {fileID: 7222319633933738775, guid: 580e919e70316fc4880345439e422b9f, type: 3}
+    category: Heroes
+  - prefab: {fileID: 3770081701010080346, guid: 6a4e32f704a3e2c419a7a81f1355426d, type: 3}
+    category: Heroes
+  - prefab: {fileID: 6604922014608638866, guid: d3c768e4587acc048b526c2598fe06d5, type: 3}
+    category: Heroes
+  - prefab: {fileID: 6464084646897180427, guid: a701b7047eeff60428891dad64a0e137, type: 3}
+    category: Heroes
+  - prefab: {fileID: 4806135207153577082, guid: 30631fd90bd11b842925e71784d46c5e, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5685053830703024879, guid: e13945ea1bf5d2746b11966cf403883a, type: 3}
+    category: Heroes
+  - prefab: {fileID: 8879114414703886281, guid: cee5ab2e8985f0f4fbeaaa4bc48e90fa, type: 3}
+    category: Heroes
+  - prefab: {fileID: 4437580544352485023, guid: 070d9653c2ae37148a2a951c2bbb14db, type: 3}
+    category: Heroes
+  - prefab: {fileID: 111258029231109324, guid: 2b634ecf544fd5f4292a5be027a25c08, type: 3}
+    category: Heroes
+  - prefab: {fileID: 6987095010046783876, guid: 63a6269340a7ebd4888382c4cb311e81, type: 3}
+    category: Heroes
+  - prefab: {fileID: 9149525074702248946, guid: d2110e2818377934fa3dd373effe3652, type: 3}
+    category: Heroes
+  - prefab: {fileID: 6538272460034627979, guid: 685d4989cb693cd4b9aff2a12dc74830, type: 3}
+    category: Heroes
+  - prefab: {fileID: 7588380571511365768, guid: 783179c6e78630949ace03e4ba480b81, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5753474025980936986, guid: 12123859795acdc4f9fe670f83498462, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5183503147986566696, guid: f7969a229a07204438c9fbc287c75077, type: 3}
+    category: Heroes
+  - prefab: {fileID: 559508441892180758, guid: 04af043d6c9fbaa45a333afd5455c677, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5980811976818089149, guid: a1396f93755e32942994bf95d589b752, type: 3}
+    category: Heroes
+  - prefab: {fileID: 9177155367445068665, guid: 20ed5a7ffe5892e4fa36754ef416825d, type: 3}
+    category: Heroes
+  - prefab: {fileID: 5235701022258827099, guid: 8390bcf49fc01de47b07b5707ed2ceec, type: 3}
+    category: Heroes
+  - prefab: {fileID: 1294803747366169658, guid: 652ea5a606ac4aa409e0900fb1d63f67, type: 3}
+    category: Heroes
+  - prefab: {fileID: 1294803747366169658, guid: 1322998fd87afe44d8e7ac1f516569a0, type: 3}
+    category: Heroes
+  - prefab: {fileID: 9054030016635174123, guid: c4a29f010d1309740b9740a91de2edc1, type: 3}
+    category: Enemies
+  - prefab: {fileID: 8938197645323351172, guid: e2f2a74f428a0cd4bb5597f93220a5bd, type: 3}
+    category: Enemies
+  - prefab: {fileID: 2470409793418077575, guid: 95eb83e4205d4e9479884d0680a6a520, type: 3}
+    category: Enemies
+  - prefab: {fileID: 8950941203697879637, guid: 736a025ea5ae49243a865308908cb7f2, type: 3}
+    category: Enemies
+  - prefab: {fileID: 5424439735957386720, guid: 0cedc26412d852444abdd2501bb32488, type: 3}
+    category: Enemies
+  - prefab: {fileID: 2848249772951192164, guid: f0848ed7af3534a4c859cfeda2ea55a1, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1798549483151765102, guid: 5e247881fc5a58a4288dfd132a5674d4, type: 3}
+    category: Enemies
+  - prefab: {fileID: 8185423828540669582, guid: e7082044d14bd84409d0237156e6e1fc, type: 3}
+    category: Enemies
+  - prefab: {fileID: 2585565005851105541, guid: 6d1a06efbf1651143ab260bed6286455, type: 3}
+    category: Enemies
+  - prefab: {fileID: 3125811898285881250, guid: 2f14937f222511d4b8e0e6e5f9f18e36, type: 3}
+    category: Enemies
+  - prefab: {fileID: 515815116064595823, guid: 19eab1b2ae071a2458fa30505207cb43, type: 3}
+    category: Enemies
+  - prefab: {fileID: 517161377593348661, guid: 4959ee7ec328d0f4eba572868bb9a9bc, type: 3}
+    category: Enemies
+  - prefab: {fileID: 2999611610306855788, guid: f896173f87fa7854ab013e1dd29f06f0, type: 3}
+    category: Enemies
+  - prefab: {fileID: 5425928821105675825, guid: 7dbf41131d36e3440ab502e5798aee0c, type: 3}
+    category: Enemies
+  - prefab: {fileID: 362878897216867510, guid: a3082110d3abda640a0f3610de6ffa02, type: 3}
+    category: Enemies
+  - prefab: {fileID: 8689766048059107466, guid: cdd3bc0b9c38f2746b05b20f9492c0db, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1457212914582663766, guid: 99d3266463a9fcb488730d19f26ffd8f, type: 3}
+    category: Enemies
+  - prefab: {fileID: 4870993238830867339, guid: 98cc806be4788ca4e842ecf05611e16d, type: 3}
+    category: Enemies
+  - prefab: {fileID: 4043276220625494326, guid: 1459ae0a4a63ca6428bb9027e2f29cdf, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1871865058265106630, guid: 884fac33b5071bc4e90aabdea8a82e0c, type: 3}
+    category: Enemies
+  - prefab: {fileID: 6566740656332720260, guid: b2c19ab60694f2f4594a3be9af7e94fd, type: 3}
+    category: Enemies
+  - prefab: {fileID: 2671151923576071749, guid: 081dc6e1a12b2d24f98e860cd7c68dcb, type: 3}
+    category: Enemies
+  - prefab: {fileID: 3890244909452596275, guid: 971c4a280b98b674b83182de5ec56149, type: 3}
+    category: Enemies
+  - prefab: {fileID: 8335708458190360376, guid: 2b26b8346458aee41a1cde22c1e6ace6, type: 3}
+    category: Enemies
+  - prefab: {fileID: 6612097894762061123, guid: 313fc0704e72bce419135968d6996641, type: 3}
+    category: Enemies
+  - prefab: {fileID: 6330124251557987416, guid: c29a42a49b7cfb341a6526b23a911de4, type: 3}
+    category: Enemies
+  - prefab: {fileID: 4666885382595731020, guid: cd90be0c2eb938642a0e33127cc569b3, type: 3}
+    category: Enemies
+  - prefab: {fileID: 278533500050827949, guid: 665b9a204a646274aa52da2a18a5f85d, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1972208144580945426, guid: 19d8c72ead29f3f40a2e0ec7751a98aa, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1788482034725884694, guid: 634192c3382619f4c8501792767d818f, type: 3}
+    category: Enemies
+  - prefab: {fileID: 372337518952426518, guid: ef557b881b0e43940ba20a01456b41b4, type: 3}
+    category: Enemies
+  - prefab: {fileID: 1376473097206633910, guid: 2c14f10bfe1a4954081ec3c051e057c7, type: 3}
+    category: Enemies
+  - prefab: {fileID: 5262435009620302539, guid: d72fe18341e9ec44b957c0827cddbdfe, type: 3}
+    category: Objects
+  - prefab: {fileID: 190643480565066644, guid: eac97dc0f3a5aaa47af0417bab991a0e, type: 3}
+    category: Objects
+  - prefab: {fileID: 6994962672477025615, guid: ff7ff34924bb7ae4db0184cee9f5ea41, type: 3}
+    category: Objects
+  - prefab: {fileID: 1291417232332586452, guid: 4687c4ad3757a2d498d40c6cf858bc7f, type: 3}
+    category: Objects
+  - prefab: {fileID: 6446992056696475430, guid: e3cabe4a800a14e44882301c97484010, type: 3}
+    category: Objects
+  - prefab: {fileID: 1156411184941077243, guid: dfa59521e0ebf28479e847770c9bef02, type: 3}
+    category: Objects
+  - prefab: {fileID: 1743272617264269910, guid: ec1d52d95bc19134da090b916ba5492f, type: 3}
+    category: Objects
+  - prefab: {fileID: 7667890342801409638, guid: 5a0fd4c9d0087294da3cd36cef36d74a, type: 3}
+    category: Objects
+  - prefab: {fileID: 357545563248810128, guid: c58badba2e09f6d418aaf870f3e0f2be, type: 3}
+    category: Objects
+  - prefab: {fileID: 4535734170203418330, guid: b5e5703242b60084faf2d1414ff00135, type: 3}
+    category: Objects
+  - prefab: {fileID: 6221458121347142633, guid: 228f03fa21596e843a1ef0f3cfc97668, type: 3}
+    category: Objects
+  - prefab: {fileID: 6994962672477025615, guid: 5e80a6630b7f0274ba4c71c5ee8762d2, type: 3}
+    category: Objects
+  - prefab: {fileID: 1156411184941077243, guid: 118fe22e739b1984a8df880d7d9fdbdf, type: 3}
+    category: Objects
+  - prefab: {fileID: 4587738742807186689, guid: c31bb76d0eb4f094bba01281ae5fa298, type: 3}
+    category: Objects
+  - prefab: {fileID: 3490149350816600787, guid: a6f72b082e476a94d89e28959c792c7c, type: 3}
+    category: Objects
+  - prefab: {fileID: 3490149350816600787, guid: 684f4aea2deb4ad47aa894d5e055fcf4, type: 3}
+    category: Objects
+  - prefab: {fileID: 3490149350816600787, guid: c3e0acc51c7c4b8458aa0efdfcbf6feb, type: 3}
+    category: Objects
+  - prefab: {fileID: 6305545083181764738, guid: 19a05cbe266a0c74f8152da05016c89d, type: 3}
+    category: Objects
+  - prefab: {fileID: 6013569104323760434, guid: 73727d22ef50fcf48b8365e372d90352, type: 3}
+    category: Extras
+  - prefab: {fileID: 8589567210863517253, guid: f57d1973969f3e948b0285a4c37db7df, type: 3}
+    category: Extras
+  - prefab: {fileID: 3805175306977880933, guid: 699a891c445c3f1499b8c4be0a075be6, type: 3}
+    category: Extras
+  - prefab: {fileID: 3508542780622685277, guid: c7dcde9b2db252d4793d9dbe7f4a74b7, type: 3}
+    category: Extras
+  - prefab: {fileID: 8842504913203275625, guid: ed438f49aa9bd88448c94fa34281cc83, type: 3}
+    category: Extras
+  - prefab: {fileID: 1684067021390364719, guid: f305ab9c2281859489dc6bdc9a34bbb1, type: 3}
+    category: Extras
+  - prefab: {fileID: 1368409441103873894, guid: 1aef1b809d7caf640abf973665ea600c, type: 3}
+    category: Extras
