@@ -13,11 +13,14 @@ public class NotificationManager : Singleton<NotificationManager>
 
     public void RequestAuthorization()
     {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         try
         {
-            string androidInfo = SystemInfo.operatingSystem;
-            int apiLevel = int.Parse(androidInfo.Substring(androidInfo.IndexOf("-") + 1, 2), System.Globalization.CultureInfo.InvariantCulture);
+            int apiLevel;
+            using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
+            {
+                apiLevel = version.GetStatic<int>("SDK_INT");
+            }
             Debug.Log("apiLevel: " + apiLevel);
 
             if (33 <= apiLevel && !UnityEngine.Android.Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
