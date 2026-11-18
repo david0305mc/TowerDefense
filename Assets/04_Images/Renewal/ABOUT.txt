@@ -1,0 +1,16 @@
+Renewal character samples
+
+Three original character sprites generated using the built-in image generation tool, with native Unity transform animation clips.
+References: existing Goblin Club and Witch Fire images for broad cartoon style; generated Mushroom Spearguard for consistency. Final prompts are in GenerationPrompts.json.
+
+Open Assets/01_Scenes/RenewalCharacterPreview.unity and press Play to compare all three using the existing CharacterGallery viewer.
+Prefabs: Assets/03_Prefabs/InGame/Character/Renewal. Each contains an Animator and AnimationLink on its root and a bottom-aligned SpriteRenderer on its Visual child. Animation curves only affect Visual, keeping gameplay positioning and gallery fitting independent.
+Original RGBA PNG pixels and alpha are preserved. No spritesheet slicing is required.
+
+Animations: Idle, Walk, Attack and AttackIdle (12 clips total). Use the gallery motion buttons, Pause, Speed and Flip to inspect them. These are whole-sprite squash/stretch, bounce, float and lunge animations, without independent limb/weapon poses or directional frames.
+
+Attack is non-looping and emits Fire at its impact and AniEnd at completion, compatible with the existing AnimationLink callbacks. Other states loop. These remain visual sample prefabs without combat components or unit-table registration. Existing gameplay art is unchanged.
+
+Editable assets: Assets/07_Animations/Character/Renewal. Rebuild with Tools > Renewal Characters > Rebuild animations; this replaces the sample prefabs and clips. Validate with Tools > Renewal Characters > Validate animations.
+
+Validation: Unity 2022.3.47f1 built the assets and checked 96 sampled poses across all 12 clips, loop seams, gameplay-root isolation and attack callbacks in an isolated project.
