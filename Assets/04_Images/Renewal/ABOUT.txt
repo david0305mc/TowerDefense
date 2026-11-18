@@ -1,16 +1,32 @@
-Renewal character samples
+Renewal right-facing character samples
 
-Three original character sprites generated using the built-in image generation tool, with native Unity transform animation clips.
-References: existing Goblin Club and Witch Fire images for broad cartoon style; generated Mushroom Spearguard for consistency. Final prompts are in GenerationPrompts.json.
+ACTIVE ART
+The three active rigs use Parts/RightFacing/*_Parts.png. These are new, original cutout redraws made with the built-in image generation tool; exact prompts and reference roles are in Parts/RightFacing/GenerationPrompts.json. Earlier illustrations and front-facing atlases remain as non-destructive design history.
+All active heads, side-view torsos and boot toes face RIGHT, for left-to-right movement. Flip the model root to face left. Each character keeps its original palette, equipment and identity.
+Atlas slicing follows connected alpha components across cell boundaries, preserving necks and cap edges instead of clipping a strict rectangular grid. There are 16 imported sprites per atlas, 48 total.
 
-Open Assets/01_Scenes/RenewalCharacterPreview.unity and press Play to compare all three using the existing CharacterGallery viewer.
-Prefabs: Assets/03_Prefabs/InGame/Character/Renewal. Each contains an Animator and AnimationLink on its root and a bottom-aligned SpriteRenderer on its Visual child. Animation curves only affect Visual, keeping gameplay positioning and gallery fitting independent.
-Original RGBA PNG pixels and alpha are preserved. No spritesheet slicing is required.
+PREVIEW
+Open Assets/01_Scenes/RenewalCharacterPreview.unity and press Play, or choose Tools > Renewal Characters > Open preview.
+Six motions: Idle, Walk, Attack, AttackIdle, Hurt, Death. Pause, Speed and Flip also work. Other gallery scenes retain their original four motion buttons.
+The clips are in-place; the game movement system moves the unit root. The rendered walking review adds matching physical left-to-right root movement against fixed ground marks.
 
-Animations: Idle, Walk, Attack and AttackIdle (12 clips total). Use the gallery motion buttons, Pause, Speed and Flip to inspect them. These are whole-sprite squash/stretch, bounce, float and lunge animations, without independent limb/weapon poses or directional frames.
+RIG AND WALK
+Prefabs: Assets/03_Prefabs/InGame/Character/Renewal.
+Compact side-view rig with nearly coincident hip joints and short sturdy limbs. The foot cycle separates planted stance from lifted recovery, solving the two leg joints to each foot position. A separate Sole/ankle joint keeps boots flat during stance and gives a small toe lift during recovery. The head counterbalances a small body bob. Equipment hands carry their load instead of making broad marching swings.
+Walk cycles: spear .90s, mage .98s, shieldguard 1.04s. Stance occupies62% of the cycle over a .18-unit step. RenewalAnimationBuilder.PreviewWalkSpeed returns the matching root velocity for the review export.
+Weapons follow the hand, shields follow the far hand, and the lantern hangs independently from the staff. Effects have their own root, independent of body falls.
 
-Attack is non-looping and emits Fire at its impact and AniEnd at completion, compatible with the existing AnimationLink callbacks. Other states loop. These remain visual sample prefabs without combat components or unit-table registration. Existing gameplay art is unchanged.
+ATTACK AND EFFECTS
+Attacks have character-specific preparation, strike/cast and recovery with planted feet. Thin borderless attack streaks last briefly near the moving weapon tip; tiny sparks follow the strike. The mage releases a small tapered bolt from the sampled staff tip at Fire. No large outlined arrow, starburst sticker or unsupported mid-air target hit is used. Foot dust is subtle and appears only around contact.
+Hurt uses a short recoil and mild tint. Death falls and fades. Only Idle, Walk and AttackIdle loop.
+Every clip explicitly resets its animated channels. Attack emits Fire at the strike and AniEnd at completion through the existing AnimationLink interface.
 
-Editable assets: Assets/07_Animations/Character/Renewal. Rebuild with Tools > Renewal Characters > Rebuild animations; this replaces the sample prefabs and clips. Validate with Tools > Renewal Characters > Validate animations.
+BUILD, VERIFY AND EXPORT
+Assets/07_Animations/Character/Renewal contains18 editable native Unity clips and3 controllers.
+Tools > Renewal Characters > Rebuild animations replaces the sample rigs, controllers and clips using the active atlases.
+Validate animations checks Animator state entry, clip bindings, loop closure, limb/weapon movement, VFX reset and planted-foot position/flatness over the walk cycle.
+Validate preview scene checks script and prefab references plus six-motion controls.
+Export motion review renders native Unity frames against fixed ground marks. Exported GIFs encode those frames without redrawing or retouching the art.
+Review artifacts are in output/renewal: ArticulatedPoses.png, RightFacingWalkCycle.png and the animated right-facing walking/attack previews.
 
-Validation: Unity 2022.3.47f1 built the assets and checked 96 sampled poses across all 12 clips, loop seams, gameplay-root isolation and attack callbacks in an isolated project.
+These remain visual sample prefabs: unit-table registration, combat collision and damage systems are separate from this art workflow. Original game characters and their animations are unchanged.

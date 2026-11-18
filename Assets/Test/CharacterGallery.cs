@@ -13,6 +13,7 @@ public sealed class CharacterGallery : MonoBehaviour
     }
 
     public Entry[] characters = Array.Empty<Entry>();
+    public bool showExtendedMotions;
     private readonly List<Entry> filtered = new List<Entry>();
     private readonly List<Animator> animators = new List<Animator>();
     private readonly List<Transform> models = new List<Transform>();
@@ -33,7 +34,9 @@ public sealed class CharacterGallery : MonoBehaviour
     private int screenHeight;
     private const int PageSize = 12;
     private static readonly string[] Categories = { "All", "Heroes", "Enemies", "Objects", "Extras" };
-    private static readonly string[] Motions = { "Idle", "Walk", "Attack", "AttackIdle" };
+    private static readonly string[] BasicMotions = { "Idle", "Walk", "Attack", "AttackIdle" };
+    private static readonly string[] ExtendedMotions = { "Idle", "Walk", "Attack", "AttackIdle", "Hurt", "Death" };
+    private string[] Motions => showExtendedMotions ? ExtendedMotions : BasicMotions;
 
     private void Start()
     {
@@ -105,6 +108,7 @@ public sealed class CharacterGallery : MonoBehaviour
             {
                 if (!renderer.enabled || !renderer.gameObject.activeSelf) continue;
                 if (renderer.sprite == null) continue;
+                if (renderer.color.a <= 0.001f) continue;
                 // Sprite bounds also work before activating renderers for the first time.
                 var spriteBounds = renderer.sprite.bounds;
                 for (int corner = 0; corner < 4; corner++)
